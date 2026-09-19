@@ -1,0 +1,969 @@
+{
+  "id": "lecture-08",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 8 Workbook",
+  "subtitle": "Problem solving with decisions: the if statement",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "temperature = 16\n\nif temperature < 18:\n    print('Bring a jacket.')\n\nprint('Have a good day!')",
+      "output": "Bring a jacket.\nHave a good day!"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "skipped": {
+          "accept": [
+            "Bring a jacket.",
+            "Bring a jacket",
+            "print('Bring a jacket.')",
+            "the first line",
+            "first line",
+            "line 1",
+            "1"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the line of output",
+          "width": "14rem",
+          "show": "Bring a jacket."
+        },
+        "appears": {
+          "accept": [
+            "Have a good day!",
+            "Have a good day",
+            "print('Have a good day!')",
+            "the second line",
+            "second line",
+            "line 2",
+            "2"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the line of output",
+          "width": "14rem",
+          "show": "Have a good day!"
+        }
+      }
+    },
+    "cp1-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGxpbmUgYEJyaW5nIGEgamFja2V0LmAgaXMgc2tpcHBlZCBiZWNhdXNlIGAyMiA8IDE4YCBpcyBgRmFsc2VgLCBzbyBQeXRob24gc2tpcHMgdGhlIGluZGVudGVkIGJvZHkuIFRoZSBsaW5lIGBIYXZlIGEgZ29vZCBkYXkhYCBzdGlsbCBhcHBlYXJzIGJlY2F1c2UgaXRzIGBwcmludGAgY2FsbCBpcyBvdXRzaWRlIHRoZSBgaWZgIGJsb2NrLCBzbyBpdCBhbHdheXMgcnVucy4="
+    },
+    "cp2-question": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Is the …?",
+      "answer": "QXNrLCDigJxJcyB0aGUgdmlzaXRvciB5b3VuZ2VyIHRoYW4gMTg/4oCdIEluIFB5dGhvbiB0aGUgY29uZGl0aW9uIGlzIGBhZ2UgPCAxOGAu"
+    },
+    "cp2-ages": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "below": {
+          "accept": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17"
+          ],
+          "placeholder": "an age",
+          "width": "6rem",
+          "show": "17"
+        },
+        "at": {
+          "accept": [
+            "18"
+          ],
+          "placeholder": "an age",
+          "width": "6rem"
+        },
+        "above": {
+          "accept": [
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+            "92",
+            "93",
+            "94",
+            "95",
+            "96",
+            "97",
+            "98",
+            "99",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105",
+            "106",
+            "107",
+            "108",
+            "109",
+            "110",
+            "111",
+            "112",
+            "113",
+            "114",
+            "115",
+            "116",
+            "117",
+            "118",
+            "119",
+            "120"
+          ],
+          "placeholder": "an age",
+          "width": "6rem",
+          "show": "19"
+        }
+      }
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "balance = 35\n\nif balance < 50:\n    print('Low balance')\n\nprint('Balance checked')",
+      "output": "Low balance\nBalance checked"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "kw": {
+          "accept": [
+            "if"
+          ],
+          "caseSensitive": true,
+          "placeholder": "keyword",
+          "width": "8rem"
+        },
+        "cond": {
+          "accept": [
+            "score >= 60",
+            "score>=60"
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "score >= 60"
+        },
+        "colon": {
+          "accept": [
+            ":"
+          ],
+          "placeholder": "punctuation",
+          "width": "8rem"
+        },
+        "body": {
+          "accept": [
+            "print('Pass')",
+            "print(\"Pass\")",
+            "print('Pass') (indented)",
+            "the indented print call",
+            "the indented line",
+            "indented print"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the statement",
+          "width": "12rem",
+          "show": "print('Pass')"
+        },
+        "printed": {
+          "accept": [
+            "nothing",
+            "nothing is printed",
+            "nothing at all",
+            "no output",
+            "none",
+            "it prints nothing",
+            "no line",
+            "-",
+            "—"
+          ],
+          "placeholder": "what is printed?",
+          "width": "12rem",
+          "show": "nothing"
+        }
+      }
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "total = 72\n\nif total >= 50:\n    shipping = 0\n    print('Free shipping')\n\nprint('Order checked')",
+      "output": "Free shipping\nOrder checked"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "inside"
+          ],
+          "placeholder": "inside / outside",
+          "width": "9rem"
+        },
+        "l2": {
+          "accept": [
+            "inside"
+          ],
+          "placeholder": "inside / outside",
+          "width": "9rem"
+        },
+        "l3": {
+          "accept": [
+            "outside"
+          ],
+          "placeholder": "inside / outside",
+          "width": "9rem"
+        }
+      }
+    },
+    "cp4-always": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "always": {
+          "accept": [
+            "print('Record complete')",
+            "print(\"Record complete\")",
+            "Record complete",
+            "the last print",
+            "the final print",
+            "the last line",
+            "the final line",
+            "line 5"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the statement",
+          "width": "16rem",
+          "show": "print('Record complete')"
+        }
+      }
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "total = 42\n\nif total >= 50:\n    shipping = 0\nelse:\n    shipping = 8\n\nprint('Shipping:', shipping)",
+      "output": "Shipping: 8"
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "total = 50\n\nif total >= 50:\n    shipping = 0\nelse:\n    shipping = 8\n\nprint('Shipping:', shipping)",
+      "output": "Shipping: 0"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c49": {
+          "accept": [
+            "False"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "b49": {
+          "accept": [
+            "else",
+            "else branch",
+            "the else branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "else"
+        },
+        "s49": {
+          "accept": [
+            "8"
+          ],
+          "width": "5rem"
+        },
+        "c50": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "b50": {
+          "accept": [
+            "if",
+            "if branch",
+            "the if branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "if"
+        },
+        "s50": {
+          "accept": [
+            "0"
+          ],
+          "width": "5rem"
+        },
+        "c51": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "b51": {
+          "accept": [
+            "if",
+            "if branch",
+            "the if branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "if"
+        },
+        "s51": {
+          "accept": [
+            "0"
+          ],
+          "width": "5rem"
+        }
+      }
+    },
+    "cp6-path": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "answer": "UmVhZCA2NCwgdGVzdCBgdG90YWwgPj0gNTBgLCB0YWtlIHRoZSBZZXMgcGF0aCwgYXNzaWduIGBzaGlwcGluZyA9IDBgLCB0aGVuIHByaW50IHRoZSBzaGlwcGluZyBjaGFyZ2Uu"
+    },
+    "cp6-value": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "value": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "6rem"
+        }
+      }
+    },
+    "cp6-rejoin": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "answer": "VGhlIFllcyBhbmQgTm8gcGF0aHMgcmVqb2luIGltbWVkaWF0ZWx5IGJlZm9yZSB0aGUgc2hhcmVkIG91dHB1dCBzdGVwLCDigJxQcmludCB0aGUgc2hpcHBpbmcgY2hhcmdlLuKAnQ=="
+    },
+    "ex-w06": {
+      "type": "example",
+      "code": "total = 38\n\nif total >= 50:\n    shipping = 0\nelse:\n    shipping = 8\n\nfinal_total = total + shipping\nprint('Final total:', final_total)",
+      "output": "Final total: 46"
+    },
+    "cp7-fix": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 8,
+      "starter": "balance = -20\n\nif balance < 0:\n    status = 'Overdrawn'\n    print('Status:', status)\nelse:\n    status = 'Available'\n    print('Status:', status)",
+      "cases": [
+        {
+          "name": "balance = -20",
+          "expected": "Status: Overdrawn"
+        },
+        {
+          "name": "balance = 120",
+          "expected": "Status: Available",
+          "rewrite": [
+            [
+              "balance = -20",
+              "balance = 120"
+            ]
+          ]
+        }
+      ],
+      "check": "assert __source__.count(\"print(\") == 1, \"The print call is still duplicated. Keep exactly one print, written once after the decision.\"\nassert any(line.startswith(\"print(\") for line in __source__.split(\"\\n\")), \"Put the single print at the left margin, after the if/else, so it runs in both cases.\"",
+      "answer": "YmFsYW5jZSA9IC0yMAoKaWYgYmFsYW5jZSA8IDA6CiAgICBzdGF0dXMgPSAnT3ZlcmRyYXduJwplbHNlOgogICAgc3RhdHVzID0gJ0F2YWlsYWJsZScKCnByaW50KCdTdGF0dXM6Jywgc3RhdHVzKQ=="
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "late": {
+          "accept": [
+            "days > 0",
+            "days>0",
+            "0 < days",
+            "0<days",
+            "days >= 1",
+            "days>=1"
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "days > 0"
+        },
+        "full": {
+          "accept": [
+            "people >= 30",
+            "people>=30",
+            "30 <= people",
+            "30<=people",
+            "people > 29",
+            "people>29"
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "people >= 30"
+        },
+        "boundary": {
+          "accept": [
+            "30"
+          ],
+          "placeholder": "value",
+          "width": "6rem"
+        }
+      }
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "if total >= 50\n    shipping = 0"
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "if total >= 50:\nshipping = 0"
+    },
+    "cp9-fix": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "age = 15\n\nif age < 18\nprint('Reduced price')",
+      "cases": [
+        {
+          "name": "age = 15",
+          "expected": "Reduced price"
+        },
+        {
+          "name": "age = 30 (nothing printed)",
+          "expected": "",
+          "rewrite": [
+            [
+              "age = 15",
+              "age = 30"
+            ]
+          ]
+        }
+      ],
+      "check": "assert \"age < 18\" in __source__ or \"age<18\" in __source__ or \"18 > age\" in __source__, \"Keep the condition age < 18.\"",
+      "answer": "YWdlID0gMTUKCmlmIGFnZSA8IDE4OgogICAgcHJpbnQoJ1JlZHVjZWQgcHJpY2UnKQ=="
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True",
+            "False"
+          ],
+          "caseSensitive": true,
+          "placeholder": "value",
+          "width": "7rem",
+          "show": "True"
+        },
+        "v2": {
+          "accept": [
+            "False",
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "value",
+          "width": "7rem",
+          "show": "False"
+        }
+      }
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGtleXdvcmQgYGlmYCwgYSBjb25kaXRpb24sIGEgY29sb24gYXQgdGhlIGVuZCBvZiB0aGUgaGVhZGVyLCBhbmQgYW4gaW5kZW50ZWQgYm9keS4="
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIHVzZXMgaW5kZW50YXRpb24uIFN0YXRlbWVudHMgYXQgdGhlIHNhbWUgaW5kZW50YXRpb24gbGV2ZWwgYmVsb25nIHRvIHRoZSBzYW1lIGJsb2NrLg=="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGBlbHNlYCBibG9jayBydW5zIHdoZW4gdGhlIG1hdGNoaW5nIGBpZmAgY29uZGl0aW9uIGlzIGBGYWxzZWAu"
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Qm90aCBicmFuY2hlcyBjb250YWluIGJlaGF2aW91ciB0aGF0IG11c3QgYmUgY2hlY2tlZC4gVGhlIGJvdW5kYXJ5IGlzIHdoZXJlIG9wZXJhdG9ycyBzdWNoIGFzIGA+YCBhbmQgYD49YCBkaWZmZXIsIHNvIGl0IG9mdGVuIHJldmVhbHMgYW4gaW5jb3JyZWN0IGNvbmRpdGlvbi4="
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "score = 60\nif score >= 60:\n    result = 'Pass'\nelse:\n    result = 'Try again'\nprint(result)"
+    },
+    "fr6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "branch": {
+          "accept": [
+            "if",
+            "if branch",
+            "the if branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "if"
+        },
+        "out": {
+          "accept": [
+            "Pass"
+          ],
+          "caseSensitive": true,
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c15": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "b15": {
+          "accept": [
+            "if",
+            "if branch",
+            "the if branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "if"
+        },
+        "p15": {
+          "accept": [
+            "8"
+          ],
+          "width": "5rem"
+        },
+        "o15": {
+          "accept": [
+            "Price: 8"
+          ],
+          "caseSensitive": true,
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "c21": {
+          "accept": [
+            "False"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "b21": {
+          "accept": [
+            "else",
+            "else branch",
+            "the else branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "else"
+        },
+        "p21": {
+          "accept": [
+            "12"
+          ],
+          "width": "5rem"
+        },
+        "o21": {
+          "accept": [
+            "Price: 12"
+          ],
+          "caseSensitive": true,
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "pb": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "fuel = 5\n\n# Write the if statement below.",
+      "cases": [
+        {
+          "name": "fuel = 5",
+          "expected": "Low fuel"
+        },
+        {
+          "name": "fuel = 10 (nothing printed)",
+          "expected": "",
+          "rewrite": [
+            [
+              "fuel = 5",
+              "fuel = 10"
+            ]
+          ]
+        },
+        {
+          "name": "fuel = 25 (nothing printed)",
+          "expected": "",
+          "rewrite": [
+            [
+              "fuel = 5",
+              "fuel = 25"
+            ]
+          ]
+        }
+      ],
+      "answer": "ZnVlbCA9IDUKCmlmIGZ1ZWwgPCAxMDoKICAgIHByaW50KCdMb3cgZnVlbCcp"
+    },
+    "pc": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "mark = 65\n\n# Store 'Pass' or 'Not yet' in result, then print result once.",
+      "cases": [
+        {
+          "name": "mark = 65",
+          "expected": "Pass"
+        },
+        {
+          "name": "mark = 50",
+          "expected": "Pass",
+          "rewrite": [
+            [
+              "mark = 65",
+              "mark = 50"
+            ]
+          ]
+        },
+        {
+          "name": "mark = 49",
+          "expected": "Not yet",
+          "rewrite": [
+            [
+              "mark = 65",
+              "mark = 49"
+            ]
+          ]
+        }
+      ],
+      "check": "assert \"result\" in globals(), \"Store the message in a variable named result.\"\nassert __source__.count(\"print(\") == 1, \"Print result exactly once, after the decision.\"",
+      "answer": "bWFyayA9IDY1CgppZiBtYXJrID49IDUwOgogICAgcmVzdWx0ID0gJ1Bhc3MnCmVsc2U6CiAgICByZXN1bHQgPSAnTm90IHlldCcKCnByaW50KHJlc3VsdCk="
+    },
+    "pd-cases": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "answer": "Q2FzZSAxOiB0aGUgaXRlbSBpcyBsYXRlLCBzbyB0aGUgZmVlIGlzIDUgZG9sbGFycy4gQ2FzZSAyOiB0aGUgaXRlbSBpcyBub3QgbGF0ZSwgc28gdGhlIGZlZSBpcyAwIGRvbGxhcnMu"
+    },
+    "pd-question": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Is …?",
+      "answer": "QXNrLCDigJxJcyBgZGF5c19sYXRlID4gMGA/4oCd"
+    },
+    "pd-flow": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Start with the input step, then the diamond, then …",
+      "answer": "UmVhZCBgZGF5c19sYXRlYC4gRGlhbW9uZDogYGRheXNfbGF0ZSA+IDBgPyBZZXMgcGF0aDogYGZlZSA9IDVgLiBObyBwYXRoOiBgZmVlID0gMGAuIEJvdGggcGF0aHMgcmVqb2luIGF0IG9uZSBzaGFyZWQgc3RlcDogcHJpbnQgdGhlIGZlZS4="
+    },
+    "pd": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "# Read days_late, choose the fee, then print it once.",
+      "cases": [
+        {
+          "name": "3 days late",
+          "expected": "Days late: Fee: 5",
+          "inputs": [
+            "3"
+          ]
+        },
+        {
+          "name": "returned on time (0 days)",
+          "expected": "Days late: Fee: 0",
+          "inputs": [
+            "0"
+          ]
+        },
+        {
+          "name": "1 day late",
+          "expected": "Days late: Fee: 5",
+          "inputs": [
+            "1"
+          ]
+        }
+      ],
+      "answer": "ZGF5c19sYXRlID0gaW50KGlucHV0KCdEYXlzIGxhdGU6ICcpKQoKaWYgZGF5c19sYXRlID4gMDoKICAgIGZlZSA9IDUKZWxzZToKICAgIGZlZSA9IDAKCnByaW50KCdGZWU6JywgZmVlKQ=="
+    },
+    "pe": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 6,
+      "starter": "age = 16\n\nif age > 16\nprint('Access allowed')\n    else:\n        print('Access denied')",
+      "cases": [
+        {
+          "name": "age = 16 (the boundary)",
+          "expected": "Access allowed"
+        },
+        {
+          "name": "age = 15",
+          "expected": "Access denied",
+          "rewrite": [
+            [
+              "age = 16",
+              "age = 15"
+            ]
+          ]
+        },
+        {
+          "name": "age = 40",
+          "expected": "Access allowed",
+          "rewrite": [
+            [
+              "age = 16",
+              "age = 40"
+            ]
+          ]
+        }
+      ],
+      "answer": "YWdlID0gMTYKCmlmIGFnZSA+PSAxNjoKICAgIHByaW50KCdBY2Nlc3MgYWxsb3dlZCcpCmVsc2U6CiAgICBwcmludCgnQWNjZXNzIGRlbmllZCcp"
+    },
+    "ex-w10": {
+      "type": "example",
+      "code": "order_total = float(input('Order total: $'))\n\nif order_total >= 50:\n    shipping = 0\nelse:\n    shipping = 8\n\nfinal_total = order_total + shipping\nprint(f'Shipping: ${shipping:.2f}')\nprint(f'Final total: ${final_total:.2f}')"
+    },
+    "it-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "True / False",
+          "width": "8rem"
+        },
+        "branch": {
+          "accept": [
+            "if",
+            "if branch",
+            "the if branch"
+          ],
+          "placeholder": "if / else",
+          "width": "7rem",
+          "show": "if"
+        },
+        "ship": {
+          "accept": [
+            "0",
+            "0.0",
+            "0.00"
+          ],
+          "placeholder": "value",
+          "width": "7rem"
+        },
+        "final": {
+          "accept": [
+            "72.5",
+            "72.50"
+          ],
+          "placeholder": "value",
+          "width": "7rem"
+        }
+      }
+    },
+    "it-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNhbGN1bGF0aW9uIGlzIHNoYXJlZCBieSBib3RoIGNhc2VzLCBzbyBpdCBpcyB3cml0dGVuIG9uY2UgYWZ0ZXIgdGhlIGJyYW5jaGVzIGluc3RlYWQgb2YgYmVpbmcgcmVwZWF0ZWQgaW4gZWFjaC4gSXQgYWxzbyBuZWVkcyB0aGUgYHNoaXBwaW5nYCB2YWx1ZSB0aGF0IHRoZSBkZWNpc2lvbiBjaG9vc2VzLCBzbyBpdCBtdXN0IGNvbWUgYWZ0ZXIgdGhlIGRlY2lzaW9uLg=="
+    },
+    "ca": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "# Ask for a number, choose the magnitude with one if/else, then print both.",
+      "cases": [
+        {
+          "name": "Number: -7.5",
+          "expected": "Number: Original: -7.5\nMagnitude: 7.5",
+          "inputs": [
+            "-7.5"
+          ]
+        },
+        {
+          "name": "Number: 4",
+          "expected": "Number: Original: 4.0\nMagnitude: 4.0",
+          "inputs": [
+            "4"
+          ]
+        },
+        {
+          "name": "Number: 0 (the boundary)",
+          "expected": "Number: Original: 0.0\nMagnitude: 0.0",
+          "inputs": [
+            "0"
+          ]
+        }
+      ],
+      "check": "assert \"abs(\" not in __source__, \"Do not call abs(). Choose the magnitude with an if/else statement.\"\nassert \"else\" in __source__, \"Use one if/else statement: one branch keeps the number, the other stores its opposite.\"",
+      "answer": "bnVtYmVyID0gZmxvYXQoaW5wdXQoJ051bWJlcjogJykpCgppZiBudW1iZXIgPCAwOgogICAgbWFnbml0dWRlID0gLW51bWJlcgplbHNlOgogICAgbWFnbml0dWRlID0gbnVtYmVyCgpwcmludCgnT3JpZ2luYWw6JywgbnVtYmVyKQpwcmludCgnTWFnbml0dWRlOicsIG1hZ25pdHVkZSk="
+    },
+    "cb": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "# Ask for the name, wage, and hours; choose the pay with one if/else; print after the branches.",
+      "cases": [
+        {
+          "name": "Sam, $20, 45 hours",
+          "expected": "Employee name: Hourly wage: $Hours worked: Employee: Sam\nPay: $950.00",
+          "inputs": [
+            "Sam",
+            "20",
+            "45"
+          ]
+        },
+        {
+          "name": "Lee, $18, 40 hours (the boundary)",
+          "expected": "Employee name: Hourly wage: $Hours worked: Employee: Lee\nPay: $720.00",
+          "inputs": [
+            "Lee",
+            "18",
+            "40"
+          ]
+        },
+        {
+          "name": "Ana, $15, 41 hours",
+          "expected": "Employee name: Hourly wage: $Hours worked: Employee: Ana\nPay: $622.50",
+          "inputs": [
+            "Ana",
+            "15",
+            "41"
+          ]
+        }
+      ],
+      "check": "lines = [line.strip() for line in __source__.split(\"\\n\")]\nassert sum(line.startswith(\"if \") for line in lines) == 1, \"Use exactly one if statement.\"\nassert sum(line == \"else:\" for line in lines) == 1, \"Use exactly one else branch.\"\nassert not any(line.startswith(\"elif\") for line in lines), \"This task needs only a two-way decision: no elif.\"\nassert any(line.startswith(\"print(\") for line in __source__.split(\"\\n\")), \"Put the final output after the branches, at the left margin, so it runs in both cases.\"\n",
+      "answer": "bmFtZSA9IGlucHV0KCdFbXBsb3llZSBuYW1lOiAnKQp3YWdlID0gZmxvYXQoaW5wdXQoJ0hvdXJseSB3YWdlOiAkJykpCmhvdXJzID0gZmxvYXQoaW5wdXQoJ0hvdXJzIHdvcmtlZDogJykpCgppZiBob3VycyA+IDQwOgogICAgcmVndWxhcl9wYXkgPSA0MCAqIHdhZ2UKICAgIG92ZXJ0aW1lX2hvdXJzID0gaG91cnMgLSA0MAogICAgb3ZlcnRpbWVfcGF5ID0gb3ZlcnRpbWVfaG91cnMgKiB3YWdlICogMS41CiAgICBwYXkgPSByZWd1bGFyX3BheSArIG92ZXJ0aW1lX3BheQplbHNlOgogICAgcGF5ID0gaG91cnMgKiB3YWdlCgpwcmludCgnRW1wbG95ZWU6JywgbmFtZSkKcHJpbnQoZidQYXk6ICR7cGF5Oi4yZn0nKQ=="
+    }
+  }
+}

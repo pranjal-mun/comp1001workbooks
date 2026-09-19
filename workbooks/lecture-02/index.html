@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 2 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-02", specs: "./exercises.json" });
+  </script>
+  <style>
+    /* Tile-floor figures (the PDF's TikZ grids). Black and white are the content, so they stay literal in both themes. */
+    .wb-tiles-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.2rem 2.4rem; margin: 0.9rem 0 1.2rem; font-family: var(--font-sans); }
+    .wb-tiles { display: block; max-width: 100%; height: auto; }
+    .wb-framework dt { font-family: var(--font-sans); font-weight: 700; margin-top: 0.6rem; }
+    .wb-framework dd { margin: 0.1rem 0 0; }
+  </style>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 2 Workbook</h1>
+    <div class="wb-subtitle">Problem Solving</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>clarify a task and break it into smaller parts;</li>
+    <li>recognise useful patterns and describe an ordered method;</li>
+    <li>test a method, find a missing rule, and revise the solution; and</li>
+    <li>explain what you learned and apply it to a different problem.</li>
+  </ul>
+  <p>Reading: §1.7, HT 1.1 and Worked Example 1.1.</p>
+  <p class="wb-meta">This lecture has no Python and no questions to check: it is problem solving on paper. Read it with a pen in hand and work the pizza and tile examples yourself before looking at the revisions.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. The Framework</h2>
+<p>A <strong>problem-solving framework</strong> is a set of activities that helps organise your thinking. It is useful when a request does not immediately tell you what to do.</p>
+<dl class="wb-framework">
+  <dt>Understand</dt><dd>Identify what is given, what is missing, and what a successful result must do.</dd>
+  <dt>Decompose</dt><dd>Break the task into smaller parts that are easier to work on.</dd>
+  <dt>Recognise patterns</dt><dd>Find familiar calculations or repeated work that may help.</dd>
+  <dt>Design and evaluate</dt><dd>Develop a method, check its results, and improve it when needed.</dd>
+  <dt>Implement</dt><dd>Put the method into a usable form. In programming, this means writing code.</dd>
+  <dt>Reflect</dt><dd>Look back at what happened. Explain what helped, what changed, and what you can use next time.</dd>
+</dl>
+<p>These activities can overlap. A check may reveal a missing rule, so you return to understanding. An unclear instruction may become noticeable only when someone tries to carry it out. You can then improve the design. You do not need six written headings for every small task.</p>
+<p>This lecture follows a pizza payment problem from the first request to a revised solution. It then uses the framework for a different problem: placing tiles in an alternating pattern.</p>
+
+<h2 id="s2">2. Understand, Decompose and Plan</h2>
+<h3>A Shared Pizza Order</h3>
+<p>Someone asks: “Work out a fair payment for each person in a shared food order.”</p>
+<p>A few friends want to order pizza. The store charges a flat CA$10 delivery fee, with 15% tax and a tip added to the bill. Before ordering, the friends want to know what each person will pay.</p>
+<p>CA$ means Canadian dollars. One dollar is 100 cents. A <strong>flat delivery fee</strong> is charged once for the whole delivery. <strong>Tax</strong> is an extra charge calculated as a percentage. A <strong>tip</strong> is an extra payment the friends agree to give.</p>
+
+<h3>Questions That Clarify the Task</h3>
+<p>The word “fair” does not tell us exactly how to calculate a payment. Useful questions include:</p>
+<ul>
+  <li>Which pizzas will they order, and what does each one cost?</li>
+  <li>How many people will pay? Have they agreed to equal payments, even if they eat different amounts?</li>
+  <li>Does the tax apply to food, delivery, or both?</li>
+  <li>What dollar tip amount has the group agreed on?</li>
+  <li>Are there any other charges or discounts?</li>
+</ul>
+<p>The delivery fee and tax rate are already given. We need to clarify how they apply, as well as find the information that is missing.</p>
+
+<h3>Agreed Rules</h3>
+<p>For this example, the friends and store agree on these rules:</p>
+<ul>
+  <li>Everyone pays equally. The number of people is a whole number of at least 1.</li>
+  <li>Food cost is the sum of the selected pizza prices, before tax.</li>
+  <li>Add the CA$10 delivery fee once.</li>
+  <li>Tax is 15% of the combined food and delivery cost. Round tax to the nearest cent; if it is exactly halfway between two cents, round upward.</li>
+  <li>Add the agreed dollar tip after tax. The tip is not taxed.</li>
+  <li>There are no other charges or discounts.</li>
+</ul>
+<p>Prices and the agreed tip use dollars and cents, with no negative amounts. These are the rules of this example, rather than a rule for every store.</p>
+<p>An <strong>input</strong> is information a method starts with. An <strong>output</strong> is a result it produces. Our changing inputs are the pizza prices, the agreed tip, and the number of people. The delivery fee and tax rate are fixed by the task.</p>
+<p>The required output is a payment per person in dollars and cents. For success, the payments must be equal and must cover the bill exactly. We will test whether the current rules are enough to achieve this.</p>
+
+<h3>Decomposition</h3>
+<p><strong>Decompose</strong> means break a task into smaller jobs.</p>
+<ol>
+  <li>Find the food cost from the selected pizzas and their prices.</li>
+  <li>Account for the one delivery fee.</li>
+  <li>Calculate the tax on food plus delivery.</li>
+  <li>Find the group's agreed tip amount.</li>
+  <li>Add the charges to find the total bill.</li>
+  <li>Share the total among the people paying.</li>
+</ol>
+<p>This identifies the jobs. The design will explain the exact actions used to do them. Some jobs depend on earlier results: tax needs food plus delivery, and sharing needs the total bill.</p>
+
+<h3>Pattern Recognition</h3>
+<p>A <strong>pattern</strong> can be a familiar calculation or work that repeats. Adding pizza prices is like adding other shopping costs. Finding an equal share uses division by the number of people.</p>
+<p>A percentage describes an amount out of 100. Thus 15% means 15 ÷ 100 = 0.15. To find 15% of CA$80, calculate 80 × 0.15 = CA$12.</p>
+<p>Check differences before reusing a familiar method. The delivery fee is added once; it is not charged for every pizza or every person. Tax depends on the stated taxable amount. The tip here is an agreed dollar amount, not a percentage.</p>
+
+<h2 id="s3">3. Design and Evaluate</h2>
+<h3>An Initial Design</h3>
+<p>A <strong>design</strong> describes how to solve the task. Our initial design is:</p>
+<ol>
+  <li>Add the pizza prices to find the food cost.</li>
+  <li>Add CA$10 for delivery.</li>
+  <li>Calculate 15% of that amount, round the tax, and add it.</li>
+  <li>Add the agreed tip.</li>
+  <li>Divide the total by the number of people.</li>
+</ol>
+<p>To <strong>evaluate</strong> a design is to check whether it meets the agreed requirements. An <strong>expected result</strong> is what a case should produce under those requirements. Work through the method and compare its result with what is required.</p>
+
+<h3>Checking a Normal Case</h3>
+<p>A <strong>normal case</strong> is an ordinary example of the task. Suppose the friends order pizzas priced at CA$25, CA$25, and CA$20. They agree on a CA$8 tip, and 4 people pay.</p>
+<table>
+  <thead><tr><th>Calculation</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>Food cost</td><td>25 + 25 + 20 = CA$70.00</td></tr>
+    <tr><td>Food plus delivery</td><td>70 + 10 = CA$80.00</td></tr>
+    <tr><td>Tax</td><td>80 × 0.15 = CA$12.00</td></tr>
+    <tr><td>Total with tip</td><td>80 + 12 + 8 = CA$100.00</td></tr>
+    <tr><td>Payment per person</td><td>100 ÷ 4 = CA$25.00</td></tr>
+  </tbody>
+</table>
+<p>Check the whole result: four payments of CA$25.00 total CA$100.00. The payments are equal and cover the bill exactly. This case works.</p>
+
+<h3>A Missing Payment Rule</h3>
+<p>Keep the CA$100 bill, but let 3 people pay instead of 4. Now 100 ÷ 3 = 33.333… The digits continue, but payments must use whole cents.</p>
+<ul>
+  <li>Three payments of CA$33.33 total CA$99.99. One cent is missing.</li>
+  <li>Three payments of CA$33.34 total CA$100.02. Two cents are extra.</li>
+</ul>
+<p>Rounding each person's payment does not explain what should happen to this difference. Equal payments in whole cents cannot cover the original CA$100 bill exactly. The arithmetic has revealed a missing agreement.</p>
+
+<h3>Revisiting Understanding</h3>
+<p>The friends must choose a rule. For this example, they agree to keep equal payments and allow a small increase in the tip:</p>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">The agreed adjustment rule</div>
+  <p><strong>Increase the tip by the smallest number of cents needed so that the revised bill divides into equal payments in whole cents.</strong></p>
+</div>
+<p>This changes the bill. It does not make CA$100 itself divisible into three equal payments in whole cents. The new output must therefore include the final tip and revised total, as well as the payment per person.</p>
+<p>For three people, the final tip is CA$8.02 and the revised total is CA$100.02. Each person pays CA$33.34. This is a group agreement; the calculation cannot choose the agreement for them.</p>
+
+<h3>Revising the Design</h3>
+<p>After finding the original bill, add the following steps:</p>
+<ol>
+  <li>Express the total in cents by multiplying the dollar amount by 100.</li>
+  <li>Check whether the total divides into a whole number of cents per person.</li>
+  <li>If it does not, add one cent to both the tip and the total, then check again.</li>
+  <li>Stop as soon as the division gives whole cents per person.</li>
+</ol>
+<table>
+  <thead><tr><th>Tip</th><th>Total in cents</th><th>Share among 3 people</th></tr></thead>
+  <tbody>
+    <tr><td>CA$8.00</td><td>10 000</td><td>Not a whole number of cents</td></tr>
+    <tr><td>CA$8.01</td><td>10 001</td><td>Not a whole number of cents</td></tr>
+    <tr><td>CA$8.02</td><td>10 002</td><td>3 334 cents each = CA$33.34</td></tr>
+  </tbody>
+</table>
+<p>Checking one cent at a time finds the smallest increase. If the original total already divides into whole cents per person, no increase is needed. Because the number of people is a positive whole number, continuing to increase the total will reach a multiple of that number. The method can stop.</p>
+
+<h3>Normal Cases and Edge Cases</h3>
+<p>An <strong>edge case</strong> is a boundary or unusual situation that may reveal a problem. Different cases check different parts of a method.</p>
+<table>
+  <thead><tr><th>Original bill</th><th>People</th><th>Result under the revised rule</th></tr></thead>
+  <tbody>
+    <tr><td>CA$100.00</td><td>4</td><td>No increase; CA$25.00 each</td></tr>
+    <tr><td>CA$100.00</td><td>3</td><td>Increase tip by CA$0.02; CA$33.34 each</td></tr>
+    <tr><td>CA$100.00</td><td>1</td><td>No increase; the person pays CA$100.00</td></tr>
+    <tr><td>CA$100.00</td><td>0</td><td>Invalid: ask for at least one person</td></tr>
+  </tbody>
+</table>
+<p>Do not divide by zero. The task already requires at least one person.</p>
+<p>A zero agreed tip and a tax calculation that needs rounding are also useful tests. For food costing CA$19.99, food plus delivery is CA$29.99. Tax is 29.99 × 0.15 = 4.4985, which rounds to CA$4.50. With no tip and one person, the payment is 29.99 + 4.50 = CA$34.49. If several people shared a bill with zero agreed tip, the agreed adjustment rule could still add a few cents to that tip.</p>
+<p>For an exact half-cent, food costing CA$19.90 gives tax 29.90 × 0.15 = 4.485. Our half-cent rule rounds this to CA$4.49.</p>
+
+<h2 id="s4">4. Implement and Reflect</h2>
+<h3>Implementation in Plain English</h3>
+<p>To <strong>implement</strong> is to put a design into a usable form. For this everyday task, we can write instructions that the friends can use with a calculator. In programming, implementation means writing code.</p>
+<p>Our method in plain English is:</p>
+<div class="wb-block">
+  <div class="wb-block-title">The payment method</div>
+  <p>Work out food plus delivery, add the rounded tax, and then add the agreed tip. If equal payments need fractions of a cent, increase the tip one cent at a time until they do not. Report the final tip, revised total, and payment per person.</p>
+</div>
+<p>The new rule must be part of the usable instructions. “Split the bill fairly” is too vague for someone to carry out without further decisions.</p>
+
+<h3>Carrying Out the Revised Method</h3>
+<p>Use pizzas priced at CA$25, CA$25, and CA$20, an agreed tip of CA$8, and 3 people.</p>
+<ol>
+  <li>Food plus delivery is 25 + 25 + 20 + 10 = CA$80.00.</li>
+  <li>Tax is 80 × 0.15 = CA$12.00.</li>
+  <li>The original total is 80 + 12 + 8 = CA$100.00.</li>
+  <li>In cents, 10 000 and 10 001 do not divide equally among 3 people. The next total, 10 002 cents, gives 3 334 cents each.</li>
+  <li>The final tip is CA$8.02, the revised total is CA$100.02, and each person pays CA$33.34.</li>
+</ol>
+<p>Check: 3 × 33.34 = 100.02. The payments cover the revised bill exactly. The reported tip makes the change visible to the friends.</p>
+
+<h3>An Algorithm</h3>
+<p>An <strong>algorithm</strong> is a precise, ordered method that finishes the task. An algorithm can be expressed in plain English. It does not need Python syntax. Our completed payment algorithm is:</p>
+<ol>
+  <li>Obtain the selected pizza prices, the agreed tip, and a whole number of people of at least 1.</li>
+  <li>Add the pizza prices, then add CA$10 for delivery.</li>
+  <li>Multiply food plus delivery by 0.15. Round this tax to the nearest cent, rounding an exact half-cent upward.</li>
+  <li>Add the rounded tax and the agreed tip to food plus delivery.</li>
+  <li>Convert the total to cents.</li>
+  <li>Until the total divides into whole cents per person, add one cent to the tip and total.</li>
+  <li>Divide the final total in cents by the number of people.</li>
+  <li>Report the final tip, revised total, and payment per person in dollars and cents.</li>
+</ol>
+<p>Only the tip changes during adjustment. Tax does not change, because the tip is not taxed.</p>
+
+<h3>Reflection</h3>
+<p><strong>Reflect</strong> means look back at the work and explain what you learned. A useful reflection identifies an action, a result, and a lesson.</p>
+<p>Our initial method added the charges and divided equally. It worked for four people. Testing the same CA$100 bill with three people revealed fractions of a cent. We returned to understanding and agreed on a small tip adjustment. The final method finds the smallest increase, then reports the revised tip, bill, and equal payment. Three payments of CA$33.34 cover CA$100.02 exactly.</p>
+<p>The lesson is to test the actual requirements, including units and agreements. One successful example does not show that a method handles every relevant case.</p>
+
+<h3>From Instructions to a Program</h3>
+<p>In Lecture 3, we will express an algorithm using <strong>pseudocode</strong>, a structured description of steps. We will also see a Python implementation to show what a program can look like. You will not need to understand every line of that first program. Writing or running a program may reveal more missing details. A design can still change during implementation.</p>
+
+<h2 id="s5">5. Use the Framework</h2>
+<h3>An Alternating Tile Floor</h3>
+<p>Plan how to cover a rectangular floor with black and white square tiles. Each tile measures 4 × 4 inches. The floor width and height are positive multiples of 4 inches, such as 4, 8, 12, or 16 inches.</p>
+<p>Tiles sharing a side must have different colours. Tiles that meet only at a corner may have the same colour. Cover the floor without gaps or overlaps, using whole tiles. Ignore spaces for grout and obstacles. Start with a black tile at the top-left corner.</p>
+<p><strong>Understand:</strong> the inputs are the floor width and height in inches. The required output is a placement plan that produces the correct tiled floor. Finding only the total number of tiles would not settle where each colour goes. We will first use a floor 20 inches wide and 12 inches high.</p>
+
+<h3>Decomposing the Floor</h3>
+<p>A useful smaller task is to fill one row. Then we can place rows below it until the floor is complete. A row goes from left to right; a column goes from top to bottom.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 0 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+</div>
+<p>There are 20 ÷ 4 = 5 tiles per row and 12 ÷ 4 = 3 rows. The complete floor therefore needs 5 × 3 = 15 tiles. The pale cells represent positions that have not yet been filled.</p>
+
+<h3>Recognising Patterns</h3>
+<p>Across each row, the colours alternate: black, white, black, white, and so on. Down each column, the colours must also alternate. The first tile of each new row must be the opposite colour to the first tile in the row above.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 6 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="34" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+</div>
+<p>Tile 6 must be white because tile 1 directly above it is black. The numbers record the order of placement, not tile size or colour.</p>
+
+<h3>Designing and Evaluating</h3>
+<p>An initial idea is to start every row with black and alternate across each row. Each row looks correct on its own:</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 170 68" width="170" height="68" role="img" aria-label="Two rows that each start with black">
+<rect x="0" y="0" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="0" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="0" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="0" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="0" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="34" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="34" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="34" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="34" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="34" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+</svg>
+</div>
+<p>However, every tile in the second row has the same colour as the tile above it. The design fails the vertical requirement. Counting the correct number of tiles would not reveal this mistake.</p>
+<p>We revise the design: start each new row with the opposite colour to the first tile in the row above. Then alternate across the new row. The task's rule was already clear, so we repair the design without changing the requirement.</p>
+
+<h3>A Tile Algorithm</h3>
+<ol>
+  <li>Divide the width and height by 4 to find the tiles per row and the number of rows.</li>
+  <li>Place a black tile at the top-left position.</li>
+  <li>Fill the rest of the row from left to right, switching colour at each position.</li>
+  <li>If no row remains below, stop. Otherwise, place the new row's first tile directly below the first tile of the completed row, using the opposite colour.</li>
+  <li>Fill this new row from left to right, switching colour at each position. Continue starting and filling rows until all rows are complete.</li>
+</ol>
+<p>For implementation here, follow the instructions to draw or place tiles. We can evaluate the result by checking coverage and both directions of the colour pattern.</p>
+
+<h3>Carrying Out the Tile Algorithm</h3>
+<p>Begin the 20 × 12 inch floor with black at the top left. Then fill the four remaining positions in the first row, alternating white, black, white, black.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 1 tile placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="16" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 5 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+</div>
+<p>Start the second row below tile 1, using white. Fill the row from left to right: white, black, white, black, white. There are now 10 tiles.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 6 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="34" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="50" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 10 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="34" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">7</text>
+<rect x="68" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">8</text>
+<rect x="102" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">9</text>
+<rect x="136" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">10</text>
+<rect x="0" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+</div>
+<p>Start the third row below tile 6, using black. Fill the remaining four positions. All 15 positions are filled, so stop.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 11 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="34" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">7</text>
+<rect x="68" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">8</text>
+<rect x="102" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">9</text>
+<rect x="136" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">10</text>
+<rect x="0" y="84" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="101.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">11</text>
+<rect x="34" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="68" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="102" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<rect x="136" y="84" width="34" height="34" fill="var(--panel-deep)" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+<svg class="wb-tiles" viewBox="0 0 234 118" width="234" height="118" role="img" aria-label="5 by 3 tile grid, 15 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="136" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="34" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">7</text>
+<rect x="68" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">8</text>
+<rect x="102" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">9</text>
+<rect x="136" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">10</text>
+<rect x="0" y="84" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="101.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">11</text>
+<rect x="34" y="84" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="101.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">12</text>
+<rect x="68" y="84" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="101.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">13</text>
+<rect x="102" y="84" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="101.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">14</text>
+<rect x="136" y="84" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="153.0" y="101.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">15</text>
+<text x="85.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">20 inches</text>
+<text x="178" y="67.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">12 inches</text>
+</svg>
+</div>
+<p>The finished floor has no gaps or overlaps. Every pair of tiles sharing a side has opposite colours.</p>
+
+<h3>Evaluating Other Floors</h3>
+<p>The 20 × 12 floor has an odd number of tiles per row. Check a floor with an even number too: a 16 × 8 inch floor needs 4 tiles per row and 2 rows.</p>
+<div class="wb-tiles-row">
+<svg class="wb-tiles" viewBox="0 0 200 84" width="200" height="84" role="img" aria-label="4 by 2 tile grid, 8 tiles placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<rect x="34" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">2</text>
+<rect x="68" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">3</text>
+<rect x="102" y="16" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="33.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">4</text>
+<rect x="0" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">5</text>
+<rect x="34" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="51.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">6</text>
+<rect x="68" y="50" width="34" height="34" fill="#FFFFFF" stroke="#97999B" stroke-width="1"/>
+<text x="85.0" y="67.0" fill="#231F20" font-size="13" text-anchor="middle" dominant-baseline="central">7</text>
+<rect x="102" y="50" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="119.0" y="67.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">8</text>
+<text x="68.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">16 inches</text>
+<text x="144" y="50.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">8 inches</text>
+</svg>
+<svg class="wb-tiles" viewBox="0 0 98 50" width="98" height="50" role="img" aria-label="1 by 1 tile grid, 1 tile placed">
+<rect x="0" y="16" width="34" height="34" fill="#231F20" stroke="#97999B" stroke-width="1"/>
+<text x="17.0" y="33.0" fill="#FFFFFF" font-size="13" text-anchor="middle" dominant-baseline="central">1</text>
+<text x="17.0" y="10" fill="var(--ink-quiet)" font-size="11" text-anchor="middle">4 inches</text>
+<text x="42" y="33.0" fill="var(--ink-quiet)" font-size="11" dominant-baseline="central">4 inches</text>
+</svg>
+</div>
+<p>On the 16 × 8 floor, tile 4 is white and tile 5 is also white. These tiles are not neighbours sharing a side. Tile 5 must be opposite to tile 1 above it, not opposite to the last tile placed. A method that simply switched colour after every placement would fail on this floor.</p>
+<p>The smallest allowed floor, 4 × 4 inches, needs just one black tile. There is no rest of the row and no next row to fill. A width of 18 inches is outside the agreed whole-tile rule. We would need to clarify whether cutting tiles or changing the dimensions is allowed before solving that different task.</p>
+
+<h3>Reflection on the Tile Method</h3>
+<p>Decomposition helped because solving one row gave us work we could repeat. The first design made correct-looking rows but placed them together incorrectly. Checking vertical neighbours revealed the problem. The revised method uses the row above to choose each new row's first colour.</p>
+<p>The even-width test showed why the previous tile in placement order is not always the right reference. A useful lesson is that correct parts do not guarantee a correct whole: check how the parts fit together.</p>
+
+<h2 id="s6">6. Review</h2>
+<table>
+  <thead><tr><th>Activity</th><th>Main takeaway</th></tr></thead>
+  <tbody>
+    <tr><td>Understand</td><td>Clarify inputs, required results, units, and agreements.</td></tr>
+    <tr><td>Decompose</td><td>Separate the task into manageable jobs.</td></tr>
+    <tr><td>Recognise patterns</td><td>Reuse familiar work, checking what is different.</td></tr>
+    <tr><td>Design and evaluate</td><td>Describe a method; test normal and edge cases; revise.</td></tr>
+    <tr><td>Implement</td><td>Make the method usable and carry it out.</td></tr>
+    <tr><td>Reflect</td><td>Explain what helped and what to use next time.</td></tr>
+  </tbody>
+</table>
+<p>An algorithm gives precise, ordered steps that finish the task. The framework helps you develop and improve those steps. It is not itself a fixed algorithm for every problem.</p>
+<p>The pizza example needed a new agreement when equal payments could not cover the original bill in whole cents. The tile example needed a better instruction when separately alternating rows failed to make an alternating floor. In both cases, checking the whole result mattered.</p>
+<p>In programming, the framework helps turn a request into a tested program. In everyday planning, it helps clarify goals, organise work, and check the result. Use enough structure to make progress; revisit an activity when a new discovery requires it.</p>
+
+</main>
+</body>
+</html>

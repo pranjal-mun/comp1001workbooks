@@ -1,0 +1,1644 @@
+{
+  "id": "lecture-10",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 10 Workbook",
+  "subtitle": "Nested branches and elif chains",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "member = \"yes\"\ntotal = 120\n\nif member == \"yes\":\n    if total > 100:\n        discount = 0.20\n    else:\n        discount = 0.10\nelse:\n    discount = 0.0\n\nprint(\"Discount:\", discount)",
+      "output": "Discount: 0.2"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "outer": {
+          "accept": [
+            "False",
+            "F",
+            "false"
+          ]
+        },
+        "inner": {
+          "accept": [
+            "no",
+            "not tested",
+            "no, skipped",
+            "skipped",
+            "never",
+            "no it is skipped",
+            "not reached"
+          ]
+        },
+        "discount": {
+          "accept": [
+            "0.0",
+            "0",
+            "0.00"
+          ]
+        }
+      }
+    },
+    "cp1-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIG91dGVyIGNvbmRpdGlvbiBpcyBgRmFsc2VgLiBUaGUgaW5uZXIgY29uZGl0aW9uIGlzIG5vdCB0ZXN0ZWQuIFB5dGhvbiB0YWtlcyB0aGUgb3V0ZXIgYGVsc2VgLCBzbyBgZGlzY291bnRgIGJlY29tZXMgYDAuMGAu"
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "member = \"yes\"\ntotal = 80\n\nif member == \"yes\":\n    if total > 100:\n        message = \"Large member order\"\n    else:\n        message = \"Member order\"\nelse:\n    message = \"Regular order\"\n\nprint(message)",
+      "output": "Member order"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "inner": {
+          "accept": [
+            "weather == 'rain'",
+            "weather == \"rain\"",
+            "weather == rain",
+            "if weather == 'rain'",
+            "if weather == \"rain\"",
+            "the weather condition",
+            "weather condition",
+            "the weather test",
+            "weather",
+            "the inner if",
+            "inner if"
+          ],
+          "width": "16rem",
+          "placeholder": "condition"
+        },
+        "outer": {
+          "accept": [
+            "day == 'Saturday'",
+            "day == \"Saturday\"",
+            "day == saturday",
+            "if day == 'Saturday'",
+            "if day == \"Saturday\"",
+            "the day condition",
+            "day condition",
+            "the day test",
+            "day",
+            "day == 'saturday'",
+            "day == \"saturday\"",
+            "the outer if",
+            "outer if"
+          ],
+          "width": "16rem",
+          "placeholder": "condition"
+        },
+        "first": {
+          "accept": [
+            "day == 'Saturday'",
+            "day == \"Saturday\"",
+            "day == saturday",
+            "if day == 'Saturday'",
+            "if day == \"Saturday\"",
+            "the day condition",
+            "day condition",
+            "the day test",
+            "day",
+            "day == 'saturday'",
+            "day == \"saturday\""
+          ],
+          "width": "16rem",
+          "placeholder": "condition"
+        }
+      }
+    },
+    "cp2-when": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNvbmRpdGlvbiBgZGF5ID09ICdTYXR1cmRheSdgIGlzIHRlc3RlZCBmaXJzdC4gVGhlIGlubmVyIHdlYXRoZXIgY29uZGl0aW9uIGlzIHRlc3RlZCBvbmx5IHdoZW4gdGhlIGRheSBjb25kaXRpb24gaXMgYFRydWVgLiBUaGUgaW5kZW50ZWQgYGVsc2VgIG1hdGNoZXMgdGhlIHdlYXRoZXIgdGVzdDsgdGhlIHVuaW5kZW50ZWQgYGVsc2VgIG1hdGNoZXMgdGhlIGRheSB0ZXN0Lg=="
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True",
+            "T",
+            "true"
+          ]
+        },
+        "a1": {
+          "accept": [
+            "if block",
+            "if",
+            "outer if block",
+            "the if block",
+            "enter the if block",
+            "outer if",
+            "enter the outer block",
+            "the outer if block"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "True",
+            "T",
+            "true"
+          ]
+        },
+        "a2": {
+          "accept": [
+            "if block",
+            "if",
+            "inner if block",
+            "the if block",
+            "enter the if block",
+            "inner if",
+            "enter the inner if block",
+            "the inner if block"
+          ]
+        },
+        "message": {
+          "accept": [
+            "'Large member order'",
+            "\"Large member order\"",
+            "Large member order"
+          ],
+          "caseSensitive": true,
+          "width": "16rem"
+        },
+        "printed": {
+          "accept": [
+            "Large member order"
+          ],
+          "caseSensitive": true,
+          "width": "16rem"
+        }
+      }
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "score = 76\n\nif score >= 80:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelif score >= 60:\n    grade = \"C\"\nelif score >= 50:\n    grade = \"D\"\nelse:\n    grade = \"F\"\n\nprint(\"Grade:\", grade)",
+      "output": "Grade: B"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "False",
+            "F",
+            "false"
+          ]
+        },
+        "n1": {
+          "accept": [
+            "next",
+            "next condition",
+            "test the next condition",
+            "try the next condition",
+            "move to the next condition",
+            "go to the next elif",
+            "next elif"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "False",
+            "F",
+            "false"
+          ]
+        },
+        "n2": {
+          "accept": [
+            "next",
+            "next condition",
+            "test the next condition",
+            "try the next condition",
+            "move to the next condition",
+            "go to the next elif",
+            "next elif"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "True",
+            "T",
+            "true"
+          ]
+        },
+        "n3": {
+          "accept": [
+            "run",
+            "run the block",
+            "run this block",
+            "runs",
+            "run the branch",
+            "run this branch",
+            "store 'C'",
+            "grade = 'C'",
+            "grade = \"C\"",
+            "store C",
+            "run and skip the rest"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "skipped",
+            "skip",
+            "not reached",
+            "not tested",
+            "never reached",
+            "never tested",
+            "not run"
+          ]
+        },
+        "n4": {
+          "accept": [
+            "skipped",
+            "skip",
+            "not reached",
+            "not tested",
+            "never reached",
+            "never tested",
+            "not run"
+          ]
+        },
+        "grade": {
+          "accept": [
+            "C",
+            "'C'",
+            "\"C\""
+          ],
+          "caseSensitive": true
+        }
+      }
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "score = 92\n\nif score >= 80:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelse:\n    grade = \"C or below\"\n\nprint(grade)",
+      "output": "A"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "1",
+            "1 (True)",
+            "1, True",
+            "1 True",
+            "1 - True",
+            "first",
+            "first, True",
+            "tested first",
+            "1: True",
+            "1 true"
+          ]
+        },
+        "c2": {
+          "accept": [
+            "skipped",
+            "skip",
+            "not reached",
+            "not tested",
+            "never reached",
+            "never tested",
+            "not run"
+          ]
+        },
+        "c3": {
+          "accept": [
+            "skipped",
+            "skip",
+            "not reached",
+            "not tested",
+            "never reached",
+            "never tested",
+            "not run"
+          ]
+        }
+      }
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "score = 92\n\nif score >= 50:\n    grade = \"D\"\nelif score >= 60:\n    grade = \"C\"\nelif score >= 70:\n    grade = \"B\"\nelif score >= 80:\n    grade = \"A\"\n\nprint(grade)",
+      "output": "D"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "temperature >= 30",
+            "temperature>=30",
+            ">= 30",
+            ">=30",
+            "temperature >= 30.0",
+            "30"
+          ],
+          "width": "14rem",
+          "placeholder": "condition"
+        },
+        "o2": {
+          "accept": [
+            "temperature >= 20",
+            "temperature>=20",
+            ">= 20",
+            ">=20",
+            "temperature >= 20.0",
+            "20"
+          ],
+          "width": "14rem",
+          "placeholder": "condition"
+        },
+        "o3": {
+          "accept": [
+            "temperature >= 10",
+            "temperature>=10",
+            ">= 10",
+            ">=10",
+            "temperature >= 10.0",
+            "10"
+          ],
+          "width": "14rem",
+          "placeholder": "condition"
+        }
+      }
+    },
+    "cp7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIGFscmVhZHkga25vd3MgdGhhdCBgYWdlIDwgNWAgaXMgYEZhbHNlYCwgc28gdGhlIGFnZSBpcyBhdCBsZWFzdCA1LiBUaGUgc2Vjb25kIGJyYW5jaCBuZWVkcyBvbmx5IHRoZSB1cHBlciB0ZXN0IGBhZ2UgPCAxOGA7IHRoZSBlYXJsaWVyIGZhaWx1cmUgc3VwcGxpZXMgdGhlIGxvd2VyIGxpbWl0Lg=="
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "temperature = 4\n\nif temperature >= 30:\n    label = \"hot\"\nelif temperature >= 20:\n    label = \"warm\"\nelif temperature >= 10:\n    label = \"cool\"\nelse:\n    label = \"cold\"\n\nprint(label)",
+      "output": "cold"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b1": {
+          "accept": [
+            "temperature >= 30",
+            "temperature>=30",
+            ">= 30",
+            ">=30",
+            "hot",
+            "the hot branch",
+            "hot branch",
+            "first branch"
+          ],
+          "width": "14rem",
+          "placeholder": "condition or catch-all"
+        },
+        "l1": {
+          "accept": [
+            "hot",
+            "'hot'",
+            "\"hot\""
+          ]
+        },
+        "b2": {
+          "accept": [
+            "temperature >= 20",
+            "temperature>=20",
+            ">= 20",
+            ">=20",
+            "warm",
+            "the warm branch",
+            "warm branch",
+            "the 20 branch"
+          ],
+          "width": "14rem",
+          "placeholder": "condition or catch-all"
+        },
+        "l2": {
+          "accept": [
+            "warm",
+            "'warm'",
+            "\"warm\""
+          ]
+        },
+        "b3": {
+          "accept": [
+            "temperature >= 10",
+            "temperature>=10",
+            ">= 10",
+            ">=10",
+            "cool",
+            "the cool branch",
+            "cool branch",
+            "the 10 branch"
+          ],
+          "width": "14rem",
+          "placeholder": "condition or catch-all"
+        },
+        "l3": {
+          "accept": [
+            "cool",
+            "'cool'",
+            "\"cool\""
+          ]
+        },
+        "b4": {
+          "accept": [
+            "catch-all",
+            "catch all",
+            "else",
+            "final else",
+            "the final else",
+            "the catch-all",
+            "the else",
+            "else branch"
+          ],
+          "width": "14rem",
+          "placeholder": "condition or catch-all"
+        },
+        "l4": {
+          "accept": [
+            "cold",
+            "'cold'",
+            "\"cold\""
+          ]
+        }
+      }
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "score = 95\ngrade = \"\"\n\nif score >= 80:\n    grade = \"A\"\nif score >= 70:\n    grade = \"B\"\n\nprint(grade)",
+      "output": "B"
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "temperature = 31\n\nif temperature > 30:\n    print(\"Heat warning\")\nif temperature > 25:\n    print(\"Bring water\")",
+      "output": "Heat warning\nBring water"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "g": {
+          "accept": [
+            "chain",
+            "elif chain",
+            "an elif chain",
+            "if/elif/else chain",
+            "if-elif-else chain",
+            "elif",
+            "if/elif/else",
+            "one chain"
+          ]
+        },
+        "w": {
+          "accept": [
+            "separate ifs",
+            "separate if",
+            "separate if statements",
+            "separate",
+            "separate if's",
+            "independent ifs",
+            "separate ifs statements",
+            "two ifs",
+            "separate if statement"
+          ]
+        },
+        "a": {
+          "accept": [
+            "chain",
+            "elif chain",
+            "an elif chain",
+            "if/elif/else chain",
+            "if-elif-else chain",
+            "elif",
+            "if/elif/else",
+            "one chain"
+          ]
+        }
+      }
+    },
+    "cp9-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXNlIGEgY2hhaW4gZm9yIG9uZSBsZXR0ZXIgZ3JhZGUsIHNlcGFyYXRlIGBpZmAgc3RhdGVtZW50cyBmb3IgZXZlcnkgYXBwbGljYWJsZSBzYWZldHkgd2FybmluZywgYW5kIGEgY2hhaW4gZm9yIG9uZSBhZ2UgY2F0ZWdvcnkuIEEgY2hhaW4gbWFrZXMgYWx0ZXJuYXRpdmVzIG11dHVhbGx5IGV4Y2x1c2l2ZTsgc2VwYXJhdGUgYGlmYHMgYWxsb3cgc2V2ZXJhbCByZXN1bHRzLg=="
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "chain",
+            "elif chain",
+            "an elif chain",
+            "if/elif/else chain",
+            "if-elif-else chain",
+            "elif",
+            "if/elif/else",
+            "one chain"
+          ]
+        },
+        "b": {
+          "accept": [
+            "nested if",
+            "nested",
+            "nested decision",
+            "nesting",
+            "a nested if",
+            "nested if statement",
+            "nested ifs"
+          ]
+        }
+      }
+    },
+    "cp10a-why": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "VXNlIGFuIGBlbGlmYCBjaGFpbiBiZWNhdXNlIGV4YWN0bHkgb25lIHNoaXBwaW5nIHJhdGUgbXVzdCBiZSBzZWxlY3RlZC4="
+    },
+    "cp10b-why": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "VXNlIGEgbmVzdGVkIGRlY2lzaW9uIGJlY2F1c2UgdGhlIG9yZGVyLXRvdGFsIHF1ZXN0aW9uIG1hdHRlcnMgb25seSBpbnNpZGUgdGhlIG1lbWJlciBicmFuY2gu"
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "QSBuZXN0ZWQgZGVjaXNpb24gaXMgYW4gYGlmYCBzdGF0ZW1lbnQgaW5zaWRlIGEgYnJhbmNoIG9mIGFub3RoZXIgZGVjaXNpb24u"
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "QSBtYXRjaGluZyBgaWZgIGFuZCBgZWxzZWAgYmVnaW4gaW4gdGhlIHNhbWUgY29sdW1uLiBBIG1vcmUgZGVlcGx5IGluZGVudGVkIGBlbHNlYCBiZWxvbmdzIHRvIGFuIGVxdWFsbHkgaW5kZW50ZWQgaW5uZXIgYGlmYC4="
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "UHl0aG9uIHJ1bnMgdGhhdCBjb25kaXRpb24ncyBibG9jayBhbmQgc2tpcHMgYWxsIGxhdGVyIHBhcnRzIG9mIHRoZSBzYW1lIGNoYWluLg=="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "QSBicm9hZCBjb25kaXRpb24gcGxhY2VkIGZpcnN0IGNhbiBhY2NlcHQgdmFsdWVzIG1lYW50IGZvciBhIG1vcmUgc3BlY2lmaWMgY2FzZSwgbWFraW5nIHRoZSBzcGVjaWZpYyBicmFuY2ggdW5yZWFjaGFibGUu"
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "SXQgY2F0Y2hlcyBldmVyeSB2YWx1ZSB0aGF0IGZhaWxlZCBhbGwgZWFybGllciBjb25kaXRpb25zLg=="
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "QSBjaGFpbiBzdG9wcyBhZnRlciBpdHMgZmlyc3QgdHJ1ZSBjb25kaXRpb24sIHNvIGF0IG1vc3Qgb25lIGJyYW5jaCBydW5zLiBTZXBhcmF0ZSBgaWZgIHN0YXRlbWVudHMgYXJlIGFsbCB0ZXN0ZWQsIHNvIHNldmVyYWwgYmxvY2tzIGNhbiBydW4u"
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "rows": 2,
+      "answer": "TmVzdGluZyBpcyBjbGVhcmVyIHdoZW4gYSBsYXRlciBxdWVzdGlvbiBpcyByZWxldmFudCBvbmx5IGluc2lkZSBvbmUgYnJhbmNoIG9mIGFuIGVhcmxpZXIgcXVlc3Rpb24u"
+    },
+    "ex-pa": {
+      "type": "example",
+      "code": "member = \"yes\"\nvisits = 3\n\nif member == \"yes\":\n    if visits >= 5:\n        reward = \"large\"\n    else:\n        reward = \"small\"\nelse:\n    reward = \"none\"\n\nprint(reward)",
+      "output": "small"
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "outer": {
+          "accept": [
+            "True",
+            "T",
+            "true"
+          ]
+        },
+        "inner": {
+          "accept": [
+            "False",
+            "F",
+            "false"
+          ]
+        },
+        "branch": {
+          "accept": [
+            "inner else",
+            "the inner else",
+            "else",
+            "inner else block",
+            "the inner else block",
+            "else block",
+            "inner else branch",
+            "reward = 'small'",
+            "reward = \"small\""
+          ],
+          "width": "14rem"
+        },
+        "output": {
+          "accept": [
+            "small",
+            "'small'",
+            "\"small\""
+          ],
+          "caseSensitive": true
+        }
+      }
+    },
+    "pb": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "value = 100\n\nif value :\n    label = \"high\"\nelif value :\n    label = \"medium\"\nelse:\n    label = \"low\"\n\nprint(label)",
+      "cases": [
+        {
+          "name": "value = 100",
+          "expected": "high"
+        },
+        {
+          "name": "value = 99",
+          "expected": "medium",
+          "rewrite": [
+            [
+              "value = 100",
+              "value = 99"
+            ]
+          ]
+        },
+        {
+          "name": "value = 50",
+          "expected": "medium",
+          "rewrite": [
+            [
+              "value = 100",
+              "value = 50"
+            ]
+          ]
+        },
+        {
+          "name": "value = 49",
+          "expected": "low",
+          "rewrite": [
+            [
+              "value = 100",
+              "value = 49"
+            ]
+          ]
+        },
+        {
+          "name": "value = 250",
+          "expected": "high",
+          "rewrite": [
+            [
+              "value = 100",
+              "value = 250"
+            ]
+          ]
+        }
+      ],
+      "answer": "dmFsdWUgPSAxMDAKCmlmIHZhbHVlID49IDEwMDoKICAgIGxhYmVsID0gImhpZ2giCmVsaWYgdmFsdWUgPj0gNTA6CiAgICBsYWJlbCA9ICJtZWRpdW0iCmVsc2U6CiAgICBsYWJlbCA9ICJsb3ciCgpwcmludChsYWJlbCk="
+    },
+    "pb-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "RmlsbCB0aGUgY29uZGl0aW9ucyB3aXRoIGA+PSAxMDBgIGFuZCBgPj0gNTBgLiBUaGUgaGlnaCBjb25kaXRpb24gY29tZXMgZmlyc3QgYmVjYXVzZSBldmVyeSBoaWdoIHZhbHVlIGFsc28gc2F0aXNmaWVzIHRoZSBicm9hZGVyIG1lZGl1bSBjb25kaXRpb24u"
+    },
+    "pc": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "points = 1000\n\nif points >= 100:\n    level = \"bronze\"\nelif points >= 500:\n    level = \"silver\"\nelif points >= 1000:\n    level = \"gold\"\nelse:\n    level = \"starting\"\n\nprint(level)",
+      "cases": [
+        {
+          "name": "points = 1000",
+          "expected": "gold"
+        },
+        {
+          "name": "points = 999",
+          "expected": "silver",
+          "rewrite": [
+            [
+              "points = 1000",
+              "points = 999"
+            ]
+          ]
+        },
+        {
+          "name": "points = 500",
+          "expected": "silver",
+          "rewrite": [
+            [
+              "points = 1000",
+              "points = 500"
+            ]
+          ]
+        },
+        {
+          "name": "points = 100",
+          "expected": "bronze",
+          "rewrite": [
+            [
+              "points = 1000",
+              "points = 100"
+            ]
+          ]
+        },
+        {
+          "name": "points = 99",
+          "expected": "starting",
+          "rewrite": [
+            [
+              "points = 1000",
+              "points = 99"
+            ]
+          ]
+        }
+      ],
+      "answer": "cG9pbnRzID0gMTAwMAoKaWYgcG9pbnRzID49IDEwMDA6CiAgICBsZXZlbCA9ICJnb2xkIgplbGlmIHBvaW50cyA+PSA1MDA6CiAgICBsZXZlbCA9ICJzaWx2ZXIiCmVsaWYgcG9pbnRzID49IDEwMDoKICAgIGxldmVsID0gImJyb256ZSIKZWxzZToKICAgIGxldmVsID0gInN0YXJ0aW5nIgoKcHJpbnQobGV2ZWwp",
+      "answerNote": "Test the highest threshold first, then move toward the broadest condition."
+    },
+    "pd": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "d1": {
+          "accept": [
+            "separate ifs",
+            "separate if",
+            "separate if statements",
+            "separate",
+            "separate if's",
+            "independent ifs",
+            "separate ifs statements",
+            "two ifs",
+            "separate if statement"
+          ]
+        },
+        "d2": {
+          "accept": [
+            "chain",
+            "elif chain",
+            "an elif chain",
+            "if/elif/else chain",
+            "if-elif-else chain",
+            "elif",
+            "if/elif/else",
+            "one chain"
+          ]
+        },
+        "d3": {
+          "accept": [
+            "separate ifs",
+            "separate if",
+            "separate if statements",
+            "separate",
+            "separate if's",
+            "independent ifs",
+            "separate ifs statements",
+            "two ifs",
+            "separate if statement"
+          ]
+        }
+      }
+    },
+    "pd-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXNlIHNlcGFyYXRlIGBpZmBzIGZvciBhbGwgZWFybmVkIGJhZGdlcyAoc2V2ZXJhbCBjYW4gYXBwbHkgYXQgb25jZSksIGEgY2hhaW4gZm9yIG9uZSBhZ2UgbGFiZWwgKGV4YWN0bHkgb25lIGFwcGxpZXMpLCBhbmQgc2VwYXJhdGUgYGlmYHMgZm9yIGV2ZXJ5IGFwcGxpY2FibGUgd2VhdGhlciB3YXJuaW5nLg=="
+    },
+    "pe": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "region = \"local\"\ndistance = 10\n\n# Write the nested decision here.\n\n\n\n\nprint(message)",
+      "check": "import re\nassert re.search(r\"^\\s+if \", __source__, re.M), \"Put the distance decision inside the local branch: an indented if statement.\"",
+      "cases": [
+        {
+          "name": "local, 10 km",
+          "expected": "Delivery charge: $5"
+        },
+        {
+          "name": "local, 11 km",
+          "expected": "Delivery charge: $8",
+          "rewrite": [
+            [
+              "distance = 10",
+              "distance = 11"
+            ]
+          ]
+        },
+        {
+          "name": "local, 3 km",
+          "expected": "Delivery charge: $5",
+          "rewrite": [
+            [
+              "distance = 10",
+              "distance = 3"
+            ]
+          ]
+        },
+        {
+          "name": "not local",
+          "expected": "Delivery not accepted",
+          "rewrite": [
+            [
+              "region = \"local\"",
+              "region = \"north\""
+            ]
+          ]
+        }
+      ],
+      "answer": "cmVnaW9uID0gImxvY2FsIgpkaXN0YW5jZSA9IDEwCgppZiByZWdpb24gPT0gImxvY2FsIjoKICAgIGlmIGRpc3RhbmNlIDw9IDEwOgogICAgICAgIG1lc3NhZ2UgPSAiRGVsaXZlcnkgY2hhcmdlOiAkNSIKICAgIGVsc2U6CiAgICAgICAgbWVzc2FnZSA9ICJEZWxpdmVyeSBjaGFyZ2U6ICQ4IgplbHNlOgogICAgbWVzc2FnZSA9ICJEZWxpdmVyeSBub3QgYWNjZXB0ZWQiCgpwcmludChtZXNzYWdlKQ==",
+      "answerNote": "The distance decision belongs inside the local branch."
+    },
+    "ex-pf": {
+      "type": "example",
+      "code": "score = 64\n\nif score >= 80:\n    grade = \"A\"\nelif score >= 70:\n    grade = \"B\"\nelif score >= 60:\n    grade = \"C\"\nelif score >= 50:\n    grade = \"D\"\nelse:\n    grade = \"F\"\n\nprint(\"Grade:\", grade)",
+      "output": "Grade: C"
+    },
+    "pf": {
+      "type": "short",
+      "xp": 2,
+      "rows": 9,
+      "placeholder": "score → grade: what it tests, one case per line",
+      "answer": "T25lIGNvbXBhY3Qgc2V0IGlzIDQ5L0YsIDUwL0QsIDU5L0QsIDYwL0MsIDY5L0MsIDcwL0IsIDc5L0IsIGFuZCA4MC9BLiBJdCBjaGVja3MgZWFjaCBib3VuZGFyeSBmcm9tIGJvdGggc2lkZXMgYW5kIHJlYWNoZXMgZXZlcnkgYnJhbmNoLiBBZGRpbmcgYSB2YWx1ZSBhYm92ZSA4MCwgc3VjaCBhcyA5NS9BLCBpcyBhbHNvIHVzZWZ1bC4="
+    },
+    "ex-admission": {
+      "type": "example",
+      "code": "age = int(input(\"Age: \"))\nmember = input(\"Member (yes/no): \")\nvisits = int(input(\"Previous visits: \"))\n\nif age < 13:\n    base_price = 8\nelif age < 65:\n    base_price = 14\nelse:\n    base_price = 10\n\nif member == \"yes\":\n    if visits >= 5:\n        discount = 3\n    else:\n        discount = 1\nelse:\n    discount = 0\n\nfinal_price = base_price - discount\nprint(f\"Admission: ${final_price:.2f}\")"
+    },
+    "syn": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "age": {
+          "accept": [
+            "age < 13",
+            "age<13",
+            "< 13",
+            "<13",
+            "first",
+            "the first",
+            "first branch"
+          ],
+          "width": "12rem"
+        },
+        "member": {
+          "accept": [
+            "True",
+            "T",
+            "true"
+          ]
+        },
+        "visits": {
+          "accept": [
+            "False",
+            "F",
+            "false"
+          ]
+        },
+        "base": {
+          "accept": [
+            "8",
+            "8.0",
+            "$8"
+          ]
+        },
+        "discount": {
+          "accept": [
+            "1",
+            "1.0",
+            "$1"
+          ]
+        },
+        "output": {
+          "accept": [
+            "Admission: $7.00"
+          ],
+          "caseSensitive": true,
+          "width": "14rem"
+        }
+      }
+    },
+    "c01": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "month = 1\nday = 1\n\noccasion = \"Ordinary day\"\n\n# Add the nested decision here.\n\n\n\n\nprint(occasion)",
+      "check": "import re\nassert re.search(r\"^\\s+if day\", __source__, re.M), \"Compare the day only after its month matches: nest each day test inside the matching month branch.\"",
+      "cases": [
+        {
+          "name": "1 / 1",
+          "expected": "New Year Day"
+        },
+        {
+          "name": "7 / 1",
+          "expected": "Canada Day",
+          "rewrite": [
+            [
+              "month = 1",
+              "month = 7"
+            ]
+          ]
+        },
+        {
+          "name": "9 / 30",
+          "expected": "National Day for Truth and Reconciliation",
+          "rewrite": [
+            [
+              "month = 1",
+              "month = 9"
+            ],
+            [
+              "day = 1",
+              "day = 30"
+            ]
+          ]
+        },
+        {
+          "name": "12 / 31",
+          "expected": "Year End",
+          "rewrite": [
+            [
+              "month = 1",
+              "month = 12"
+            ],
+            [
+              "day = 1",
+              "day = 31"
+            ]
+          ]
+        },
+        {
+          "name": "7 / 2",
+          "expected": "Ordinary day",
+          "rewrite": [
+            [
+              "month = 1",
+              "month = 7"
+            ],
+            [
+              "day = 1",
+              "day = 2"
+            ]
+          ]
+        },
+        {
+          "name": "3 / 1",
+          "expected": "Ordinary day",
+          "rewrite": [
+            [
+              "month = 1",
+              "month = 3"
+            ]
+          ]
+        }
+      ],
+      "answer": "bW9udGggPSAxCmRheSA9IDEKCm9jY2FzaW9uID0gIk9yZGluYXJ5IGRheSIKCmlmIG1vbnRoID09IDE6CiAgICBpZiBkYXkgPT0gMToKICAgICAgICBvY2Nhc2lvbiA9ICJOZXcgWWVhciBEYXkiCmVsaWYgbW9udGggPT0gNzoKICAgIGlmIGRheSA9PSAxOgogICAgICAgIG9jY2FzaW9uID0gIkNhbmFkYSBEYXkiCmVsaWYgbW9udGggPT0gOToKICAgIGlmIGRheSA9PSAzMDoKICAgICAgICBvY2Nhc2lvbiA9ICJOYXRpb25hbCBEYXkgZm9yIFRydXRoIGFuZCBSZWNvbmNpbGlhdGlvbiIKZWxpZiBtb250aCA9PSAxMjoKICAgIGlmIGRheSA9PSAzMToKICAgICAgICBvY2Nhc2lvbiA9ICJZZWFyIEVuZCIKCnByaW50KG9jY2FzaW9uKQ==",
+      "answerNote": "Start with the catch-all label, then use a month chain. Nest each day test inside its matching month branch."
+    },
+    "c02": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "score = 90\n\n# Add the ordered chain here.\n\n\n\n\n\n\nprint(grade)",
+      "check": "assert \" and \" not in __source__ and \" or \" not in __source__, \"Use only one comparison in each condition; let the earlier branches rule out the upper limits.\"",
+      "cases": [
+        {
+          "name": "score = 90",
+          "expected": "A"
+        },
+        {
+          "name": "score = 89",
+          "expected": "B",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 89"
+            ]
+          ]
+        },
+        {
+          "name": "score = 80",
+          "expected": "B",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 80"
+            ]
+          ]
+        },
+        {
+          "name": "score = 79",
+          "expected": "C",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 79"
+            ]
+          ]
+        },
+        {
+          "name": "score = 70",
+          "expected": "C",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 70"
+            ]
+          ]
+        },
+        {
+          "name": "score = 69",
+          "expected": "D",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 69"
+            ]
+          ]
+        },
+        {
+          "name": "score = 60",
+          "expected": "D",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 60"
+            ]
+          ]
+        },
+        {
+          "name": "score = 59",
+          "expected": "F",
+          "rewrite": [
+            [
+              "score = 90",
+              "score = 59"
+            ]
+          ]
+        }
+      ],
+      "answer": "c2NvcmUgPSA5MAoKaWYgc2NvcmUgPj0gOTA6CiAgICBncmFkZSA9ICJBIgplbGlmIHNjb3JlID49IDgwOgogICAgZ3JhZGUgPSAiQiIKZWxpZiBzY29yZSA+PSA3MDoKICAgIGdyYWRlID0gIkMiCmVsaWYgc2NvcmUgPj0gNjA6CiAgICBncmFkZSA9ICJEIgplbHNlOgogICAgZ3JhZGUgPSAiRiIKCnByaW50KGdyYWRlKQ==",
+      "answerNote": "Order the lower bounds from largest to smallest. The failed earlier tests supply the upper limits for later bands."
+    },
+    "c03": {
+      "type": "short",
+      "xp": 2,
+      "rows": 6,
+      "answer": "QSBuZXN0ZWQgZGVjaXNpb24gYXNrcyBhIGxhdGVyIHF1ZXN0aW9uIG9ubHkgaW5zaWRlIG9uZSBicmFuY2ggb2YgYW4gZWFybGllciBxdWVzdGlvbjsgZm9yIGV4YW1wbGUsIGFzayB3aGV0aGVyIGEgbGlicmFyeSB1c2VyIGlzIGEgbWVtYmVyLCB0aGVuIGFzayBhYm91dCBvdmVyZHVlIGRheXMgb25seSBmb3IgbWVtYmVycy4gQSBjaGFpbiBjaG9vc2VzIG9uZSBvZiBzZXZlcmFsIGFsdGVybmF0aXZlczsgZm9yIGV4YW1wbGUsIGFzc2lnbiBvbmUgc2l6ZSBsYWJlbCBmcm9tIGEgcGFja2FnZSdzIHdlaWdodC4="
+    },
+    "c04a": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHR3byBlcXVhbGl0eSBjb25kaXRpb25zIGNhbm5vdCBib3RoIGJlIHRydWUgZm9yIG9uZSBzdHJpbmcsIHNvIHN3YXBwaW5nIHRoZW0gZG9lcyBub3QgY2hhbmdlIHRoZSBzZWxlY3RlZCBicmFuY2gu"
+    },
+    "c04b": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSB2YWx1ZSBvZiAxMDAwIG9yIG1vcmUgc2F0aXNmaWVzIGJvdGggY29tcGFyaXNvbnMuIFBsYWNpbmcgYHBvaW50cyA+PSA1MDBgIGZpcnN0IHdvdWxkIGluY29ycmVjdGx5IGNhcHR1cmUgaXQsIHNvIG9yZGVyIG1hdHRlcnMu"
+    },
+    "c05": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "temperature = 9\n\n# Rewrite the chain using < comparisons, smallest cutoff first.\n\n\n\n\n\n\nprint(label)",
+      "check": "import re\nassert \">\" not in __source__, \"Use only < comparisons.\"\nassert re.findall(r\"<\\s*(\\d+)\", __source__) == [\"10\", \"20\", \"30\"], \"The tests must run from the smallest cutoff (10) to the largest (30).\"",
+      "cases": [
+        {
+          "name": "temperature = 9",
+          "expected": "cold"
+        },
+        {
+          "name": "temperature = 10",
+          "expected": "cool",
+          "rewrite": [
+            [
+              "temperature = 9",
+              "temperature = 10"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 19",
+          "expected": "cool",
+          "rewrite": [
+            [
+              "temperature = 9",
+              "temperature = 19"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 20",
+          "expected": "warm",
+          "rewrite": [
+            [
+              "temperature = 9",
+              "temperature = 20"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 29",
+          "expected": "warm",
+          "rewrite": [
+            [
+              "temperature = 9",
+              "temperature = 29"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 30",
+          "expected": "hot",
+          "rewrite": [
+            [
+              "temperature = 9",
+              "temperature = 30"
+            ]
+          ]
+        }
+      ],
+      "answer": "dGVtcGVyYXR1cmUgPSA5CgppZiB0ZW1wZXJhdHVyZSA8IDEwOgogICAgbGFiZWwgPSAiY29sZCIKZWxpZiB0ZW1wZXJhdHVyZSA8IDIwOgogICAgbGFiZWwgPSAiY29vbCIKZWxpZiB0ZW1wZXJhdHVyZSA8IDMwOgogICAgbGFiZWwgPSAid2FybSIKZWxzZToKICAgIGxhYmVsID0gImhvdCIKCnByaW50KGxhYmVsKQ==",
+      "answerNote": "With <, start at the lowest upper boundary and move upward."
+    },
+    "ex-c06": {
+      "type": "example",
+      "code": "member = \"yes\"\ntotal = 120\n\nif member == \"yes\":\n    if total > 100:\n        discount = 0.20\n    else:\n        discount = 0.10\nelse:\n    discount = 0.0\n\nprint(\"Discount:\", discount)",
+      "output": "Discount: 0.2"
+    },
+    "c06": {
+      "type": "short",
+      "xp": 2,
+      "rows": 5,
+      "placeholder": "member, total → expected discount, one case per line",
+      "answer": "T25lIHN1aXRhYmxlIHNldCBpcyAobm8sIDEyMCkg4oaSIDAuMCwgKHllcywgOTkpIOKGkiAwLjEwLCAoeWVzLCAxMDApIOKGkiAwLjEwLCBhbmQgKHllcywgMTAxKSDihpIgMC4yMC4gSXQgcmVhY2hlcyBldmVyeSBicmFuY2ggYW5kIGNoZWNrcyBib3RoIHNpZGVzIG9mIHRoZSBzdHJpY3QgYD4gMTAwYCBib3VuZGFyeS4="
+    },
+    "c07": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "letter = input(\"Rating letter: \")\nmodifier = input(\"Modifier (+, -, or none): \")\n\n# Choose the base value, apply the modifier, and print.",
+      "cases": [
+        {
+          "name": "B −",
+          "inputs": [
+            "B",
+            "-"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 2.7"
+        },
+        {
+          "name": "A +",
+          "inputs": [
+            "A",
+            "+"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 4.0"
+        },
+        {
+          "name": "C none",
+          "inputs": [
+            "C",
+            "none"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 2.0"
+        },
+        {
+          "name": "A −",
+          "inputs": [
+            "A",
+            "-"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 3.7"
+        },
+        {
+          "name": "F +",
+          "inputs": [
+            "F",
+            "+"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 0.3"
+        },
+        {
+          "name": "D none",
+          "inputs": [
+            "D",
+            "none"
+          ],
+          "expected": "Rating letter: Modifier (+, -, or none): Numeric value: 1.0"
+        }
+      ],
+      "answer": "bGV0dGVyID0gaW5wdXQoIlJhdGluZyBsZXR0ZXI6ICIpCm1vZGlmaWVyID0gaW5wdXQoIk1vZGlmaWVyICgrLCAtLCBvciBub25lKTogIikKCmlmIGxldHRlciA9PSAiQSI6CiAgICB2YWx1ZSA9IDQuMAplbGlmIGxldHRlciA9PSAiQiI6CiAgICB2YWx1ZSA9IDMuMAplbGlmIGxldHRlciA9PSAiQyI6CiAgICB2YWx1ZSA9IDIuMAplbGlmIGxldHRlciA9PSAiRCI6CiAgICB2YWx1ZSA9IDEuMAplbHNlOgogICAgdmFsdWUgPSAwLjAKCmlmIG1vZGlmaWVyID09ICIrIjoKICAgIGlmIGxldHRlciA9PSAiQSI6CiAgICAgICAgdmFsdWUgPSA0LjAKICAgIGVsc2U6CiAgICAgICAgdmFsdWUgPSB2YWx1ZSArIDAuMwplbGlmIG1vZGlmaWVyID09ICItIjoKICAgIHZhbHVlID0gdmFsdWUgLSAwLjMKCnByaW50KGYiTnVtZXJpYyB2YWx1ZToge3ZhbHVlOi4xZn0iKQ==",
+      "answerNote": "Use one chain for the base value. Use a second decision for the modifier, with a nested exception for A+."
+    },
+    "c08": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "number = float(input(\"Rating number: \"))\n\n# Add one ordered chain and print the rating.",
+      "cases": [
+        {
+          "name": "2.5",
+          "inputs": [
+            "2.5"
+          ],
+          "expected": "Rating number: Good"
+        },
+        {
+          "name": "2.49",
+          "inputs": [
+            "2.49"
+          ],
+          "expected": "Rating number: Fair"
+        },
+        {
+          "name": "4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "Rating number: Excellent"
+        },
+        {
+          "name": "3.5",
+          "inputs": [
+            "3.5"
+          ],
+          "expected": "Rating number: Excellent"
+        },
+        {
+          "name": "3.49",
+          "inputs": [
+            "3.49"
+          ],
+          "expected": "Rating number: Good"
+        },
+        {
+          "name": "1.5",
+          "inputs": [
+            "1.5"
+          ],
+          "expected": "Rating number: Fair"
+        },
+        {
+          "name": "0.5",
+          "inputs": [
+            "0.5"
+          ],
+          "expected": "Rating number: Poor"
+        },
+        {
+          "name": "0.49",
+          "inputs": [
+            "0.49"
+          ],
+          "expected": "Rating number: Unacceptable"
+        }
+      ],
+      "answer": "bnVtYmVyID0gZmxvYXQoaW5wdXQoIlJhdGluZyBudW1iZXI6ICIpKQoKaWYgbnVtYmVyID49IDMuNToKICAgIHJhdGluZyA9ICJFeGNlbGxlbnQiCmVsaWYgbnVtYmVyID49IDIuNToKICAgIHJhdGluZyA9ICJHb29kIgplbGlmIG51bWJlciA+PSAxLjU6CiAgICByYXRpbmcgPSAiRmFpciIKZWxpZiBudW1iZXIgPj0gMC41OgogICAgcmF0aW5nID0gIlBvb3IiCmVsc2U6CiAgICByYXRpbmcgPSAiVW5hY2NlcHRhYmxlIgoKcHJpbnQocmF0aW5nKQ==",
+      "answerNote": "The halfway boundaries are 3.5, 2.5, 1.5, and 0.5. Test them from largest to smallest so a tie enters the higher band."
+    },
+    "c09": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "mode_code = input(\"Mode code: \")\nzone_code = int(input(\"Zone: \"))\n\n# Translate both parts, then print one description.",
+      "cases": [
+        {
+          "name": "F 2",
+          "inputs": [
+            "F",
+            "2"
+          ],
+          "expected": "Mode code: Zone: Ferry, Zone 2"
+        },
+        {
+          "name": "R 1",
+          "inputs": [
+            "R",
+            "1"
+          ],
+          "expected": "Mode code: Zone: Rail, Zone 1"
+        },
+        {
+          "name": "B 3",
+          "inputs": [
+            "B",
+            "3"
+          ],
+          "expected": "Mode code: Zone: Bus, Zone 3"
+        },
+        {
+          "name": "B 1",
+          "inputs": [
+            "B",
+            "1"
+          ],
+          "expected": "Mode code: Zone: Bus, Zone 1"
+        },
+        {
+          "name": "F 3",
+          "inputs": [
+            "F",
+            "3"
+          ],
+          "expected": "Mode code: Zone: Ferry, Zone 3"
+        }
+      ],
+      "answer": "bW9kZV9jb2RlID0gaW5wdXQoIk1vZGUgY29kZTogIikKem9uZV9jb2RlID0gaW50KGlucHV0KCJab25lOiAiKSkKCmlmIG1vZGVfY29kZSA9PSAiQiI6CiAgICBtb2RlID0gIkJ1cyIKZWxpZiBtb2RlX2NvZGUgPT0gIkYiOgogICAgbW9kZSA9ICJGZXJyeSIKZWxzZToKICAgIG1vZGUgPSAiUmFpbCIKCmlmIHpvbmVfY29kZSA9PSAxOgogICAgem9uZSA9ICJab25lIDEiCmVsaWYgem9uZV9jb2RlID09IDI6CiAgICB6b25lID0gIlpvbmUgMiIKZWxzZToKICAgIHpvbmUgPSAiWm9uZSAzIgoKcHJpbnQoZiJ7bW9kZX0sIHt6b25lfSIp",
+      "answerNote": "Use one chain to translate the mode and another chain to translate the zone. These are two separate values, so they are two separate decisions."
+    },
+    "c10": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "month = int(input(\"Month number: \"))\nday = int(input(\"Day: \"))\n\n# Add the ordered and nested decisions here.\n\n\n\n\n\nprint(schedule)",
+      "cases": [
+        {
+          "name": "3 / 14",
+          "inputs": [
+            "3",
+            "14"
+          ],
+          "expected": "Month number: Day: Winter"
+        },
+        {
+          "name": "3 / 15",
+          "inputs": [
+            "3",
+            "15"
+          ],
+          "expected": "Month number: Day: Spring"
+        },
+        {
+          "name": "6 / 14",
+          "inputs": [
+            "6",
+            "14"
+          ],
+          "expected": "Month number: Day: Spring"
+        },
+        {
+          "name": "6 / 15",
+          "inputs": [
+            "6",
+            "15"
+          ],
+          "expected": "Month number: Day: Summer"
+        },
+        {
+          "name": "9 / 14",
+          "inputs": [
+            "9",
+            "14"
+          ],
+          "expected": "Month number: Day: Summer"
+        },
+        {
+          "name": "9 / 15",
+          "inputs": [
+            "9",
+            "15"
+          ],
+          "expected": "Month number: Day: Fall"
+        },
+        {
+          "name": "12 / 14",
+          "inputs": [
+            "12",
+            "14"
+          ],
+          "expected": "Month number: Day: Fall"
+        },
+        {
+          "name": "12 / 15",
+          "inputs": [
+            "12",
+            "15"
+          ],
+          "expected": "Month number: Day: Winter"
+        },
+        {
+          "name": "1 / 20",
+          "inputs": [
+            "1",
+            "20"
+          ],
+          "expected": "Month number: Day: Winter"
+        },
+        {
+          "name": "7 / 4",
+          "inputs": [
+            "7",
+            "4"
+          ],
+          "expected": "Month number: Day: Summer"
+        },
+        {
+          "name": "11 / 30",
+          "inputs": [
+            "11",
+            "30"
+          ],
+          "expected": "Month number: Day: Fall"
+        }
+      ],
+      "answer": "bW9udGggPSBpbnQoaW5wdXQoIk1vbnRoIG51bWJlcjogIikpCmRheSA9IGludChpbnB1dCgiRGF5OiAiKSkKCmlmIG1vbnRoIDwgMzoKICAgIHNjaGVkdWxlID0gIldpbnRlciIKZWxpZiBtb250aCA9PSAzOgogICAgaWYgZGF5IDwgMTU6CiAgICAgICAgc2NoZWR1bGUgPSAiV2ludGVyIgogICAgZWxzZToKICAgICAgICBzY2hlZHVsZSA9ICJTcHJpbmciCmVsaWYgbW9udGggPCA2OgogICAgc2NoZWR1bGUgPSAiU3ByaW5nIgplbGlmIG1vbnRoID09IDY6CiAgICBpZiBkYXkgPCAxNToKICAgICAgICBzY2hlZHVsZSA9ICJTcHJpbmciCiAgICBlbHNlOgogICAgICAgIHNjaGVkdWxlID0gIlN1bW1lciIKZWxpZiBtb250aCA8IDk6CiAgICBzY2hlZHVsZSA9ICJTdW1tZXIiCmVsaWYgbW9udGggPT0gOToKICAgIGlmIGRheSA8IDE1OgogICAgICAgIHNjaGVkdWxlID0gIlN1bW1lciIKICAgIGVsc2U6CiAgICAgICAgc2NoZWR1bGUgPSAiRmFsbCIKZWxpZiBtb250aCA8IDEyOgogICAgc2NoZWR1bGUgPSAiRmFsbCIKZWxzZToKICAgIGlmIGRheSA8IDE1OgogICAgICAgIHNjaGVkdWxlID0gIkZhbGwiCiAgICBlbHNlOgogICAgICAgIHNjaGVkdWxlID0gIldpbnRlciIKCnByaW50KHNjaGVkdWxlKQ==",
+      "answerNote": "Months strictly between change months need only one assignment. In each change month, nest a test for day 15."
+    },
+    "c11": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "purchase = float(input(\"Purchase total: $\"))\n\n# Choose one rate, calculate the voucher, and print.",
+      "cases": [
+        {
+          "name": "$49",
+          "inputs": [
+            "49"
+          ],
+          "expected": "Purchase total: $Voucher: $0.00"
+        },
+        {
+          "name": "$200",
+          "inputs": [
+            "200"
+          ],
+          "expected": "Purchase total: $Voucher: $30.00"
+        },
+        {
+          "name": "$100",
+          "inputs": [
+            "100"
+          ],
+          "expected": "Purchase total: $Voucher: $10.00"
+        },
+        {
+          "name": "$50",
+          "inputs": [
+            "50"
+          ],
+          "expected": "Purchase total: $Voucher: $2.50"
+        },
+        {
+          "name": "$199.99",
+          "inputs": [
+            "199.99"
+          ],
+          "expected": "Purchase total: $Voucher: $20.00"
+        },
+        {
+          "name": "$99.99",
+          "inputs": [
+            "99.99"
+          ],
+          "expected": "Purchase total: $Voucher: $5.00"
+        },
+        {
+          "name": "$1000",
+          "inputs": [
+            "1000"
+          ],
+          "expected": "Purchase total: $Voucher: $150.00"
+        }
+      ],
+      "answer": "cHVyY2hhc2UgPSBmbG9hdChpbnB1dCgiUHVyY2hhc2UgdG90YWw6ICQiKSkKCmlmIHB1cmNoYXNlID49IDIwMDoKICAgIHJhdGUgPSAwLjE1CmVsaWYgcHVyY2hhc2UgPj0gMTAwOgogICAgcmF0ZSA9IDAuMTAKZWxpZiBwdXJjaGFzZSA+PSA1MDoKICAgIHJhdGUgPSAwLjA1CmVsc2U6CiAgICByYXRlID0gMC4wCgp2b3VjaGVyID0gcHVyY2hhc2UgKiByYXRlCnByaW50KGYiVm91Y2hlcjogJHt2b3VjaGVyOi4yZn0iKQ==",
+      "answerNote": "Test the largest purchase threshold first. The final else supplies the zero rate."
+    },
+    "c12": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "kind = input(\"Enter w or f: \")\nvalue = float(input(\"Value: \"))\n\n# Convert when needed, then classify the wavelength.",
+      "cases": [
+        {
+          "name": "f 3e9",
+          "inputs": [
+            "f",
+            "3e9"
+          ],
+          "expected": "Enter w or f: Value: Radio"
+        },
+        {
+          "name": "w 0.0005",
+          "inputs": [
+            "w",
+            "0.0005"
+          ],
+          "expected": "Enter w or f: Value: Shorter wavelength"
+        },
+        {
+          "name": "w 0.05",
+          "inputs": [
+            "w",
+            "0.05"
+          ],
+          "expected": "Enter w or f: Value: Microwave"
+        },
+        {
+          "name": "f 1e10",
+          "inputs": [
+            "f",
+            "1e10"
+          ],
+          "expected": "Enter w or f: Value: Microwave"
+        },
+        {
+          "name": "w 2",
+          "inputs": [
+            "w",
+            "2"
+          ],
+          "expected": "Enter w or f: Value: Radio"
+        },
+        {
+          "name": "f 1e13",
+          "inputs": [
+            "f",
+            "1e13"
+          ],
+          "expected": "Enter w or f: Value: Shorter wavelength"
+        }
+      ],
+      "answer": "a2luZCA9IGlucHV0KCJFbnRlciB3IG9yIGY6ICIpCnZhbHVlID0gZmxvYXQoaW5wdXQoIlZhbHVlOiAiKSkKCmlmIGtpbmQgPT0gImYiOgogICAgd2F2ZWxlbmd0aCA9IDMuMGU4IC8gdmFsdWUKZWxzZToKICAgIHdhdmVsZW5ndGggPSB2YWx1ZQoKaWYgd2F2ZWxlbmd0aCA+PSAxLjBlLTE6CiAgICBiYW5kID0gIlJhZGlvIgplbGlmIHdhdmVsZW5ndGggPj0gMS4wZS0zOgogICAgYmFuZCA9ICJNaWNyb3dhdmUiCmVsc2U6CiAgICBiYW5kID0gIlNob3J0ZXIgd2F2ZWxlbmd0aCIKCnByaW50KGJhbmQp",
+      "answerNote": "Use the first decision to make sure wavelength is in metres. Then classify that one value from the largest cutoff down."
+    },
+    "c13": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "x = float(input(\"x: \"))\ny = float(input(\"y: \"))\n\n# Add the nested decisions and print the location.",
+      "cases": [
+        {
+          "name": "(0, 0)",
+          "inputs": [
+            "0",
+            "0"
+          ],
+          "expected": "x: y: origin"
+        },
+        {
+          "name": "(-3, 2)",
+          "inputs": [
+            "-3",
+            "2"
+          ],
+          "expected": "x: y: quadrant II"
+        },
+        {
+          "name": "(4, 0)",
+          "inputs": [
+            "4",
+            "0"
+          ],
+          "expected": "x: y: horizontal axis"
+        },
+        {
+          "name": "(0, 5)",
+          "inputs": [
+            "0",
+            "5"
+          ],
+          "expected": "x: y: vertical axis"
+        },
+        {
+          "name": "(2, 3)",
+          "inputs": [
+            "2",
+            "3"
+          ],
+          "expected": "x: y: quadrant I"
+        },
+        {
+          "name": "(-1, -1)",
+          "inputs": [
+            "-1",
+            "-1"
+          ],
+          "expected": "x: y: quadrant III"
+        },
+        {
+          "name": "(3, -2)",
+          "inputs": [
+            "3",
+            "-2"
+          ],
+          "expected": "x: y: quadrant IV"
+        }
+      ],
+      "answer": "eCA9IGZsb2F0KGlucHV0KCJ4OiAiKSkKeSA9IGZsb2F0KGlucHV0KCJ5OiAiKSkKCmlmIHggPT0gMDoKICAgIGlmIHkgPT0gMDoKICAgICAgICBsb2NhdGlvbiA9ICJvcmlnaW4iCiAgICBlbHNlOgogICAgICAgIGxvY2F0aW9uID0gInZlcnRpY2FsIGF4aXMiCmVsaWYgeSA9PSAwOgogICAgbG9jYXRpb24gPSAiaG9yaXpvbnRhbCBheGlzIgplbGlmIHggPiAwOgogICAgaWYgeSA+IDA6CiAgICAgICAgbG9jYXRpb24gPSAicXVhZHJhbnQgSSIKICAgIGVsc2U6CiAgICAgICAgbG9jYXRpb24gPSAicXVhZHJhbnQgSVYiCmVsc2U6CiAgICBpZiB5ID4gMDoKICAgICAgICBsb2NhdGlvbiA9ICJxdWFkcmFudCBJSSIKICAgIGVsc2U6CiAgICAgICAgbG9jYXRpb24gPSAicXVhZHJhbnQgSUlJIgoKcHJpbnQobG9jYXRpb24p",
+      "answerNote": "Handle x == 0 first and nest the origin check there. Then handle y == 0. For all remaining points, nest a y test inside the positive-x and negative-x branches."
+    }
+  }
+}

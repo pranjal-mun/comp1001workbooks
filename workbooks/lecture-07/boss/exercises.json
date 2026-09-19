@@ -1,0 +1,223 @@
+{
+  "id": "lecture-07-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 7 Boss Problems",
+  "short": "L07 bosses",
+  "subtitle": "Strings",
+  "exercises": {
+    "digits": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 8,
+      "starter": "number = 3141\n# Print the four digits added together and their sum.",
+      "cases": [
+        {
+          "name": "3141",
+          "expected": "3 + 1 + 4 + 1 = 9"
+        },
+        {
+          "name": "8642",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 8642"
+            ]
+          ],
+          "expected": "8 + 6 + 4 + 2 = 20"
+        },
+        {
+          "name": "1000",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 1000"
+            ]
+          ],
+          "expected": "1 + 0 + 0 + 0 = 1"
+        },
+        {
+          "name": "2026",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 2026"
+            ]
+          ],
+          "expected": "2 + 0 + 2 + 6 = 10"
+        }
+      ],
+      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert type(number) is int, \"Keep number as an int; make a text copy with str() instead of changing the assignment.\"\nassert \"str(\" in __source__, \"Use str() to get the digits as characters.\"\nassert \"[\" in __source__, \"Pick out each digit with an index, as in digits[0].\"\nassert \"//\" not in __source__ and \"%\" not in __source__, \"This time take the digits apart as characters, not with // and %.\"\nassert __stdout__.count(\"+\") == 3 and \"=\" in __stdout__, \"Print the four digits joined by + signs, then = and the sum.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print everything on one line with a single print() call.\"\n",
+      "answer": "bnVtYmVyID0gMzE0MQpkaWdpdHMgPSBzdHIobnVtYmVyKQpkMSA9IGludChkaWdpdHNbMF0pCmQyID0gaW50KGRpZ2l0c1sxXSkKZDMgPSBpbnQoZGlnaXRzWzJdKQpkNCA9IGludChkaWdpdHNbM10pCnRvdGFsID0gZDEgKyBkMiArIGQzICsgZDQKcHJpbnQoZid7ZDF9ICsge2QyfSArIHtkM30gKyB7ZDR9ID0ge3RvdGFsfScp",
+      "answerNote": "Each digits[i] is a one-character string. int() turns it back into a number before the addition."
+    },
+    "label": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 9,
+      "starter": "name = 'Pranjal Patra'\nstreet = '230 Elizabeth Avenue'\ncity = \"St. John's\"\nprovince = 'nl'\npostal = 'a1c 5s7'\n# Print the label in capitals, then a line of dashes under it.",
+      "cases": [
+        {
+          "name": "Memorial University",
+          "expected": "PRANJAL PATRA\n230 ELIZABETH AVENUE\nST. JOHN'S NL  A1C 5S7\n----------------------"
+        },
+        {
+          "name": "Water Street",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'Ada Lovelace'"
+            ],
+            [
+              "street = '230 Elizabeth Avenue'",
+              "street = '12 Water Street'"
+            ],
+            [
+              "postal = 'a1c 5s7'",
+              "postal = 'A1C 1A1'"
+            ]
+          ],
+          "expected": "ADA LOVELACE\n12 WATER STREET\nST. JOHN'S NL  A1C 1A1\n----------------------"
+        },
+        {
+          "name": "Corner Brook",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'Oliver Poodle'"
+            ],
+            [
+              "street = '230 Elizabeth Avenue'",
+              "street = '1 Bark Lane'"
+            ],
+            [
+              "city = \"St. John's\"",
+              "city = 'Corner Brook'"
+            ],
+            [
+              "postal = 'a1c 5s7'",
+              "postal = 'a2h 6p9'"
+            ]
+          ],
+          "expected": "OLIVER POODLE\n1 BARK LANE\nCORNER BROOK NL  A2H 6P9\n------------------------"
+        },
+        {
+          "name": "Gander",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'Sabina'"
+            ],
+            [
+              "street = '230 Elizabeth Avenue'",
+              "street = '9 Whisker Way'"
+            ],
+            [
+              "city = \"St. John's\"",
+              "city = 'gander'"
+            ],
+            [
+              "province = 'nl'",
+              "province = 'Nl'"
+            ],
+            [
+              "postal = 'a1c 5s7'",
+              "postal = 'a1v 1w8'"
+            ]
+          ],
+          "expected": "SABINA\n9 WHISKER WAY\nGANDER NL  A1V 1W8\n------------------"
+        }
+      ],
+      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nimport re\nassert \".upper(\" in __source__, \"Use .upper() to make the capitals; do not retype the values.\"\nassert \"len(\" in __source__ and re.search(r\"['\\\"]-['\\\"]\\s*\\*|\\*\\s*['\\\"]-['\\\"]\", __source__), \"Make the dashes with '-' * len(...) so the line is exactly as long as the address line.\"\nlines = __stdout__.strip().splitlines()\nassert len(lines) == 4, \"Print four lines: name, street, address line, dashes.\"\nassert lines[2].count(\"  \") == 1, \"Put exactly two spaces between the province and the postal code.\"\n",
+      "answer": "bmFtZSA9ICdQcmFuamFsIFBhdHJhJwpzdHJlZXQgPSAnMjMwIEVsaXphYmV0aCBBdmVudWUnCmNpdHkgPSAiU3QuIEpvaG4ncyIKcHJvdmluY2UgPSAnbmwnCnBvc3RhbCA9ICdhMWMgNXM3JwpsaW5lXzEgPSBuYW1lLnVwcGVyKCkKbGluZV8yID0gc3RyZWV0LnVwcGVyKCkKbGluZV8zID0gY2l0eS51cHBlcigpICsgJyAnICsgcHJvdmluY2UudXBwZXIoKSArICcgICcgKyBwb3N0YWwudXBwZXIoKQpwcmludChsaW5lXzEpCnByaW50KGxpbmVfMikKcHJpbnQobGluZV8zKQpwcmludCgnLScgKiBsZW4obGluZV8zKSk=",
+      "answerNote": "Every .upper() returns a new string; the five variables at the top keep their original text."
+    },
+    "email": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 8,
+      "starter": "name = 'Pranjal Patra'\n# Print the initials and the MUN email address.",
+      "cases": [
+        {
+          "name": "Pranjal Patra",
+          "expected": "Initials: P.P.\nEmail: ppatra@mun.ca"
+        },
+        {
+          "name": "Ada Lovelace",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'Ada Lovelace'"
+            ]
+          ],
+          "expected": "Initials: A.L.\nEmail: alovelace@mun.ca"
+        },
+        {
+          "name": "grace hopper",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'grace hopper'"
+            ]
+          ],
+          "expected": "Initials: G.H.\nEmail: ghopper@mun.ca"
+        },
+        {
+          "name": "Oliver Poodle",
+          "rewrite": [
+            [
+              "name = 'Pranjal Patra'",
+              "name = 'Oliver Poodle'"
+            ]
+          ],
+          "expected": "Initials: O.P.\nEmail: opoodle@mun.ca"
+        }
+      ],
+      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert \".split(\" not in __source__ and \".title(\" not in __source__ and \".capitalize(\" not in __source__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert \".find(\" in __source__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __source__), \"Use slices to cut the first name and the last name out of name.\"\nassert \".lower(\" in __source__ and \".upper(\" in __source__, \"Use .lower() for the email address and .upper() for the initials.\"\nassert len(__stdout__.strip().splitlines()) == 2, \"Print two lines: the initials, then the email address.\"\n",
+      "answer": "bmFtZSA9ICdQcmFuamFsIFBhdHJhJwpzcGFjZSA9IG5hbWUuZmluZCgnICcpCmZpcnN0ID0gbmFtZVs6c3BhY2VdCmxhc3QgPSBuYW1lW3NwYWNlICsgMTpdCmluaXRpYWxzID0gZmlyc3RbMF0udXBwZXIoKSArICcuJyArIGxhc3RbMF0udXBwZXIoKSArICcuJwplbWFpbCA9IChmaXJzdFswXSArIGxhc3QpLmxvd2VyKCkgKyAnQG11bi5jYScKcHJpbnQoZidJbml0aWFsczoge2luaXRpYWxzfScpCnByaW50KGYnRW1haWw6IHtlbWFpbH0nKQ==",
+      "answerNote": "name[:space] stops just before the space and name[space + 1:] starts just after it."
+    },
+    "tidy": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 10,
+      "starter": "raw = input('Name: ')\n# Clean up the name, then print the greeting, the roster line, and the character counts.",
+      "cases": [
+        {
+          "name": "Typed '  pRANJAL patra '",
+          "inputs": [
+            "  pRANJAL patra "
+          ],
+          "expected": "Name: Hello, Pranjal Patra!\nRoster: PATRA, Pranjal\nTyped 16 characters, kept 13."
+        },
+        {
+          "name": "Typed 'ada LOVELACE  '",
+          "inputs": [
+            "ada LOVELACE  "
+          ],
+          "expected": "Name: Hello, Ada Lovelace!\nRoster: LOVELACE, Ada\nTyped 14 characters, kept 12."
+        },
+        {
+          "name": "Typed ' oliver poodle'",
+          "inputs": [
+            " oliver poodle"
+          ],
+          "expected": "Name: Hello, Oliver Poodle!\nRoster: POODLE, Oliver\nTyped 14 characters, kept 13."
+        },
+        {
+          "name": "Typed 'SABINA cat '",
+          "inputs": [
+            "SABINA cat "
+          ],
+          "expected": "Name: Hello, Sabina Cat!\nRoster: CAT, Sabina\nTyped 11 characters, kept 10."
+        }
+      ],
+      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert \".split(\" not in __source__ and \".title(\" not in __source__ and \".capitalize(\" not in __source__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert raw != raw.strip(), \"Keep raw exactly as typed. .strip() returns a new string; store it under another name.\"\nassert \".strip(\" in __source__, \"Remove the outer spaces with .strip().\"\nassert \".find(\" in __source__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __source__), \"Use slices to cut the first name and the last name apart.\"\nassert \".upper(\" in __source__ and \".lower(\" in __source__, \"Fix the capitals with .upper() and .lower().\"\nassert \"len(\" in __source__, \"Count the characters with len().\"\nassert len(__stdout__.strip().splitlines()) == 3, \"Print three lines: the greeting, the roster line, and the character counts.\"\n",
+      "answer": "cmF3ID0gaW5wdXQoJ05hbWU6ICcpCm5hbWUgPSByYXcuc3RyaXAoKQpzcGFjZSA9IG5hbWUuZmluZCgnICcpCmZpcnN0ID0gbmFtZVs6c3BhY2VdCmxhc3QgPSBuYW1lW3NwYWNlICsgMTpdCmZpcnN0ID0gZmlyc3RbMF0udXBwZXIoKSArIGZpcnN0WzE6XS5sb3dlcigpCmxhc3QgPSBsYXN0WzBdLnVwcGVyKCkgKyBsYXN0WzE6XS5sb3dlcigpCnByaW50KGYnSGVsbG8sIHtmaXJzdH0ge2xhc3R9IScpCnByaW50KGYnUm9zdGVyOiB7bGFzdC51cHBlcigpfSwge2ZpcnN0fScpCnByaW50KGYnVHlwZWQge2xlbihyYXcpfSBjaGFyYWN0ZXJzLCBrZXB0IHtsZW4oZmlyc3QpICsgbGVuKGxhc3QpICsgMX0uJyk=",
+      "answerNote": "A string cannot be changed in place. first[0].upper() + first[1:].lower() builds a new one with one capital."
+    }
+  }
+}

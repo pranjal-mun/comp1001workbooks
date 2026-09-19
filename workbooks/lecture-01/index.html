@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 1 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-01", specs: "./exercises.json" });
+  </script>
+  <style>
+    /* Page-local diagram styles. Everything uses the theme variables so the
+       drawings follow light and dark mode. */
+    .wb-diagram { display: block; max-width: 34rem; margin: 1rem auto; font-family: var(--font-sans); font-size: 0.85rem; color: var(--ink); }
+    .wb-diagram .node { fill: var(--panel); stroke: var(--ink); stroke-width: 1.2; }
+    .wb-diagram .node-accent { fill: var(--panel-deep); stroke: var(--ink); stroke-width: 1.2; }
+    .wb-diagram .edge { fill: none; stroke: var(--ink); stroke-width: 1.4; marker-end: url(#wb-arrowhead); }
+    .wb-diagram .edge-both { fill: none; stroke: var(--ink); stroke-width: 1.4; marker-end: url(#wb-arrowhead); marker-start: url(#wb-arrowhead); }
+    .wb-diagram .bracket { fill: none; stroke: var(--ink-quiet); stroke-width: 1; }
+    .wb-diagram text { fill: var(--ink); text-anchor: middle; dominant-baseline: middle; }
+    .wb-diagram .label { font-size: 0.78rem; fill: var(--ink-quiet); }
+    .wb-diagram .small { font-size: 0.74rem; }
+    .wb-diagram .code { font-family: var(--font-mono); }
+    .wb-diagram .left { text-anchor: start; }
+    .wb-diagram .right { text-anchor: end; }
+    .wb-refers.wb-stages .wb-box small { display: block; font-family: var(--font-sans); font-size: 0.78rem; color: var(--ink-quiet); }
+    .wb-refers.wb-stages.wb-wrap { row-gap: 0.5rem; }
+    .wb-timeline { list-style: none; padding: 0; margin: 1rem 0; border-left: 2px solid var(--rule-strong); }
+    .wb-timeline li { position: relative; padding: 0.15rem 0 0.15rem 1.4rem; margin: 0.35rem 0; }
+    .wb-timeline li::before { content: ""; position: absolute; left: -0.45rem; top: 0.8rem; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--accent-fill); }
+    .wb-timeline .year { font-family: var(--font-mono); font-weight: 700; margin-right: 0.6rem; }
+    .wb-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .wb-columns .wb-block { margin: 0; padding: 0.9rem 1.1rem; background: var(--panel); border-radius: 8px; }
+    .wb-columns ul { margin-bottom: 0; }
+    .wb-contact td:first-child { white-space: nowrap; font-weight: 600; }
+    .wb-checklist { list-style: none; padding-left: 0; }
+    .wb-checklist li { padding-left: 1.8rem; position: relative; margin: 0.4rem 0; }
+    .wb-checklist li::before { content: "☐"; position: absolute; left: 0.2rem; top: 0; font-size: 1.1rem; color: var(--ink-quiet); }
+  </style>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 1 Workbook</h1>
+    <div class="wb-subtitle">Course Introduction, Computers and Software</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Today's agenda">Today's agenda</h2>
+  <p>This first lecture has three parts:</p>
+  <ul>
+    <li><strong>Course overview:</strong> what the course is, who teaches it, how it is marked, and where to get help.</li>
+    <li><strong>The big picture:</strong> what a computer is, from silicon to software, and where programming languages fit.</li>
+    <li><strong>Problem solving:</strong> the framework that Lecture 2 works through in detail, and what to do before next class.</li>
+  </ul>
+  <p>No prior programming experience is assumed. If you have programmed before, you are welcome; the discussion stays at a beginner's level so that everyone starts together.</p>
+  <p class="wb-meta">This workbook has no questions and awards no XP. It is the reference copy of the course introduction: keep it handy for dates, contacts and policies. The one code example on the page is live; press <strong>▶ Run</strong> to execute it in your browser.</p>
+</section>
+<hr>
+
+<h2 id="course">The Course</h2>
+<p>What the course is, who teaches it, when and where it meets, and what it covers.</p>
+<h3>Course description</h3>
+<p>COMP 1001 is an introduction to problem solving and programming in Python. It is the first programming course for all Computer Science majors and minors, and it is required for entry into both programs. The course introduces fundamental programming techniques, data types and data structures. Problem-solving techniques are learned and applied through the design and implementation of simple algorithms.</p>
+<table class="wb-contact">
+  <tbody>
+    <tr><td>Prerequisites</td><td>None.</td></tr>
+    <tr><td>Credit restriction</td><td>Credit-restricted with the former COMP 1710.</td></tr>
+    <tr><td>Textbook</td><td>Recommended, not required: C. Horstmann and R. Necaise, <em>Python for Everyone</em>, 3rd edition, Wiley, 2020. ISBN 978-1-119-73995-1. An e-book version is also available.</td></tr>
+    <tr><td>Everything else</td><td>Slides, workbooks, lab material and announcements are on Brightspace.</td></tr>
+  </tbody>
+</table>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">What is examinable</div>
+  <p>The lectures and labs define what is examinable. The textbook supports the course; it does not replace attending.</p>
+</div>
+
+<h3>People and contact</h3>
+<table class="wb-contact">
+  <thead><tr><th>Role</th><th>Who</th><th>Office</th><th>Email</th></tr></thead>
+  <tbody>
+    <tr><td>Instructor</td><td>Pranjal Patra</td><td>EN-2008</td><td><a href="mailto:pranjal.patra@mun.ca">pranjal.patra@mun.ca</a></td></tr>
+    <tr><td>Lab instructor</td><td>Cindy Milley</td><td>EN-1064</td><td><a href="mailto:cindy@mun.ca">cindy@mun.ca</a></td></tr>
+    <tr><td>Lab instructor</td><td>Stephen Anthony</td><td>EN-1062</td><td><a href="mailto:stephen@mun.ca">stephen@mun.ca</a></td></tr>
+    <tr><td>Lab instructor</td><td>Frankie Tu</td><td>EN-1063</td><td><a href="mailto:frankiet@mun.ca">frankiet@mun.ca</a></td></tr>
+  </tbody>
+</table>
+<p><strong>Office hours:</strong> Fridays, 12:00 to 2:00 p.m., by appointment only. Book a slot at the <a href="https://calendar.app.google/TpzZiVUQU4GvFj7a8">Google Calendar link</a> (also on Brightspace); please take the next available slot if possible.</p>
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">How to get a quick reply</div>
+  <ul>
+    <li>Use <strong>email</strong>, not Brightspace messages.</li>
+    <li>Put <code>COMP1001</code> in the subject line.</li>
+    <li>Check Brightspace first; the answer may already be posted.</li>
+    <li>Replies are usually sent within 24 hours.</li>
+  </ul>
+</div>
+
+<h3>Lectures and labs</h3>
+<table class="wb-contact">
+  <tbody>
+    <tr><td>Lectures</td><td>Monday, Wednesday and Friday, 10:00 to 10:50 a.m., EN-2043.</td></tr>
+    <tr><td>Labs</td><td>Tuesday. One section meets 9:00 to 11:50 a.m.; the other meets 2:00 to 4:50 p.m. Labs use CS-1019, with CS-1009 as overflow.</td></tr>
+    <tr><td>Term</td><td>September 9 to December 7, 2026.</td></tr>
+  </tbody>
+</table>
+<p>Attend the lab section in which you are registered. The lab quizzes are written in the lab and are worth 30% of the course, so the lab is not optional.</p>
+
+<h3>Course topics</h3>
+<p>The schedule is tentative; any change is announced in class and posted on Brightspace. Each block assumes the material before it, so keeping up matters.</p>
+<table>
+  <thead><tr><th>Unit</th><th>Lectures</th><th>Topics</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>1–3</td><td>Problem solving, algorithms, pseudocode, a first program</td></tr>
+    <tr><td>2</td><td>4–7</td><td>Variables, types, arithmetic, input and output, strings</td></tr>
+    <tr><td>3</td><td>8–11</td><td>Decisions: <code>if</code>, comparisons, nested branches, Boolean logic</td></tr>
+    <tr><td>4</td><td>12–16</td><td>Loops: <code>while</code>, <code>for</code>, nested loops, loop algorithms</td></tr>
+    <tr><td>5</td><td>17–20</td><td>Functions: parameters, return values, scope, stepwise refinement</td></tr>
+    <tr><td>6</td><td>21–23</td><td>Recursion</td></tr>
+    <tr><td>7</td><td>24–28</td><td>Lists, searching and sorting</td></tr>
+    <tr><td>8</td><td>29–33</td><td>Exceptions and files</td></tr>
+    <tr><td>9</td><td>34–36</td><td>Sets and dictionaries, a first look at objects, course review</td></tr>
+  </tbody>
+</table>
+
+<h2 id="marks">Marks and Dates</h2>
+<p>How the course grade is built, what happens when you miss a lab or a test, and the dates to put in your calendar now.</p>
+<h3>Evaluation</h3>
+<table>
+  <thead><tr><th>Component</th><th>Weight</th><th>Details</th></tr></thead>
+  <tbody>
+    <tr><td>Lab quizzes</td><td>30% (best 6 of 8, 5% each)</td><td>Written during the assigned lab period; you must be present to write it.</td></tr>
+    <tr><td>Term Test 1</td><td>20%</td><td>Thursday, October 15, in the assigned lab slot. Lectures 1–13.</td></tr>
+    <tr><td>Term Test 2</td><td>20%</td><td>Tuesday, November 10, in the assigned lab slot. Lectures 1–23, weighted toward the later material.</td></tr>
+    <tr><td>Final examination</td><td>30%</td><td>Registrar-scheduled, December 10–18. Lectures 1–36, weighted toward Units 4–8.</td></tr>
+    <tr><td>Attendance bonus</td><td>+1 mark</td><td>For attending Labs 1–8 and both term tests. The course grade is still capped at 100%.</td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>100%</strong></td><td></td></tr>
+  </tbody>
+</table>
+<p>Lab quizzes and both term tests are written in Brightspace using the Quiz tool, on the lab computers. Both sections write on the same date, at their own section times.</p>
+
+<h3>Labs and lab quizzes</h3>
+<p>There are eight lab quizzes and the best six count. That already allows for two missed labs, for any reason, without notice or documentation.</p>
+<table>
+  <thead><tr><th>Situation</th><th>What happens</th></tr></thead>
+  <tbody>
+    <tr><td>Missed 1st or 2nd lab, any reason (including medical or family bereavement)</td><td>No notice or documentation needed. Already built into best 6 of 8.</td></tr>
+    <tr><td>Missed 3rd or later lab, with a Student Health Certificate</td><td>Email Cindy, Stephen or Frankie with the lab number and the certificate. That lab's weight moves to the final examination.</td></tr>
+    <tr><td>Missed 3rd or later lab, no certificate</td><td>Scored 0.</td></tr>
+  </tbody>
+</table>
+<p class="wb-meta"><a href="https://www.mun.ca/regoff/media/production/memorial/administrative/office-of-the-registrar/forms/Student-Health-Certificate.pdf">Student Health Certificate form (PDF)</a></p>
+
+<h3>Term tests and the final</h3>
+<ul>
+  <li><strong>Term Test 1</strong> covers Lectures 1–13.</li>
+  <li><strong>Term Test 2</strong> covers Lectures 1–23, weighted toward the later material.</li>
+  <li><strong>The final</strong> covers Lectures 1–36, weighted toward the later units.</li>
+</ul>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Missing a term test</div>
+  <p>Email the instructor within 48 hours of the test's start time, with a Student Health Certificate. The weight of the missed test moves to the final examination. If the university is closed on the day of a term test, the test is written in the next scheduled lab period.</p>
+</div>
+
+<h3>Important dates</h3>
+<table>
+  <thead><tr><th>Date</th><th>What</th></tr></thead>
+  <tbody>
+    <tr><td>Wed. Sept. 9</td><td>First lecture</td></tr>
+    <tr><td>Wed. Sept. 30</td><td>National Day for Truth and Reconciliation; no class</td></tr>
+    <tr><td>Mon. Oct. 12</td><td>Thanksgiving and midterm break; no class</td></tr>
+    <tr><td>Thu. Oct. 15</td><td><strong>Term Test 1</strong>, in your lab slot</td></tr>
+    <tr><td>Wed. Nov. 4</td><td>Last day to drop without academic prejudice</td></tr>
+    <tr><td>Tue. Nov. 10</td><td><strong>Term Test 2</strong>, in your lab slot</td></tr>
+    <tr><td>Wed. Nov. 11</td><td>Remembrance Day; no class</td></tr>
+    <tr><td>Mon. Dec. 7</td><td>Last lecture</td></tr>
+    <tr><td>Dec. 10–18</td><td>Final examination period</td></tr>
+  </tbody>
+</table>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Two calendar oddities</div>
+  <ul>
+    <li><strong>Thursday, October 15</strong> follows the Tuesday schedule. There is no COMP 1001 lecture that day, but Term Test 1 runs in each student's assigned Tuesday lab slot.</li>
+    <li><strong>Friday, November 13</strong> follows the Wednesday schedule. COMP 1001 meets normally, and Lecture 26 runs that day.</li>
+  </ul>
+</div>
+
+<h2 id="policies">Policies and Help</h2>
+<p>The rules that apply to your work in this course, and where to go when you are stuck.</p>
+<h3>Course policies</h3>
+<table>
+  <thead><tr><th>Policy</th><th>What it means for you</th></tr></thead>
+  <tbody>
+    <tr><td>Academic integrity</td><td>All submitted work must be original and independent. Copying, including from another student or an online source, and allowing your own work to be copied: 0% on the work concerned, and a failing grade for the course on a second instance. See Academic Misconduct, Section 6.12 of the University Calendar.</td></tr>
+    <tr><td>AI tools</td><td>Using an AI tool to help understand course material and concepts is encouraged, and can be a great help. Submitting AI-generated work as your own, on any graded lab, quiz, term test or exam, is not permitted and is treated as a violation of academic integrity.</td></tr>
+    <tr><td>Recording and reposting</td><td>All lecture materials, and any recording of them, are copyrighted by the instructor. Recording, copying or reposting course content, including on sites such as Chegg or to chatbots, is prohibited without written permission.</td></tr>
+    <tr><td>If we fall behind</td><td>There are no buffer lectures. If lecture time is lost to weather or another cause, the schedule is compressed from the end: Lecture 36 is removed first, then Lecture 35, and so on.</td></tr>
+    <tr><td>Dropping the course</td><td>The last day to drop without academic prejudice is Wednesday, November 4. No permission is needed before that date; drop through Memorial Self-Service. At least 20% of the final grade, from labs and Term Test 1, is returned before then.</td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">The full course outline on Brightspace lists the remaining university regulations: grading scheme, scheduling, deferred final examinations, accommodations and student supports.</p>
+
+<h3>Where to get help</h3>
+<ul>
+  <li><strong>Your lab instructor</strong>, during the lab. Lab instructors and instructional assistants are there to help.</li>
+  <li><strong>Office hours</strong>, Fridays 12:00 to 2:00 p.m. by appointment.</li>
+  <li><strong>CS Student Help Centre</strong>, EN-2026. It helps with first- and second-year Computer Science lab courses; its schedule is linked from Brightspace.</li>
+  <li><strong>Peer Assisted Learning (PAL)</strong>, led by Arash Arasteh, <a href="mailto:aarasteh@mun.ca">aarasteh@mun.ca</a>. A PAL leader visits the class on September 9 to introduce the program and to collect an availability survey; the session schedule is set from that survey and posted on Brightspace. See the <a href="https://www.mun.ca/munup/academic-success-centre/peer-assisted-learning/">Peer Assisted Learning page</a>.</li>
+  <li><strong>Brightspace</strong>, for announcements, materials and posted answers to common questions.</li>
+</ul>
+
+<h3>Study advice</h3>
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">How to do well in this course</div>
+  <ul>
+    <li><strong>Practise coding.</strong> Programming is learned by doing. Type the examples, change them, and see what happens.</li>
+    <li><strong>Attend</strong> lectures and labs. The material builds on itself week by week.</li>
+    <li><strong>Keep up with the early material.</strong> Every later unit assumes the ones before it.</li>
+    <li><strong>Ask early.</strong> A question in week 2 is cheap; the same question in week 10 is expensive.</li>
+    <li><strong>Expect errors.</strong> Every programmer's code fails at first. Lecture 3 covers how to read and fix errors.</li>
+  </ul>
+</div>
+
+<h2 id="hardware">Hardware</h2>
+<p>The big picture starts at the bottom: what a computer is physically, and how it represents everything as switches.</p>
+<h3>What a computer is</h3>
+<p>Strip away the screen, the keyboard and the case, and a computer is a very large arrangement of <strong>switches</strong> made of silicon. Each switch is either on or off. Everything the machine does, from adding two numbers to drawing this page, comes from turning enormous numbers of those switches on and off very quickly.</p>
+<p>That is a long way from the problems you actually care about. The rest of this lecture is about the <strong>layers</strong> that close the gap between silicon and the person using the machine.</p>
+
+<h3>From sand to chips</h3>
+<div class="wb-refers wb-stages wb-wrap">
+  <span class="wb-box">Sand<small>silicon dioxide</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Purified silicon ingot</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Sliced into wafers</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Patterns etched</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Chip<small>billions of switches</small></span>
+</div>
+<p>Silicon is a <strong>semiconductor</strong>: it can be made to conduct or not, depending on a tiny control signal. Sand is purified into a single crystal, sliced into thin wafers, and patterned with layers of material so fine that a modern chip carries tens of billions of switches in a piece smaller than a fingernail.</p>
+
+<h3>Transistors, gates and processors</h3>
+<div class="wb-refers wb-stages wb-wrap">
+  <span class="wb-box">Transistor<small>one switch</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Logic gate<small>AND, OR, NOT</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Adder<small>gates that add bits</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Processor<small>billions of gates</small></span>
+</div>
+<p>A single switch is a <strong>transistor</strong>. A few transistors wired together make a <strong>logic gate</strong> that computes AND, OR or NOT of its inputs. Gates combine into circuits that add, compare and store values, and those circuits combine into a <strong>processor</strong>. At no point does anything new appear: it is switches all the way down.</p>
+
+<h3>Binary representation</h3>
+<p>A switch has two states, so the machine stores everything as patterns of 0s and 1s (<strong>bits</strong>). The pattern means nothing by itself; people agree on a convention for reading it.</p>
+<pre><code>the number 5      00000101
+the letter 'A'    01000001      (that is 65, by agreement)
+one red pixel     11111111 00000000 00000000</code></pre>
+<p>The same eight bits can be a small number, a letter, or part of a colour. What makes <code>01000001</code> mean <code>'A'</code> is an agreed convention, not anything inside the chip. Keep that in mind: it is why a program has to tell Python whether a value is a number or text.</p>
+
+<h3>The von Neumann architecture</h3>
+<p>Almost every computer you will meet follows a design described by John von Neumann in 1945.</p>
+<svg class="wb-diagram" viewBox="0 0 480 250" role="img" aria-label="The von Neumann architecture: input flows into the CPU, which contains a control unit and an arithmetic unit; the CPU sends results to output and fetches from and stores to memory.">
+  <defs>
+    <marker id="wb-arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+  <rect class="node" x="16" y="58" width="104" height="44" rx="4"></rect>
+  <text x="68" y="80">Input</text>
+  <rect class="node-accent" x="168" y="20" width="144" height="120" rx="4"></rect>
+  <text x="240" y="38">CPU</text>
+  <rect class="node" x="184" y="54" width="112" height="34" rx="4"></rect>
+  <text class="small" x="240" y="71">Control unit</text>
+  <rect class="node" x="184" y="96" width="112" height="34" rx="4"></rect>
+  <text class="small" x="240" y="113">Arithmetic unit</text>
+  <rect class="node" x="360" y="58" width="104" height="44" rx="4"></rect>
+  <text x="412" y="80">Output</text>
+  <rect class="node" x="168" y="190" width="144" height="44" rx="4"></rect>
+  <text x="240" y="212">Memory</text>
+  <path class="edge" d="M 120 80 L 166 80"></path>
+  <path class="edge" d="M 312 80 L 358 80"></path>
+  <path class="edge" d="M 224 140 L 224 188"></path>
+  <text class="label right" x="216" y="164">fetch</text>
+  <path class="edge" d="M 256 190 L 256 142"></path>
+  <text class="label left" x="264" y="164">store</text>
+</svg>
+<p>The <strong>CPU</strong> repeats one loop endlessly: <strong>fetch</strong> the next instruction from memory, <strong>decode</strong> what it asks for, <strong>execute</strong> it, and move on. The control unit runs the loop; the arithmetic unit does the calculating.</p>
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">The key idea</div>
+  <p>The program lives in the <strong>same memory</strong> as the data it works on. A program is just another pattern of bits, so the same machine can run a spreadsheet, a game, or the Python program you write next week. Nothing needs to be rewired.</p>
+</div>
+
+<h2 id="layers">The Layers</h2>
+<p>A computer system is built as a stack of layers. Knowing the stack tells you where Python, and this course, sit.</p>
+<h3>Layers of a computer system</h3>
+<p>Between the physics of silicon and the application on your screen sit several layers. Each one hides the details of the layer below it and offers something simpler to the layer above.</p>
+<svg class="wb-diagram" viewBox="0 0 480 300" role="img" aria-label="Seven layers stacked from bottom to top: physics and silicon, digital logic, architecture and instruction set, operating system, compilers and interpreters, libraries, applications. The bottom three are the hardware, the next two are system software, and the top two are your work. An arrow on the left points upward, labelled closer to the person.">
+  <rect class="node-accent" x="110" y="16" width="220" height="34" rx="4"></rect>
+  <text x="220" y="33">Applications</text>
+  <rect class="node-accent" x="110" y="54" width="220" height="34" rx="4"></rect>
+  <text x="220" y="71">Libraries</text>
+  <rect class="node" x="110" y="92" width="220" height="34" rx="4"></rect>
+  <text x="220" y="109">Compilers and interpreters</text>
+  <rect class="node" x="110" y="130" width="220" height="34" rx="4"></rect>
+  <text x="220" y="147">Operating system</text>
+  <rect class="node" x="110" y="168" width="220" height="34" rx="4"></rect>
+  <text x="220" y="185">Architecture, instruction set</text>
+  <rect class="node" x="110" y="206" width="220" height="34" rx="4"></rect>
+  <text x="220" y="223">Digital logic</text>
+  <rect class="node" x="110" y="244" width="220" height="34" rx="4"></rect>
+  <text x="220" y="261">Physics and silicon</text>
+  <path class="bracket" d="M 342 16 L 350 16 L 350 88 L 342 88"></path>
+  <text class="label left" x="358" y="52">your work</text>
+  <path class="bracket" d="M 342 92 L 350 92 L 350 164 L 342 164"></path>
+  <text class="label left" x="358" y="128">system software</text>
+  <path class="bracket" d="M 342 168 L 350 168 L 350 278 L 342 278"></path>
+  <text class="label left" x="358" y="223">the hardware</text>
+  <path class="edge" d="M 70 276 L 70 24"></path>
+  <text class="label" transform="translate(52 150) rotate(-90)">closer to the person</text>
+</svg>
+<p>This course lives in the top two layers: you will write applications, and you will use libraries (Python's <strong>modules</strong>) that other people wrote. The layers below are what make that possible.</p>
+
+<h3>Layers and courses</h3>
+<p>Each layer is a field of study in its own right. Later courses in the degree pick them up one by one.</p>
+<table>
+  <thead><tr><th>Layer</th><th>Where you study it</th></tr></thead>
+  <tbody>
+    <tr><td>Transistors and silicon</td><td>Electrical engineering, physics</td></tr>
+    <tr><td>Digital logic</td><td>Digital logic and circuits</td></tr>
+    <tr><td>Architecture</td><td>Computer organisation</td></tr>
+    <tr><td>Operating system</td><td>Operating systems, concurrency</td></tr>
+    <tr><td>Compilers and interpreters</td><td>Compilers, programming languages, theory of computation</td></tr>
+    <tr><td>Libraries and algorithms</td><td>Data structures, algorithms, databases, networks</td></tr>
+    <tr><td>Applications</td><td>Software engineering, human–computer interaction, graphics, artificial intelligence</td></tr>
+  </tbody>
+</table>
+
+<h3>The operating system</h3>
+<p>The <strong>operating system</strong> is the layer every program talks to. It shares the processor and memory among running programs, manages files, and talks to the keyboard, screen and network so that each program does not have to.</p>
+<svg class="wb-diagram" viewBox="0 0 480 224" role="img" aria-label="Your Python program, a browser and a game all sit on top of the operating system, which sits on top of the hardware.">
+  <rect class="node-accent" x="16" y="16" width="136" height="40" rx="4"></rect>
+  <text x="84" y="36">Your Python program</text>
+  <rect class="node" x="172" y="16" width="136" height="40" rx="4"></rect>
+  <text x="240" y="36">A browser</text>
+  <rect class="node" x="328" y="16" width="136" height="40" rx="4"></rect>
+  <text x="396" y="36">A game</text>
+  <rect class="node" x="120" y="104" width="240" height="44" rx="4"></rect>
+  <text x="240" y="120">Operating system</text>
+  <text class="small label" x="240" y="138">Windows, macOS, Linux, Android, iOS</text>
+  <rect class="node" x="120" y="172" width="240" height="40" rx="4"></rect>
+  <text x="240" y="192">Hardware</text>
+  <path class="edge" d="M 84 56 L 84 80 L 200 80 L 200 102"></path>
+  <path class="edge" d="M 240 56 L 240 102"></path>
+  <path class="edge" d="M 396 56 L 396 80 L 280 80 L 280 102"></path>
+  <path class="edge" d="M 240 148 L 240 170"></path>
+</svg>
+<p>Whether you run Windows, macOS or Linux in the lab, Python sits on top of the operating system in exactly the same way. That is one reason a Python program written on one machine runs unchanged on another.</p>
+
+<h2 id="languages">Languages</h2>
+<p>A processor understands only bits. Programming languages exist to let people write for the machine without thinking in bits.</p>
+<h3>Machine code</h3>
+<p>The processor understands only one language: patterns of bits called <strong>machine code</strong>. Here are three real instructions for a common processor, written in hexadecimal to save space, with what each one means.</p>
+<pre><code>48 83 C0 05      add 5 to a register
+48 01 D8         add one register to another
+C3               return</code></pre>
+<p>In binary the first instruction is <code>01001000 10000011 11000000 00000101</code>. People wrote programs like this in the 1940s. It is exact, and it is unreadable.</p>
+
+<h3>Assembly</h3>
+<p><strong>Assembly language</strong> gives each instruction a short name and lets you label positions in the program. An <strong>assembler</strong> translates it, one line to one instruction, into machine code.</p>
+<pre><code>add_five:
+    add rax, 5        ; 48 83 C0 05
+    add rax, rbx      ; 48 01 D8
+    ret               ; C3</code></pre>
+<p>Better, but you are still thinking in terms of the processor's registers rather than your problem.</p>
+
+<h3>C and compilation</h3>
+<p>A language such as <strong>C</strong> lets you describe the calculation itself. A <strong>compiler</strong> translates the whole program into machine code once, ahead of time, and the result is a file the CPU can run directly.</p>
+<pre><code><span class="wb-type">int</span> <span class="wb-fn">add_five</span>(<span class="wb-type">int</span> x) {
+    <span class="wb-kw">return</span> x + <span class="wb-num">5</span>;
+}</code></pre>
+<div class="wb-refers wb-stages wb-wrap">
+  <span class="wb-box">C source<small>add.c</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Compiler</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Assembly</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Assembler and linker</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Machine code<small>in a file</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">CPU runs it</span>
+</div>
+<p>The translation happens <strong>once</strong>. Running the program afterwards costs nothing extra, which is why compiled languages are used where speed matters most.</p>
+
+<h3>Python and interpretation</h3>
+<p><strong>Python</strong>, the language of this course, takes a different route. Python code is translated into an intermediate form called <strong>bytecode</strong>, and a program called the Python <strong>virtual machine</strong> carries out that bytecode. The translation happens every time you run the program.</p>
+<wb-example id="ex-add-five"></wb-example>
+<div class="wb-refers wb-stages wb-wrap">
+  <span class="wb-box">Python source<small>add_five.py</small></span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Bytecode</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Python virtual machine</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">CPU runs the VM</span>
+</div>
+<p>Translating on every run costs speed. What it buys is convenience: no separate compile step, the same code on every operating system, and the ability to try one line at a time and see what happens. For learning to solve problems, that is the right trade.</p>
+
+<h3>A short history</h3>
+<p>Each step in the history of programming languages hides a little more of the machine.</p>
+<ul class="wb-timeline">
+  <li><span class="year">1945</span> Machine code</li>
+  <li><span class="year">1949</span> Assembly</li>
+  <li><span class="year">1957</span> Fortran, the first widely used high-level language</li>
+  <li><span class="year">1959</span> COBOL</li>
+  <li><span class="year">1972</span> C</li>
+  <li><span class="year">1985</span> C++</li>
+  <li><span class="year">1991</span> Python</li>
+  <li><span class="year">1995</span> Java, JavaScript</li>
+  <li><span class="year">2010s</span> Go, Rust, Swift</li>
+</ul>
+
+<h3>Low-level and high-level languages</h3>
+<div class="wb-columns">
+  <div class="wb-block">
+    <div class="wb-block-title">Closer to the machine</div>
+    <ul>
+      <li>Fast and small</li>
+      <li>Full control of the hardware</li>
+      <li>Slow to write and easy to get wrong</li>
+      <li>Tied to one kind of processor</li>
+    </ul>
+  </div>
+  <div class="wb-block">
+    <div class="wb-block-title">Closer to the person</div>
+    <ul>
+      <li>Quick to write and to read</li>
+      <li>Runs anywhere the interpreter runs</li>
+      <li>Whole categories of mistake become impossible</li>
+      <li>Slower to run</li>
+    </ul>
+  </div>
+</div>
+<p>This course uses Python because its subject is <strong>problem solving</strong>, not the processor. Python lets you spend your attention on the problem.</p>
+
+<h2 id="programming">Programming</h2>
+<p>Where a programmer fits in the picture, how big the field is, and what this course gives you.</p>
+<h3>Where programming fits</h3>
+<svg class="wb-diagram" viewBox="0 0 480 160" role="img" aria-label="You write a program, the program drives the machine, and the machine returns a result you can actually use.">
+  <rect class="node-accent" x="16" y="30" width="120" height="44" rx="4"></rect>
+  <text x="76" y="52">You</text>
+  <rect class="node" x="180" y="30" width="120" height="44" rx="4"></rect>
+  <text x="240" y="52">A program</text>
+  <rect class="node" x="344" y="30" width="120" height="44" rx="4"></rect>
+  <text x="404" y="52">The machine</text>
+  <path class="edge" d="M 136 52 L 178 52"></path>
+  <path class="edge" d="M 300 52 L 342 52"></path>
+  <path class="edge" d="M 404 74 L 404 120 L 76 120 L 76 76"></path>
+  <text class="label" x="240" y="134">a result you can actually use</text>
+</svg>
+<p>Programming is the point where a person's intention becomes something the machine can carry out. You describe what you want precisely enough that the layers below can do it, and what comes back is a result you can actually use.</p>
+
+<h3>The software industry</h3>
+<p>A few rounded, mid-2020s figures give a sense of scale:</p>
+<ul>
+  <li>Worldwide spending on information technology is roughly <strong>$5 trillion a year</strong>, of which about <strong>$1 trillion</strong> is software.</li>
+  <li>Several software companies are each worth more than a trillion dollars.</li>
+  <li>There are <strong>tens of millions</strong> of professional software developers in the world.</li>
+</ul>
+<p>Whatever field you end up in, someone there is writing programs.</p>
+
+<h3>What you will be able to do</h3>
+<ul>
+  <li><strong>An entry point.</strong> This course is the first step into computer science and into programming in general.</li>
+  <li><strong>Portable skills.</strong> Problem solving, reading code and finding errors carry over to every other language.</li>
+  <li><strong>Useful immediately.</strong> By the end of term you can automate tedious tasks, process data and check your own calculations.</li>
+  <li><strong>A prerequisite.</strong> COMP 1001 is required for the Computer Science major and minor and for the courses that follow.</li>
+</ul>
+<p>The course begins with problem solving before it begins with Python. A program is only ever as good as the thinking behind it.</p>
+
+<h2 id="problem-solving">Problem Solving</h2>
+<p>The rest of the course is about solving problems. Here is the framework, and what to do before Lecture 2.</p>
+<h3>The framework</h3>
+<p>Every problem in this course, and most problems outside it, can be approached with the same six activities.</p>
+<ol>
+  <li><strong>Understand</strong> the problem: what is given, what is wanted, and what the rules are.</li>
+  <li><strong>Decompose</strong> it into smaller parts.</li>
+  <li><strong>Recognise patterns</strong>: parts you have solved before, or that look like each other.</li>
+  <li><strong>Design and evaluate</strong> a method, and test it on normal and awkward cases.</li>
+  <li><strong>Implement</strong> the method.</li>
+  <li><strong>Reflect</strong> on what worked and what to do differently next time.</li>
+</ol>
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">Only one step needs a computer</div>
+  <p>Step 5 is the only one where you type code. The other five happen on paper and in your head, and they are where most of the work is. Lecture 2 works through them with two examples before we write any Python.</p>
+</div>
+
+<h3>Before next class</h3>
+<ul class="wb-checklist">
+  <li>Log in to <strong>Brightspace</strong> and find the COMP 1001 page.</li>
+  <li>Confirm which <strong>lab section</strong> you are registered in (Tuesday morning or afternoon).</li>
+  <li>Put <strong>October 15</strong>, <strong>November 4</strong> and <strong>November 10</strong> in your calendar.</li>
+  <li>Fill in the <strong>PAL availability survey</strong>.</li>
+  <li>Lecture 2 is <strong>problem solving on paper</strong>: no computer needed, but bring something to write with.</li>
+</ul>
+<p><strong>Welcome to COMP 1001.</strong></p>
+
+</main>
+</body>
+</html>

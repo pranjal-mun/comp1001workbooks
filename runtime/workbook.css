@@ -1,0 +1,799 @@
+/* PyLab Workbooks: visual theme following the Memorial University Brand
+   Standards (March 2026).
+
+   Type:    Avenir for headings and interface (Figtree stands in when Avenir
+            is not installed), Adobe Garamond / EB Garamond for body copy,
+            JetBrains Mono for code.
+   Colour:  university claret #862633 used sparingly as the accent; the
+            primary greys (#231F20, #63666A, #97999B, warm greys) carry the
+            page. Two secondary "pop" colours per layout: PMS 3275 teal for
+            success and PMS 1235 amber for warnings / activity. PMS 185 red
+            is reserved for errors so they never read as the brand accent.
+            The dark theme is derived from the brand black #231F20 with the
+            claret lifted for contrast and the reversed-out logo. */
+
+/* ------------------------------------------------------------- fonts */
+
+@font-face { font-family: "EB Garamond"; src: url("fonts/EBGaramond-italic-latin-ext.woff2") format("woff2"); font-weight: 400 800; font-style: italic; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "EB Garamond"; src: url("fonts/EBGaramond-italic-latin.woff2") format("woff2"); font-weight: 400 800; font-style: italic; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "EB Garamond"; src: url("fonts/EBGaramond-normal-latin-ext.woff2") format("woff2"); font-weight: 400 800; font-style: normal; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "EB Garamond"; src: url("fonts/EBGaramond-normal-latin.woff2") format("woff2"); font-weight: 400 800; font-style: normal; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; src: url("fonts/Figtree-italic-latin-ext.woff2") format("woff2"); font-weight: 300 900; font-style: italic; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; src: url("fonts/Figtree-italic-latin.woff2") format("woff2"); font-weight: 300 900; font-style: italic; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Figtree"; src: url("fonts/Figtree-normal-latin-ext.woff2") format("woff2"); font-weight: 300 900; font-style: normal; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Figtree"; src: url("fonts/Figtree-normal-latin.woff2") format("woff2"); font-weight: 300 900; font-style: normal; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-italic-latin-ext.woff2") format("woff2"); font-weight: 100 800; font-style: italic; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-italic-latin.woff2") format("woff2"); font-weight: 100 800; font-style: italic; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-normal-latin-ext.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/JetBrainsMono-normal-latin.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* ------------------------------------------------------------ tokens */
+
+:root {
+  color-scheme: light;
+  --paper: #FFFFFF;
+  --panel: #F5F4F2;
+  --panel-deep: #E9E7E4;
+  --ink: #231F20;
+  --ink-quiet: #63666A;
+  --rule: #CBCCCE;
+  --rule-soft: #E6E6E7;
+  --rule-strong: #97999B;
+  --accent: #862633;
+  --accent-deep: #6B1E29;
+  --accent-fill: #862633;
+  --on-accent: #FFFFFF;
+  --accent-wash: rgba(134, 38, 51, 0.07);
+  --answer: #6B1E29;
+  --good: #00B398;
+  --good-ink: #007A68;
+  --good-wash: rgba(0, 179, 152, 0.12);
+  --warn: #FFB81C;
+  --warn-ink: #8A5A00;
+  --warn-wash: rgba(255, 184, 28, 0.18);
+  --bad: #E4002B;
+  --bad-ink: #C0001F;
+  --bad-wash: rgba(228, 0, 43, 0.08);
+  --code-keyword: #862633;
+  --code-type: #231F20;
+  --code-method: #1E22AA;
+  --code-ident: #231F20;
+  --code-string: #007A68;
+  --code-comment: #63666A;
+  --code-number: #8A5A00;
+  --shadow: 0 1px 2px rgba(35, 31, 32, 0.06), 0 8px 24px rgba(35, 31, 32, 0.08);
+  --font-sans: "Avenir Next", Avenir, Figtree, "Segoe UI", Arial, sans-serif;
+  --font-body: "Adobe Garamond Pro", "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui: var(--font-sans);
+}
+
+/* Dark is the default: it also applies before the theme script has run, so
+   there is no light flash. Light is only ever chosen with the toggle. */
+:root[data-theme="dark"],
+:root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --paper: #1A1718;
+  --panel: #231F20;
+  --panel-deep: #2E292A;
+  --ink: #F1EEEA;
+  --ink-quiet: #A59C94;
+  --rule: #4A4446;
+  --rule-soft: #322D2E;
+  --rule-strong: #8C8279;
+  --accent: #E28C9B;
+  --accent-deep: #F0B3BE;
+  --accent-fill: #9C2E3D;
+  --on-accent: #FFFFFF;
+  --accent-wash: rgba(226, 140, 155, 0.10);
+  --answer: #F0B3BE;
+  --good-ink: #33D1B6;
+  --good-wash: rgba(0, 179, 152, 0.16);
+  --warn-ink: #FFC94D;
+  --warn-wash: rgba(255, 184, 28, 0.14);
+  --bad-ink: #FF6B80;
+  --bad-wash: rgba(228, 0, 43, 0.16);
+  --code-keyword: #E28C9B;
+  --code-type: #F1EEEA;
+  --code-method: #8FB5FF;
+  --code-ident: #F1EEEA;
+  --code-string: #4FD1B8;
+  --code-comment: #A59C94;
+  --code-number: #FFC94D;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Reversed-out logo (white "UNIVERSITY") on dark backgrounds, as the brand
+   standards allow when Cool Grey 10 would not show clearly. */
+:root:not([data-theme="light"]) img[src$="mun-logo.svg"] { content: url("img/mun-logo-dark.svg"); }
+
+/* -------------------------------------------------------------- page */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.wb-has-expanded { overflow: hidden; }
+
+/* Hidden until the page's script calls revealPage() (runtime/page.js), so the
+   top bar, contents, and fonts do not jump into place after the first paint.
+   The animation shows the page anyway if the script never runs. */
+body:not(.wb-ready) { visibility: hidden; animation: wb-reveal 0s 2s forwards; }
+@keyframes wb-reveal { to { visibility: visible; } }
+
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+}
+
+body.wb-has-toc {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  grid-template-areas: "top top" "toc main";
+}
+body.wb-has-toc > .wb-topbar { grid-area: top; }
+body.wb-has-toc > .wb-toc { grid-area: toc; }
+body.wb-has-toc > main { grid-area: main; width: 100%; }
+
+@media (max-width: 62rem) {
+  body.wb-has-toc { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "main"; }
+}
+
+h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 700; line-height: 1.15; margin: 0; color: var(--ink); letter-spacing: -0.01em; }
+h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; margin: 3rem 0 0.8rem; padding-top: 0.9rem; position: relative; }
+h2::before { content: ""; position: absolute; top: 0; left: 0; width: 2.5rem; height: 3px; background: var(--accent-fill); border-radius: 2px; }
+h3 { font-size: 1.2rem; margin: 2rem 0 0.4rem; }
+h4 { font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-quiet); margin: 1.4rem 0 0.3rem; }
+p { margin: 0.6rem 0; }
+ul, ol { margin: 0.4rem 0 0.7rem; padding-left: 1.5rem; }
+li { margin: 0.18rem 0; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+a:hover { color: var(--accent-deep); }
+hr { border: 0; border-top: 1px solid var(--rule-soft); margin: 2.5rem 0; }
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+code, kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-variant-ligatures: none;
+  background: var(--panel);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  font-variant-ligatures: none;
+  background: var(--panel);
+  border: 1px solid var(--rule-soft);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.7rem 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+pre.wb-output { border-style: dashed; border-color: var(--rule); }
+pre.wb-shell .wb-prompt { color: var(--ink-quiet); user-select: none; }
+pre.wb-shell .wb-typed { font-weight: 700; }
+pre.wb-error, .wb-error-text { color: var(--bad-ink); }
+.wb-answer-ink { color: var(--answer); }
+
+/* Static syntax colours for <pre class="wb-code"> spans authored in HTML. */
+.wb-kw { color: var(--code-keyword); font-weight: 600; }
+.wb-type { color: var(--code-type); font-weight: 600; }
+.wb-fn { color: var(--code-method); }
+.wb-str { color: var(--code-string); }
+.wb-cmt { color: var(--code-comment); font-style: italic; }
+.wb-num { color: var(--code-number); }
+
+/* Prose tables (the PDF's tabularx tables). */
+main table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0 1.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+main th, main td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+main th { color: var(--ink-quiet); border-bottom: 2px solid var(--rule-strong); font-weight: 700; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
+main td code, main th code { white-space: nowrap; }
+main .wb-table-wrap { overflow-x: auto; }
+
+/* Title block (the PDF's opening page). */
+.wb-title-block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0.5rem 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.wb-title-block .wb-course { font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.wb-title-block h1 { margin: 0.35rem 0 0.4rem; }
+.wb-title-block .wb-subtitle { font-size: 1.35rem; font-style: italic; color: var(--ink-quiet); }
+.wb-title-block .wb-meta { font-family: var(--font-sans); color: var(--ink-quiet); font-size: 0.85rem; margin-top: 0.8rem; }
+.wb-title-block > div { min-width: 0; }
+.wb-title-block img { width: 9rem; max-width: 30vw; flex: none; margin-top: 0.3rem; }
+.wb-outcomes { margin: 0 0 2rem; padding: 1.1rem 1.3rem 1.2rem; background: var(--panel); border-radius: 8px; }
+.wb-outcomes h2 { margin-top: 0; padding-top: 0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-quiet); }
+.wb-outcomes h2::before { content: none; }
+.wb-outcomes ul, .wb-outcomes ol { margin-bottom: 0; }
+
+/* Labelled blocks (definitionbox / checkpointbox / examplebox). */
+.wb-block { margin: 1.2rem 0; }
+.wb-block > .wb-block-title { font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+.wb-checkpoint {
+  margin: 1.6rem 0;
+  padding: 1rem 1.3rem 1.1rem;
+  border-left: 4px solid var(--accent-fill);
+  border-radius: 0 8px 8px 0;
+  background: var(--panel);
+}
+.wb-checkpoint > .wb-block-title { font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; }
+.wb-checkpoint > .wb-block-title + p { margin-top: 0; }
+
+/* Boss markers: an emoji that links to a boss problem in PyLab. Used on
+   the landing page (the next boss under the lecture's date) and in the
+   workbook's <wb-bosses> strip (every boss in a row). A defeated boss is
+   knocked flat on its back (upside down and faded) with a sword badge. */
+.wb-boss { position: relative; z-index: 1; display: inline-block; font-size: 1.3rem; line-height: 1.15; text-align: center; text-decoration: none; border-radius: 5px; padding: 0 0.15rem; transition: transform 0.12s; }
+.wb-boss:hover { transform: scale(1.25); background: var(--accent-wash); }
+.wb-boss-icon { display: block; }
+.wb-boss.is-beaten .wb-boss-icon { transform: rotate(180deg); filter: saturate(0.4); opacity: 0.55; transition: transform 0.2s; }
+.wb-boss.is-beaten:hover .wb-boss-icon { transform: rotate(180deg) scale(1.05) translateY(-0.08rem); }
+.wb-boss.is-beaten::after { content: "\2694\FE0F"; position: absolute; right: -0.25rem; bottom: -0.15rem; font-size: 0.62rem; line-height: 1; filter: drop-shadow(0 0 1px var(--paper)) drop-shadow(0 0 1px var(--paper)); }
+wb-bosses { display: block; }
+.wb-boss-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.75rem; margin-top: 0.5rem; }
+.wb-boss-strip .wb-boss { font-size: 2rem; line-height: 1.2; padding: 0.1rem 0.3rem; }
+.wb-boss-strip .wb-boss.is-beaten::after { font-size: 0.85rem; right: -0.1rem; bottom: 0; }
+
+/* Semantic callouts: coloured rule + marker word. */
+.wb-callout { margin: 1.1rem 0; padding: 0.2rem 0 0.2rem 1rem; border-left: 3px solid; }
+.wb-callout > .wb-callout-title { font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.2rem; }
+.wb-callout.is-good { border-color: var(--good); }
+.wb-callout.is-good > .wb-callout-title { color: var(--good-ink); }
+.wb-callout.is-warn { border-color: var(--warn); }
+.wb-callout.is-warn > .wb-callout-title { color: var(--warn-ink); }
+.wb-callout.is-bad { border-color: var(--bad); }
+.wb-callout.is-bad > .wb-callout-title { color: var(--bad-ink); }
+.wb-good { color: var(--good-ink); }
+.wb-warn { color: var(--warn-ink); }
+.wb-bad { color: var(--bad-ink); }
+
+/* Small "refers to" diagram used by the notes. */
+.wb-refers { display: flex; align-items: center; gap: 0.6rem; margin: 0.9rem 0; font-family: var(--font-mono); font-variant-ligatures: none; font-size: 0.9rem; flex-wrap: wrap; }
+.wb-refers .wb-box { border: 1.5px solid var(--rule-strong); border-radius: 6px; padding: 0.35rem 0.75rem; background: var(--panel); }
+.wb-refers .wb-arrow { color: var(--ink-quiet); }
+.wb-refers .wb-arrow::after { content: " refers to "; font-family: var(--font-body); font-style: italic; font-size: 1.05rem; }
+.wb-refers .wb-arrow.wb-plain::after { content: none; }
+.wb-refers.wb-stages .wb-box { text-align: center; line-height: 1.5; }
+
+/* ------------------------------------------------------------ topbar */
+
+.wb-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.1rem;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+}
+.wb-instructor-badge { font-family: var(--font-sans); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warn-ink); background: var(--warn-wash); border: 1px solid transparent; border-radius: 999px; padding: 0.2rem 0.6rem; cursor: pointer; }
+.wb-instructor-badge:hover { border-color: var(--warn-ink); }
+
+.wb-locked { max-width: 34rem; margin: 4rem auto; padding: 0 1.5rem; text-align: center; font-family: var(--font-sans); }
+.wb-locked .wb-course { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.wb-locked h1 { font-size: 2rem; margin: 0.3rem 0 0.6rem; }
+.wb-locked-when { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.6rem; }
+.wb-locked p { color: var(--ink-quiet); }
+.wb-locked .wb-btn { display: inline-block; margin-top: 1rem; text-decoration: none; }
+
+.wb-topbar-brand img { height: 2.1rem; display: block; }
+.wb-topbar-title { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.wb-topbar-title strong { color: var(--ink); font-size: 0.95rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wb-topbar-title span { color: var(--ink-quiet); font-size: 0.76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wb-topbar-title-short { display: none; }
+.wb-spacer { flex: 1; }
+.wb-topbar-status { color: var(--ink-quiet); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.wb-topbar-status[data-state="running"], .wb-topbar-status[data-state="loading"] { color: var(--warn-ink); }
+.wb-topbar-status[data-state="error"] { color: var(--bad-ink); }
+
+.wb-progress { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-quiet); font-size: 0.78rem; }
+.wb-progress-track { display: inline-block; width: 7rem; height: 0.4rem; border-radius: 999px; background: var(--panel-deep); overflow: hidden; }
+.wb-progress-fill { display: block; height: 100%; width: 0; background: var(--good); transition: width 0.4s ease; }
+.wb-progress-label { font-variant-numeric: tabular-nums; }
+
+.wb-topbar-xp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-weight: 700;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.wb-topbar-xp.is-bump { animation: wb-bump 0.5s ease; }
+@keyframes wb-bump { 30% { transform: scale(1.15); } }
+
+.wb-menu { position: relative; }
+.wb-menu summary { list-style: none; cursor: pointer; }
+.wb-menu summary::-webkit-details-marker { display: none; }
+.wb-menu-items {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  min-width: 14rem;
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 0.35rem;
+  z-index: 60;
+}
+.wb-menu-items hr { margin: 0.3rem 0; width: auto; }
+.wb-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0.45rem 0.7rem;
+  font: inherit;
+  color: var(--ink);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.wb-menu-item:hover { background: var(--panel); }
+.wb-menu-item.is-danger { color: var(--bad-ink); }
+
+@media (max-width: 48rem) {
+  /* Phones: "L02" instead of the full title, no subtitle, and no progress bar (the contents
+     drop-down shows progress per section). */
+  .wb-title-block { gap: 1rem; }
+  .wb-title-block img { max-width: 24vw; }
+  .wb-topbar { gap: 0.4rem; padding: 0.5rem 0.7rem; }
+  .wb-topbar .wb-btn-quiet { padding-inline: 0.5rem; }
+  .wb-topbar-xp { padding-inline: 0.55rem; }
+  .wb-topbar-title span, .wb-topbar-title-full, .wb-progress { display: none; }
+  .wb-topbar-title { flex-shrink: 0; }
+  .wb-topbar-title-short { display: block; }
+  /* The status text takes the spacer's place so "Loading Python…" is not squeezed to a stub. */
+  .wb-spacer { display: none; }
+  .wb-topbar-status { flex: 1; text-align: right; }
+}
+
+/* --------------------------------------------------------------- toc */
+
+.wb-toc {
+  position: sticky;
+  top: 3.5rem;
+  align-self: start;
+  max-height: calc(100vh - 3.5rem);
+  overflow-y: auto;
+  padding: 1.6rem 0.8rem 1.2rem 1.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+}
+.wb-toc-title { color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; font-weight: 700; margin-bottom: 0.5rem; padding-left: 0.6rem; }
+.wb-toc-list { list-style: none; margin: 0; padding: 0; }
+.wb-toc-list li { margin: 0; }
+.wb-toc-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.32rem 0.6rem;
+  border-radius: 5px;
+  color: var(--ink-quiet);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.wb-toc-list a:hover { background: var(--panel); color: var(--ink); }
+.wb-toc-list a.is-current { border-left-color: var(--accent-fill); color: var(--accent); font-weight: 600; border-radius: 0 5px 5px 0; }
+.wb-toc.is-plain .wb-toc-mark { display: none; }
+.wb-toc-mark { flex: none; min-width: 2.2em; font-variant-numeric: tabular-nums; color: var(--ink-quiet); font-size: 0.7rem; }
+.wb-toc-mark.is-done { color: var(--good-ink); font-weight: 700; }
+/* Boss markers under the last contents entry (filled by renderBosses in workbook.js). */
+.wb-toc-bosses { display: flex; align-items: center; gap: 0.4rem; padding: 0.32rem 0.6rem; border-left: 2px solid transparent; }
+.wb-toc-bosses .wb-boss { font-size: 1.15rem; line-height: 1.2; padding: 0 0.1rem; }
+.wb-topbar .wb-toc-toggle { display: none; }
+@media (max-width: 62rem) {
+  /* Narrow screens: the contents become a drop-down under the ☰ button in the top bar. */
+  .wb-topbar .wb-toc-toggle { display: inline-flex; }
+  .wb-toc {
+    display: none;
+    position: fixed;
+    top: var(--wb-topbar-h, 3.5rem);
+    left: 0;
+    right: 0;
+    z-index: 49;
+    max-height: calc(100vh - var(--wb-topbar-h, 3.5rem));
+    padding: 0.8rem 1rem 1rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-soft);
+    box-shadow: var(--shadow);
+  }
+  body.wb-toc-open > .wb-toc { display: block; }
+  .wb-toc-list a { padding: 0.5rem 0.6rem; font-size: 0.9rem; }
+}
+
+/* ----------------------------------------------------------- buttons */
+
+.wb-btn {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.wb-btn:hover { background: var(--panel); border-color: var(--rule-strong); }
+.wb-btn:disabled { opacity: 0.5; cursor: default; }
+.wb-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wb-btn-primary { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
+.wb-btn-primary:hover { background: color-mix(in srgb, var(--accent-fill) 85%, black); border-color: color-mix(in srgb, var(--accent-fill) 85%, black); color: var(--on-accent); }
+.wb-btn-check { border-color: var(--good-ink); color: var(--good-ink); }
+.wb-btn-check:hover { background: var(--good-wash); border-color: var(--good-ink); }
+.wb-btn-danger { border-color: var(--bad-ink); color: var(--bad-ink); }
+.wb-btn-danger:hover { background: var(--bad-wash); border-color: var(--bad-ink); }
+.wb-btn-quiet { border-color: transparent; background: transparent; color: var(--ink-quiet); font-weight: 500; }
+.wb-btn-quiet:hover { background: var(--panel); border-color: transparent; color: var(--ink); }
+.wb-btn-icon { padding: 0.4rem 0.55rem; font-size: 1rem; }
+
+/* ----------------------------------------------------------- widgets */
+
+.wb-widget {
+  display: block;
+  margin: 1.1rem 0 1.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow: hidden;
+}
+.wb-widget.is-passed { border-color: var(--good); }
+.wb-widget.is-revealed { border-style: dashed; }
+.wb-widget-error { color: var(--bad-ink); font-family: var(--font-sans); font-size: 0.85rem; margin: 0.4rem 0.8rem; }
+
+.wb-widget-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.85rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.8rem;
+}
+.wb-widget-label { color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; font-weight: 700; flex: 1; }
+.wb-xp-badge { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 0.12rem 0.55rem; white-space: nowrap; letter-spacing: 0.02em; }
+.wb-xp-badge.is-earned { color: var(--good-ink); background: var(--good-wash); }
+.wb-xp-badge.is-revealed { color: var(--ink-quiet); border-style: dashed; }
+.wb-status-pill { font-size: 0.78rem; font-weight: 700; }
+.wb-status-pill.is-good { color: var(--good-ink); }
+
+.wb-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border-top: 1px solid var(--rule-soft);
+}
+.wb-runner-status { color: var(--ink-quiet); font-size: 0.78rem; }
+.wb-runner-status[data-state="running"], .wb-runner-status[data-state="loading"] { color: var(--warn-ink); }
+
+/* Editor: CodeMirror sized by --wb-editor-min-lines / --wb-editor-max-lines.
+   Ligatures are off so beginners see `!=` and `>=` as two characters. */
+.wb-editor .CodeMirror {
+  height: auto;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  font-variant-ligatures: none;
+  background: var(--panel);
+  color: var(--ink);
+}
+.wb-editor .CodeMirror-scroll {
+  min-height: calc(var(--wb-editor-min-lines, 3) * 1.55 * 0.92rem + 0.9rem);
+  max-height: calc(var(--wb-editor-max-lines, 16) * 1.55 * 0.92rem + 0.9rem);
+}
+.wb-editor .CodeMirror-lines { padding: 0.45rem 0; }
+.wb-editor .CodeMirror pre.CodeMirror-line, .wb-editor .CodeMirror pre.CodeMirror-line-like { padding: 0 0.7rem; }
+.wb-editor .CodeMirror-gutters { background: var(--panel); border-right: 1px solid var(--rule-soft); }
+.wb-editor .CodeMirror-linenumber { color: var(--rule-strong); font-size: 0.78rem; padding: 0 0.45rem 0 0.7rem; min-width: 1.4rem; }
+.wb-editor .CodeMirror-cursor { border-left: 2px solid var(--ink); }
+.wb-editor .CodeMirror-selected { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.wb-editor .CodeMirror-focused .CodeMirror-selected { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.wb-editor .CodeMirror-matchingbracket { outline: 1px solid var(--rule-strong); color: inherit !important; }
+.wb-editor .wb-error-line { background: var(--bad-wash); }
+
+.cm-s-workbook .cm-keyword { color: var(--code-keyword); font-weight: 600; }
+.cm-s-workbook .cm-builtin { color: var(--code-method); }
+.cm-s-workbook .cm-def { color: var(--code-type); font-weight: 600; }
+.cm-s-workbook .cm-variable { color: var(--code-ident); }
+.cm-s-workbook .cm-variable-2 { color: var(--code-ident); }
+.cm-s-workbook .cm-property { color: var(--code-method); }
+.cm-s-workbook .cm-string { color: var(--code-string); }
+.cm-s-workbook .cm-comment { color: var(--code-comment); font-style: italic; }
+.cm-s-workbook .cm-number { color: var(--code-number); }
+.cm-s-workbook .cm-operator { color: var(--ink); }
+.cm-s-workbook .cm-meta { color: var(--code-comment); }
+.cm-s-workbook .cm-error { color: var(--bad-ink); }
+
+/* Python Tutor panel (the Visualize button) under the console. */
+.wb-tutor { border-top: 1px solid var(--rule-soft); }
+.wb-tutor-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; padding: 0.35rem 0.85rem 0.45rem; }
+.wb-tutor-head .wb-console-title { padding: 0; }
+.wb-tutor-note { font-family: var(--font-ui); font-size: 0.8rem; color: var(--ink-quiet); }
+.wb-tutor-form { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.2rem 0.85rem 0.75rem; }
+.wb-tutor-inputs { width: min(100%, 28rem); padding: 0.4rem 0.55rem; font: 0.9rem/1.5 var(--font-mono); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; resize: vertical; }
+.wb-tutor-box { resize: vertical; overflow: hidden; min-height: 240px; max-height: 90vh; border-top: 1px solid var(--rule-soft); }
+.wb-tutor-box iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+/* Python Tutor has no dark theme and the frame is cross-origin, so invert it
+   and turn the hues back; the page's white becomes near-black. */
+:root:not([data-theme="light"]) .wb-tutor-box iframe { filter: invert(0.92) hue-rotate(180deg); }
+
+/* Console: program output with inline input() prompts. */
+.wb-console-wrap { border-top: 1px solid var(--rule-soft); }
+.wb-console-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--ink-quiet); padding: 0.45rem 0.85rem 0; }
+.wb-console {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  font-variant-ligatures: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 0.4rem 0.85rem 0.65rem;
+  min-height: 2.4rem;
+  max-height: 22rem;
+  overflow-y: auto;
+  color: var(--ink);
+}
+.wb-console.has-error { background: var(--bad-wash); }
+.wb-console-err { color: var(--bad-ink); }
+.wb-console-note { color: var(--ink-quiet); font-style: italic; }
+.wb-console-typed { color: var(--accent); font-weight: 700; }
+.wb-console-input {
+  font: inherit;
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--panel);
+  border: 0;
+  border-bottom: 2px solid var(--accent-fill);
+  outline: none;
+  padding: 0 0.3rem;
+  min-width: 8rem;
+  width: 40%;
+}
+
+/* Check results. */
+.wb-result { border-top: 1px solid var(--rule-soft); padding: 0.65rem 0.85rem; display: grid; gap: 0.5rem; }
+.wb-result-pending { color: var(--ink-quiet); }
+.wb-result-summary { font-weight: 700; }
+.wb-result-summary.is-good { color: var(--good-ink); }
+.wb-result-summary.is-bad { color: var(--bad-ink); }
+.wb-result-case { border-left: 3px solid var(--rule); padding: 0.2rem 0 0.2rem 0.75rem; }
+.wb-result-case.is-good { border-left-color: var(--good); }
+.wb-result-case.is-bad { border-left-color: var(--bad); }
+.wb-result-case-title { font-weight: 700; margin-bottom: 0.25rem; }
+.wb-result-label { color: var(--ink-quiet); font-size: 0.78rem; display: inline; }
+.wb-result-text { margin: 0.25rem 0; }
+.wb-result-stderr, .wb-result-stdout { margin: 0.3rem 0; font-size: 0.85rem; }
+.wb-result-stderr { color: var(--bad-ink); }
+
+.wb-diff { width: 100%; border-collapse: collapse; margin: 0.3rem 0; font-size: 0.86rem; }
+.wb-diff th { text-align: left; color: var(--ink-quiet); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.15rem 0.5rem; border-bottom: 1px solid var(--rule-soft); }
+.wb-diff td { width: 50%; padding: 0.15rem 0.5rem; vertical-align: top; border-bottom: 1px solid var(--rule-soft); font-family: var(--font-mono); font-variant-ligatures: none; white-space: pre-wrap; }
+.wb-diff td code { background: none; padding: 0; }
+.wb-diff tr.is-diff td { background: var(--bad-wash); }
+.wb-diff tr.is-diff td:first-child { background: var(--good-wash); }
+.wb-diff-missing { color: var(--ink-quiet); font-style: italic; font-family: var(--font-sans); }
+
+/* Model answer. */
+.wb-answer { border-top: 1px dashed var(--accent); padding: 0.65rem 0.85rem 0.8rem; background: var(--accent-wash); }
+.wb-answer-title { color: var(--accent); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.4rem; }
+.wb-answer-text { font-family: var(--font-body); font-size: 1.1rem; color: var(--answer); }
+.wb-answer-text p { margin: 0.35rem 0; }
+.wb-answer-note { color: var(--ink-quiet); font-size: 0.85rem; margin: 0.5rem 0 0; }
+.wb-answer .wb-editor { border: 1px solid var(--rule-soft); border-radius: 6px; overflow: hidden; }
+
+/* Tables with blanks. */
+.wb-table { border: 0; overflow: visible; font-family: inherit; font-size: inherit; margin: 0.6rem 0 1.6rem; }
+.wb-table .wb-toolbar { border: 0; padding: 0.3rem 0; font-family: var(--font-sans); font-size: 0.9rem; }
+.wb-table .wb-result-summary { font-family: var(--font-sans); font-size: 0.88rem; margin-top: 0.2rem; }
+.wb-blank-cell { padding-top: 0.2rem; padding-bottom: 0.2rem; }
+.wb-blank {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-variant-ligatures: none;
+  width: 100%;
+  min-width: 5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.wb-blank:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+.wb-blank-cell.is-right .wb-blank { border-color: var(--good); background: var(--good-wash); }
+.wb-blank-cell.is-wrong .wb-blank { border-color: var(--bad); background: var(--bad-wash); }
+.wb-blank-cell.is-answer .wb-blank { border-style: dashed; color: var(--answer); font-weight: 700; }
+.wb-blank-cell.is-right::after { content: "✓"; color: var(--good-ink); font-weight: 700; }
+.wb-blank-cell.is-wrong::after { content: "✗"; color: var(--bad-ink); font-weight: 700; }
+/* Keep the cell a real table cell (display: flex on a <td> breaks the row);
+   the mark sits inline after a slightly narrower field. */
+.wb-blank-cell.is-right, .wb-blank-cell.is-wrong { white-space: nowrap; }
+.wb-blank-cell.is-right .wb-blank, .wb-blank-cell.is-wrong .wb-blank { width: calc(100% - 1.5em); margin-right: 0.3em; vertical-align: middle; }
+
+/* Written answers. */
+.wb-short-input {
+  display: block;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+  min-height: 4rem;
+}
+.wb-short-input:focus { outline: none; background: color-mix(in srgb, var(--panel) 50%, var(--paper)); }
+.wb-short-input:read-only { color: var(--ink-quiet); }
+.wb-short-hint { color: var(--ink-quiet); font-size: 0.78rem; }
+.wb-self-check { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; padding: 0.55rem 0.85rem 0.75rem; border-top: 1px solid var(--rule-soft); }
+
+/* Expanded editor: the widget takes the whole viewport. */
+.wb-widget.is-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  margin: 0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.wb-widget.is-expanded .wb-editor { flex: 1 0 auto; }
+.wb-widget.is-expanded .wb-editor .CodeMirror-scroll { max-height: none; }
+.wb-widget.is-expanded .wb-console { max-height: 40vh; }
+
+/* Toasts. */
+.wb-toasts { position: fixed; right: 1rem; bottom: 1rem; z-index: 200; display: flex; flex-direction: column; gap: 0.4rem; pointer-events: none; }
+.wb-toast {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.wb-toast.is-shown { opacity: 1; transform: none; }
+.wb-toast-good { background: var(--good-ink); color: #fff; }
+.wb-toast-warn { background: var(--warn-ink); color: #fff; }
+
+/* Landing page cards. */
+.wb-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.wb-card { display: block; padding: 1.1rem 1.25rem 1.2rem; border: 1px solid var(--rule); border-radius: 8px; text-decoration: none; color: var(--ink); background: var(--paper); transition: border-color 0.15s, box-shadow 0.15s; }
+.wb-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.wb-card strong { display: block; font-family: var(--font-sans); color: var(--accent); font-size: 1.1rem; margin-bottom: 0.25rem; }
+.wb-card span { color: var(--ink-quiet); font-size: 1.05rem; }
+
+/* Presentation mode (present.js). The page is shown one topic at a time,
+   scaled up for a projector, with the chrome reduced to a hamburger menu and
+   a small navigator. The root font size is scaled, so everything sized in
+   rem (prose, code, buttons, tables) grows together; the floating controls
+   are sized in px so they stay small. Text is set a little heavier and the
+   greys darker than on the page, which reads better from the back of a room. */
+.wb-present-ui { display: none; }
+html.wb-presenting { font-size: calc(100% * var(--wb-present-scale, 1.9)); }
+html.wb-presenting { --ink-quiet: #4B4D51; --code-comment: #4B4D51; --rule-soft: #D9D9DB; }
+html.wb-presenting[data-theme="dark"] { --ink-quiet: #CFC8C1; --code-comment: #CFC8C1; --rule-soft: #3E3839; }
+body.wb-presenting { display: block; font-weight: 500; -webkit-font-smoothing: auto; }
+/* Widgets re-measure themselves after a topic change; stop the browser from "helpfully" shifting the scroll position while they do. */
+body { overflow-anchor: none; }
+body.wb-presenting > .wb-topbar, body.wb-presenting > .wb-toc { display: none; }
+body.wb-presenting > main { max-width: 60rem; padding: 2.5rem 2rem 5rem; }
+body.wb-presenting > main > :not(.wb-slide-on), body.wb-presenting > main > hr { display: none !important; }
+body.wb-presenting > main > h2.wb-slide-on, body.wb-presenting > main > h3.wb-slide-on { margin-top: 0; }
+body.wb-presenting > main > h3.wb-slide-on { font-size: 1.6rem; padding-top: 1rem; }
+body.wb-presenting > main > h3.wb-slide-on::before { content: ""; display: block; width: 2.5rem; height: 3px; background: var(--accent-fill); margin-bottom: 0.9rem; }
+body.wb-presenting .wb-present-ui { display: contents; }
+body.wb-presenting strong { font-weight: 700; }
+body.wb-presenting code, body.wb-presenting kbd { font-size: 0.85em; font-weight: 500; }
+body.wb-presenting .wb-editor .CodeMirror, body.wb-presenting .wb-console, body.wb-presenting pre { font-size: 1.05rem; font-weight: 500; }
+body.wb-presenting .wb-editor .CodeMirror-scroll {
+  min-height: calc(var(--wb-editor-min-lines, 3) * 1.55 * 1.05rem + 0.9rem);
+  max-height: calc(var(--wb-editor-max-lines, 16) * 1.55 * 1.05rem + 0.9rem);
+}
+body.wb-presenting .wb-editor .CodeMirror-linenumber { font-size: 0.85rem; }
+body.wb-presenting .cm-s-workbook .cm-comment { font-style: normal; }
+body.wb-presenting .wb-blank input { font-weight: 500; }
+
+.wb-present-menu { position: fixed; top: 14px; right: 16px; z-index: 150; font-family: var(--font-sans); font-size: 15px; }
+.wb-present-menu > summary { font-size: 20px; padding: 6px 9px; color: var(--ink-quiet); background: var(--paper); border-color: var(--rule-soft); box-shadow: var(--shadow); }
+.wb-present-menu > summary:hover { color: var(--ink); background: var(--panel); }
+.wb-present-menu .wb-menu-items { width: 320px; max-height: calc(100vh - 80px); overflow-y: auto; font-size: 15px; top: calc(100% + 6px); padding: 6px; }
+.wb-present-menu .wb-menu-item { padding: 6px 11px; font-size: 15px; border-radius: 5px; }
+.wb-present-menu hr { margin: 5px 0; }
+.wb-present-menu-title { color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 700; padding: 6px 11px 3px; }
+.wb-present-item { display: flex; gap: 10px; align-items: baseline; padding: 4px 11px; font-size: 14px; }
+.wb-present-item.is-level-3 { padding-left: 26px; color: var(--ink-quiet); }
+.wb-present-item.is-current { background: var(--accent-wash); color: var(--accent); font-weight: 600; }
+.wb-present-item-n { flex: none; min-width: 1.6em; text-align: right; color: var(--ink-quiet); font-variant-numeric: tabular-nums; font-size: 12px; }
+.wb-present-row { display: flex; align-items: center; gap: 5px; padding: 3px 11px; color: var(--ink); }
+.wb-present-row .wb-btn { font-size: 13px; padding: 6px 9px; }
+.wb-present-scale { min-width: 3em; text-align: center; color: var(--ink-quiet); font-variant-numeric: tabular-nums; font-size: 13px; }
+.wb-present-menu kbd { float: right; margin-left: 16px; font-size: 11px; color: var(--ink-quiet); background: var(--panel); border: 1px solid var(--rule-soft); border-radius: 4px; padding: 1px 6px; }
+.wb-present-hint { color: var(--ink-quiet); font-size: 12px; padding: 6px 11px 3px; }
+
+.wb-present-nav {
+  position: fixed; right: 16px; bottom: 16px; z-index: 150;
+  display: flex; align-items: center; gap: 2px;
+  padding: 4px 6px 4px 14px;
+  font-family: var(--font-sans); font-size: 14px;
+  background: var(--paper); border: 1px solid var(--rule-soft); border-radius: 999px; box-shadow: var(--shadow);
+  opacity: 0.55; transition: opacity 0.2s;
+}
+.wb-present-nav:hover, .wb-present-nav:focus-within { opacity: 1; }
+.wb-present-nav .wb-btn-icon { font-size: 21px; line-height: 1; padding: 2px 8px; border-radius: 999px; }
+.wb-present-crumb { color: var(--ink-quiet); max-width: 440px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; }
+.wb-present-counter { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: center; }
+.wb-present-track { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; z-index: 150; background: var(--rule-soft); }
+.wb-present-bar { display: block; height: 100%; background: var(--accent-fill); transition: width 0.25s; }
+@media (max-width: 768px) { .wb-present-crumb { display: none; } }
+
+@media print {
+  .wb-topbar, .wb-toc, .wb-toolbar, .wb-toasts, .wb-present-ui { display: none !important; }
+  body.wb-has-toc { display: block; }
+}

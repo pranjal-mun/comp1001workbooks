@@ -1,0 +1,869 @@
+{
+  "id": "lecture-07",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 7 Workbook",
+  "subtitle": "Strings",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "course = 'COMP 1001'\nmessage = \"Welcome!\"\n\nprint(course)\nprint(message)",
+      "output": "COMP 1001\nWelcome!"
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "word = 'Python'\ncourse = 'COMP 1001'\n\nprint(len(word))\nprint(len(course))",
+      "output": "6\n9"
+    },
+    "cp1-count": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n1": {
+          "accept": [
+            "6"
+          ]
+        },
+        "n2": {
+          "accept": [
+            "9"
+          ]
+        }
+      }
+    },
+    "cp1-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSBzcGFjZSBpcyBhIGNoYXJhY3Rlciwgc28gYGxlbigpYCBjb3VudHMgaXQuIGAnaWNlIGNyZWFtJ2AgaGFzIHRocmVlIGxldHRlcnMsIG9uZSBzcGFjZSwgYW5kIGZpdmUgbGV0dGVyczogOSBjaGFyYWN0ZXJzIGluIHRvdGFsLg=="
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "first = 'data'\nsecond = 'science'\nphrase = first + ' ' + second\n\nprint(phrase)",
+      "output": "data science"
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "print('-' * 12)\nprint('go! ' * 3)",
+      "output": "------------\ngo! go! go! "
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "room = 301\nlabel = 'Room ' + str(room)\nprint(label)",
+      "output": "Room 301"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 6,
+      "starter": "# 1. Join 'COMP', one space, and '1001'\nprint(...)\n\n# 2. A line of 20 equals signs\nprint(...)\n\n# 3. Complete the conversion\nprint('Lab ' + ...(4))",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "COMP 1001\n====================\nLab 4"
+        }
+      ],
+      "check": "assert \"COMP 1001\" not in __source__, \"Build 'COMP 1001' from the three pieces with +, rather than typing it as one string.\"\nassert \"=\" * 20 not in __source__, \"Use repetition (*) to make the 20 equals signs, rather than typing them.\"\nassert \"str(\" in __source__, \"Use str() to turn the number 4 into text before joining it.\"",
+      "answer": "cHJpbnQoJ0NPTVAnICsgJyAnICsgJzEwMDEnKQpwcmludCgnPScgKiAyMCkKcHJpbnQoJ0xhYiAnICsgc3RyKDQpKQ=="
+    },
+    "ex-w06": {
+      "type": "example",
+      "code": "word = 'Python'\n\nprint(word[0])\nprint(word[2])\nprint(word[5])",
+      "output": "P\nt\nn"
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "word = 'Python'\n\nprint(word[-1])\nprint(word[-2])\nprint(word[-6])",
+      "output": "n\no\nP"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "'y'",
+            "\"y\"",
+            "y"
+          ],
+          "caseSensitive": true
+        },
+        "i2": {
+          "accept": [
+            "'h'",
+            "\"h\"",
+            "h"
+          ],
+          "caseSensitive": true
+        },
+        "i3": {
+          "accept": [
+            "5"
+          ]
+        },
+        "last": {
+          "accept": [
+            "word[-1]",
+            "word[len(word) - 1]",
+            "word[len(word)-1]",
+            "word[len(word) -1]",
+            "word[len(word)- 1]"
+          ],
+          "placeholder": "expression",
+          "width": "14rem"
+        }
+      }
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "word = 'Python'\nprint(word[6])"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n": {
+          "accept": [
+            "10"
+          ]
+        },
+        "last": {
+          "accept": [
+            "9"
+          ]
+        },
+        "err": {
+          "accept": [
+            "IndexError",
+            "an IndexError",
+            "IndexError: string index out of range",
+            "index error"
+          ],
+          "placeholder": "error name",
+          "width": "12rem"
+        }
+      }
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "word = 'Python'\n\nprint(word[0:3])\nprint(word[2:5])",
+      "output": "Pyt\ntho"
+    },
+    "ex-w10": {
+      "type": "example",
+      "code": "word = 'Python'\n\nprint(word[:3])\nprint(word[3:])\nprint(word[-3:])\nprint(word[:])",
+      "output": "Pyt\nhon\nhon\nPython"
+    },
+    "cp5-slices": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "course[:4]",
+            "course[0:4]",
+            "course[:-4]",
+            "course[0:-4]"
+          ],
+          "placeholder": "slice",
+          "width": "10rem"
+        },
+        "s2": {
+          "accept": [
+            "course[4:]",
+            "course[4:8]",
+            "course[-4:]",
+            "course[-4:8]"
+          ],
+          "placeholder": "slice",
+          "width": "10rem"
+        },
+        "s3": {
+          "accept": [
+            "course[2:5]",
+            "course[-6:-3]",
+            "course[2:-3]",
+            "course[-6:5]"
+          ],
+          "placeholder": "slice",
+          "width": "10rem"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGVuZCBpcyBhIHN0b3BwaW5nIGJvdW5kYXJ5LCBub3QgYSBwb3NpdGlvbiB0byBpbmNsdWRlLiBFeGNsdWRpbmcgaXQgbGV0cyB0d28gYWRqYWNlbnQgc2xpY2VzIG1lZXQgY2xlYW5seSB3aXRob3V0IGxvc2luZyBvciByZXBlYXRpbmcgYSBjaGFyYWN0ZXIsIGFzIGluIGBjb3Vyc2VbOjRdICsgY291cnNlWzQ6XWAsIGFuZCBtYWtlcyB0aGUgbGVuZ3RoIG9mIGB0ZXh0W2E6Yl1gIHNpbXBseSBgYiAtIGFgLg=="
+    },
+    "ex-w11": {
+      "type": "example",
+      "code": "word = 'Python'\nword[0] = 'J'"
+    },
+    "ex-w12": {
+      "type": "example",
+      "code": "word = 'Python'\nnew_word = 'J' + word[1:]\n\nprint(word)\nprint(new_word)",
+      "output": "Python\nJython"
+    },
+    "cp6-expr": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e": {
+          "accept": [
+            "'h' + label[1:]",
+            "\"h\" + label[1:]",
+            "'h' + label[1:3]",
+            "\"h\" + label[1:3]",
+            "'h' + label[-2:]",
+            "\"h\" + label[-2:]",
+            "'h'+label[1:]",
+            "\"h\"+label[1:]",
+            "'h'+label[1:3]",
+            "\"h\"+label[1:3]"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "14rem"
+        }
+      }
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIFN0cmluZ3MgYXJlIGltbXV0YWJsZSwgc28gdGhlIGV4cHJlc3Npb24gY3JlYXRlcyBhIG5ldyBzdHJpbmcgYCdoYXQnYCBhbmQgbGVhdmVzIGBsYWJlbGAgcmVmZXJyaW5nIHRvIGAnY2F0J2AuIE9ubHkgYW4gYXNzaWdubWVudCBzdWNoIGFzIGBsYWJlbCA9ICdoJyArIGxhYmVsWzE6XWAgd291bGQgbWFrZSB0aGUgbmFtZSByZWZlciB0byB0aGUgbmV3IHZhbHVlLg=="
+    },
+    "ex-w13": {
+      "type": "example",
+      "code": "name = '  Ada Lovelace  '\nclean_name = name.strip()\nupper_name = clean_name.upper()\n\nprint(name)\nprint(clean_name)\nprint(upper_name)",
+      "output": "  Ada Lovelace  \nAda Lovelace\nADA LOVELACE"
+    },
+    "ex-w14": {
+      "type": "example",
+      "code": "message = 'red balloon, red kite'\nchanged = message.replace('red', 'blue')\n\nprint(message)\nprint(changed)",
+      "output": "red balloon, red kite\nblue balloon, blue kite"
+    },
+    "cp7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "title = '  Python Basics  '\n\n# Your statements here\n\nprint(clean_title)",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "python basics"
+        }
+      ],
+      "check": "assert title == '  Python Basics  ', \"Leave title as it is: the methods should return new strings, not change the original.\"\nassert clean_title == 'python basics', 'clean_title should hold the stripped, lowercase text.'\nassert '.strip(' in __source__ and '.lower(' in __source__, 'Use the .strip() and .lower() methods.'",
+      "answer": "dGl0bGUgPSAnICBQeXRob24gQmFzaWNzICAnCgpjbGVhbl90aXRsZSA9IHRpdGxlLnN0cmlwKCkKY2xlYW5fdGl0bGUgPSBjbGVhbl90aXRsZS5sb3dlcigpCgpwcmludChjbGVhbl90aXRsZSk=",
+      "answerNote": "The one-line version clean_title = title.strip().lower() is also correct."
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "U3RyaW5nIG1ldGhvZHMgZG8gbm90IG1vZGlmeSBgdGl0bGVgOyB0aGV5IHJldHVybiBhIG5ldyBzdHJpbmcuIElmIHRoZSByZXN1bHQgaXMgbm90IGFzc2lnbmVkIHRvIGEgbmFtZSwgdGhlIG5ldyB2YWx1ZSBpcyBkaXNjYXJkZWQgYW5kIG5vdGhpbmcgaXMga2VwdC4="
+    },
+    "ex-w15": {
+      "type": "example",
+      "code": "message = 'banana bread'\n\nprint(message.find('ana'))\nprint(message.find('z'))\nprint(message.count('a'))\nprint('bread' in message)\nprint('rice' in message)",
+      "output": "1\n-1\n4\nTrue\nFalse"
+    },
+    "ex-w16": {
+      "type": "example",
+      "code": "colours = 'red,green,blue'\npieces = colours.split(',')\nprint(pieces)",
+      "output": "['red', 'green', 'blue']"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "f": {
+          "accept": [
+            "2"
+          ]
+        },
+        "c": {
+          "accept": [
+            "4"
+          ]
+        },
+        "m": {
+          "accept": [
+            "'sip' in text",
+            "\"sip\" in text"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "op": {
+          "accept": [
+            ".find()",
+            "find()",
+            "find",
+            ".find",
+            "text.find(part)",
+            "text.find()",
+            "text.find(...)",
+            "the find() method",
+            "find method",
+            ".find(part)",
+            "text.find('sip')"
+          ],
+          "placeholder": "operation",
+          "width": "12rem"
+        }
+      }
+    },
+    "ex-w17": {
+      "type": "example",
+      "code": "number = 12345\ndigits = str(number)\n\nprint(len(digits))\nprint(digits[0])\nprint(digits[-1])",
+      "output": "5\n1\n5"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n": {
+          "accept": [
+            "len(str(code))"
+          ],
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "d": {
+          "accept": [
+            "str(code)[-1]",
+            "str(code)[4]",
+            "str(code)[len(str(code)) - 1]",
+            "str(code)[len(str(code))-1]"
+          ],
+          "placeholder": "expression",
+          "width": "12rem"
+        }
+      }
+    },
+    "ex-w18": {
+      "type": "example",
+      "code": "raw_title = '  Introduction to Python  '\ntitle = raw_title.strip()\nshort_title = title[:12]\n\nprint(title)\nprint(short_title)\nprint(len(title))\nprint('Python' in title)"
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t": {
+          "accept": [
+            "'Introduction to Python'",
+            "\"Introduction to Python\"",
+            "Introduction to Python"
+          ],
+          "caseSensitive": true,
+          "placeholder": "string",
+          "width": "16rem"
+        }
+      }
+    },
+    "fr2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r": {
+          "accept": [
+            "0 through 11",
+            "0-11",
+            "0 - 11",
+            "0 to 11",
+            "0..11",
+            "0…11",
+            "0 up to 11",
+            "0 through 11 inclusive",
+            "0 to 11 inclusive",
+            "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11",
+            "0,1,2,3,4,5,6,7,8,9,10,11",
+            "indexes 0 through 11",
+            "indexes 0 to 11"
+          ],
+          "placeholder": "e.g. 3 through 7",
+          "width": "12rem"
+        }
+      }
+    },
+    "fr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Introduction to Python"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 1",
+          "width": "16rem"
+        },
+        "l2": {
+          "accept": [
+            "Introduction"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 2",
+          "width": "16rem"
+        },
+        "l3": {
+          "accept": [
+            "22"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 3",
+          "width": "16rem"
+        },
+        "l4": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 4",
+          "width": "16rem"
+        }
+      }
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIGAuc3RyaXAoKWAgcmV0dXJucyBhIG5ldyBzdHJpbmcsIHdoaWNoIGlzIGFzc2lnbmVkIHRvIGB0aXRsZWAuIFN0cmluZ3MgYXJlIGltbXV0YWJsZSwgc28gYHJhd190aXRsZWAgc3RpbGwgcmVmZXJzIHRvIGAnICBJbnRyb2R1Y3Rpb24gdG8gUHl0aG9uICAnYCB3aXRoIGl0cyBvdXRlciBzcGFjZXMu"
+    },
+    "ex-w18-run": {
+      "type": "example",
+      "code": "raw_title = '  Introduction to Python  '\ntitle = raw_title.strip()\nshort_title = title[:12]\n\nprint(title)\nprint(short_title)\nprint(len(title))\nprint('Python' in title)",
+      "output": "Introduction to Python\nIntroduction\n22\nTrue"
+    },
+    "ex-w19": {
+      "type": "example",
+      "code": "raw_name = input('Name: ')\nraw_code = input('Course code: ')\n\nname = raw_name.strip()\ncode = raw_code.strip().upper()"
+    },
+    "badge": {
+      "type": "code",
+      "xp": 10,
+      "starter": "raw_name = input('Name: ')\nraw_code = input('Course code: ')\n\nname = ...\ncode = ...\nbadge = ...\nborder = ...\n\nprint(border)\nprint(badge)\nprint(border)\nprint('COMP course:', ...)",
+      "cases": [
+        {
+          "name": "Ada Lovelace, comp1001",
+          "inputs": [
+            "  Ada Lovelace  ",
+            " comp1001 "
+          ],
+          "expected": "Name: Course code: -----------------------\nAda Lovelace | COMP1001\n-----------------------\nCOMP course: True"
+        },
+        {
+          "name": "Li, art",
+          "inputs": [
+            "Li",
+            "art"
+          ],
+          "expected": "Name: Course code: --------\nLi | ART\n--------\nCOMP course: False"
+        },
+        {
+          "name": "Grace Hopper, COMP 2001",
+          "inputs": [
+            "Grace Hopper ",
+            "comp 2001"
+          ],
+          "expected": "Name: Course code: ------------------------\nGrace Hopper | COMP 2001\n------------------------\nCOMP course: True"
+        }
+      ],
+      "answer": "cmF3X25hbWUgPSBpbnB1dCgnTmFtZTogJykKcmF3X2NvZGUgPSBpbnB1dCgnQ291cnNlIGNvZGU6ICcpCgpuYW1lID0gcmF3X25hbWUuc3RyaXAoKQpjb2RlID0gcmF3X2NvZGUuc3RyaXAoKS51cHBlcigpCmJhZGdlID0gbmFtZSArICcgfCAnICsgY29kZQpib3JkZXIgPSAnLScgKiBsZW4oYmFkZ2UpCgpwcmludChib3JkZXIpCnByaW50KGJhZGdlKQpwcmludChib3JkZXIpCnByaW50KCdDT01QIGNvdXJzZTonLCAnQ09NUCcgaW4gY29kZSk=",
+      "minLines": 12,
+      "check": "assert '.strip(' in __source__, 'Use .strip() to remove the outer whitespace from both inputs.'\nassert '.upper(' in __source__, 'Use .upper() to store the course code in uppercase.'\nassert 'len(' in __source__, 'Make the border exactly as long as the badge by repeating \"-\" len(badge) times.'\nassert ' in ' in __source__, \"Use the in operator to report whether 'COMP' occurs in the code.\""
+    },
+    "cpr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "8"
+          ]
+        },
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "'ce'",
+            "\"ce\"",
+            "ce"
+          ],
+          "caseSensitive": true
+        },
+        "t2": {
+          "accept": [
+            "str"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "'icecream'",
+            "\"icecream\"",
+            "icecream"
+          ],
+          "caseSensitive": true
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "'creamice'",
+            "\"creamice\"",
+            "creamice"
+          ],
+          "caseSensitive": true
+        },
+        "t4": {
+          "accept": [
+            "str"
+          ]
+        },
+        "v5": {
+          "accept": [
+            "'iceice'",
+            "\"iceice\"",
+            "iceice"
+          ],
+          "caseSensitive": true
+        },
+        "t5": {
+          "accept": [
+            "str"
+          ]
+        }
+      }
+    },
+    "ex-p02": {
+      "type": "example",
+      "code": "n = 4\nnumeric_result = n + n\n\ndigit = '4'\ntext_result = digit + digit"
+    },
+    "cpr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YG51bWVyaWNfcmVzdWx0YCBpcyB0aGUgaW50ZWdlciBgOGAgYmVjYXVzZSBgK2AgYWRkcyB0d28gYGludGAgdmFsdWVzLiBgdGV4dF9yZXN1bHRgIGlzIHRoZSBzdHJpbmcgYCc0NCdgIGJlY2F1c2UgYCtgIGJldHdlZW4gdHdvIHN0cmluZ3MgbWVhbnMgY29uY2F0ZW5hdGlvbjogdGhlIGNoYXJhY3RlcnMgYXJlIGpvaW5lZCBlbmQgdG8gZW5kLiBUaGUgb3BlcmF0b3IgZG9lcyBkaWZmZXJlbnQgd29yayBkZXBlbmRpbmcgb24gdGhlIHR5cGVzIG9mIGl0cyBvcGVyYW5kcy4="
+    },
+    "cpr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "first": {
+          "accept": [
+            "word[0]"
+          ],
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "last": {
+          "accept": [
+            "word[-1]",
+            "word[len(word) - 1]",
+            "word[len(word)-1]"
+          ],
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "mid": {
+          "accept": [
+            "word[len(word) // 2]",
+            "word[len(word)//2]",
+            "word[(len(word) - 1) // 2]",
+            "word[(len(word)-1)//2]",
+            "word[len(word) // 2 ]"
+          ],
+          "placeholder": "expression",
+          "width": "12rem"
+        }
+      }
+    },
+    "cpr4": {
+      "type": "code",
+      "xp": 5,
+      "starter": "days = 'SunMonTueWedThuFriSat'\nday_number = int(input('Day number (0-6): '))\n\nstart = ...\nabbreviation = ...\nprint(abbreviation)",
+      "cases": [
+        {
+          "name": "Day 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Day number (0-6): Sun"
+        },
+        {
+          "name": "Day 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "Day number (0-6): Sat"
+        },
+        {
+          "name": "Day 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Day number (0-6): Wed"
+        }
+      ],
+      "answer": "ZGF5cyA9ICdTdW5Nb25UdWVXZWRUaHVGcmlTYXQnCmRheV9udW1iZXIgPSBpbnQoaW5wdXQoJ0RheSBudW1iZXIgKDAtNik6ICcpKQoKc3RhcnQgPSAzICogZGF5X251bWJlcgphYmJyZXZpYXRpb24gPSBkYXlzW3N0YXJ0OnN0YXJ0ICsgM10KcHJpbnQoYWJicmV2aWF0aW9uKQ==",
+      "check": "import re\nliterals = [a or b for a, b in re.findall(r\"'([^']*)'|\\\"([^\\\"]*)\\\"\", __source__)]\nfor lit in literals:\n    assert not (len(lit) == 3 and lit in 'SunMonTueWedThuFriSat' and lit != 'Day'), \"Do not type the abbreviation %r yourself: slice it out of the stored string with calculated boundaries.\" % lit\nassert \"[\" in __source__ and \":\" in __source__.split(\"input(\")[-1], \"Use a slice with calculated start and end boundaries.\"\n"
+    },
+    "cpr5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "word = 'seesaw'\nfirst = 's'\nsecond = 'e'\n\n# Three .replace() calls, each stored back in word\n\nprint(word)",
+      "cases": [
+        {
+          "name": "seesaw",
+          "expected": "esseaw"
+        },
+        {
+          "name": "excess",
+          "rewrite": [
+            [
+              "word = 'seesaw'",
+              "word = 'excess'"
+            ]
+          ],
+          "expected": "sxcsee"
+        }
+      ],
+      "check": "assert __source__.count('.replace(') >= 3, 'Use three .replace() calls: one to the temporary character, and two to swap.'\nassert \"'*'\" in __source__ or '\"*\"' in __source__, \"Use '*' as the temporary character.\"\nassert 'word = word.replace' in __source__.replace('  ', ' '), 'Store each result back in word; .replace() returns a new string.'",
+      "answer": "d29yZCA9ICdzZWVzYXcnCmZpcnN0ID0gJ3MnCnNlY29uZCA9ICdlJwoKd29yZCA9IHdvcmQucmVwbGFjZShmaXJzdCwgJyonKQp3b3JkID0gd29yZC5yZXBsYWNlKHNlY29uZCwgZmlyc3QpCndvcmQgPSB3b3JkLnJlcGxhY2UoJyonLCBzZWNvbmQpCgpwcmludCh3b3JkKQ=="
+    },
+    "cpr5-value": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v": {
+          "accept": [
+            "'esseaw'",
+            "\"esseaw\"",
+            "esseaw"
+          ],
+          "caseSensitive": true,
+          "placeholder": "final value"
+        }
+      }
+    },
+    "cpr6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "text = 'Python'\nmiddle = len(text) // 2\n\nprint(...)  # 1. first character\nprint(...)  # 2. last character\nprint(...)  # 3. single middle character (odd length)\nprint(...)  # 4. middle two characters (even length)",
+      "cases": [
+        {
+          "name": "text = 'Python' (even length)",
+          "expected": "P\nn\nh\nth"
+        },
+        {
+          "name": "text = 'racecar' (odd length)",
+          "rewrite": [
+            [
+              "text = 'Python'",
+              "text = 'racecar'"
+            ]
+          ],
+          "expected": "r\nr\ne\nce"
+        }
+      ],
+      "check": "import re\nfor n in re.findall(r'text\\[\\s*(-?\\d+)', __source__):\n    assert n in ('0', '-1'), 'Do not use fixed numeric indexes (other than 0 and -1); calculate them from len(text).'",
+      "answer": "dGV4dCA9ICdQeXRob24nCm1pZGRsZSA9IGxlbih0ZXh0KSAvLyAyCgpwcmludCh0ZXh0WzBdKQpwcmludCh0ZXh0Wy0xXSkKcHJpbnQodGV4dFttaWRkbGVdKQpwcmludCh0ZXh0W21pZGRsZSAtIDE6bWlkZGxlICsgMV0p"
+    },
+    "cpr7": {
+      "type": "code",
+      "xp": 5,
+      "starter": "months = 'JanFebMarAprMayJunJulAugSepOctNovDec'\nmonth_number = int(input('Month number (1-12): '))\n\nstart = ...\nmonth = ...\nprint(month)",
+      "cases": [
+        {
+          "name": "Month 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Month number (1-12): Jan"
+        },
+        {
+          "name": "Month 12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Month number (1-12): Dec"
+        },
+        {
+          "name": "Month 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "Month number (1-12): Jul"
+        }
+      ],
+      "answer": "bW9udGhzID0gJ0phbkZlYk1hckFwck1heUp1bkp1bEF1Z1NlcE9jdE5vdkRlYycKbW9udGhfbnVtYmVyID0gaW50KGlucHV0KCdNb250aCBudW1iZXIgKDEtMTIpOiAnKSkKCnN0YXJ0ID0gMyAqIChtb250aF9udW1iZXIgLSAxKQptb250aCA9IG1vbnRoc1tzdGFydDpzdGFydCArIDNdCnByaW50KG1vbnRoKQ==",
+      "check": "import re\nliterals = [a or b for a, b in re.findall(r\"'([^']*)'|\\\"([^\\\"]*)\\\"\", __source__)]\nfor lit in literals:\n    assert not (len(lit) == 3 and lit in 'JanFebMarAprMayJunJulAugSepOctNovDec' and lit != 'Jan'), \"Do not type the abbreviation %r yourself: slice it out of the stored string with calculated boundaries.\" % lit\nassert \"[\" in __source__ and \":\" in __source__.split(\"input(\")[-1], \"Use a slice with calculated start and end boundaries.\"\n"
+    },
+    "cpr8": {
+      "type": "code",
+      "xp": 5,
+      "starter": "word = input('Word: ')\nabbreviation = ...\nprint(abbreviation)",
+      "cases": [
+        {
+          "name": "Mississippi",
+          "inputs": [
+            "Mississippi"
+          ],
+          "expected": "Word: Mis...ppi"
+        },
+        {
+          "name": "Python",
+          "inputs": [
+            "Python"
+          ],
+          "expected": "Word: Pyt...hon"
+        },
+        {
+          "name": "Newfoundland",
+          "inputs": [
+            "Newfoundland"
+          ],
+          "expected": "Word: New...and"
+        }
+      ],
+      "answer": "d29yZCA9IGlucHV0KCdXb3JkOiAnKQphYmJyZXZpYXRpb24gPSB3b3JkWzozXSArICcuLi4nICsgd29yZFstMzpdCnByaW50KGFiYnJldmlhdGlvbik="
+    },
+    "cpr9": {
+      "type": "code",
+      "xp": 5,
+      "starter": "digits = input('Ten digits: ')\n\nformatted = ...\nprint(formatted)",
+      "cases": [
+        {
+          "name": "7095550123",
+          "inputs": [
+            "7095550123"
+          ],
+          "expected": "Ten digits: (709) 555-0123"
+        },
+        {
+          "name": "0123456789",
+          "inputs": [
+            "0123456789"
+          ],
+          "expected": "Ten digits: (012) 345-6789"
+        }
+      ],
+      "answer": "ZGlnaXRzID0gaW5wdXQoJ1RlbiBkaWdpdHM6ICcpCgpmb3JtYXR0ZWQgPSAnKCcgKyBkaWdpdHNbOjNdICsgJykgJwpmb3JtYXR0ZWQgPSBmb3JtYXR0ZWQgKyBkaWdpdHNbMzo2XSArICctJyArIGRpZ2l0c1s2Ol0KcHJpbnQoZm9ybWF0dGVkKQ==",
+      "answerNote": "A single expression '(' + digits[:3] + ') ' + digits[3:6] + '-' + digits[6:] is also fine.",
+      "check": "import re\nassert not re.search(r'\\bint\\(', __source__), 'Keep the input as a string so that a leading zero is preserved.'"
+    },
+    "cpr10": {
+      "type": "code",
+      "xp": 5,
+      "starter": "folder = input('Folder: ')\nname = input('File name: ')\nextension = input('Extension: ')\n\npath = ...\nprint(path)",
+      "cases": [
+        {
+          "name": "notes/lecture07.txt",
+          "inputs": [
+            "notes",
+            "lecture07",
+            "txt"
+          ],
+          "expected": "Folder: File name: Extension: notes/lecture07.txt"
+        },
+        {
+          "name": "images/logo.png",
+          "inputs": [
+            "images",
+            "logo",
+            "png"
+          ],
+          "expected": "Folder: File name: Extension: images/logo.png"
+        }
+      ],
+      "answer": "Zm9sZGVyID0gaW5wdXQoJ0ZvbGRlcjogJykKbmFtZSA9IGlucHV0KCdGaWxlIG5hbWU6ICcpCmV4dGVuc2lvbiA9IGlucHV0KCdFeHRlbnNpb246ICcpCgpwYXRoID0gZm9sZGVyICsgJy8nICsgbmFtZSArICcuJyArIGV4dGVuc2lvbgpwcmludChwYXRoKQ=="
+    },
+    "cpr11": {
+      "type": "code",
+      "xp": 5,
+      "starter": "digits = input('Five digits: ')\nformatted = ...\nprint(formatted)",
+      "cases": [
+        {
+          "name": "23456",
+          "inputs": [
+            "23456"
+          ],
+          "expected": "Five digits: 23,456"
+        },
+        {
+          "name": "10000",
+          "inputs": [
+            "10000"
+          ],
+          "expected": "Five digits: 10,000"
+        }
+      ],
+      "answer": "ZGlnaXRzID0gaW5wdXQoJ0ZpdmUgZGlnaXRzOiAnKQpmb3JtYXR0ZWQgPSBkaWdpdHNbOjJdICsgJywnICsgZGlnaXRzWzI6XQpwcmludChmb3JtYXR0ZWQp"
+    },
+    "cpr12": {
+      "type": "code",
+      "xp": 5,
+      "starter": "digits = input('Whole number: ')\nformatted = ...\nprint(formatted)",
+      "cases": [
+        {
+          "name": "1000",
+          "inputs": [
+            "1000"
+          ],
+          "expected": "Whole number: 1,000"
+        },
+        {
+          "name": "999999",
+          "inputs": [
+            "999999"
+          ],
+          "expected": "Whole number: 999,999"
+        },
+        {
+          "name": "12345",
+          "inputs": [
+            "12345"
+          ],
+          "expected": "Whole number: 12,345"
+        }
+      ],
+      "answer": "ZGlnaXRzID0gaW5wdXQoJ1dob2xlIG51bWJlcjogJykKZm9ybWF0dGVkID0gZGlnaXRzWzotM10gKyAnLCcgKyBkaWdpdHNbLTM6XQpwcmludChmb3JtYXR0ZWQp",
+      "check": "import re\nassert not re.search(r'\\bint\\(', __source__), 'Do not convert the input to an integer; slice the text.'"
+    },
+    "cpr13": {
+      "type": "code",
+      "xp": 5,
+      "starter": "name = input('Name: ')\n\nborder = ...\nmiddle = ...\n\nprint(border)\nprint(middle)\nprint(border)",
+      "cases": [
+        {
+          "name": "Ada",
+          "inputs": [
+            "Ada"
+          ],
+          "expected": "Name: +-----+\n| Ada |\n+-----+"
+        },
+        {
+          "name": "Li",
+          "inputs": [
+            "Li"
+          ],
+          "expected": "Name: +----+\n| Li |\n+----+"
+        },
+        {
+          "name": "Grace Hopper",
+          "inputs": [
+            "Grace Hopper"
+          ],
+          "expected": "Name: +--------------+\n| Grace Hopper |\n+--------------+"
+        }
+      ],
+      "answer": "bmFtZSA9IGlucHV0KCdOYW1lOiAnKQoKYm9yZGVyID0gJysnICsgJy0nICogKGxlbihuYW1lKSArIDIpICsgJysnCm1pZGRsZSA9ICd8ICcgKyBuYW1lICsgJyB8JwoKcHJpbnQoYm9yZGVyKQpwcmludChtaWRkbGUpCnByaW50KGJvcmRlcik=",
+      "check": "import re\nassert not re.search(r'-{2,}', __source__), 'Build the border by repeating \"-\" with *, not by typing a fixed run of hyphens.'\nassert 'len(' in __source__, 'Use len(name) so the border fits any name.'"
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "lecture-08-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 8 Boss Problems",
+  "short": "L08 bosses",
+  "subtitle": "Problem solving with decisions: the if statement",
+  "exercises": {
+    "parity": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 6,
+      "starter": "number = int(input('Number: '))\n# Print whether the number is even or odd.",
+      "cases": [
+        {
+          "name": "Typed 14",
+          "inputs": [
+            "14"
+          ],
+          "expected": "Number: 14 is even."
+        },
+        {
+          "name": "Typed 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "Number: 7 is odd."
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Number: 0 is even."
+        },
+        {
+          "name": "Typed -3",
+          "inputs": [
+            "-3"
+          ],
+          "expected": "Number: -3 is odd."
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \"%\" in __source__, \"Test the remainder with % to tell even from odd.\"\nassert __stdout__.strip().endswith(\".\"), \"End the message with a full stop, as in 14 is even.\"\n",
+      "answer": "bnVtYmVyID0gaW50KGlucHV0KCdOdW1iZXI6ICcpKQppZiBudW1iZXIgJSAyID09IDA6CiAgICBraW5kID0gJ2V2ZW4nCmVsc2U6CiAgICBraW5kID0gJ29kZCcKcHJpbnQoZid7bnVtYmVyfSBpcyB7a2luZH0uJyk=",
+      "answerNote": "number % 2 is 0 for every even number, including 0 and negative numbers."
+    },
+    "dog": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 6,
+      "starter": "years = float(input('Human years: '))\n# Print the age in dog years to one decimal place.",
+      "cases": [
+        {
+          "name": "Typed 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "Human years: 7.0 human years is 41.0 dog years."
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Human years: 2.0 human years is 21.0 dog years."
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Human years: 1.0 human years is 10.5 dog years."
+        },
+        {
+          "name": "Typed 15",
+          "inputs": [
+            "15"
+          ],
+          "expected": "Human years: 15.0 human years is 73.0 dog years."
+        },
+        {
+          "name": "Typed 1.2",
+          "inputs": [
+            "1.2"
+          ],
+          "expected": "Human years: 1.2 human years is 12.6 dog years."
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \":.1f\" in __source__, \"Show both numbers to one decimal place with :.1f in the f-string.\"\nassert \"10.5\" in __source__ and \"4\" in __source__, \"Use 10.5 dog years for each of the first two years and 4 for each year after that.\"\n",
+      "answer": "eWVhcnMgPSBmbG9hdChpbnB1dCgnSHVtYW4geWVhcnM6ICcpKQppZiB5ZWFycyA8PSAyOgogICAgZG9nX3llYXJzID0geWVhcnMgKiAxMC41CmVsc2U6CiAgICBkb2dfeWVhcnMgPSAyMSArICh5ZWFycyAtIDIpICogNApwcmludChmJ3t5ZWFyczouMWZ9IGh1bWFuIHllYXJzIGlzIHtkb2dfeWVhcnM6LjFmfSBkb2cgeWVhcnMuJyk=",
+      "answerNote": "The first two years are worth 21 dog years. The else branch starts from 21 and adds 4 for each remaining year. Both formulas give 21 at exactly 2 years."
+    },
+    "square": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 8,
+      "starter": "position = input('Square: ')\n# Print whether the square is black or white.",
+      "cases": [
+        {
+          "name": "Typed a1",
+          "inputs": [
+            "a1"
+          ],
+          "expected": "Square: a1 is a black square."
+        },
+        {
+          "name": "Typed d5",
+          "inputs": [
+            "d5"
+          ],
+          "expected": "Square: d5 is a white square."
+        },
+        {
+          "name": "Typed h1",
+          "inputs": [
+            "h1"
+          ],
+          "expected": "Square: h1 is a white square."
+        },
+        {
+          "name": "Typed g7",
+          "inputs": [
+            "g7"
+          ],
+          "expected": "Square: g7 is a black square."
+        },
+        {
+          "name": "Typed c6",
+          "inputs": [
+            "c6"
+          ],
+          "expected": "Square: c6 is a white square."
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \".find(\" in __source__, \"Turn the column letter into a number with 'abcdefgh'.find(...) instead of testing each letter.\"\nassert \"%\" in __source__, \"Use % to decide the colour from the column number and the row.\"\nassert \"ord(\" not in __source__, \"ord() is not part of this course; use .find() on the string of column letters.\"\nassert \"[\" in __source__, \"Pick the letter and the digit out of position with indexes.\"\n",
+      "answer": "cG9zaXRpb24gPSBpbnB1dCgnU3F1YXJlOiAnKQpjb2x1bW4gPSAnYWJjZGVmZ2gnLmZpbmQocG9zaXRpb25bMF0pCnJvdyA9IGludChwb3NpdGlvblsxXSkKaWYgKGNvbHVtbiArIHJvdykgJSAyID09IDA6CiAgICBjb2xvdXIgPSAnd2hpdGUnCmVsc2U6CiAgICBjb2xvdXIgPSAnYmxhY2snCnByaW50KGYne3Bvc2l0aW9ufSBpcyBhIHtjb2xvdXJ9IHNxdWFyZS4nKQ==",
+      "answerNote": "'abcdefgh'.find('a') is 0. For a1 the sum is 0 + 1, which is odd, and a1 is black. Each move of one square changes the sum by one and the colour flips."
+    }
+  }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PyLab: a full-screen Python editor that runs in your browser, with interactive input().">
+  <title>PyLab</title>
+  <link rel="icon" href="../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../runtime/workbook.css">
+  <link rel="stylesheet" href="./lab.css">
+  <script type="module" src="./lab.js"></script>
+</head>
+<body class="lab">
+  <header class="lab-topbar">
+    <a class="lab-brand" href="../index.html" title="All workbooks"><img src="../runtime/img/mun-logo.svg" alt="Memorial University"></a>
+    <span class="lab-title"><span class="lab-mark" aria-hidden="true">&gt;_</span> PyLab</span>
+    <span class="lab-status" id="runtime-status" role="status" aria-live="polite"></span>
+    <button id="show-problem" class="wb-btn wb-btn-quiet lab-boss-toggle" type="button" hidden aria-controls="problem" aria-expanded="false">Show problem</button>
+    <span class="wb-spacer"></span>
+    <span class="lab-xp" id="xp" hidden></span>
+    <a id="next-boss" class="wb-btn wb-btn-primary lab-next" hidden></a>
+    <button id="run" class="wb-btn wb-btn-primary" type="button" disabled title="Run (Ctrl/Cmd+Enter)">▶ Run</button>
+    <button id="check" class="wb-btn wb-btn-check" type="button" disabled hidden title="Run every test case">✓ Check</button>
+    <button id="stop" class="wb-btn wb-btn-danger" type="button" disabled>■ Stop</button>
+    <button id="theme-toggle" class="wb-btn wb-btn-quiet" type="button" title="Toggle light / dark">◐</button>
+  </header>
+
+  <main class="lab-workspace">
+    <aside class="lab-problem" id="problem" aria-label="Problem" hidden>
+      <div class="lab-panel-title"><span id="problem-kind">Boss problem</span><span class="wb-spacer"></span><button id="hide-problem" class="wb-btn wb-btn-quiet" type="button" title="Hide the problem to give the editor the whole screen">Hide</button></div>
+      <div id="problem-body" class="lab-problem-body"></div>
+      <div class="lab-panel-foot lab-problem-foot">
+        <a class="wb-btn wb-btn-quiet" href="../index.html">All workbooks</a>
+        <span class="wb-spacer"></span>
+        <button id="answer-boss" class="wb-btn wb-btn-quiet" type="button" title="Replace the code with the model answer" hidden>Load answer</button>
+        <button id="reset-boss" class="wb-btn wb-btn-quiet" type="button" title="Back to the starter code">Reset</button>
+      </div>
+    </aside>
+    <aside class="lab-files" aria-label="Project files">
+      <div class="lab-panel-title">Files <button id="new-file" class="wb-btn wb-btn-quiet wb-btn-icon" type="button" title="New file">+</button></div>
+      <ul id="file-list" class="lab-file-list"></ul>
+      <div class="lab-file-actions">
+        <button id="rename-file" class="wb-btn wb-btn-quiet" type="button">Rename</button>
+        <button id="delete-file" class="wb-btn wb-btn-quiet" type="button">Delete</button>
+      </div>
+      <div class="lab-panel-foot">
+        <button id="reset-project" class="wb-btn wb-btn-quiet" type="button">Reset project</button>
+      </div>
+    </aside>
+
+    <div class="lab-gutter lab-gutter-col" id="problem-gutter" role="separator" aria-orientation="vertical" aria-label="Resize the problem panel" title="Drag to resize" hidden></div>
+
+    <div class="lab-main">
+      <section class="lab-editor-panel" aria-label="Code editor">
+        <div class="lab-panel-title"><span id="active-name">main.py</span><span class="wb-spacer"></span><button id="toggle-comment" class="wb-btn wb-btn-quiet" type="button" title="Comment or uncomment the selected lines (Ctrl/Cmd+/)">Toggle comment</button><button id="copy-file" class="wb-btn wb-btn-quiet" type="button">Copy code</button></div>
+        <div id="editor" class="lab-editor"></div>
+      </section>
+
+      <div class="lab-gutter lab-gutter-row" id="console-gutter" role="separator" aria-orientation="horizontal" aria-label="Resize the console" title="Drag to resize"></div>
+
+      <section class="lab-console-panel" id="console-panel" aria-label="Program output">
+        <div class="lab-panel-title">Console<span class="wb-spacer"></span><button id="clear-output" class="wb-btn wb-btn-quiet" type="button">Clear</button><button id="console-side" class="wb-btn wb-btn-quiet" type="button"></button><button id="console-hide" class="wb-btn wb-btn-quiet" type="button" title="Hide the console (Run and Check bring it back)">Hide</button></div>
+        <div id="console" class="lab-console"></div>
+        <div id="results" class="lab-console wb-result" hidden></div>
+        <p class="lab-hint" id="console-hint">Press ▶ Run. When your program calls <code>input()</code>, type the answer in the console and press Enter.</p>
+      </section>
+      <button class="lab-console-tab" id="console-show" type="button" title="Show the console">Show console ▴</button>
+    </div>
+  </main>
+
+  <dialog id="done" class="lab-done" aria-labelledby="done-title">
+    <div class="lab-done-icon" id="done-icon" aria-hidden="true"></div>
+    <h2 id="done-title">Good job!</h2>
+    <p id="done-text"></p>
+    <div class="lab-done-actions" id="done-actions"></div>
+  </dialog>
+
+  <footer class="lab-footer">
+    <span>Python runs locally in your browser; files are saved in this browser only.</span>
+    <span class="wb-spacer"></span>
+    <span id="save-status"></span>
+  </footer>
+</body>
+</html>

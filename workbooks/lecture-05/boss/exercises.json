@@ -1,0 +1,229 @@
+{
+  "id": "lecture-05-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 5 Boss Problems",
+  "short": "L05 bosses",
+  "subtitle": "Arithmetic, expressions, and modules",
+  "exercises": {
+    "digits": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 7,
+      "starter": "number = 3141\n# Take the number apart, one digit at a time.",
+      "cases": [
+        {
+          "name": "3141",
+          "expected": "3 + 1 + 4 + 1 = 9"
+        },
+        {
+          "name": "9075",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 9075"
+            ]
+          ],
+          "expected": "9 + 0 + 7 + 5 = 21"
+        },
+        {
+          "name": "1000",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 1000"
+            ]
+          ],
+          "expected": "1 + 0 + 0 + 0 = 1"
+        },
+        {
+          "name": "2026",
+          "rewrite": [
+            [
+              "number = 3141",
+              "number = 2026"
+            ]
+          ],
+          "expected": "2 + 0 + 2 + 6 = 10"
+        }
+      ],
+      "check": "assert \"//\" in __source__ and \"%\" in __source__, \"Peel the digits off with // and %; do not turn the number into text.\"\nassert \"str(\" not in __source__, \"Peel the digits off with // and %; do not turn the number into text.\"\nassert \"if\" not in __source__.split(), \"No if statements are needed: // and % do all the work.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print the whole sum on one line with one print() call.\"",
+      "answer": "bnVtYmVyID0gMzE0MQpkMSA9IG51bWJlciAvLyAxMDAwCmQyID0gbnVtYmVyIC8vIDEwMCAlIDEwCmQzID0gbnVtYmVyIC8vIDEwICUgMTAKZDQgPSBudW1iZXIgJSAxMAp0b3RhbCA9IGQxICsgZDIgKyBkMyArIGQ0CnByaW50KGQxLCAiKyIsIGQyLCAiKyIsIGQzLCAiKyIsIGQ0LCAiPSIsIHRvdGFsKQ==",
+      "answerNote": "number // 100 % 10 reads: drop the last two digits, then keep only the last one that remains."
+    },
+    "change": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 14,
+      "starter": "cents = 1234\n# Work out the coins, largest first.",
+      "cases": [
+        {
+          "name": "1234 cents",
+          "expected": "Toonies: 6\nLoonies: 0\nQuarters: 1\nDimes: 0\nNickels: 1\nPennies: 4"
+        },
+        {
+          "name": "999 cents",
+          "rewrite": [
+            [
+              "cents = 1234",
+              "cents = 999"
+            ]
+          ],
+          "expected": "Toonies: 4\nLoonies: 1\nQuarters: 3\nDimes: 2\nNickels: 0\nPennies: 4"
+        },
+        {
+          "name": "5 cents",
+          "rewrite": [
+            [
+              "cents = 1234",
+              "cents = 5"
+            ]
+          ],
+          "expected": "Toonies: 0\nLoonies: 0\nQuarters: 0\nDimes: 0\nNickels: 1\nPennies: 0"
+        },
+        {
+          "name": "388 cents",
+          "rewrite": [
+            [
+              "cents = 1234",
+              "cents = 388"
+            ]
+          ],
+          "expected": "Toonies: 1\nLoonies: 1\nQuarters: 3\nDimes: 1\nNickels: 0\nPennies: 3"
+        }
+      ],
+      "check": "assert \"//\" in __source__ and \"%\" in __source__, \"Use // for how many coins fit and % for what is left over.\"\nassert \"if\" not in __source__.split(), \"No if statements are needed: // and % do all the work.\"\nassert len(__stdout__.strip().splitlines()) == 6, \"Print exactly six lines, one per coin, largest coin first.\"",
+      "answer": "Y2VudHMgPSAxMjM0CnRvb25pZXMgPSBjZW50cyAvLyAyMDAKY2VudHMgPSBjZW50cyAlIDIwMApsb29uaWVzID0gY2VudHMgLy8gMTAwCmNlbnRzID0gY2VudHMgJSAxMDAKcXVhcnRlcnMgPSBjZW50cyAvLyAyNQpjZW50cyA9IGNlbnRzICUgMjUKZGltZXMgPSBjZW50cyAvLyAxMApjZW50cyA9IGNlbnRzICUgMTAKbmlja2VscyA9IGNlbnRzIC8vIDUKcGVubmllcyA9IGNlbnRzICUgNQpwcmludCgiVG9vbmllczoiLCB0b29uaWVzKQpwcmludCgiTG9vbmllczoiLCBsb29uaWVzKQpwcmludCgiUXVhcnRlcnM6IiwgcXVhcnRlcnMpCnByaW50KCJEaW1lczoiLCBkaW1lcykKcHJpbnQoIk5pY2tlbHM6Iiwgbmlja2VscykKcHJpbnQoIlBlbm5pZXM6IiwgcGVubmllcyk=",
+      "answerNote": "Each coin takes what it can with //, and % leaves the rest for the next smaller coin."
+    },
+    "sort3": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 7,
+      "starter": "a = 17\nb = 4\nc = 9\n# Print the three values from smallest to largest.",
+      "cases": [
+        {
+          "name": "17, 4, 9",
+          "expected": "4 9 17"
+        },
+        {
+          "name": "3, 8, 3",
+          "rewrite": [
+            [
+              "a = 17",
+              "a = 3"
+            ],
+            [
+              "b = 4",
+              "b = 8"
+            ],
+            [
+              "c = 9",
+              "c = 3"
+            ]
+          ],
+          "expected": "3 3 8"
+        },
+        {
+          "name": "-2, 10, 0",
+          "rewrite": [
+            [
+              "a = 17",
+              "a = -2"
+            ],
+            [
+              "b = 4",
+              "b = 10"
+            ],
+            [
+              "c = 9",
+              "c = 0"
+            ]
+          ],
+          "expected": "-2 0 10"
+        },
+        {
+          "name": "5, 5, 5",
+          "rewrite": [
+            [
+              "a = 17",
+              "a = 5"
+            ],
+            [
+              "b = 4",
+              "b = 5"
+            ],
+            [
+              "c = 9",
+              "c = 5"
+            ]
+          ],
+          "expected": "5 5 5"
+        }
+      ],
+      "check": "assert \"min(\" in __source__ and \"max(\" in __source__, \"Use min() for the smallest value and max() for the largest.\"\nassert \"sort\" not in __source__, \"No sorting: min, max, and a subtraction are enough.\"\nassert \"if\" not in __source__.split(), \"No if statements: min, max, and a subtraction are enough.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print all three values with one print() call so they land on one line.\"",
+      "answer": "YSA9IDE3CmIgPSA0CmMgPSA5CnNtYWxsZXN0ID0gbWluKGEsIGIsIGMpCmxhcmdlc3QgPSBtYXgoYSwgYiwgYykKbWlkZGxlID0gYSArIGIgKyBjIC0gc21hbGxlc3QgLSBsYXJnZXN0CnByaW50KHNtYWxsZXN0LCBtaWRkbGUsIGxhcmdlc3Qp",
+      "answerNote": "The three values add up to smallest + middle + largest, so taking away the two you already know leaves the middle."
+    },
+    "earth": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 10,
+      "starter": "lat1 = 47.5615\nlon1 = -52.7126\nlat2 = 45.4215\nlon2 = -75.6972\n# Convert to radians, then apply the formula.",
+      "cases": [
+        {
+          "name": "St. John's to Ottawa",
+          "expected": "1768.9"
+        },
+        {
+          "name": "St. John's to Vancouver",
+          "rewrite": [
+            [
+              "lat2 = 45.4215",
+              "lat2 = 49.2827"
+            ],
+            [
+              "lon2 = -75.6972",
+              "lon2 = -123.1207"
+            ]
+          ],
+          "expected": "5005.1"
+        },
+        {
+          "name": "St. John's to London",
+          "rewrite": [
+            [
+              "lat2 = 45.4215",
+              "lat2 = 51.5074"
+            ],
+            [
+              "lon2 = -75.6972",
+              "lon2 = -0.1278"
+            ]
+          ],
+          "expected": "3737.4"
+        },
+        {
+          "name": "St. John's to Sydney",
+          "rewrite": [
+            [
+              "lat2 = 45.4215",
+              "lat2 = -33.8688"
+            ],
+            [
+              "lon2 = -75.6972",
+              "lon2 = 151.2093"
+            ]
+          ],
+          "expected": "17506.1"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nassert \"math.acos\" in __source__, \"The formula needs the inverse cosine: math.acos.\"\nassert \"math.radians\" in __source__, \"Convert each angle from degrees to radians with math.radians before using sin and cos.\"\nassert \"round(\" in __source__, \"Round the distance to one decimal place with round(..., 1).\"",
+      "answer": "aW1wb3J0IG1hdGgKbGF0MSA9IDQ3LjU2MTUKbG9uMSA9IC01Mi43MTI2CmxhdDIgPSA0NS40MjE1CmxvbjIgPSAtNzUuNjk3Mgp0MSA9IG1hdGgucmFkaWFucyhsYXQxKQpnMSA9IG1hdGgucmFkaWFucyhsb24xKQp0MiA9IG1hdGgucmFkaWFucyhsYXQyKQpnMiA9IG1hdGgucmFkaWFucyhsb24yKQpkaXN0YW5jZSA9IDYzNzEuMDEgKiBtYXRoLmFjb3MobWF0aC5zaW4odDEpICogbWF0aC5zaW4odDIpICsgbWF0aC5jb3ModDEpICogbWF0aC5jb3ModDIpICogbWF0aC5jb3MoZzEgLSBnMikpCnByaW50KHJvdW5kKGRpc3RhbmNlLCAxKSk=",
+      "answerNote": "Forgetting math.radians is the classic mistake: sin and cos expect radians, and the distances come out wildly wrong."
+    }
+  }
+}

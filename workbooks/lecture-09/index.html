@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 9 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-09", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 9 Workbook</h1>
+    <div class="wb-subtitle">Relational operators and comparing values</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>build conditions using Python's six relational operators;</li>
+    <li>compare strings, including case-insensitive equality when appropriate;</li>
+    <li>compare computed floating-point values using a tolerance; and</li>
+    <li>design test cases below, at, and above a boundary.</li>
+  </ul>
+  <p class="wb-meta">Reading: §3.2 and §3.6. Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Comparison Expressions</h2>
+<p>A <strong>comparison</strong> asks how two values are related. It is an expression, so it produces a value. The value is either <code>True</code> or <code>False</code>.</p>
+<wb-example id="ex-w01"></wb-example>
+<p><code>True</code> and <code>False</code> belong to the type <code>bool</code>, short for <strong>Boolean</strong>. Python capitalizes both words.</p>
+<wb-example id="ex-w02"></wb-example>
+<p>You can use a comparison directly as an <code>if</code> condition, or store its result in a variable first.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write <code>True</code> or <code>False</code> beside each expression, then give the type each expression produces.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>7 &lt; 9</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>7 == 9</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>9 != 7</code></td><td data-blank="v3"></td></tr>
+        <tr><td>Type each expression produces</td><td data-blank="t"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Relational Operators</h2>
+<p>A <strong>relational operator</strong> compares two values.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td><code>&lt;</code></td><td>less than</td><td><code>3 &lt; 4</code></td><td><code>True</code></td></tr>
+    <tr><td><code>&lt;=</code></td><td>less than or equal to</td><td><code>4 &lt;= 4</code></td><td><code>True</code></td></tr>
+    <tr><td><code>&gt;</code></td><td>greater than</td><td><code>3 &gt; 4</code></td><td><code>False</code></td></tr>
+    <tr><td><code>&gt;=</code></td><td>greater than or equal to</td><td><code>5 &gt;= 2</code></td><td><code>True</code></td></tr>
+    <tr><td><code>==</code></td><td>equal to</td><td><code>3 == 5 - 2</code></td><td><code>True</code></td></tr>
+    <tr><td><code>!=</code></td><td>not equal to</td><td><code>3 != 4</code></td><td><code>True</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The two-character operators have no space inside them: write <code>&lt;=</code>, not <code>&lt; =</code>. The smaller-or-larger symbol comes first: <code>&lt;=</code> and <code>&gt;=</code>, not <code>=&lt;</code> or <code>=&gt;</code>.</p>
+<wb-example id="ex-w03"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Use <code>value = 10</code>. Complete the table without running Python.</p>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>value &lt; 10</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>value &lt;= 10</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>value &gt; 10</code></td><td data-blank="v3"></td></tr>
+        <tr><td><code>value &gt;= 10</code></td><td data-blank="v4"></td></tr>
+        <tr><td><code>value == 10</code></td><td data-blank="v5"></td></tr>
+        <tr><td><code>value != 10</code></td><td data-blank="v6"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. Assignment and Equality</h2>
+<p>The assignment operator <code>=</code> gives a value to a variable. The equality operator <code>==</code> checks whether two values are equal.</p>
+<wb-example id="ex-w04"></wb-example>
+<p>Read <code>floor = 13</code> as “floor gets 13.” Read <code>floor == 13</code> as “floor is equal to 13.” Using assignment where a condition belongs is a syntax error. Run the box below to see the message Python reports.</p>
+<wb-example id="ex-w05"></wb-example>
+<p>Python reports an error similar to:</p>
+<pre class="wb-error">SyntaxError: invalid syntax</pre>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Choose <code>=</code> or <code>==</code> for each blank.</p>
+  <wb-table id="cp3-ops">
+    <table>
+      <thead><tr><th>Task</th><th>Statement</th></tr></thead>
+      <tbody>
+        <tr><td>Store <code>18</code> in <code>age</code></td><td><code>age</code> <span data-blank="store"></span> <code>18</code></td></tr>
+        <tr><td>Test whether <code>age</code> equals <code>18</code></td><td><code>age</code> <span data-blank="test"></span> <code>18</code></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Correct the condition. The first line sets <code>score</code> so the program can run; keep it as given, because the checker swaps it for <code>score = 99</code> to confirm that nothing prints in that case.</p>
+  <wb-exercise id="cp3-fix"></wb-exercise>
+</div>
+
+<h2 id="s4">4. Operator Precedence</h2>
+<p>Arithmetic operators have higher precedence than relational operators. Python calculates both sides, then compares the results.</p>
+<wb-example id="ex-w06"></wb-example>
+<p>Parentheses can still make the intended grouping easier to see.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Show the two values Python compares in each expression, then write the Boolean value of each complete expression.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Expression</th><th>Compares</th><th>with</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>5 + 3 &lt;= 10 - 1</code></td><td data-blank="l1"></td><td data-blank="r1"></td><td data-blank="v1"></td></tr>
+        <tr><td><code>4 * 2 == 16 / 2</code></td><td data-blank="l2"></td><td data-blank="r2"></td><td data-blank="v2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s5">5. String Equality</h2>
+<p>Two strings are equal only when they contain the same characters in the same order with the same capitalization.</p>
+<wb-example id="ex-w07"></wb-example>
+<p>Spaces and punctuation are characters too. Therefore, <code>'yes'</code>, <code>'Yes'</code>, and <code>'yes '</code> are three different strings.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Write <code>True</code> or <code>False</code>.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>'COMP' == 'COMP'</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>'COMP' == 'comp'</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>'hello' != 'hello '</code></td><td data-blank="v3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain the result of the last comparison.</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. Lexicographic String Order</h2>
+<p>Python compares strings character by character. This is called <strong>lexicographic order</strong>. It is similar to dictionary order, but character codes create some important differences:</p>
+<ul>
+  <li>uppercase letters come before lowercase letters;</li>
+  <li>digits come before letters; and</li>
+  <li>if one string is the beginning of another, the shorter string comes first.</li>
+</ul>
+<wb-example id="ex-w08"></wb-example>
+<p>Do not assume string ordering always matches the order a person would expect in a name list. Capitalization can change the result.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Predict each value.</p>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>'cat' &lt; 'dog'</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>'Dog' &lt; 'cat'</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>'note' &lt; 'notebook'</code></td><td data-blank="v3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>For the second comparison, which characters decide the result?</p>
+  <wb-short id="cp6-why"></wb-short>
+</div>
+
+<h2 id="s7">7. Case-Insensitive Equality</h2>
+<p>When capitalization should not matter, convert both strings to the same case before comparing them. The original strings do not change.</p>
+<wb-example id="ex-w09"></wb-example>
+<p>For two variables, apply the method to both sides.</p>
+<wb-example id="ex-w10"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Write a condition that accepts <code>N</code>, <code>n</code>, or any other capitalization of the letter n stored in <code>choice</code>. Replace <code>False</code> in the <code>if</code> line with your condition. Keep the first line as given. The checker swaps <code>'N'</code> for <code>'n'</code>, <code>'y'</code>, and <code>'No'</code> to test the other cases.</p>
+  <wb-exercise id="cp7-cond"></wb-exercise>
+  <p>Why is <code>.lower()</code> applied before the comparison?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8">8. Floating-Point Comparisons</h2>
+<p>Floating-point calculations can contain tiny rounding differences. Exact equality may therefore reject values that are close enough for the problem.</p>
+<wb-example id="ex-w11"></wb-example>
+<p>For computed floats, compare the size of the difference with a small <strong>tolerance</strong>. The function <code>abs()</code> returns a nonnegative distance from zero.</p>
+<wb-example id="ex-w12"></wb-example>
+<p>The appropriate tolerance depends on the problem. The important pattern is <code>abs(x - y) &lt; tolerance</code>, not one fixed tolerance for every program.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>Complete a condition that considers <code>measurement</code> and <code>expected</code> equal when their difference is smaller than <code>0.001</code>.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td><code>abs(</code> <span data-blank="diff"></span> <code>) &lt; 0.001</code></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is exact <code>==</code> risky after floating-point calculations?</p>
+  <wb-short id="cp8-why"></wb-short>
+</div>
+
+<h2 id="s9">9. Mixed-Type Comparisons</h2>
+<p>Numeric <code>int</code> and <code>float</code> values can be compared by value. Text and numbers do not represent the same kind of value.</p>
+<wb-example id="ex-w13"></wb-example>
+<p>Equality between a string and a number produces <code>False</code>. An ordering comparison between them has no sensible meaning and raises a <code>TypeError</code>.</p>
+<wb-example id="ex-w14"></wb-example>
+<p>Python reports an error similar to:</p>
+<pre class="wb-error">TypeError: '&lt;' not supported between instances of 'str' and 'int'</pre>
+<p>This is why numeric text returned by <code>input()</code> must be converted before it is compared with a number.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9</div>
+  <p>For each expression, write <code>True</code>, <code>False</code>, or <code>TypeError</code>. Then give a conversion that would make the last comparison numeric.</p>
+  <wb-table id="cp9">
+    <table>
+      <thead><tr><th>Expression</th><th>Value or error</th></tr></thead>
+      <tbody>
+        <tr><td><code>5 == 5.0</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>'5' == 5</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>'5' &gt; 5</code></td><td data-blank="v3"></td></tr>
+        <tr><td>Conversion that makes the last comparison numeric</td><td data-blank="conv"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s10">10. Boundary Conditions</h2>
+<p>A <strong>boundary</strong> is the value where a rule changes from one case to another. Write down what should happen at the boundary before choosing an operator.</p>
+<table>
+  <thead><tr><th>Rule</th><th>Boundary result</th><th>Condition</th></tr></thead>
+  <tbody>
+    <tr><td>totals over $50 ship free</td><td>$50 is not free</td><td><code>total &gt; 50</code></td></tr>
+    <tr><td>totals of at least $50 ship free</td><td>$50 is free</td><td><code>total &gt;= 50</code></td></tr>
+    <tr><td>reduced price for people under 18</td><td>age 18 is regular price</td><td><code>age &lt; 18</code></td></tr>
+  </tbody>
+</table>
+<p>The operators <code>&gt;</code> and <code>&gt;=</code> differ only at the boundary. The same is true for <code>&lt;</code> and <code>&lt;=</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10</div>
+  <p>A room accepts at most 30 people.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>What is the boundary?</td><td data-blank="b"></td></tr>
+        <tr><td>Is 30 accepted or rejected?</td><td data-blank="at"></td></tr>
+        <tr><td>Condition for an accepted value of <code>people</code></td><td data-blank="cond"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s11">11. Test Cases</h2>
+<p>A <strong>test case</strong> includes an input and the expected result. For a threshold, start with three cases: below, at, and above the boundary.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Worked test design</div>
+  <p><strong>Rule:</strong> A score of 60 or more passes.</p>
+  <table>
+    <thead><tr><th>Test input</th><th>Expected result</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>59</code></td><td>not pass</td><td>below boundary; false branch</td></tr>
+      <tr><td><code>60</code></td><td>pass</td><td>exactly at boundary</td></tr>
+      <tr><td><code>61</code></td><td>pass</td><td>above boundary; true branch</td></tr>
+    </tbody>
+  </table>
+  <p>Write the expected result before running the program. Otherwise, a wrong output can look correct simply because the program produced it.</p>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 11</div>
+  <p>A warning appears when <code>temperature</code> is below <code>0</code>. Complete three minimum test cases. Write <em>warning</em> or <em>no warning</em> as the expected result.</p>
+  <wb-table id="cp11">
+    <table>
+      <thead><tr><th>Input</th><th>Expected result</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td data-blank="i1"></td><td data-blank="e1"></td><td>below boundary</td></tr>
+        <tr><td data-blank="i2"></td><td data-blank="e2"></td><td>at boundary</td></tr>
+        <tr><td data-blank="i3"></td><td data-blank="e3"></td><td>above boundary</td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<p><strong>1.</strong> List Python's six relational operators.</p>
+<wb-table id="fr1">
+  <table>
+    <thead><tr><th>Meaning</th><th>Operator</th></tr></thead>
+    <tbody>
+      <tr><td>less than</td><td data-blank="o1"></td></tr>
+      <tr><td>less than or equal to</td><td data-blank="o2"></td></tr>
+      <tr><td>greater than</td><td data-blank="o3"></td></tr>
+      <tr><td>greater than or equal to</td><td data-blank="o4"></td></tr>
+      <tr><td>equal to</td><td data-blank="o5"></td></tr>
+      <tr><td>not equal to</td><td data-blank="o6"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> Explain the difference between <code>=</code> and <code>==</code>.</p>
+<wb-short id="fr2"></wb-short>
+<p><strong>3.</strong> What type of value does a comparison produce?</p>
+<wb-table id="fr3">
+  <table>
+    <thead><tr><th>Question</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>Type of the value a comparison produces</td><td data-blank="t"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>4.</strong> Why can <code>'Zoe' &lt; 'ada'</code> be <code>True</code>?</p>
+<wb-short id="fr4"></wb-short>
+<p><strong>5.</strong> Write a case-insensitive equality comparison for <code>a</code> and <code>b</code>.</p>
+<wb-table id="fr5">
+  <table>
+    <thead><tr><th>Comparison</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="cond"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>6.</strong> Write the tolerance pattern for comparing computed floats <code>x</code> and <code>y</code>.</p>
+<wb-table id="fr6">
+  <table>
+    <thead><tr><th>Condition</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="cond"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>7.</strong> Why should a threshold test set include the boundary value?</p>
+<wb-short id="fr7"></wb-short>
+
+<h2 id="additional-practice">Additional Practice</h2>
+<h3>Practice A: Evaluate Comparisons</h3>
+<p>Write the value or error produced by each expression.</p>
+<wb-table id="pa">
+  <table>
+    <thead><tr><th>Expression</th><th>Value or error</th></tr></thead>
+    <tbody>
+      <tr><td><code>6 &gt;= 6</code></td><td data-blank="v1"></td></tr>
+      <tr><td><code>6 != 6</code></td><td data-blank="v2"></td></tr>
+      <tr><td><code>2 + 4 == 3 * 2</code></td><td data-blank="v3"></td></tr>
+      <tr><td><code>'map' &lt; 'math'</code></td><td data-blank="v4"></td></tr>
+      <tr><td><code>'12' == 12</code></td><td data-blank="v5"></td></tr>
+      <tr><td><code>'12' &gt; 12</code></td><td data-blank="v6"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice B: Translate Rules into Conditions</h3>
+<p>Write one Python condition for each rule. Use the variable names shown.</p>
+<wb-table id="pb">
+  <table>
+    <thead><tr><th>Rule</th><th>Condition</th></tr></thead>
+    <tbody>
+      <tr><td>A ticket is free for children younger than 5 (<code>age</code>).</td><td data-blank="c1"></td></tr>
+      <tr><td>A password attempt (<code>attempt</code>) matches the string stored in <code>password</code>.</td><td data-blank="c2"></td></tr>
+      <tr><td>A value (<code>value</code>) is different from <code>previous</code>.</td><td data-blank="c3"></td></tr>
+      <tr><td>A measurement (<code>measurement</code>) is no more than 2.5.</td><td data-blank="c4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice C: Compare Text Carefully</h3>
+<p>Write code that prints <code>Match</code> when the strings in <code>word1</code> and <code>word2</code> match without considering capitalization. Print <code>Different</code> otherwise. Keep the two assignments as given. The checker swaps <code>word2</code> for <code>'HELLO'</code>, <code>'help'</code>, and <code>'hello '</code> to test the other cases.</p>
+<wb-exercise id="pc"></wb-exercise>
+
+<h3>Practice D: Compare Computed Floats</h3>
+<p>Write code that stores whether <code>calculated</code> and <code>expected</code> are within <code>0.0001</code> of each other. Print the stored Boolean value. Keep the two assignments as given. The checker changes <code>expected</code> to <code>0.31</code> and <code>0.30005</code> for the other cases.</p>
+<wb-exercise id="pd"></wb-exercise>
+
+<h3>Practice E: Build Boundary Tests</h3>
+<p>A parcel has an extra fee when its mass is greater than 20 kg. Write the condition using <code>mass</code>, state what should happen at exactly 20 kg, and design below, at, and above test cases before writing code.</p>
+<wb-table id="pe">
+  <table>
+    <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+    <tbody>
+      <tr><td>Condition</td><td data-blank="cond"></td></tr>
+      <tr><td>What happens at exactly 20 kg?</td><td data-blank="at"></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Mass (kg)</th><th>Expected extra fee?</th><th>Why this case?</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="m1"></td><td data-blank="f1"></td><td>below the boundary</td></tr>
+      <tr><td data-blank="m2"></td><td data-blank="f2"></td><td>at the boundary</td></tr>
+      <tr><td data-blank="m3"></td><td data-blank="f3"></td><td>above the boundary</td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice F: Find and Fix Comparison Mistakes</h3>
+<p>The program should recognize any capitalization of <code>yes</code> and should treat calculated floats as equal when their difference is less than <code>1e-9</code>. Correct the two conditions. The first three lines set up the values so the program can run; keep them as given, because the checker changes <code>answer</code> to <code>'YES'</code> and <code>'no'</code> and <code>expected</code> to <code>0.4</code> to test the other cases.</p>
+<wb-exercise id="pf"></wb-exercise>
+
+<h2 id="together">Putting It All Together</h2>
+<h3>A calibration report</h3>
+<p>This example combines a stored Boolean value, case-insensitive string comparison, floating-point tolerance, a boundary, and two independent decisions. The program checks a sensor label and then checks a measurement.</p>
+<p>The rules are:</p>
+<ul>
+  <li>the expected label is <code>sensor-a</code>, but capitalization does not matter;</li>
+  <li>a measurement is accepted when it is less than <code>1.0</code> degree away from the target;</li>
+  <li>a difference of exactly <code>1.0</code> is outside the tolerance.</li>
+</ul>
+<p>First, write each condition as an expression that produces a Boolean value.</p>
+<pre>label_matches = entered_label.lower() == expected_label.lower()
+within_tolerance = abs(measured - target) &lt; tolerance</pre>
+<p>The program stores each result before the corresponding decision. Run it and type your own values when prompted.</p>
+<wb-example id="ex-w15"></wb-example>
+<p>Sample run within the tolerance:</p>
+<pre class="wb-shell"><span class="wb-prompt">Sensor label: </span><span class="wb-typed">SENSOR-A</span>
+Label accepted
+<span class="wb-prompt">Measured value: </span><span class="wb-typed">20.4</span>
+<span class="wb-prompt">Target value: </span><span class="wb-typed">20</span>
+Measurement accepted</pre>
+<p>Sample run at the tolerance boundary:</p>
+<pre class="wb-shell"><span class="wb-prompt">Sensor label: </span><span class="wb-typed">sensor-a</span>
+Label accepted
+<span class="wb-prompt">Measured value: </span><span class="wb-typed">21</span>
+<span class="wb-prompt">Target value: </span><span class="wb-typed">20</span>
+Measurement outside tolerance</pre>
+<p>The second result uses the outside path because <code>abs(21 - 20)</code> is exactly <code>1.0</code>. The condition uses <code>&lt;</code>, not <code>&lt;=</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Integrated trace</div>
+  <p>For <code>entered_label = 'Sensor-A'</code>, <code>measured = 19.2</code>, and <code>target = 20.0</code>, record both Boolean values and both messages.</p>
+  <wb-table id="it-trace">
+    <table>
+      <thead><tr><th>Item</th><th>Value or message</th></tr></thead>
+      <tbody>
+        <tr><td><code>label_matches</code></td><td data-blank="b1"></td></tr>
+        <tr><td>label message</td><td data-blank="m1"></td></tr>
+        <tr><td><code>within_tolerance</code></td><td data-blank="b2"></td></tr>
+        <tr><td>measurement message</td><td data-blank="m2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why should the measurement tests include differences below, at, and above <code>1.0</code>?</p>
+  <wb-short id="it-why"></wb-short>
+</div>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>These exercises use only comparison expressions, single two-way decisions, and material already taught in this lecture or earlier lectures.</p>
+
+<h3>Coding Practice 1: Integer and Float Equality</h3>
+<p>Explain why exact equality is dependable for the integer calculation <code>5 + 5</code>, but may fail after a floating-point calculation.</p>
+<wb-short id="pr1"></wb-short>
+<p>Then write one condition that checks whether <code>count</code> equals <code>10</code> and one that checks whether <code>reading</code> is within <code>0.001</code> of <code>10.0</code>.</p>
+<wb-table id="pr1-cond">
+  <table>
+    <thead><tr><th>Check</th><th>Condition</th></tr></thead>
+    <tbody>
+      <tr><td><code>count</code> equals <code>10</code></td><td data-blank="c1"></td></tr>
+      <tr><td><code>reading</code> is within <code>0.001</code> of <code>10.0</code></td><td data-blank="c2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Coding Practice 2: Assignment and Equality</h3>
+<p>The first line below should store a floor number. The second should print a Boolean value that says whether the floor is 13. Correct both lines. Store the floor as <code>floor = 13</code>; the checker swaps that line for <code>floor = 12</code> to test the second case.</p>
+<table>
+  <thead><tr><th>Stored floor</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>13</td><td><code>True</code></td></tr>
+    <tr><td>12</td><td><code>False</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="pr2"></wb-exercise>
+
+<h3>Coding Practice 3: Trace a Text Comparison</h3>
+<p>Trace this program for <code>entry = 'OPEN'</code> and again for <code>entry = 'open '</code>. The box below runs the first case; change the first line to try the second.</p>
+<wb-example id="ex-w16"></wb-example>
+<wb-table id="pr3">
+  <table>
+    <thead><tr><th>Input</th><th>Condition value</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>'OPEN'</code></td><td data-blank="c1"></td><td data-blank="o1"></td></tr>
+      <tr><td><code>'open '</code></td><td data-blank="c2"></td><td data-blank="o2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Coding Practice 4: Boundary Tests for a Text Rule</h3>
+<p>A program accepts the exact command <code>start</code> without considering capitalization. Design at least three test cases. Include one matching value, one capitalization variation, and one value that differs by a character or space. State the expected result (<em>accepted</em> or <em>rejected</em>) before running the program.</p>
+<wb-table id="pr4">
+  <table>
+    <thead><tr><th>Input</th><th>Expected result</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="i1"></td><td data-blank="e1"></td><td>exact match</td></tr>
+      <tr><td data-blank="i2"></td><td data-blank="e2"></td><td>capitalization variation</td></tr>
+      <tr><td data-blank="i3"></td><td data-blank="e3"></td><td>differs by a character or space</td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Coding Practice 5: Dictionary Order and Python Order</h3>
+<p>Explain two ways that Python's lexicographic order can differ from the order a person expects in a dictionary or contact list.</p>
+<wb-short id="pr5"></wb-short>
+
+<h3>Coding Practice 6: Lexicographic Comparisons</h3>
+<p>For each pair, write the string that Python considers smaller and identify the first position that decides the result. Count positions from 1; if the deciding point is where the shorter string ends, write <em>end of</em> that string.</p>
+<wb-table id="pr6">
+  <table>
+    <thead><tr><th>Pair</th><th>Smaller string</th><th>Deciding position</th></tr></thead>
+    <tbody>
+      <tr><td><code>'map'</code>, <code>'math'</code></td><td data-blank="s1"></td><td data-blank="p1"></td></tr>
+      <tr><td><code>'Code'</code>, <code>'code'</code></td><td data-blank="s2"></td><td data-blank="p2"></td></tr>
+      <tr><td><code>'car'</code>, <code>'cart'</code></td><td data-blank="s3"></td><td data-blank="p3"></td></tr>
+      <tr><td><code>'9cats'</code>, <code>'birds'</code></td><td data-blank="s4"></td><td data-blank="p4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Coding Practice 7: Largest of Three Numbers</h3>
+<p>Write a program that reads three numbers and prints the largest. Do not call <code>max</code>. Start by storing the first number in <code>largest</code>; then use two separate <code>if</code> statements to compare the remaining values.</p>
+<pre class="wb-shell"><span class="wb-prompt">First number: </span><span class="wb-typed">4</span>
+<span class="wb-prompt">Second number: </span><span class="wb-typed">9</span>
+<span class="wb-prompt">Third number: </span><span class="wb-typed">2.5</span>
+Largest: 9.0</pre>
+<pre class="wb-shell"><span class="wb-prompt">First number: </span><span class="wb-typed">7</span>
+<span class="wb-prompt">Second number: </span><span class="wb-typed">7</span>
+<span class="wb-prompt">Third number: </span><span class="wb-typed">3</span>
+Largest: 7.0</pre>
+<wb-exercise id="pr7"></wb-exercise>
+
+<h3>Coding Practice 8: Order Two Labels</h3>
+<p>Write a program that reads two labels and prints them in Python's lexicographic order. The two labels will be different. Use one <code>if</code>/<code>else</code> statement.</p>
+<pre class="wb-shell"><span class="wb-prompt">First label: </span><span class="wb-typed">Cedar</span>
+<span class="wb-prompt">Second label: </span><span class="wb-typed">Birch</span>
+First in Python order: Birch
+Second in Python order: Cedar</pre>
+<pre class="wb-shell"><span class="wb-prompt">First label: </span><span class="wb-typed">apple</span>
+<span class="wb-prompt">Second label: </span><span class="wb-typed">Apricot</span>
+First in Python order: Apricot
+Second in Python order: apple</pre>
+<wb-exercise id="pr8"></wb-exercise>
+
+<h3>Coding Practice 9: Case-Insensitive Command</h3>
+<p>Write a program that accepts any capitalization of the command <code>quit</code>. Print <code>Command accepted</code> for a match and <code>Unknown command</code> otherwise.</p>
+<pre class="wb-shell"><span class="wb-prompt">Command: </span><span class="wb-typed">QUIT</span>
+Command accepted</pre>
+<pre class="wb-shell"><span class="wb-prompt">Command: </span><span class="wb-typed">quite</span>
+Unknown command</pre>
+<wb-exercise id="pr9"></wb-exercise>
+
+<h3>Coding Practice 10: Compare Two Readings</h3>
+<p>Write a program that reads two floating-point measurements. Print <code>Match</code> when their difference is less than <code>0.01</code>; print <code>Different</code> otherwise.</p>
+<pre class="wb-shell"><span class="wb-prompt">First reading: </span><span class="wb-typed">2.0</span>
+<span class="wb-prompt">Second reading: </span><span class="wb-typed">1.995</span>
+Match</pre>
+<pre class="wb-shell"><span class="wb-prompt">First reading: </span><span class="wb-typed">2.0</span>
+<span class="wb-prompt">Second reading: </span><span class="wb-typed">1.98</span>
+Different</pre>
+<wb-exercise id="pr10"></wb-exercise>
+
+<h3>Coding Practice 11: Service Charge</h3>
+<p>A cafe uses two service ratings. Rating <code>1</code> means excellent service and gives a 20 percent tip. Rating <code>2</code> means standard service and gives a 15 percent tip. Assume the user enters only <code>1</code> or <code>2</code>. Write a program that reads the bill and rating, then prints the tip to two decimal places. Use one <code>if</code>/<code>else</code> statement.</p>
+<pre class="wb-shell"><span class="wb-prompt">Bill: $</span><span class="wb-typed">40</span>
+<span class="wb-prompt">Service rating (1 or 2): </span><span class="wb-typed">1</span>
+Tip: $8.00</pre>
+<pre class="wb-shell"><span class="wb-prompt">Bill: $</span><span class="wb-typed">40</span>
+<span class="wb-prompt">Service rating (1 or 2): </span><span class="wb-typed">2</span>
+Tip: $6.00</pre>
+<wb-exercise id="pr11"></wb-exercise>
+
+<h3>Coding Practice 12: Frequency Threshold</h3>
+<p>Frequency measures how many cycles occur each second and uses the unit hertz (Hz). Write a program that reads a frequency. Print <code>Below threshold</code> when it is less than <code>3e9</code> Hz, and <code>At or above threshold</code> otherwise. Test one value below, exactly at, and above the boundary.</p>
+<pre class="wb-shell"><span class="wb-prompt">Frequency in Hz: </span><span class="wb-typed">2.5e9</span>
+Below threshold</pre>
+<pre class="wb-shell"><span class="wb-prompt">Frequency in Hz: </span><span class="wb-typed">3e9</span>
+At or above threshold</pre>
+<wb-exercise id="pr12"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 9 Workbook.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 5 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-05-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 5 Boss Problems</h1>
+    <div class="wb-subtitle">Arithmetic, expressions, and modules</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 and 5 covered: variables, assignment, the arithmetic operators, <code>round()</code>, and the <code>math</code> module. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Each problem starts with its values already assigned at the top of the program. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, swapping in different values each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with the given values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="digits" data-toc-title="👹 Sum of the digits">👹 Boss 1: Sum of the Digits</h2>
+<p>The program starts with a four-digit integer in <code>number</code>. Print the four digits added together, and their sum, on one line, like this for 3141:</p>
+<pre class="wb-output">3 + 1 + 4 + 1 = 9</pre>
+<p>Take the number apart with <code>//</code> and <code>%</code>: <code>3141 % 10</code> is the last digit, and <code>3141 // 10</code> is the number with the last digit removed. Do not turn the number into text. The <code>+</code> and <code>=</code> signs are text that <code>print()</code> displays between the values.</p>
+<table>
+  <thead><tr><th><code>number</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>3141</td><td><code>3 + 1 + 4 + 1 = 9</code></td></tr>
+    <tr><td>9075</td><td><code>9 + 0 + 7 + 5 = 21</code></td></tr>
+    <tr><td>1000</td><td><code>1 + 0 + 0 + 0 = 1</code></td></tr>
+    <tr><td>2026</td><td><code>2 + 0 + 2 + 6 = 10</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Take the digits apart with <code>//</code> and <code>%</code>.</li>
+    <li>Do not convert the number to text: no <code>str()</code>.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Print everything on one line with a single <code>print()</code> call.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>number = 3141</code> as given: the checker swaps in the other numbers.</p>
+<wb-exercise id="digits"></wb-exercise>
+
+<h2 id="change" data-toc-title="👾 Making change">👾 Boss 2: Making Change</h2>
+<p>A self-checkout machine has to hand back change using as few coins as possible. It is loaded with toonies (200 cents), loonies (100), quarters (25), dimes (10), nickels (5), and pennies (1).</p>
+<p>The program starts with the change owed, in cents, in <code>cents</code>. Print how many of each coin the machine should give, one coin per line, largest coin first, in exactly this layout:</p>
+<pre class="wb-output">Toonies: 6
+Loonies: 0
+Quarters: 1
+Dimes: 0
+Nickels: 1
+Pennies: 4</pre>
+<p>Work from the largest coin down. For each coin, <code>//</code> tells you how many of that coin fit, and <code>%</code> tells you how much is still owed for the smaller coins.</p>
+<table>
+  <thead><tr><th><code>cents</code></th><th>Toonies</th><th>Loonies</th><th>Quarters</th><th>Dimes</th><th>Nickels</th><th>Pennies</th></tr></thead>
+  <tbody>
+    <tr><td>1234</td><td>6</td><td>0</td><td>1</td><td>0</td><td>1</td><td>4</td></tr>
+    <tr><td>999</td><td>4</td><td>1</td><td>3</td><td>2</td><td>0</td><td>4</td></tr>
+    <tr><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>388</td><td>1</td><td>1</td><td>3</td><td>1</td><td>0</td><td>3</td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>//</code> for how many coins fit and <code>%</code> for what is left over.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Print exactly six lines, largest coin first, in the layout shown.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>cents = 1234</code> as given: the checker swaps in the other amounts.</p>
+<wb-exercise id="change"></wb-exercise>
+
+<h2 id="sort3" data-toc-title="🐉 Sort three integers">🐉 Boss 3: Sort Three Integers</h2>
+<p>The program starts with three integers in <code>a</code>, <code>b</code>, and <code>c</code>. Print them on one line from smallest to largest, separated by spaces.</p>
+<p>Python has two built-in functions for this kind of job: <code>min(a, b, c)</code> returns the smallest of the values and <code>max(a, b, c)</code> the largest. Call them the way you call <code>round()</code>. That leaves the middle value, and there is a trick: the three values add up to smallest + middle + largest, so subtracting the two you already know from the total leaves the middle one. No sorting and no <code>if</code> statements are needed.</p>
+<table>
+  <thead><tr><th><code>a</code>, <code>b</code>, <code>c</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>17, 4, 9</td><td><code>4 9 17</code></td></tr>
+    <tr><td>3, 8, 3</td><td><code>3 3 8</code></td></tr>
+    <tr><td>-2, 10, 0</td><td><code>-2 0 10</code></td></tr>
+    <tr><td>5, 5, 5</td><td><code>5 5 5</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>min()</code> for the smallest value and <code>max()</code> for the largest.</li>
+    <li>No <code>if</code> statements and no sorting.</li>
+    <li>Print all three values on one line with a single <code>print()</code> call.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the three assignment lines as given: the checker swaps in the other values.</p>
+<wb-exercise id="sort3"></wb-exercise>
+
+<h2 id="earth" data-toc-title="💀 Distance on the Earth">💀 Boss 4: Distance Between Two Points on Earth</h2>
+<p>The Earth is curved, so the distance between two places is not a straight line. If one place is at latitude <i>t</i><sub>1</sub> and longitude <i>g</i><sub>1</sub>, and the other at <i>t</i><sub>2</sub> and <i>g</i><sub>2</sub>, the distance along the surface, in kilometres, is</p>
+<p style="text-align: center"><i>d</i> = 6371.01 × arccos(sin <i>t</i><sub>1</sub> × sin <i>t</i><sub>2</sub> + cos <i>t</i><sub>1</sub> × cos <i>t</i><sub>2</sub> × cos(<i>g</i><sub>1</sub> − <i>g</i><sub>2</sub>))</p>
+<p>where 6371.01 is the average radius of the Earth in kilometres.</p>
+<p>The program starts with the two places in degrees: <code>lat1</code> and <code>lon1</code> are St. John's, <code>lat2</code> and <code>lon2</code> the other city. Print the distance rounded to one decimal place.</p>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Degrees in, radians expected</div>
+  <p>The trigonometric functions in the <code>math</code> module work in radians, not degrees. Convert every angle with <code>math.radians()</code> first. The inverse cosine is <code>math.acos()</code>.</p>
+</div>
+<table>
+  <thead><tr><th>From St. John's to</th><th><code>lat2</code></th><th><code>lon2</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>Ottawa</td><td>45.4215</td><td>-75.6972</td><td><code>1768.9</code></td></tr>
+    <tr><td>Vancouver</td><td>49.2827</td><td>-123.1207</td><td><code>5005.1</code></td></tr>
+    <tr><td>London</td><td>51.5074</td><td>-0.1278</td><td><code>3737.4</code></td></tr>
+    <tr><td>Sydney</td><td>-33.8688</td><td>151.2093</td><td><code>17506.1</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write <code>import math</code> on its own line and call the functions as <code>math.radians()</code>, <code>math.sin()</code>, and so on (not <code>from math import ...</code>).</li>
+    <li>Convert every angle with <code>math.radians()</code> and use <code>math.acos()</code> for the inverse cosine.</li>
+    <li>Round with <code>round(..., 1)</code> and print only the distance.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the four assignment lines as given: the checker swaps in the other cities.</p>
+<wb-exercise id="earth"></wb-exercise>
+
+</main>
+</body>
+</html>

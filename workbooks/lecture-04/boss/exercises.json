@@ -1,0 +1,235 @@
+{
+  "id": "lecture-04-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 4 Boss Problems",
+  "short": "L04 bosses",
+  "subtitle": "Variables, types, and assignment",
+  "exercises": {
+    "swap": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 6,
+      "starter": "oliver = 'sofa'\nsabina = 'basket'\n# Make the two pets trade places, then print where each one is.",
+      "cases": [
+        {
+          "name": "sofa and basket",
+          "expected": "basket sofa"
+        },
+        {
+          "name": "bed and windowsill",
+          "rewrite": [
+            [
+              "oliver = 'sofa'",
+              "oliver = 'bed'"
+            ],
+            [
+              "sabina = 'basket'",
+              "sabina = 'windowsill'"
+            ]
+          ],
+          "expected": "windowsill bed"
+        },
+        {
+          "name": "porch and kitchen",
+          "rewrite": [
+            [
+              "oliver = 'sofa'",
+              "oliver = 'porch'"
+            ],
+            [
+              "sabina = 'basket'",
+              "sabina = 'kitchen'"
+            ]
+          ],
+          "expected": "kitchen porch"
+        },
+        {
+          "name": "rug and rug",
+          "rewrite": [
+            [
+              "oliver = 'sofa'",
+              "oliver = 'rug'"
+            ],
+            [
+              "sabina = 'basket'",
+              "sabina = 'rug'"
+            ]
+          ],
+          "expected": "rug rug"
+        }
+      ],
+      "check": "assert \"+=\" not in __source__, \"Write the update in full, as in count = count + 1; the += shortcut comes later.\"\nimport re\nassert not re.search(r\"^\\s*\\w+\\s*,\\s*\\w+\\s*=\", __source__, re.M), \"Swap with a third variable, one assignment at a time; the a, b = b, a form comes later.\"\nnames = [k for k in globals() if not k.startswith(\"__\") and k != \"re\"]\nassert len(names) >= 3, \"Use a third variable to hold one of the values while you swap.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print both values with one print() call so they land on one line.\"\n",
+      "answer": "b2xpdmVyID0gJ3NvZmEnCnNhYmluYSA9ICdiYXNrZXQnCmhvbGRlciA9IG9saXZlcgpvbGl2ZXIgPSBzYWJpbmEKc2FiaW5hID0gaG9sZGVyCnByaW50KG9saXZlciwgc2FiaW5hKQ==",
+      "answerNote": "The moment oliver is overwritten its old value is gone, so a third name keeps a copy first."
+    },
+    "seats": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 10,
+      "starter": "seated = 0\ngroup_1 = 40\ngroup_2 = 25\ngroup_3 = 55\n# Seat each group and report the count.",
+      "cases": [
+        {
+          "name": "40, 25, 55",
+          "expected": "After group 1: 40\nAfter group 2: 65\nAfter group 3: 120"
+        },
+        {
+          "name": "0, 60, 60",
+          "rewrite": [
+            [
+              "group_1 = 40",
+              "group_1 = 0"
+            ],
+            [
+              "group_2 = 25",
+              "group_2 = 60"
+            ],
+            [
+              "group_3 = 55",
+              "group_3 = 60"
+            ]
+          ],
+          "expected": "After group 1: 0\nAfter group 2: 60\nAfter group 3: 120"
+        },
+        {
+          "name": "50, -10, 80",
+          "rewrite": [
+            [
+              "group_1 = 40",
+              "group_1 = 50"
+            ],
+            [
+              "group_2 = 25",
+              "group_2 = -10"
+            ],
+            [
+              "group_3 = 55",
+              "group_3 = 80"
+            ]
+          ],
+          "expected": "After group 1: 50\nAfter group 2: 40\nAfter group 3: 120"
+        },
+        {
+          "name": "120, 0, 0",
+          "rewrite": [
+            [
+              "group_1 = 40",
+              "group_1 = 120"
+            ],
+            [
+              "group_2 = 25",
+              "group_2 = 0"
+            ],
+            [
+              "group_3 = 55",
+              "group_3 = 0"
+            ]
+          ],
+          "expected": "After group 1: 120\nAfter group 2: 120\nAfter group 3: 120"
+        }
+      ],
+      "check": "assert \"+=\" not in __source__, \"Write the update in full, as in count = count + 1; the += shortcut comes later.\"\nimport re\nupdates = re.findall(r\"^\\s*seated\\s*=\\s*seated\\s*\\+\", __source__, re.M)\nassert len(updates) == 3, \"Update the running count three times, once per group, in the form seated = seated + ...\"\nassert len(__stdout__.strip().splitlines()) == 3, \"Print exactly three lines, one after each group.\"\nassert type(seated) is int, \"seated should still be a whole number (an int) at the end.\"\n",
+      "answer": "c2VhdGVkID0gMApncm91cF8xID0gNDAKZ3JvdXBfMiA9IDI1Cmdyb3VwXzMgPSA1NQpzZWF0ZWQgPSBzZWF0ZWQgKyBncm91cF8xCnByaW50KCdBZnRlciBncm91cCAxOicsIHNlYXRlZCkKc2VhdGVkID0gc2VhdGVkICsgZ3JvdXBfMgpwcmludCgnQWZ0ZXIgZ3JvdXAgMjonLCBzZWF0ZWQpCnNlYXRlZCA9IHNlYXRlZCArIGdyb3VwXzMKcHJpbnQoJ0FmdGVyIGdyb3VwIDM6Jywgc2VhdGVkKQ==",
+      "answerNote": "Each update reads the old count, adds one group, and stores the result back under the same name."
+    },
+    "vet": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 8,
+      "starter": "pet = 'Oliver'\nage = 7\nweight = 3.5\nvaccinated = True\n# Print each value followed by its type.",
+      "cases": [
+        {
+          "name": "Oliver, as given",
+          "expected": "Oliver <class 'str'>\n7 <class 'int'>\n3.5 <class 'float'>\nTrue <class 'bool'>"
+        },
+        {
+          "name": "Sabina, age unknown",
+          "rewrite": [
+            [
+              "pet = 'Oliver'",
+              "pet = 'Sabina'"
+            ],
+            [
+              "age = 7",
+              "age = 'unknown'"
+            ],
+            [
+              "weight = 3.5",
+              "weight = 4"
+            ]
+          ],
+          "expected": "Sabina <class 'str'>\nunknown <class 'str'>\n4 <class 'int'>\nTrue <class 'bool'>"
+        },
+        {
+          "name": "half years, text flag",
+          "rewrite": [
+            [
+              "age = 7",
+              "age = 7.5"
+            ],
+            [
+              "vaccinated = True",
+              "vaccinated = 'yes'"
+            ]
+          ],
+          "expected": "Oliver <class 'str'>\n7.5 <class 'float'>\n3.5 <class 'float'>\nyes <class 'str'>"
+        },
+        {
+          "name": "tag number, quoted weight",
+          "rewrite": [
+            [
+              "pet = 'Oliver'",
+              "pet = 1001"
+            ],
+            [
+              "weight = 3.5",
+              "weight = '3.5'"
+            ]
+          ],
+          "expected": "1001 <class 'int'>\n7 <class 'int'>\n3.5 <class 'str'>\nTrue <class 'bool'>"
+        }
+      ],
+      "check": "import re\nassert \"type(\" in __source__, \"Ask Python for each type with type(); do not type the answer in yourself.\"\nassert \"class\" not in __source__ and not re.search(r\"\\b(int|float|str|bool)\\b\", __source__), \"The type names must come from type() at run time, not from text you typed.\"\nassert len(__stdout__.strip().splitlines()) == 4, \"Print four lines, one per field, in the order given.\"\n",
+      "answer": "cGV0ID0gJ09saXZlcicKYWdlID0gNwp3ZWlnaHQgPSAzLjUKdmFjY2luYXRlZCA9IFRydWUKcHJpbnQocGV0LCB0eXBlKHBldCkpCnByaW50KGFnZSwgdHlwZShhZ2UpKQpwcmludCh3ZWlnaHQsIHR5cGUod2VpZ2h0KSkKcHJpbnQodmFjY2luYXRlZCwgdHlwZSh2YWNjaW5hdGVkKSk=",
+      "answerNote": "The type belongs to the value, not the name, so the same four lines report whatever is assigned that run."
+    },
+    "repair": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 7,
+      "starter": "# course record\nlecture room = 'EN2043'\nclass = 'COMP 1001'\ninstructor-name = 'Pranjal Patra'\nstudents = 119\nstudents = Students + 1\nprint(lecture room, class, instructor-name, students)",
+      "cases": [
+        {
+          "name": "119 students",
+          "expected": "EN2043 COMP 1001 Pranjal Patra 120"
+        },
+        {
+          "name": "0 students",
+          "rewrite": [
+            [
+              "students = 119",
+              "students = 0"
+            ]
+          ],
+          "expected": "EN2043 COMP 1001 Pranjal Patra 1"
+        },
+        {
+          "name": "57 students",
+          "rewrite": [
+            [
+              "students = 119",
+              "students = 57"
+            ]
+          ],
+          "expected": "EN2043 COMP 1001 Pranjal Patra 58"
+        }
+      ],
+      "check": "assert \"+=\" not in __source__, \"Write the update in full, as in count = count + 1; the += shortcut comes later.\"\nimport re\nuser = {k: v for k, v in globals().items() if not k.startswith(\"__\") and k != \"re\"}\nfor k in user:\n    assert len(k) > 1, f\"The name {k} is too short to be meaningful.\"\n    assert re.fullmatch(r\"[a-z][a-z0-9_]*\", k) or re.fullmatch(r\"[A-Z][A-Z0-9_]*\", k), f\"Write {k} in lower_case_with_underscores (or ALL_CAPS if it is a constant).\"\nconstants = {k: v for k, v in user.items() if k == k.upper()}\nassert constants, \"The room does not change all term, so store it under an ALL_CAPS name (for example ROOM).\"\nassert any(v == \"EN2043\" for v in constants.values()), \"Keep the room EN2043 in the constant.\"\nassert re.search(r\"^\\s*students\\s*=\\s*students\\s*\\+\\s*1\", __source__, re.M), \"Keep the update students = students + 1; fix the spelling rather than typing in the new count.\"\nassert any(line.strip().startswith(\"#\") for line in __source__.splitlines()), \"Keep one comment that explains a choice (a line starting with #).\"\n",
+      "answer": "IyBUaGUgcm9vbSBpcyBib29rZWQgZm9yIHRoZSB3aG9sZSB0ZXJtLCBzbyBpdCBpcyBhIGNvbnN0YW50LgpST09NID0gJ0VOMjA0MycKY291cnNlX2NvZGUgPSAnQ09NUCAxMDAxJwppbnN0cnVjdG9yX25hbWUgPSAnUHJhbmphbCBQYXRyYScKc3R1ZGVudHMgPSAxMTkKc3R1ZGVudHMgPSBzdHVkZW50cyArIDEKcHJpbnQoUk9PTSwgY291cnNlX2NvZGUsIGluc3RydWN0b3JfbmFtZSwgc3R1ZGVudHMp",
+      "answerNote": "Five repairs: the space, the keyword class, the hyphen, the ALL_CAPS constant, and the capital S in Students."
+    }
+  }
+}

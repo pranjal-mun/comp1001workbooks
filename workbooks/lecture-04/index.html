@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 4 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-04", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 4 Workbook</h1>
+    <div class="wb-subtitle">Variables, types, and assignment</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>create variables using valid, meaningful identifiers and assignment statements;</li>
+    <li>distinguish <code>int</code>, <code>float</code>, and <code>str</code> values and inspect a value with <code>type()</code>;</li>
+    <li>trace how assignment changes the value and type associated with a name; and</li>
+    <li>explain Python's conventions for constants and comments.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Variables and Assignment</h2>
+<p>A program needs to keep values so it can use them later. A <strong>variable</strong> is a name that refers to a value. A <strong>statement</strong> is an instruction in a program.</p>
+<p>An <strong>assignment statement</strong> gives a name a value. In <code>price = 24.95</code>, the name is on the left of <code>=</code> and the value is on the right. Read it as “store the value 24.95 under the name price.”</p>
+<p><code>print()</code> displays the value between its parentheses. Each call below ends its output with a new line. Assignment itself does not display anything.</p>
+<wb-example id="ex-w01"></wb-example>
+<div class="wb-refers"><span class="wb-box">price</span><span class="wb-arrow">⟶</span><span class="wb-box">24.95</span></div>
+<p>The first assignment creates the name. Later statements can use that name to refer to its current value. Text values are written inside matching quotes; the quotes mark the text and are not part of it.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Read this program.</p>
+  <wb-example id="ex-w02"></wb-example>
+  <p>What are the two variable names, and what value is assigned to each?</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Statement</th><th>Variable name</th><th>Value assigned</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="name1"></td><td data-blank="value1"></td></tr>
+        <tr><td>2</td><td data-blank="name2"></td><td data-blank="value2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Reassignment</h2>
+<p>A later assignment to the same name replaces the value that the name refers to. Python executes these statements from top to bottom.</p>
+<wb-example id="ex-w03"></wb-example>
+<p>The first <code>print</code> uses the old value. The second uses the new value. Changing <code>bottles</code> does not change output that has already been printed.</p>
+
+<h3>Assignment and Addition</h3>
+<p>The sign <code>=</code> is an instruction to assign a value, not a claim of mathematical equality. In this example, <code>+</code> adds two whole numbers. An <strong>expression</strong> is code that Python evaluates to get a value.</p>
+<wb-example id="ex-w04"></wb-example>
+<p>For <code>count = count + 1</code>, Python:</p>
+<ol>
+  <li>looks up the old value of <code>count</code>, which is 4;</li>
+  <li>evaluates the right side, <code>4 + 1</code>, to get 5; and</li>
+  <li>makes <code>count</code> refer to 5.</li>
+</ol>
+<p>The right side is evaluated before the assignment happens. The name must already have a value when the right side uses it.</p>
+<div class="wb-refers wb-stages">
+  <span class="wb-box">Read old value<br><code>count</code>: 4</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Evaluate right side<br><code>4 + 1</code>: 5</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Assign result<br><code>count</code>: 5</span>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Trace the value of <code>score</code> after every statement.</p>
+  <wb-example id="ex-w05"></wb-example>
+  <wb-table id="cp2-trace">
+    <table>
+      <thead><tr><th>After statement</th><th>Value of <code>score</code></th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="s1"></td></tr>
+        <tr><td>2</td><td data-blank="s2"></td></tr>
+        <tr><td>3</td><td data-blank="s3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is the last statement valid Python?</p>
+  <wb-short id="cp2-why"></wb-short>
+</div>
+
+<h2 id="s3">3. Values and Types</h2>
+<p>A <strong>type</strong> identifies the kind of value Python is working with. A <strong>literal</strong> writes a value directly in the code, such as <code>42</code> or <code>'hello'</code>.</p>
+<table>
+  <thead><tr><th>Type</th><th>Purpose</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td><code>int</code></td><td>Whole numbers</td><td><code>0</code>, <code>42</code>, <code>-7</code></td></tr>
+    <tr><td><code>float</code></td><td>Floating-point numbers</td><td><code>3.14</code>, <code>-0.5</code>, <code>2.0</code></td></tr>
+    <tr><td><code>str</code></td><td>Text in matching quotes</td><td><code>'hello'</code>, <code>"COMP 1001"</code></td></tr>
+    <tr><td><code>bool</code></td><td>Boolean values</td><td><code>True</code>, <code>False</code></td></tr>
+  </tbody>
+</table>
+<p>An <code>int</code> has no fractional part. Python integers have no fixed maximum size, although available memory limits what can be stored. A <code>float</code> can represent a fractional part; the decimal-point literals shown here are floats. We will study arithmetic and the limits of floating-point numbers separately.</p>
+<p><code>2</code> is an <code>int</code>, while <code>2.0</code> is a <code>float</code>, even though both describe the number two. The text <code>'2'</code> is a <code>str</code>; quotes make it text. Single and double quotes both work when they match.</p>
+<p>A <code>bool</code> has exactly two values: <code>True</code> and <code>False</code>, with capital first letters and no quotes. For now, recognize these values and their type. Comparing values comes later.</p>
+
+<h3>Inspecting a Type</h3>
+<p>A <strong>function</strong> is a named operation that you call with parentheses. <code>type()</code> returns the type of the value inside its parentheses. <code>print(type(42))</code> asks for the type first, then displays it.</p>
+<wb-example id="ex-w06"></wb-example>
+<p>The word <code>class</code> is part of Python's display for a type. For now, focus on the type name between the quotes. You can also pass a variable name to <code>type()</code> to inspect its current value.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Predict the type of each value.</p>
+  <wb-table id="cp3-types">
+    <table>
+      <thead><tr><th>Value</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><code>18</code></td><td data-blank="t1"></td></tr>
+        <tr><td><code>18.0</code></td><td data-blank="t2"></td></tr>
+        <tr><td><code>'18.0'</code></td><td data-blank="t3"></td></tr>
+        <tr><td><code>False</code></td><td data-blank="t4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Which tool can you use to check your predictions in Python?</p>
+  <wb-table id="cp3-tool">
+    <table>
+      <tbody><tr><td style="width: 40%">Tool</td><td data-blank="tool"></td></tr></tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s4">4. Dynamic Typing</h2>
+<p>Python does not require a type declaration when a variable is created. The type belongs to the value. Reassigning a name can change both its value and the type of value it refers to. This behaviour is called <strong>dynamic typing</strong>.</p>
+<p><code>print()</code> can display more than one value: separate them with commas inside the parentheses. It places a space between them. A comma here separates the items to display; it is not part of either value.</p>
+<wb-example id="ex-w07"></wb-example>
+<p>Python permits this change. A clear program normally keeps one kind of information in each variable. Changing a number to text without a reason can make later code harder to understand or cause an error.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Trace the value and type of <code>status</code>.</p>
+  <wb-example id="ex-w08"></wb-example>
+  <wb-table id="cp4-trace">
+    <table>
+      <thead><tr><th>After statement</th><th>Value</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="v1"></td><td data-blank="t1"></td></tr>
+        <tr><td>2</td><td data-blank="v2"></td><td data-blank="t2"></td></tr>
+        <tr><td>3</td><td data-blank="v3"></td><td data-blank="t3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why might changing types make a program harder to understand?</p>
+  <wb-short id="cp4-why"></wb-short>
+</div>
+
+<h2 id="s5">5. Valid and Readable Names</h2>
+<p>A variable name is also called an <strong>identifier</strong>. Names may contain letters, digits, and underscores. They cannot start with a digit or contain spaces or hyphens. Names are case-sensitive: <code>total</code> and <code>Total</code> are different names.</p>
+<table>
+  <thead><tr><th>Name</th><th>Valid?</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td><code>unit_price</code></td><td>Yes</td><td>Letters and an underscore</td></tr>
+    <tr><td><code>room2</code></td><td>Yes</td><td>A digit is allowed after the first character</td></tr>
+    <tr><td><code>2nd_room</code></td><td>No</td><td>Starts with a digit</td></tr>
+    <tr><td><code>unit-price</code></td><td>No</td><td>A hyphen is not allowed</td></tr>
+    <tr><td><code>class</code></td><td>No</td><td>A reserved keyword</td></tr>
+  </tbody>
+</table>
+<p>Python <strong>keywords</strong> are reserved words with special meanings. They cannot be variable names. You do not need to memorize the full list now.</p>
+<p>The course naming convention is <code>lower_case_with_underscores</code>. A good name describes the information it holds: <code>unit_price</code> is clearer than <code>up</code> or <code>x2</code>. A name can be valid Python without following the course convention.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>For each name, write <strong>valid</strong> or <strong>invalid</strong>.</p>
+  <wb-table id="cp5-names">
+    <table>
+      <thead><tr><th>Name</th><th>Classification</th></tr></thead>
+      <tbody>
+        <tr><td><code>student_count</code></td><td data-blank="n1"></td></tr>
+        <tr><td><code>studentCount</code></td><td data-blank="n2"></td></tr>
+        <tr><td><code>3students</code></td><td data-blank="n3"></td></tr>
+        <tr><td><code>for</code></td><td data-blank="n4"></td></tr>
+        <tr><td><code>Students</code></td><td data-blank="n5"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Which valid name best follows the course convention, and why?</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. Constants and Comments</h2>
+<p>Some values are intended to stay fixed while a program runs. Python programmers write their names in <code>ALL_CAPS</code>.</p>
+<wb-example id="ex-w09"></wb-example>
+<p>These names are <strong>constants by convention</strong>. Python does not prevent a later assignment. Capital letters tell human readers that the value should stay fixed. A descriptive constant explains an otherwise unexplained number and gives you one place to update the setting.</p>
+<p>A <strong>comment</strong> begins with <code>#</code>, outside a quoted string, and continues to the end of the line. Python ignores the comment. A comment can occupy its own line or follow a statement.</p>
+<wb-example id="ex-w10"></wb-example>
+<p>The quoted label is displayed as text, followed by a space and the value. This is ordinary <code>print()</code> output.</p>
+<p>Useful comments explain why a choice was made or clarify a value's meaning. Avoid comments that merely repeat an obvious line of code. For example, <code>MAX_ATTEMPTS = 3  # Limit repeated guesses.</code> gives a reason for the limit.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Rewrite these names using the course convention.</p>
+  <wb-table id="cp6-names">
+    <table>
+      <thead><tr><th>Original</th><th>Improved name</th></tr></thead>
+      <tbody>
+        <tr><td><code>tr</code> for a fixed tax rate</td><td data-blank="r1"></td></tr>
+        <tr><td><code>NumberOfSeats</code></td><td data-blank="r2"></td></tr>
+        <tr><td><code>p</code> for a unit price</td><td data-blank="r3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Write a useful comment explaining why a program stores a tax rate in one named constant.</p>
+  <wb-short id="cp6-comment"></wb-short>
+</div>
+
+<h2 id="s7">7. Undefined Names</h2>
+<p>A name must receive a value before the program uses it. This example intentionally uses a name that has not been assigned.</p>
+<wb-example id="ex-w11"></wb-example>
+<p>Python stops at this line with a <code>NameError</code>. It cannot find a value for <code>total_cost</code>. Another common cause is a spelling mistake:</p>
+<wb-example id="ex-w12"></wb-example>
+<p>Read the name shown in the error message, then compare every spelling. Check capitalization too. An assignment later in the file does not supply a value to an earlier statement.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Find and repair the undefined name. Run the program first to read the error, then correct it and Check.</p>
+  <wb-exercise id="cp7-fix"></wb-exercise>
+  <p>Why did Python treat the two spellings as different names?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<p>Read this program.</p>
+<wb-example id="ex-w14"></wb-example>
+<p><strong>1.</strong> Identify the constant and the variables.</p>
+<wb-short id="fr1"></wb-short>
+<p><strong>2.</strong> Give the type of each value assigned in the first three statements.</p>
+<wb-table id="fr2">
+  <table>
+    <thead><tr><th>Statement</th><th>Type of the value</th></tr></thead>
+    <tbody>
+      <tr><td><code>MAX_SEATS = 30</code></td><td data-blank="t1"></td></tr>
+      <tr><td><code>available = 24</code></td><td data-blank="t2"></td></tr>
+      <tr><td><code>label = 'Room A'</code></td><td data-blank="t3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>3.</strong> Trace the value of <code>available</code>.</p>
+<wb-table id="fr3">
+  <table>
+    <thead><tr><th>Point in program</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>After its first assignment</td><td data-blank="a1"></td></tr>
+      <tr><td>After its second assignment</td><td data-blank="a2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>4.</strong> Write the exact two output lines.</p>
+<wb-table id="fr4">
+  <table>
+    <thead><tr><th>Output line</th><th>Text</th></tr></thead>
+    <tbody>
+      <tr><td>First line</td><td data-blank="l1"></td></tr>
+      <tr><td>Second line</td><td data-blank="l2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>5.</strong> Explain why <code>MAX_SEATS</code> uses capital letters.</p>
+<wb-short id="fr5"></wb-short>
+
+<h2 id="additional-practice">Additional Practice</h2>
+<h3>Practice A: Classify Values</h3>
+<p>Write the type of each value.</p>
+<wb-table id="pa">
+  <table>
+    <thead><tr><th>Value</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><code>-12</code></td><td data-blank="t1"></td></tr>
+      <tr><td><code>0.0</code></td><td data-blank="t2"></td></tr>
+      <tr><td><code>'False'</code></td><td data-blank="t3"></td></tr>
+      <tr><td><code>False</code></td><td data-blank="t4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice B: Repair Names</h3>
+<p>Repair every invalid or unclear variable name. Choose a descriptive, valid name in the course convention; several answers are accepted.</p>
+<wb-table id="pb">
+  <table>
+    <thead><tr><th>Original</th><th>Improved name</th></tr></thead>
+    <tbody>
+      <tr><td><code>1stScore</code></td><td data-blank="n1"></td></tr>
+      <tr><td><code>total-price</code></td><td data-blank="n2"></td></tr>
+      <tr><td><code>class</code></td><td data-blank="n3"></td></tr>
+      <tr><td><code>x</code> holding the number of lab seats</td><td data-blank="n4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice C: Trace Reassignment</h3>
+<wb-example id="ex-w15"></wb-example>
+<p>Complete the trace.</p>
+<wb-table id="pc-trace">
+  <table>
+    <thead><tr><th>After statement</th><th>Value</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="v1"></td><td data-blank="t1"></td></tr>
+      <tr><td>2</td><td data-blank="v2"></td><td data-blank="t2"></td></tr>
+      <tr><td>3</td><td data-blank="v3"></td><td data-blank="t3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Explain which statement may be a design mistake.</p>
+<wb-short id="pc-why"></wb-short>
+
+<h3>Practice D: Write a Small Program</h3>
+<p>Write assignment statements that:</p>
+<ol>
+  <li>store a course code as text;</li>
+  <li>store the number of students as a whole number;</li>
+  <li>store a fixed maximum class size using the constant convention; and</li>
+  <li>display the three values.</li>
+</ol>
+<p>Choose the values yourself. The following examples show the requested output order.</p>
+<table>
+  <thead><tr><th>Course code</th><th>Students, maximum</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>COMP 1001</code></td><td>28, 40</td><td><code>COMP 1001 28 40</code></td></tr>
+    <tr><td><code>COMP 1001</code></td><td>0, 40</td><td><code>COMP 1001 0 40</code></td></tr>
+  </tbody>
+</table>
+<p>Starter shell (add your statements below the comment). <strong>Check</strong> looks at the names, types and printed line rather than at fixed values, so any sensible values work.</p>
+<wb-exercise id="pd"></wb-exercise>
+
+<h2 id="together">Putting It All Together</h2>
+<h3>A Room Record</h3>
+<p>We will display a room's label, its fixed capacity, and its current number of bookings. Then we will record one more booking. This brings together names, types, reassignment, constants, comments, and ordinary output.</p>
+<p>First, give each piece of information a name. The room label is text. The capacity and booking count are whole numbers. The capacity stays fixed; the booking count can change.</p>
+<wb-example id="ex-w16"></wb-example>
+<p>Next, use <code>booked = booked + 1</code> to record the extra booking. It uses the previous count and adds one. <code>MAX_SEATS</code> is not changed. To report the current count, use <code>print(room_label, booked)</code>. This displays the label and count separated by a space.</p>
+<p>Now the parts can be combined. This program prints the room record before and after the update.</p>
+<wb-example id="ex-w17"></wb-example>
+<p>The update changes only <code>booked</code>. The label and capacity keep their values. This program records a count; it does not check whether the room is full.</p>
+
+<h3>Check the Room Record</h3>
+<p>Start the complete program with <code>booked = 0</code>. Predict its three output lines, then state the type of <code>booked</code> after the update.</p>
+<wb-table id="room-check">
+  <table>
+    <thead><tr><th>Item</th><th>Your prediction</th></tr></thead>
+    <tbody>
+      <tr><td>Output line 1</td><td data-blank="l1"></td></tr>
+      <tr><td>Output line 2</td><td data-blank="l2"></td></tr>
+      <tr><td>Output line 3</td><td data-blank="l3"></td></tr>
+      <tr><td>Type of <code>booked</code> after the update</td><td data-blank="t"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then run the program to confirm your prediction.</p>
+<wb-example id="ex-w17-zero"></wb-example>
+<p>Explain why the capacity does not change.</p>
+<wb-short id="room-why"></wb-short>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>These programs use values assigned in the code. No keyboard input is needed. For each coding task, write in the starter shell, then press <strong>Check</strong>: it runs your program against every supplied case and compares the displayed output.</p>
+
+<h3>Coding Practice A: Assignment Order</h3>
+<p>Start with <code>first = 3</code>. Assign <code>second</code> the current value of <code>first</code> plus 2. Then increase <code>first</code> by 1. Print <code>first</code> and <code>second</code> on one line. Trace both names after each assignment.</p>
+<table>
+  <thead><tr><th>Starting value of <code>first</code></th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td><code>4 5</code></td></tr>
+    <tr><td>0</td><td><code>1 2</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the line <code>first = 3</code> as given: the checker swaps it for <code>first = 0</code> to test the second case.</p>
+<wb-exercise id="ca"></wb-exercise>
+<wb-table id="ca-trace">
+  <table>
+    <thead><tr><th>After assignment</th><th><code>first</code></th><th><code>second</code></th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="f1"></td><td data-blank="s1"></td></tr>
+      <tr><td>2</td><td data-blank="f2"></td><td data-blank="s2"></td></tr>
+      <tr><td>3</td><td data-blank="f3"></td><td data-blank="s3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Coding Practice B: A Different Order</h3>
+<p>Start with <code>first = 3</code>. Increase <code>first</code> by 1 before assigning <code>second</code> the current value of <code>first</code> plus 2. Print <code>first</code> and <code>second</code> on one line. Explain why the second printed value differs from Coding Practice A.</p>
+<table>
+  <thead><tr><th>Starting value of <code>first</code></th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td><code>4 6</code></td></tr>
+    <tr><td>0</td><td><code>1 3</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cb"></wb-exercise>
+<wb-short id="cb-why"></wb-short>
+
+<h3>Coding Practice C: Numbers and Text</h3>
+<p>This practice has three parts: classify five values, spot two that are the same text, and then write a program.</p>
+<p><strong>Part 1.</strong> Write the type of each value in the table: <code>int</code>, <code>float</code>, or <code>str</code>.</p>
+<wb-table id="cc-types">
+  <table>
+    <thead><tr><th>Value</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><code>7</code></td><td data-blank="t1"></td></tr>
+      <tr><td><code>7.0</code></td><td data-blank="t2"></td></tr>
+      <tr><td><code>'7'</code></td><td data-blank="t3"></td></tr>
+      <tr><td><code>"7"</code></td><td data-blank="t4"></td></tr>
+      <tr><td><code>"7.0"</code></td><td data-blank="t5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>Part 2.</strong> Which two text literals represent the same text?</p>
+<wb-short id="cc-same"></wb-short>
+<p><strong>Part 3.</strong> Write a program that prints the type of each of the five values, one per line, in the same order as the table. Use <code>type()</code> inside <code>print()</code>. These two separate examples show the output format for a type check.</p>
+<table>
+  <thead><tr><th>Value checked</th><th>Expected type display</th></tr></thead>
+  <tbody>
+    <tr><td><code>6</code></td><td><code>&lt;class 'int'&gt;</code></td></tr>
+    <tr><td><code>6.0</code></td><td><code>&lt;class 'float'&gt;</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cc"></wb-exercise>
+
+<h3>Coding Practice D: Readable Records</h3>
+<p>The program below stores a fixed room capacity in <code>m</code>, the current booking count in <code>n</code>, and a room label in <code>t</code>. Rewrite it with meaningful names, the course's constant convention, and one useful comment. Keep the displayed output unchanged. Explain two choices that make your version easier to maintain.</p>
+<wb-example id="ex-w18"></wb-example>
+<table>
+  <thead><tr><th>Room label</th><th>Bookings, capacity</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Lab A</code></td><td>18, 40</td><td><code>Lab A 18 40</code></td></tr>
+    <tr><td><code>Lab A</code></td><td>0, 40</td><td><code>Lab A 0 40</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Write the booking count as <code>= 18</code>; the checker changes it to <code>= 0</code> for the second case.</p>
+<wb-exercise id="cd"></wb-exercise>
+<p>Explain two choices that make your version easier to maintain.</p>
+<wb-short id="cd-why"></wb-short>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 4 Workbook.</p>
+</main>
+</body>
+</html>

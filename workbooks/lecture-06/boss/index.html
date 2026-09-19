@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 6 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-06-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 6 Boss Problems</h1>
+    <div class="wb-subtitle">Input and output, and f-strings</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 6 covered: <code>input()</code>, <code>int()</code> and <code>float()</code>, arithmetic with <code>//</code> and <code>%</code>, constants, and f-strings with format specifiers. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Each problem starts with its <code>input()</code> lines already written. Keep the prompt text exactly as it is, because the prompt is part of the output that <strong>Check</strong> compares. <code>input()</code> returns text, so wrap each call in <code>int()</code> or <code>float()</code> before doing arithmetic. Check runs your program several times, typing different answers each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with your own typed values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="treats" data-toc-title="👹 Treat plan">👹 Boss 1: Treat Plan</h2>
+<p>Oliver is on a treat plan. He gets one treat on day 1, two treats on day 2, three on day 3, and so on. By day 7 he has eaten 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28 treats.</p>
+<p>Read the day number from the keyboard and print the total number of treats up to and including that day, in this format:</p>
+<pre class="wb-shell"><span class="wb-prompt">Days: </span><span class="wb-typed">7</span>
+Oliver has eaten 28 treats by day 7.</pre>
+<p>There is a formula for this sum. The total of 1 + 2 + ... + <i>n</i> is <i>n</i>(<i>n</i> + 1) / 2. Since one of <i>n</i> and <i>n</i> + 1 is always even, the division has no remainder, so use <code>//</code> and the result stays a whole number. A total of <code>28.0</code> is wrong.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>7</td><td><code>Oliver has eaten 28 treats by day 7.</code></td></tr>
+    <tr><td>2</td><td><code>Oliver has eaten 3 treats by day 2.</code></td></tr>
+    <tr><td>30</td><td><code>Oliver has eaten 465 treats by day 30.</code></td></tr>
+    <tr><td>120</td><td><code>Oliver has eaten 7260 treats by day 120.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Convert the typed text with <code>int()</code>.</li>
+    <li>Use the formula with <code>//</code>. The total must print as a whole number, not <code>28.0</code>.</li>
+    <li>No loops.</li>
+    <li>Build the line with an f-string and print it with one <code>print()</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the prompt <code>'Days: '</code> unchanged. The checker will type the other day numbers.</p>
+<wb-exercise id="treats"></wb-exercise>
+
+<h2 id="deposits" data-toc-title="👾 Bottle deposits">👾 Boss 2: Bottle Deposits</h2>
+<p>After the end-of-term party in EN2043, the 120 students of COMP 1001 leave behind a pile of drink containers. Ever Green Recycling pays a refund for each container: $0.10 for a container that holds 1 litre or less, and $0.25 for a container that holds more than 1 litre.</p>
+<p>Read the number of small containers and the number of large containers from the keyboard, then print the total refund as money, with a dollar sign and exactly two decimal places:</p>
+<pre class="wb-shell"><span class="wb-prompt">Small containers: </span><span class="wb-typed">11</span>
+<span class="wb-prompt">Large containers: </span><span class="wb-typed">3</span>
+Refund: $1.85</pre>
+<p>The two refund amounts do not change, so store them in constants at the top of the program. The dollar sign is ordinary text in front of the braces, and the <code>.2f</code> specifier inside the braces takes care of the two decimals. Do not round the value: formatting changes the display, not the number.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>11 and 3</td><td><code>Refund: $1.85</code></td></tr>
+    <tr><td>0 and 0</td><td><code>Refund: $0.00</code></td></tr>
+    <tr><td>120 and 0</td><td><code>Refund: $12.00</code></td></tr>
+    <tr><td>7 and 12</td><td><code>Refund: $3.70</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Convert both counts with <code>int()</code>.</li>
+    <li>Store the two refund amounts, <code>0.10</code> and <code>0.25</code>, in <code>ALL_CAPS</code> constants.</li>
+    <li>Format the refund with the <code>.2f</code> specifier. No <code>round()</code>.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Build the line with an f-string and print it with one <code>print()</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the two prompts unchanged. The checker will type the other counts.</p>
+<wb-exercise id="deposits"></wb-exercise>
+
+<h2 id="bread" data-toc-title="🐉 Day-old bread">🐉 Boss 3: Day-Old Bread</h2>
+<p>Manna Bakery in St. John's sells a loaf of bread for $3.49. Bread baked the day before is sold at a 60 percent discount.</p>
+<p>Read the number of day-old loaves being bought from the keyboard. Then print the regular price of that many loaves, the discount, and the total to pay. Show every amount as money with two decimal places, and line the amounts up so that the dollar signs are in one column and the decimal points are in another:</p>
+<pre class="wb-shell"><span class="wb-prompt">Loaves: </span><span class="wb-typed">3</span>
+Regular price: $  10.47
+Discount:      $   6.28
+Total:         $   4.19</pre>
+<p>A width in the specifier does the lining up. <code>{total:7.2f}</code> displays the value with two decimals, right aligned in a field seven characters wide. Use the same width for all three amounts, and make the three labels the same length, so the dollar signs and the decimal points land in the same columns on every line.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Regular price</th><th>Discount</th><th>Total</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td><code>$  10.47</code></td><td><code>$   6.28</code></td><td><code>$   4.19</code></td></tr>
+    <tr><td>1</td><td><code>$   3.49</code></td><td><code>$   2.09</code></td><td><code>$   1.40</code></td></tr>
+    <tr><td>12</td><td><code>$  41.88</code></td><td><code>$  25.13</code></td><td><code>$  16.75</code></td></tr>
+    <tr><td>100</td><td><code>$ 349.00</code></td><td><code>$ 209.40</code></td><td><code>$ 139.60</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Convert the typed text with <code>int()</code>.</li>
+    <li>Give each of the three amounts a width and two decimals, as in <code>{total:7.2f}</code>. No <code>round()</code>.</li>
+    <li>Print exactly three lines, with the dollar signs in one column and the decimal points in one column.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Build the lines with f-strings.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the prompt <code>'Loaves: '</code> unchanged. The checker will type the other counts.</p>
+<wb-exercise id="bread"></wb-exercise>
+
+<h2 id="countdown" data-toc-title="💀 Countdown">💀 Boss 4: Countdown to the Last Lecture</h2>
+<p>The screen at the front of EN2043 shows how long is left until the last COMP 1001 lecture, but it shows the time as one big number of seconds. Nobody can read 93784 seconds at a glance.</p>
+<p>Read the number of seconds from the keyboard and print it as days, hours, minutes, and seconds in the form <code>D:HH:MM:SS</code>. The hours, minutes, and seconds always take exactly two digits, with a leading zero when needed. The days take as many digits as they need.</p>
+<pre class="wb-shell"><span class="wb-prompt">Seconds: </span><span class="wb-typed">93784</span>
+1:02:03:04</pre>
+<p>Work from the largest unit down. There are 86400 seconds in a day, so <code>seconds // 86400</code> is the number of whole days and <code>seconds % 86400</code> is what is left for the hours. Do the same with 3600 for the hours and 60 for the minutes. The <code>02d</code> specifier pads a whole number to two digits with zeros, so <code>{hours:02d}</code> displays 2 as <code>02</code>.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>93784</td><td><code>1:02:03:04</code></td></tr>
+    <tr><td>59</td><td><code>0:00:00:59</code></td></tr>
+    <tr><td>86400</td><td><code>1:00:00:00</code></td></tr>
+    <tr><td>1000000</td><td><code>11:13:46:40</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Convert the typed text with <code>int()</code>.</li>
+    <li>Split the seconds with <code>//</code> and <code>%</code>.</li>
+    <li>Pad the hours, minutes, and seconds with the <code>02d</code> specifier. No <code>str()</code> and no padding by hand.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Build the line with an f-string and print it with one <code>print()</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the prompt <code>'Seconds: '</code> unchanged. The checker will type the other values.</p>
+<wb-exercise id="countdown"></wb-exercise>
+
+</main>
+</body>
+</html>

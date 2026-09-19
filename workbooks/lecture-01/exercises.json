@@ -1,0 +1,14 @@
+{
+  "id": "lecture-01",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 1 Workbook",
+  "subtitle": "Course Introduction, Computers and Software",
+  "exercises": {
+    "ex-add-five": {
+      "type": "example",
+      "code": "def add_five(x):\n    return x + 5\n\nprint(add_five(10))\nprint(add_five(37))",
+      "output": "15\n42",
+      "title": "add_five.py"
+    }
+  }
+}

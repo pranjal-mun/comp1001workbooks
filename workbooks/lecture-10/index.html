@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 10 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-10", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 10 Workbook</h1>
+    <div class="wb-subtitle">Nested branches and elif chains</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>trace nested decisions using their indentation;</li>
+    <li>write and order an <code>if</code>/<code>elif</code>/<code>else</code> chain for several alternatives;</li>
+    <li>explain the difference between an <code>elif</code> chain and separate <code>if</code> statements; and</li>
+    <li>remove redundant conditions and choose between nesting and a chain.</li>
+  </ul>
+  <p class="wb-meta">Reading: §3.3 and §3.4. Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Nested Decisions</h2>
+<h3>A Decision Inside a Decision</h3>
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">Nested decision</div>
+  <p>A <strong>nested decision</strong> is an <code>if</code> statement inside a branch of another decision. Use nesting when a second question matters only after one particular answer to the first question.</p>
+</div>
+<p>In the next program, the order total matters only for members. Python first asks the outer question. It reaches the inner question only when the outer condition is <code>True</code>.</p>
+<wb-example id="ex-w01"></wb-example>
+<p>The outer question is “Is the customer a member?” The inner question is “Is the total more than 100?” A non-member skips the inner decision completely.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1: Trace the outer branch</div>
+  <p>Trace the program for <code>member = 'no'</code> and <code>total = 120</code>.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Question</th><th>Your trace</th></tr></thead>
+      <tbody>
+        <tr><td>Outer condition value</td><td data-blank="outer"></td></tr>
+        <tr><td>Is the inner condition tested?</td><td data-blank="inner"></td></tr>
+        <tr><td>Final value of <code>discount</code></td><td data-blank="discount"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain why.</p>
+  <wb-short id="cp1-why"></wb-short>
+</div>
+
+<h3>Reading Indentation</h3>
+<p>Indentation shows both which statements form a block and which <code>else</code> belongs to which <code>if</code>. An <code>else</code> lines up with its matching <code>if</code>.</p>
+<wb-example id="ex-w02"></wb-example>
+<p>The inner <code>else</code> is indented four spaces, so it pairs with the inner <code>if</code>. The outer <code>else</code> starts in the same column as the outer <code>if</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2: Match each <code>else</code></div>
+  <p>Match each <code>else</code> to its <code>if</code>.</p>
+<pre class="wb-code"><span class="wb-kw">if</span> day == <span class="wb-str">"Saturday"</span>:
+    <span class="wb-kw">if</span> weather == <span class="wb-str">"rain"</span>:
+        plan = <span class="wb-str">"museum"</span>
+    <span class="wb-kw">else</span>:
+        plan = <span class="wb-str">"park"</span>
+<span class="wb-kw">else</span>:
+    plan = <span class="wb-str">"class"</span></pre>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Question</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td>The indented <code>else</code> (line 4) matches the <code>if</code> that tests…</td><td data-blank="inner"></td></tr>
+        <tr><td>The unindented <code>else</code> (line 6) matches the <code>if</code> that tests…</td><td data-blank="outer"></td></tr>
+        <tr><td>Which condition is tested first?</td><td data-blank="first"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>When is <code>weather == 'rain'</code> tested?</p>
+  <wb-short id="cp2-when"></wb-short>
+</div>
+
+<h3>Hand-Tracing One Path</h3>
+<p>When tracing nested code, follow only the path selected by each condition. Do not execute statements in skipped branches. Record the value of each condition that Python actually reaches.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Worked trace</div>
+  <p>For <code>member = 'yes'</code> and <code>total = 80</code>, the program above follows this path:</p>
+  <table>
+    <thead><tr><th>Step</th><th>Condition or statement</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>member == 'yes'</code></td><td><code>True</code>; enter the outer block</td></tr>
+      <tr><td>2</td><td><code>total &gt; 100</code></td><td><code>False</code>; take the inner <code>else</code></td></tr>
+      <tr><td>3</td><td>assignment</td><td><code>message</code> becomes <code>Member order</code></td></tr>
+      <tr><td>4</td><td><code>print(message)</code></td><td>prints <code>Member order</code></td></tr>
+    </tbody>
+  </table>
+  <p>Only one inner branch runs. The outer <code>else</code> is skipped because the outer condition was <code>True</code>.</p>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3: Complete a nested trace</div>
+  <p>Trace the same program for <code>member = 'yes'</code> and <code>total = 125</code>.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Step</th><th>Value</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><code>member == 'yes'</code></td><td data-blank="v1"></td><td data-blank="a1"></td></tr>
+        <tr><td><code>total &gt; 100</code></td><td data-blank="v2"></td><td data-blank="a2"></td></tr>
+        <tr><td>Final <code>message</code></td><td colspan="2" data-blank="message"></td></tr>
+        <tr><td>Printed output</td><td colspan="2" data-blank="printed"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Multiple Alternatives</h2>
+<h3>The <code>elif</code> Keyword</h3>
+<p>Some decisions choose one result from several alternatives. A grade belongs to one band: A, B, C, D, or F. Deep nesting can express this choice, but every extra level shifts the code farther right. Python uses <code>elif</code>, short for “else if,” to keep the alternatives aligned.</p>
+<wb-example id="ex-w03"></wb-example>
+<p>An <code>if</code>/<code>elif</code>/<code>else</code> chain has one starting <code>if</code>, zero or more <code>elif</code> branches, and an optional final <code>else</code>. All headers in the chain line up.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4: Trace a chain</div>
+  <p>Trace the grade chain for <code>score = 64</code>. Write <em>skipped</em> for a condition Python never reaches.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Condition reached</th><th>Value</th><th>What happens next?</th></tr></thead>
+      <tbody>
+        <tr><td><code>score &gt;= 80</code></td><td data-blank="v1"></td><td data-blank="n1"></td></tr>
+        <tr><td><code>score &gt;= 70</code></td><td data-blank="v2"></td><td data-blank="n2"></td></tr>
+        <tr><td><code>score &gt;= 60</code></td><td data-blank="v3"></td><td data-blank="n3"></td></tr>
+        <tr><td><code>score &gt;= 50</code></td><td data-blank="v4"></td><td data-blank="n4"></td></tr>
+        <tr><td>Final grade</td><td colspan="2" data-blank="grade"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h3>The First True Condition Wins</h3>
+<p>Python checks a chain from top to bottom. It runs the block for the <strong>first</strong> true condition and then skips the rest of the chain.</p>
+<wb-example id="ex-w04"></wb-example>
+<p>Although <code>score &gt;= 70</code> is also true, Python never tests it because the first branch already won.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5: Mark tested and skipped parts</div>
+  <p>For <code>score = 92</code>, number the conditions in the order Python reaches them. Write <code>skipped</code> beside a condition or branch that is not reached.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Part of the chain</th><th>Order reached, or skipped</th></tr></thead>
+      <tbody>
+        <tr><td><code>score &gt;= 80</code></td><td data-blank="c1"></td></tr>
+        <tr><td><code>score &gt;= 70</code></td><td data-blank="c2"></td></tr>
+        <tr><td>final <code>else</code></td><td data-blank="c3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h3>Ordering Conditions</h3>
+<p>Order matters when several conditions could be true for the same value. The condition that accepts fewer values is usually more restrictive and should come first.</p>
+<p>This order is wrong:</p>
+<wb-example id="ex-w05"></wb-example>
+<p>The first condition is true for every passing score, so no later condition can win. Python reports no error; the program quietly produces a wrong answer.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6: Order overlapping conditions</div>
+  <p>Reorder these conditions from most restrictive to least restrictive:</p>
+  <ul>
+    <li><code>temperature &gt;= 20</code></li>
+    <li><code>temperature &gt;= 30</code></li>
+    <li><code>temperature &gt;= 10</code></li>
+  </ul>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th>Position</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="o1"></td></tr>
+        <tr><td>2</td><td data-blank="o2"></td></tr>
+        <tr><td>3</td><td data-blank="o3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h3>Redundant Conditions</h3>
+<p>In the correct grade chain, reaching <code>score &gt;= 70</code> means <code>score &gt;= 80</code> has already failed. Python therefore already knows the score is below 80.</p>
+<p>Prefer the shorter condition:</p>
+<pre class="wb-code"><span class="wb-kw">elif</span> score &gt;= <span class="wb-num">70</span>:
+    grade = <span class="wb-str">"B"</span></pre>
+<p>There is no need to test the upper boundary again. The earlier branch already ruled it out. Removing a redundant test makes the chain easier to read and gives you fewer places to make a boundary mistake.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7: Use what an earlier branch ruled out</div>
+  <p>The first branch in this chain has already tested <code>age &lt; 5</code>.</p>
+<pre class="wb-code"><span class="wb-kw">if</span> age &lt; <span class="wb-num">5</span>:
+    price = <span class="wb-num">0</span>
+<span class="wb-kw">elif</span> age &lt; <span class="wb-num">18</span>:
+    price = <span class="wb-num">8</span>
+<span class="wb-kw">else</span>:
+    price = <span class="wb-num">12</span></pre>
+  <p>When Python reaches <code>age &lt; 18</code>, what does it already know about <code>age</code>? Why is a second lower-bound test unnecessary?</p>
+  <wb-short id="cp7"></wb-short>
+</div>
+
+<h3>The Final <code>else</code></h3>
+<p>The final <code>else</code> runs only when every earlier condition is false. It has no condition because it catches all remaining values.</p>
+<wb-example id="ex-w07"></wb-example>
+<p>The catch-all ensures that <code>label</code> receives a value for every possible temperature. Without it, a value below 10 would leave <code>label</code> unassigned, and a later use could cause a <code>NameError</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8: Check every band</div>
+  <p>Use the temperature chain above. Write the condition of the first true branch, or <em>catch-all</em>.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Temperature</th><th>First true branch or catch-all</th><th><code>label</code></th></tr></thead>
+      <tbody>
+        <tr><td>35</td><td data-blank="b1"></td><td data-blank="l1"></td></tr>
+        <tr><td>25</td><td data-blank="b2"></td><td data-blank="l2"></td></tr>
+        <tr><td>15</td><td data-blank="b3"></td><td data-blank="l3"></td></tr>
+        <tr><td>5</td><td data-blank="b4"></td><td data-blank="l4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. Choosing a Decision Structure</h2>
+<h3>An <code>elif</code> Chain Versus Separate <code>if</code>s</h3>
+<p>An <code>elif</code> chain stops after one branch wins. Separate <code>if</code> statements are independent, so Python tests every one.</p>
+<wb-example id="ex-w08"></wb-example>
+<p>Both conditions are true. The second assignment overwrites the first. When the cases are alternatives, use one chain so only one branch runs.</p>
+<p>Separate <code>if</code> statements are correct when more than one result may apply.</p>
+<wb-example id="ex-w09"></wb-example>
+<p>Here both messages are useful, so the questions are independent.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9: Chain or separate questions?</div>
+  <p>Choose <strong>chain</strong> or <strong>separate ifs</strong>.</p>
+  <wb-table id="cp9">
+    <table>
+      <thead><tr><th>Task</th><th>Structure</th></tr></thead>
+      <tbody>
+        <tr><td>Assign exactly one letter grade</td><td data-blank="g"></td></tr>
+        <tr><td>Print every safety warning that applies</td><td data-blank="w"></td></tr>
+        <tr><td>Assign exactly one age category</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain one choice.</p>
+  <wb-short id="cp9-why"></wb-short>
+</div>
+
+<h3>Nesting, a Chain, or Separate Questions</h3>
+<p>Choose the shape that matches the problem.</p>
+<table>
+  <thead><tr><th>Problem structure</th><th>Best shape</th></tr></thead>
+  <tbody>
+    <tr><td>A second question matters only inside one branch</td><td>nested <code>if</code></td></tr>
+    <tr><td>One value must choose exactly one of several alternatives</td><td><code>elif</code> chain</td></tr>
+    <tr><td>Several independent results may all apply</td><td>separate <code>if</code> statements</td></tr>
+  </tbody>
+</table>
+<p>Use nesting for “Is the customer a member? If yes, is the order large?” Use a chain for “Which one grade band contains this score?”</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10: Choose a structure</div>
+  <p>Choose a structure (<strong>chain</strong> or <strong>nested if</strong>) and explain why.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th>Problem</th><th>Structure</th></tr></thead>
+      <tbody>
+        <tr><td><strong>a.</strong> A program chooses one shipping rate from local, national, and international.</td><td data-blank="a"></td></tr>
+        <tr><td><strong>b.</strong> A member may receive an extra discount only when the order is over $100.</td><td data-blank="b"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Reason for (a):</p>
+  <wb-short id="cp10a-why"></wb-short>
+  <p>Reason for (b):</p>
+  <wb-short id="cp10b-why"></wb-short>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<ol>
+  <li><p>What is a nested decision?</p><wb-short id="fr1"></wb-short></li>
+  <li><p>How can indentation show which <code>else</code> belongs to which <code>if</code>?</p><wb-short id="fr2"></wb-short></li>
+  <li><p>What happens after the first true condition in an <code>elif</code> chain?</p><wb-short id="fr3"></wb-short></li>
+  <li><p>Why should the most restrictive condition usually come first?</p><wb-short id="fr4"></wb-short></li>
+  <li><p>What does a final <code>else</code> do?</p><wb-short id="fr5"></wb-short></li>
+  <li><p>Explain one difference between an <code>elif</code> chain and separate <code>if</code> statements.</p><wb-short id="fr6"></wb-short></li>
+  <li><p>When is nesting clearer than a chain?</p><wb-short id="fr7"></wb-short></li>
+</ol>
+
+<h2 id="additional-practice">Additional Practice</h2>
+
+<h3>Practice A: Trace a Nested Decision</h3>
+<p>Trace the program for <code>member = 'yes'</code> and <code>visits = 3</code>.</p>
+<wb-example id="ex-pa"></wb-example>
+<wb-table id="pa">
+  <table>
+    <thead><tr><th>Question or result</th><th>Your trace</th></tr></thead>
+    <tbody>
+      <tr><td>Outer condition</td><td data-blank="outer"></td></tr>
+      <tr><td>Inner condition</td><td data-blank="inner"></td></tr>
+      <tr><td>Branch followed</td><td data-blank="branch"></td></tr>
+      <tr><td>Output</td><td data-blank="output"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice B: Complete an Ordered Chain</h3>
+<p>Complete the chain so that a value is labelled <code>high</code> at 100 or more, <code>medium</code> at 50 or more, and <code>low</code> otherwise.</p>
+<p class="wb-meta">Write the value as <code>value = 100</code>; the checker also tries 99, 50, 49, and 250.</p>
+<wb-exercise id="pb"></wb-exercise>
+<p>Explain why the high condition comes first.</p>
+<wb-short id="pb-why"></wb-short>
+
+<h3>Practice C: Repair a Backwards Chain</h3>
+<p>The program should assign <code>gold</code> for 1000 or more points, <code>silver</code> for 500 or more, and <code>bronze</code> for 100 or more. Rewrite the chain in the correct order.</p>
+<p class="wb-meta">Keep <code>points = 1000</code>; the checker also tries 999, 500, 100, and 99.</p>
+<wb-exercise id="pc"></wb-exercise>
+
+<h3>Practice D: Chain or Separate Questions?</h3>
+<p>For each problem, choose an <code>elif</code> chain or separate <code>if</code> statements (write <strong>chain</strong> or <strong>separate ifs</strong>). Then explain each choice.</p>
+<wb-table id="pd">
+  <table>
+    <thead><tr><th>Problem</th><th>Structure</th></tr></thead>
+    <tbody>
+      <tr><td>1. Print all achievement badges a user has earned.</td><td data-blank="d1"></td></tr>
+      <tr><td>2. Choose exactly one label: child, teen, or adult.</td><td data-blank="d2"></td></tr>
+      <tr><td>3. Print every weather warning that applies.</td><td data-blank="d3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="pd-why"></wb-short>
+
+<h3>Practice E: Design a Nested Decision</h3>
+<p>A delivery is accepted only when <code>region</code> is <code>'local'</code>. A local delivery costs $5 when <code>distance</code> is 10 km or less and $8 otherwise. A non-local delivery is not accepted.</p>
+<p>Write a nested decision that stores the result in <code>message</code> and prints it once.</p>
+<table>
+  <thead><tr><th><code>region</code></th><th><code>distance</code></th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>local</code></td><td>10</td><td><code>Delivery charge: $5</code></td></tr>
+    <tr><td><code>local</code></td><td>11</td><td><code>Delivery charge: $8</code></td></tr>
+    <tr><td><code>north</code></td><td>3</td><td><code>Delivery not accepted</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the two assignments at the top as they are; the checker changes them for the other cases.</p>
+<wb-exercise id="pe"></wb-exercise>
+
+<h3>Practice F: Test an <code>elif</code> Chain</h3>
+<p>For the grade chain in the Multiple Alternatives section, design test cases that reach every branch and check both sides of the boundaries 50, 60, 70, and 80. You may use more than eight cases if you wish. Use the copy below to try your scores.</p>
+<wb-example id="ex-pf"></wb-example>
+<p>List each score, its expected grade, and the branch or boundary it tests.</p>
+<wb-short id="pf"></wb-short>
+
+<h2 id="together">Putting It All Together</h2>
+<p>The final program combines a chain and a nested decision. It calculates an admission price from three pieces of information:</p>
+<ul>
+  <li>A visitor younger than 13 pays a base price of $8.</li>
+  <li>A visitor from 13 through 64 pays a base price of $14.</li>
+  <li>A visitor 65 or older pays a base price of $10.</li>
+  <li>A member receives a $3 discount after at least five visits and a $1 discount otherwise.</li>
+  <li>A non-member receives no discount.</li>
+</ul>
+<p>Assume that the user enters a valid non-negative age and visit count, and enters <code>yes</code> or <code>no</code> for membership. Input validation belongs to the next lecture.</p>
+
+<h3>Step 1: Choose One Base Price</h3>
+<p>The age bands are alternatives, so use one chain. The tests use increasing upper limits. If <code>age &lt; 13</code> fails, the next branch already knows the visitor is at least 13.</p>
+<pre class="wb-code"><span class="wb-kw">if</span> age &lt; <span class="wb-num">13</span>:
+    base_price = <span class="wb-num">8</span>
+<span class="wb-kw">elif</span> age &lt; <span class="wb-num">65</span>:
+    base_price = <span class="wb-num">14</span>
+<span class="wb-kw">else</span>:
+    base_price = <span class="wb-num">10</span></pre>
+
+<h3>Step 2: Decide the Member Discount</h3>
+<p>The visit count matters only for members, so put that decision inside the member branch.</p>
+<pre class="wb-code"><span class="wb-kw">if</span> member == <span class="wb-str">"yes"</span>:
+    <span class="wb-kw">if</span> visits &gt;= <span class="wb-num">5</span>:
+        discount = <span class="wb-num">3</span>
+    <span class="wb-kw">else</span>:
+        discount = <span class="wb-num">1</span>
+<span class="wb-kw">else</span>:
+    discount = <span class="wb-num">0</span></pre>
+<p>The two decisions assign <code>base_price</code> and <code>discount</code>. The final calculation is shared by every path, so it belongs after both decisions.</p>
+
+<h3>Step 3: Complete and Test the Program</h3>
+<p>Press <strong>▶ Run</strong> and answer the three prompts in the console to try the program yourself.</p>
+<wb-example id="ex-admission"></wb-example>
+<p>Two test runs:</p>
+<pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">13</span>
+<span class="wb-prompt">Member (yes/no): </span><span class="wb-typed">no</span>
+<span class="wb-prompt">Previous visits: </span><span class="wb-typed">0</span>
+Admission: $14.00</pre>
+<pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">65</span>
+<span class="wb-prompt">Member (yes/no): </span><span class="wb-typed">yes</span>
+<span class="wb-prompt">Previous visits: </span><span class="wb-typed">5</span>
+Admission: $7.00</pre>
+<p>The tests use two important boundaries: age 13 begins the middle band, and five visits begins the larger member discount.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Synthesis Checkpoint</div>
+  <p>Trace the complete program for <code>age = 12</code>, <code>member = 'yes'</code>, and <code>visits = 2</code>. Record the first true age branch, both membership-path condition values, <code>base_price</code>, <code>discount</code>, and the exact output.</p>
+  <wb-table id="syn">
+    <table>
+      <thead><tr><th>Item</th><th>Your trace</th></tr></thead>
+      <tbody>
+        <tr><td>First true age condition</td><td data-blank="age"></td></tr>
+        <tr><td><code>member == "yes"</code></td><td data-blank="member"></td></tr>
+        <tr><td><code>visits &gt;= 5</code></td><td data-blank="visits"></td></tr>
+        <tr><td><code>base_price</code></td><td data-blank="base"></td></tr>
+        <tr><td><code>discount</code></td><td data-blank="discount"></td></tr>
+        <tr><td>Exact output</td><td data-blank="output"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>The exercises below adapt the approved textbook-practice skills into new course problems. Unless a task says otherwise, assume the input follows the stated format. Each programming task includes a starter shell; add the decision structure and output it requests.</p>
+
+<h3>Coding Practice 1: Special Dates</h3>
+<p>Write decision code that stores one of these labels in <code>occasion</code>:</p>
+<table>
+  <thead><tr><th>Month</th><th>Day</th><th>Label</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>1</td><td><code>New Year Day</code></td></tr>
+    <tr><td>7</td><td>1</td><td><code>Canada Day</code></td></tr>
+    <tr><td>9</td><td>30</td><td><code>National Day for Truth and Reconciliation</code></td></tr>
+    <tr><td>12</td><td>31</td><td><code>Year End</code></td></tr>
+    <tr><td colspan="2">any other date</td><td><code>Ordinary day</code></td></tr>
+  </tbody>
+</table>
+<p>Use nesting to compare the day only after its month matches. The variables <code>month</code> and <code>day</code> already contain integers.</p>
+<p class="wb-meta">Keep <code>month = 1</code> and <code>day = 1</code> at the top; the checker changes them to test the other dates.</p>
+<wb-exercise id="c01"></wb-exercise>
+
+<h3>Coding Practice 2: Quiz Bands</h3>
+<p>Write an ordered <code>if</code>/<code>elif</code>/<code>else</code> chain that stores a letter in <code>grade</code> using this scale: A for 90 or more, B for 80–89, C for 70–79, D for 60–69, and F below 60. Use only one comparison in each condition.</p>
+<p class="wb-meta"><code>score</code> already contains a number. Keep <code>score = 90</code>; the checker also tries 89, 80, 79, 70, 69, 60, and 59.</p>
+<wb-exercise id="c02"></wb-exercise>
+
+<h3>Coding Practice 3: Explain Two Shapes</h3>
+<p>Explain the difference between a nested decision and an <code>if</code>/<code>elif</code>/<code>else</code> chain. Give one new example of a problem suited to each shape.</p>
+<wb-short id="c03"></wb-short>
+
+<h3>Coding Practice 4: When Does Order Matter?</h3>
+<p>For each chain, state whether changing the order of its conditions can change the result. Explain why.</p>
+<p><strong>a.</strong> <code>level == 'red'</code>, <code>level == 'yellow'</code>, then a final <code>else</code>.</p>
+<wb-short id="c04a"></wb-short>
+<p><strong>b.</strong> <code>points &gt;= 1000</code>, <code>points &gt;= 500</code>, then a final <code>else</code>.</p>
+<wb-short id="c04b"></wb-short>
+
+<h3>Coding Practice 5: Reverse the Comparison Direction</h3>
+<p>Rewrite this chain with <code>&lt;</code> comparisons while keeping exactly the same four temperature bands. Your new tests must run from the smallest cutoff to the largest.</p>
+<pre class="wb-code"><span class="wb-kw">if</span> temperature &gt;= <span class="wb-num">30</span>:
+    label = <span class="wb-str">"hot"</span>
+<span class="wb-kw">elif</span> temperature &gt;= <span class="wb-num">20</span>:
+    label = <span class="wb-str">"warm"</span>
+<span class="wb-kw">elif</span> temperature &gt;= <span class="wb-num">10</span>:
+    label = <span class="wb-str">"cool"</span>
+<span class="wb-kw">else</span>:
+    label = <span class="wb-str">"cold"</span></pre>
+<p class="wb-meta">Keep <code>temperature = 9</code>; the checker also tries 10, 19, 20, 29, and 30.</p>
+<wb-exercise id="c05"></wb-exercise>
+
+<h3>Coding Practice 6: Tests for a Nested Discount</h3>
+<p>Design a small set of tests for the nested membership program from the first section. Reach the non-member branch and both member branches. Include the order-total boundary 100. Use the copy below to check your expectations.</p>
+<wb-example id="ex-c06"></wb-example>
+<p>List each test as <code>member</code>, <code>total</code>, and the expected <code>discount</code>.</p>
+<wb-short id="c06"></wb-short>
+
+<h3>Coding Practice 7: Rating to Number</h3>
+<p>Write a complete program that reads a letter rating and a modifier on separate lines. Base values are A = 4, B = 3, C = 2, D = 1, and F = 0. A plus adds 0.3 and a minus subtracts 0.3. The exception is A+, which remains 4.0. The modifier input is <code>+</code>, <code>-</code>, or <code>none</code>. Print the numeric value to one decimal place. Assume the inputs use these exact forms.</p>
+<table>
+  <thead><tr><th>Rating</th><th>Modifier</th><th>Expected numeric value</th></tr></thead>
+  <tbody>
+    <tr><td><code>B</code></td><td><code>-</code></td><td><code>2.7</code></td></tr>
+    <tr><td><code>A</code></td><td><code>+</code></td><td><code>4.0</code></td></tr>
+  </tbody>
+</table>
+<p>Print the result as <code>Numeric value: 2.7</code>. The checker types the two inputs for you.</p>
+<wb-exercise id="c07"></wb-exercise>
+
+<h3>Coding Practice 8: Number to Rating</h3>
+<p>Write a complete program that reads a number from 0 through 4 and prints the nearest rating: 4 = Excellent, 3 = Good, 2 = Fair, 1 = Poor, and 0 = Unacceptable. A value exactly halfway between two ratings receives the higher rating.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2.5</code></td><td><code>Good</code></td></tr>
+    <tr><td><code>2.49</code></td><td><code>Fair</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c08"></wb-exercise>
+
+<h3>Coding Practice 9: Transit Code</h3>
+<p>A transit code has a mode letter and a zone number entered separately. The mode letters are <code>B</code> for Bus, <code>F</code> for Ferry, and <code>R</code> for Rail. Zones are <code>1</code>, <code>2</code>, and <code>3</code>. Write a complete program that prints the full description. Assume the inputs are valid.</p>
+<table>
+  <thead><tr><th>Mode</th><th>Zone</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>F</code></td><td><code>2</code></td><td><code>Ferry, Zone 2</code></td></tr>
+    <tr><td><code>R</code></td><td><code>1</code></td><td><code>Rail, Zone 1</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c09"></wb-exercise>
+
+<h3>Coding Practice 10: Facility Schedule</h3>
+<p>A campus facility uses four schedules. Each change happens on the 15th day of March, June, September, and December:</p>
+<table>
+  <thead><tr><th>Date range</th><th>Schedule</th></tr></thead>
+  <tbody>
+    <tr><td>December 15 through March 14</td><td>Winter</td></tr>
+    <tr><td>March 15 through June 14</td><td>Spring</td></tr>
+    <tr><td>June 15 through September 14</td><td>Summer</td></tr>
+    <tr><td>September 15 through December 14</td><td>Fall</td></tr>
+  </tbody>
+</table>
+<p>Write a complete program that reads a valid month number and day, then prints the schedule. Use an <code>elif</code> chain and nest the day decision in each boundary month.</p>
+<table>
+  <thead><tr><th>Month</th><th>Day</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td>14</td><td><code>Winter</code></td></tr>
+    <tr><td>3</td><td>15</td><td><code>Spring</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c10"></wb-exercise>
+
+<h3>Coding Practice 11: Bookstore Voucher</h3>
+<p>A campus bookstore awards one voucher based on a purchase total in Canadian dollars. The voucher is 15% of a purchase of $200 or more, 10% from $100 up to but not including $200, 5% from $50 up to but not including $100, and $0 below $50. Write a complete program that reads the purchase total and prints the voucher value to two decimal places.</p>
+<table>
+  <thead><tr><th>Purchase total</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>49</code></td><td><code>Voucher: $0.00</code></td></tr>
+    <tr><td><code>200</code></td><td><code>Voucher: $30.00</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c11"></wb-exercise>
+
+<h3>Coding Practice 12: Wavelength or Frequency</h3>
+<p>This exercise classifies a signal using a simplified table. Wavelength is measured in metres (m), and frequency is measured in hertz (Hz). Use the formula</p>
+<p style="text-align:center">wavelength = 3.0 × 10<sup>8</sup> ÷ frequency</p>
+<table>
+  <thead><tr><th>Wavelength</th><th>Band</th></tr></thead>
+  <tbody>
+    <tr><td>at least 1.0 × 10<sup>−1</sup> m</td><td>Radio</td></tr>
+    <tr><td>at least 1.0 × 10<sup>−3</sup> m but below 1.0 × 10<sup>−1</sup> m</td><td>Microwave</td></tr>
+    <tr><td>below 1.0 × 10<sup>−3</sup> m</td><td>Shorter wavelength</td></tr>
+  </tbody>
+</table>
+<p>Write a complete program that first reads <code>w</code> for a wavelength or <code>f</code> for a frequency, then reads the numerical value. Convert a frequency to wavelength before using one ordered chain to print the band.</p>
+<table>
+  <thead><tr><th>Kind</th><th>Value</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>f</code></td><td><code>3e9</code></td><td><code>Radio</code></td></tr>
+    <tr><td><code>w</code></td><td><code>0.0005</code></td><td><code>Shorter wavelength</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c12"></wb-exercise>
+
+<h3>Coding Practice 13: Classify a Point</h3>
+<p>This exercise does not require a graphics library. Imagine that a drawing program has already reported a point's <code>x</code> and <code>y</code> coordinates. Write a console program that prints one of <code>origin</code>, <code>horizontal axis</code>, <code>vertical axis</code>, <code>quadrant I</code>, <code>quadrant II</code>, <code>quadrant III</code>, or <code>quadrant IV</code>. Use nesting to distinguish the origin and the four quadrants.</p>
+<table>
+  <thead><tr><th><code>x</code></th><th><code>y</code></th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td><code>origin</code></td></tr>
+    <tr><td>-3</td><td>2</td><td><code>quadrant II</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="c13"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 10 Workbook.</p>
+</main>
+</body>
+</html>

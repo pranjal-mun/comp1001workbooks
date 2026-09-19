@@ -1,0 +1,173 @@
+{
+  "id": "lecture-06-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 6 Boss Problems",
+  "short": "L06 bosses",
+  "subtitle": "Input and output, and f-strings",
+  "exercises": {
+    "treats": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 3,
+      "starter": "days = input('Days: ')\n# Print how many treats Oliver has eaten by that day.",
+      "cases": [
+        {
+          "name": "Typed 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "Days: Oliver has eaten 28 treats by day 7."
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Days: Oliver has eaten 3 treats by day 2."
+        },
+        {
+          "name": "Typed 30",
+          "inputs": [
+            "30"
+          ],
+          "expected": "Days: Oliver has eaten 465 treats by day 30."
+        },
+        {
+          "name": "Typed 120",
+          "inputs": [
+            "120"
+          ],
+          "expected": "Days: Oliver has eaten 7260 treats by day 120."
+        }
+      ],
+      "check": "assert \"f'\" in __source__ or 'f\"' in __source__, \"Build the output with an f-string (f before the opening quote).\"\nassert \"for \" not in __source__ and \"while \" not in __source__, \"No loops: use the formula.\"\nimport re\nassert type(days) is int, \"Convert the typed text with int() so days is a whole number.\"\nassert not re.search(r\"\\d\\.0\\b\", __stdout__), \"The total must be a whole number: divide with // rather than /.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line with a single print() call.\"\n",
+      "answer": "ZGF5cyA9IGludChpbnB1dCgnRGF5czogJykpCnRvdGFsID0gZGF5cyAqIChkYXlzICsgMSkgLy8gMgpwcmludChmJ09saXZlciBoYXMgZWF0ZW4ge3RvdGFsfSB0cmVhdHMgYnkgZGF5IHtkYXlzfS4nKQ==",
+      "answerNote": "1 + 2 + ... + n is n(n + 1) / 2. The product of two consecutive whole numbers is always even, so // divides it exactly."
+    },
+    "deposits": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 6,
+      "starter": "small = input('Small containers: ')\nlarge = input('Large containers: ')\n# Print the refund as money.",
+      "cases": [
+        {
+          "name": "Typed 11 and 3",
+          "inputs": [
+            "11",
+            "3"
+          ],
+          "expected": "Small containers: Large containers: Refund: $1.85"
+        },
+        {
+          "name": "Typed 0 and 0",
+          "inputs": [
+            "0",
+            "0"
+          ],
+          "expected": "Small containers: Large containers: Refund: $0.00"
+        },
+        {
+          "name": "Typed 120 and 0",
+          "inputs": [
+            "120",
+            "0"
+          ],
+          "expected": "Small containers: Large containers: Refund: $12.00"
+        },
+        {
+          "name": "Typed 7 and 12",
+          "inputs": [
+            "7",
+            "12"
+          ],
+          "expected": "Small containers: Large containers: Refund: $3.70"
+        }
+      ],
+      "check": "assert \"f'\" in __source__ or 'f\"' in __source__, \"Build the output with an f-string (f before the opening quote).\"\nassert \"if \" not in __source__, \"No if statements: arithmetic alone does the job.\"\nimport re\nassert type(small) is int and type(large) is int, \"Convert both counts with int(): they are whole numbers.\"\nconstants = {k: v for k, v in globals().items() if k == k.upper() and not k.startswith(\"__\") and isinstance(v, float)}\nassert 0.1 in constants.values() and 0.25 in constants.values(), \"Store the two deposit amounts, 0.10 and 0.25, in ALL_CAPS constants (for example SMALL_DEPOSIT).\"\nassert re.search(r\":\\s*[<>^]?\\d*\\.2f\", __source__), \"Show the refund with the .2f specifier so it always has two decimals.\"\nassert \"round(\" not in __source__, \"Do not round the value; let the .2f specifier format the display.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line with a single print() call.\"\n",
+      "answer": "U01BTExfREVQT1NJVCA9IDAuMTAKTEFSR0VfREVQT1NJVCA9IDAuMjUKc21hbGwgPSBpbnQoaW5wdXQoJ1NtYWxsIGNvbnRhaW5lcnM6ICcpKQpsYXJnZSA9IGludChpbnB1dCgnTGFyZ2UgY29udGFpbmVyczogJykpCnJlZnVuZCA9IHNtYWxsICogU01BTExfREVQT1NJVCArIGxhcmdlICogTEFSR0VfREVQT1NJVApwcmludChmJ1JlZnVuZDogJHtyZWZ1bmQ6LjJmfScp",
+      "answerNote": "The value of refund is not rounded; .2f only changes how it is displayed."
+    },
+    "bread": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 9,
+      "starter": "loaves = input('Loaves: ')\n# Print the regular price, the discount, and the total.",
+      "cases": [
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Loaves: Regular price: $  10.47\nDiscount:      $   6.28\nTotal:         $   4.19"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Loaves: Regular price: $   3.49\nDiscount:      $   2.09\nTotal:         $   1.40"
+        },
+        {
+          "name": "Typed 12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Loaves: Regular price: $  41.88\nDiscount:      $  25.13\nTotal:         $  16.75"
+        },
+        {
+          "name": "Typed 100",
+          "inputs": [
+            "100"
+          ],
+          "expected": "Loaves: Regular price: $ 349.00\nDiscount:      $ 209.40\nTotal:         $ 139.60"
+        }
+      ],
+      "check": "assert \"f'\" in __source__ or 'f\"' in __source__, \"Build the output with an f-string (f before the opening quote).\"\nassert \"if \" not in __source__, \"No if statements: arithmetic alone does the job.\"\nimport re\nassert type(loaves) is int, \"Convert the typed text with int(): loaves is a whole number.\"\nassert \"round(\" not in __source__, \"Do not round the values; let the .2f specifier format the display.\"\nassert len(re.findall(r\":\\s*[<>^]?\\d+\\.2f\", __source__)) >= 3, \"Give each amount a width and two decimals, as in {total:7.2f}, so the decimal points line up.\"\nlines = __stdout__.split(\"Loaves: \", 1)[-1].strip().splitlines()\nassert len(lines) == 3, \"Print exactly three lines: regular price, discount, and total.\"\nassert len({line.find(\"$\") for line in lines}) == 1 and len({line.rfind(\".\") for line in lines}) == 1, \"The dollar signs and the decimal points must line up in one column.\"\n",
+      "answer": "UFJJQ0UgPSAzLjQ5CkRJU0NPVU5UX1JBVEUgPSAwLjYwCmxvYXZlcyA9IGludChpbnB1dCgnTG9hdmVzOiAnKSkKcmVndWxhciA9IGxvYXZlcyAqIFBSSUNFCmRpc2NvdW50ID0gcmVndWxhciAqIERJU0NPVU5UX1JBVEUKdG90YWwgPSByZWd1bGFyIC0gZGlzY291bnQKcHJpbnQoZidSZWd1bGFyIHByaWNlOiAke3JlZ3VsYXI6Ny4yZn0nKQpwcmludChmJ0Rpc2NvdW50OiAgICAgICR7ZGlzY291bnQ6Ny4yZn0nKQpwcmludChmJ1RvdGFsOiAgICAgICAgICR7dG90YWw6Ny4yZn0nKQ==",
+      "answerNote": "A width of 7 leaves room for amounts up to 9999.99. The dollar sign is ordinary text before the braces."
+    },
+    "countdown": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 8,
+      "starter": "seconds = input('Seconds: ')\n# Print the time left as D:HH:MM:SS.",
+      "cases": [
+        {
+          "name": "Typed 93784",
+          "inputs": [
+            "93784"
+          ],
+          "expected": "Seconds: 1:02:03:04"
+        },
+        {
+          "name": "Typed 59",
+          "inputs": [
+            "59"
+          ],
+          "expected": "Seconds: 0:00:00:59"
+        },
+        {
+          "name": "Typed 86400",
+          "inputs": [
+            "86400"
+          ],
+          "expected": "Seconds: 1:00:00:00"
+        },
+        {
+          "name": "Typed 1000000",
+          "inputs": [
+            "1000000"
+          ],
+          "expected": "Seconds: 11:13:46:40"
+        }
+      ],
+      "check": "assert \"f'\" in __source__ or 'f\"' in __source__, \"Build the output with an f-string (f before the opening quote).\"\nassert \"if \" not in __source__, \"No if statements: arithmetic alone does the job.\"\nimport re\nassert type(seconds) is int, \"Convert the typed text with int(): seconds is a whole number.\"\nassert \"//\" in __source__ and \"%\" in __source__, \"Split the seconds with // (how many whole units fit) and % (what is left over).\"\nassert re.search(r\":0?2d?\\}\", __source__), \"Pad the hours, minutes, and seconds with the 02d specifier so each has two digits.\"\nassert \"str(\" not in __source__ and \"zfill\" not in __source__, \"Do the padding with a format specifier, not by building text with str().\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line with a single print() call.\"\n",
+      "answer": "c2Vjb25kcyA9IGludChpbnB1dCgnU2Vjb25kczogJykpCmRheXMgPSBzZWNvbmRzIC8vIDg2NDAwCnJlbWFpbmluZyA9IHNlY29uZHMgJSA4NjQwMApob3VycyA9IHJlbWFpbmluZyAvLyAzNjAwCnJlbWFpbmluZyA9IHJlbWFpbmluZyAlIDM2MDAKbWludXRlcyA9IHJlbWFpbmluZyAvLyA2MApyZW1haW5pbmcgPSByZW1haW5pbmcgJSA2MApwcmludChmJ3tkYXlzfTp7aG91cnM6MDJkfTp7bWludXRlczowMmR9OntyZW1haW5pbmc6MDJkfScp",
+      "answerNote": "Each // takes out the biggest unit that fits, and the matching % leaves the rest for the smaller units."
+    }
+  }
+}

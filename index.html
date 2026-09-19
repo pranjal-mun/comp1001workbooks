@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 Workbooks</title>
+  <link rel="icon" href="./runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="./runtime/workbook.css">
+  <style>
+    main.wb-dash { max-width: 80rem; padding: 1.6rem 1.5rem 4rem; }
+    .wb-dash-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .wb-dash-head h1 { font-size: 1.9rem; }
+    .wb-dash-head .wb-course { font-family: var(--font-sans); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .wb-dash-head p { margin: 0.35rem 0 0; color: var(--ink-quiet); font-size: 1.1rem; max-width: 42rem; }
+    .wb-dash-head .wb-meta { font-family: var(--font-sans); font-size: 0.82rem; color: var(--ink-quiet); text-align: right; margin: 0; }
+
+    .wb-dash-grid { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; grid-template-areas: "units next" "units side"; grid-template-rows: auto 1fr; gap: 1.25rem 1.75rem; align-items: start; }
+    .wb-units { grid-area: units; display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1rem; }
+    .wb-next { grid-area: next; }
+    .wb-side { grid-area: side; display: grid; gap: 1.25rem; }
+
+    .wb-unit { border: 1px solid var(--rule-soft); border-radius: 10px; background: var(--paper); padding: 0.85rem 0.9rem 0.6rem; }
+    .wb-unit h2 { font-size: 1rem; margin: 0 0 0.45rem; padding: 0; line-height: 1.25; }
+    .wb-unit h2::before { display: none; }
+    .wb-unit-num { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.15rem; }
+    .wb-lec { display: grid; grid-template-columns: 2.1rem minmax(0, 1fr) auto; grid-template-areas: "num title date" "num title foot"; align-items: baseline; column-gap: 0.5rem; padding: 0.38rem 0.45rem; margin: 0 -0.45rem; border-radius: 6px; color: var(--ink); font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.3; position: relative; }
+    .wb-lec.is-open:hover { background: var(--panel); }
+    .wb-lec-num { grid-area: num; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .wb-lec-title { grid-area: title; color: inherit; text-decoration: none; }
+    /* The title link covers the whole row; the boss marker sits above it (z-index in workbook.css). */
+    a.wb-lec-title::after { content: ""; position: absolute; inset: 0; border-radius: 6px; }
+    .wb-lec-date { grid-area: date; justify-self: end; font-size: 0.74rem; color: var(--ink-quiet); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    /* Under the date: the questions-done count and, for a lecture with bosses, the next boss to fight. */
+    .wb-lec-foot { grid-area: foot; justify-self: end; display: flex; align-items: center; gap: 0.4rem; }
+    .wb-lec-prog { font-size: 0.72rem; color: var(--ink-quiet); font-variant-numeric: tabular-nums; }
+    .wb-lec-prog.is-done { color: var(--good-ink); font-weight: 700; }
+    .wb-lec-foot .wb-boss { margin: -0.15rem -0.15rem -0.25rem 0; }
+    .wb-lec.is-soon, .wb-lec.is-locked { color: var(--ink-quiet); }
+    .wb-lec.is-soon .wb-lec-num, .wb-lec.is-locked .wb-lec-num { color: var(--rule-strong); }
+    .wb-lec-date.is-locked { color: var(--warn-ink); }
+    .wb-lec.is-next { background: var(--accent-wash); }
+    .wb-lec.is-next::before { content: ""; position: absolute; left: 0; top: 0.3rem; bottom: 0.3rem; width: 3px; border-radius: 2px; background: var(--accent-fill); }
+
+    .wb-panel { border: 1px solid var(--rule-soft); border-radius: 10px; background: var(--panel); padding: 0.9rem 1rem 1rem; font-family: var(--font-sans); font-size: 0.88rem; }
+    .wb-panel h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-quiet); margin: 0 0 0.55rem; padding: 0; }
+    .wb-panel h2::before { display: none; }
+    .wb-panel p { margin: 0.3rem 0; }
+    .wb-panel .wb-big { display: block; font-family: var(--font-sans); font-weight: 800; font-size: 1.35rem; line-height: 1.2; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+    .wb-panel a.wb-big:hover { color: var(--accent); }
+    .wb-panel .wb-when { color: var(--ink-quiet); font-size: 0.8rem; }
+    .wb-panel .wb-quiet { color: var(--ink-quiet); font-size: 0.82rem; }
+    .wb-panel .wb-btn { margin-top: 0.6rem; text-decoration: none; display: inline-block; }
+    .wb-panel-next { background: var(--paper); border-color: var(--accent); }
+    .wb-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.2rem 0 0.6rem; }
+    .wb-stat b { display: block; font-size: 1.35rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .wb-stat span { font-size: 0.74rem; color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.06em; }
+    .wb-panel .wb-progress-track { width: 100%; display: block; }
+    .wb-dates { list-style: none; margin: 0; padding: 0; }
+    .wb-dates li { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.3rem 0; border-top: 1px solid var(--rule-soft); }
+    .wb-dates li:first-child { border-top: 0; padding-top: 0; }
+    .wb-dates b { font-weight: 700; }
+    .wb-dates small { display: block; color: var(--ink-quiet); font-size: 0.78rem; }
+    .wb-dates time { color: var(--ink-quiet); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .wb-foot { font-family: var(--font-sans); font-size: 0.8rem; color: var(--ink-quiet); margin-top: 2rem; }
+    .wb-topbar .wb-btn { text-decoration: none; }
+
+    @media (max-width: 62rem) {
+      .wb-dash-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "next" "units" "side"; grid-template-rows: auto; }
+      .wb-dash-head .wb-meta { text-align: left; }
+    }
+    @media (max-width: 40rem) {
+      main.wb-dash { padding: 1rem 0.9rem 3rem; }
+      .wb-units { grid-template-columns: minmax(0, 1fr); }
+      .wb-dash-head h1 { font-size: 1.6rem; }
+      .wb-dash-head p { font-size: 1rem; }
+    }
+  </style>
+  <script type="module">
+    import { initTheme } from "./runtime/theme.js";
+    import { revealPage } from "./runtime/page.js";
+    import { UNITS, LECTURES, KEY_DATES, workbookId, bossId, isOpen, fmtDate, fmtOpens } from "./runtime/schedule.js";
+    import { initInstructor, isInstructor, instructorBadge } from "./runtime/instructor.js";
+
+    initTheme();
+    initInstructor();
+    document.querySelector("#theme-toggle").addEventListener("click", () => document.dispatchEvent(new CustomEvent("wb:toggle-theme")));
+    document.querySelector(".wb-topbar-title").after(instructorBadge());
+
+    const instructor = isInstructor();
+    const now = new Date();
+    const today = new Date(now); today.setHours(0, 0, 0, 0);
+    const at = (d) => new Date(d + "T00:00:00");
+    const short = (d) => fmtDate(d, { weekday: null });
+    const pageOf = (l) => `./workbooks/${workbookId(l.n)}/index.html`;
+    // A workbook can be opened when it is posted and the previous lecture has ended (instructors see everything).
+    const available = (l) => l.built && (instructor || isOpen(l, now));
+    const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+
+    // Unit cards, one row per lecture.
+    const units = document.querySelector("#units");
+    for (const u of UNITS) {
+      const card = h(`<section class="wb-unit" id="unit-${u.n}" aria-labelledby="unit-${u.n}-h"><h2 id="unit-${u.n}-h"><span class="wb-unit-num">Unit ${u.n}</span>${u.name}</h2></section>`);
+      for (const l of LECTURES.filter((l) => l.unit === u.n)) {
+        const locked = l.built && !isOpen(l, now);
+        const open = available(l);
+        const cls = !l.built ? " is-soon" : locked ? " is-locked" : "";
+        const hint = open ? "" : l.built ? ` title="Opens ${fmtOpens(l)}"` : ` title="Not posted yet"`;
+        // Instructors see locked workbooks as links, with the date marked so they know what students see.
+        const date = open && locked ? `<time class="wb-lec-date is-locked" datetime="${l.date}" title="Opens ${fmtOpens(l)}">${short(l.date)}</time>` : `<time class="wb-lec-date" datetime="${l.date}">${short(l.date)}</time>`;
+        const title = open ? `<a class="wb-lec-title" href="${pageOf(l)}">${l.title}</a>` : `<span class="wb-lec-title">${l.title}</span>`;
+        card.append(h(`<div class="wb-lec${cls}${open ? " is-open" : ""}" data-n="${l.n}" data-id="${workbookId(l.n)}"${hint}><span class="wb-lec-num">L${l.n}</span>${title}${date}<span class="wb-lec-foot"><span class="wb-lec-prog" hidden></span></span></div>`));
+      }
+      units.append(card);
+    }
+
+    // Key dates.
+    const dates = document.querySelector("#dates");
+    for (const k of KEY_DATES) {
+      dates.append(h(`<li><span><b>${k.name}</b>${k.note ? `<small>${k.note}</small>` : ""}</span>${k.date ? `<time datetime="${k.date}">${fmtDate(k.date)}</time>` : `<time>${k.when}</time>`}</li>`));
+    }
+
+    // Up next: the first lecture on or after today. Before term that is L1; after term, the exam.
+    const panel = document.querySelector("#next");
+    const big = panel.querySelector(".wb-big");
+    const note = panel.querySelector(".wb-quiet");
+    const next = LECTURES.find((l) => at(l.date) >= today);
+    const latest = [...LECTURES].reverse().find(available);
+    if (next) {
+      const isToday = at(next.date).getTime() === today.getTime();
+      panel.querySelector("h2").textContent = isToday ? "Today" : "Up next";
+      panel.querySelector(".wb-when").textContent = `Lecture ${next.n} · ${fmtDate(next.date)}`;
+      big.innerHTML = next.title;
+      if (available(next)) big.href = pageOf(next);
+      else {
+        big.removeAttribute("href");
+        note.hidden = false;
+        note.textContent = next.built ? `This workbook opens ${fmtOpens(next)}` : "This workbook is not posted yet. It appears here once the lecture before it ends.";
+      }
+      document.querySelector(`.wb-lec[data-n="${next.n}"]`)?.classList.add("is-next");
+    } else {
+      panel.querySelector("h2").textContent = "Lectures have ended";
+      panel.querySelector(".wb-when").textContent = "Final examination: December 10 to 18";
+      big.textContent = "Time to review";
+      big.removeAttribute("href");
+    }
+    const latestLink = panel.querySelector(".wb-latest");
+    if (latest && !(next && next.n === latest.n && available(next))) {
+      latestLink.href = pageOf(latest);
+      latestLink.textContent = `Latest workbook: Lecture ${latest.n}`;
+      latestLink.hidden = false;
+    }
+
+    revealPage();
+
+    // Progress: XP and per-workbook records live in localStorage; totals come from each exercises.json.
+    const read = (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
+    document.querySelector("#xp").textContent = String(read("pylab-workbooks:xp")?.balance ?? 0);
+    let done = 0, total = 0, touched = 0;
+    await Promise.all(LECTURES.filter(available).map(async (l) => {
+      const id = workbookId(l.n);
+      let specs;
+      try { specs = (await (await fetch(`./workbooks/${id}/exercises.json`)).json()).exercises; } catch { return; }
+      const ids = Object.keys(specs).filter((k) => specs[k].type !== "example");
+      if (!ids.length) return;
+      const saved = read(`pylab-workbooks:progress:${id}`)?.exercises ?? {};
+      const d = ids.filter((k) => saved[k]?.passed || saved[k]?.revealed).length;
+      total += ids.length; done += d;
+      if (Object.keys(saved).length) touched++;
+      const prog = document.querySelector(`.wb-lec[data-id="${id}"] .wb-lec-prog`);
+      if (prog && d) {
+        prog.hidden = false;
+        prog.textContent = d === ids.length ? "✓ done" : `${d} / ${ids.length}`;
+        prog.classList.toggle("is-done", d === ids.length);
+      }
+    }));
+    // Boss problems: the next boss to fight sits under the lecture's date and links to its problem in PyLab.
+    // Once every boss is defeated the last one stays there, knocked on its back.
+    await Promise.all(LECTURES.filter((l) => l.bosses && available(l)).map(async (l) => {
+      const id = workbookId(l.n);
+      let specs;
+      try { specs = (await (await fetch(`./workbooks/${id}/boss/exercises.json`)).json()).exercises; } catch { return; }
+      const saved = read(`pylab-workbooks:progress:${bossId(l.n)}`)?.exercises ?? {};
+      const bosses = Object.entries(specs).filter(([, spec]) => spec.boss).map(([eid, spec], i) => ({ eid, icon: spec.boss, k: i + 1, beaten: Boolean(saved[eid]?.passed) }));
+      if (!bosses.length) return;
+      const next = bosses.find((b) => !b.beaten);
+      const b = next ?? bosses[bosses.length - 1];
+      const label = next ? `Boss ${b.k} of ${bosses.length}` : "All bosses defeated";
+      document.querySelector(`.wb-lec[data-id="${id}"] .wb-lec-foot`).append(h(`<a class="wb-boss${b.beaten ? " is-beaten" : ""}" href="./lab/index.html?boss=${bossId(l.n)}/${b.eid}" title="${label}" aria-label="${label}"><span class="wb-boss-icon" aria-hidden="true">${b.icon}</span></a>`));
+    }));
+    document.querySelector("#done").textContent = `${done} / ${total}`;
+    document.querySelector("#fill").style.width = total ? `${Math.round(100 * done / total)}%` : "0";
+    document.querySelector("#touched").textContent = touched
+      ? `Saved in this browser. You have started ${touched} workbook${touched === 1 ? "" : "s"}.`
+      : "Saved in this browser. Open a workbook and answer a question to get started.";
+  </script>
+</head>
+<body>
+<header class="wb-topbar">
+  <a class="wb-topbar-brand" href="./index.html" title="Home"><img src="./runtime/img/mun-logo.svg" alt="Memorial University"></a>
+  <div class="wb-topbar-title"><strong>COMP 1001</strong><span>Interactive Workbooks</span></div>
+  <span class="wb-spacer"></span>
+  <a class="wb-btn wb-btn-quiet" href="./lab/index.html">PyLab</a>
+  <button id="theme-toggle" class="wb-btn wb-btn-quiet wb-theme-toggle" type="button" title="Toggle light / dark">◐</button>
+</header>
+<main class="wb-dash">
+  <div class="wb-dash-head">
+    <div>
+      <div class="wb-course">COMP 1001: Introduction to Programming</div>
+      <h1>Interactive Workbooks</h1>
+      <p>One workbook per lecture. Read the notes, predict what the code does, run it, and check your answers. Python runs in your browser and nothing you type is uploaded.</p>
+    </div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science<br>Memorial University of Newfoundland</p>
+  </div>
+
+  <div class="wb-dash-grid">
+    <section class="wb-panel wb-panel-next wb-next" id="next">
+      <h2>Up next</h2>
+      <p class="wb-when"></p>
+      <a class="wb-big"></a>
+      <p class="wb-quiet" hidden></p>
+      <a class="wb-btn wb-btn-quiet wb-latest" hidden></a>
+    </section>
+
+    <div class="wb-units" id="units"></div>
+
+    <aside class="wb-side">
+      <section class="wb-panel" aria-labelledby="progress-h">
+        <h2 id="progress-h">Your progress</h2>
+        <div class="wb-stats">
+          <div class="wb-stat"><b id="xp">0</b><span>XP</span></div>
+          <div class="wb-stat"><b id="done">0 / 0</b><span>Questions done</span></div>
+        </div>
+        <span class="wb-progress-track"><span class="wb-progress-fill" id="fill" style="width: 0"></span></span>
+        <p class="wb-quiet" id="touched">Saved in this browser.</p>
+      </section>
+
+      <section class="wb-panel" aria-labelledby="dates-h">
+        <h2 id="dates-h">Key dates</h2>
+        <ul class="wb-dates" id="dates"></ul>
+        <p class="wb-quiet">Full schedule, marks and policies: <a href="./workbooks/lecture-01/index.html">Lecture 1 workbook</a>.</p>
+      </section>
+
+      <section class="wb-panel" aria-labelledby="tools-h">
+        <h2 id="tools-h">Tools</h2>
+        <a class="wb-big" href="./lab/index.html">PyLab</a>
+        <p class="wb-quiet">A full-screen Python editor with files and interactive <code>input()</code>. Use it for lab work and experiments.</p>
+      </section>
+
+      <section class="wb-panel" aria-labelledby="setup-h">
+        <h2 id="setup-h">Your own computer</h2>
+        <a class="wb-big" href="./setup/index.html">Setting up your computer</a>
+        <p class="wb-quiet">Install Python and IDLE on Windows or macOS and run your first script.</p>
+      </section>
+    </aside>
+  </div>
+
+  <p class="wb-foot">Python runs locally in your browser (Pyodide). Nothing you type is sent anywhere. Progress and XP are saved in this browser; the ⋯ menu inside a workbook exports and imports them.</p>
+</main>
+</body>
+</html>

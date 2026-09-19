@@ -1,0 +1,1853 @@
+{
+  "id": "lecture-09",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 9 Workbook",
+  "subtitle": "Relational operators and comparing values",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "print(8 > 5)\nprint(8 < 5)",
+      "output": "True\nFalse"
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "condition = 12 >= 10\n\nprint(condition)\nprint(type(condition))",
+      "output": "True\n<class 'bool'>"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v2": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "v3": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "t": {
+          "accept": [
+            "bool",
+            "boolean"
+          ],
+          "show": "bool",
+          "placeholder": "type"
+        }
+      }
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "x = 4\n\nprint(x < 4)\nprint(x <= 4)\nprint(x > 4)\nprint(x >= 4)\nprint(x == 4)\nprint(x != 4)",
+      "output": "False\nTrue\nFalse\nTrue\nTrue\nFalse"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "False"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "True"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "False"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "True"
+          ]
+        },
+        "v5": {
+          "accept": [
+            "True"
+          ]
+        },
+        "v6": {
+          "accept": [
+            "False"
+          ]
+        }
+      }
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "floor = 13\n\nprint(floor == 13)\nprint(floor == 14)",
+      "output": "True\nFalse"
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "floor = 13\n\nif floor = 13:\n    print('Thirteenth floor')"
+    },
+    "cp3-ops": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "store": {
+          "accept": [
+            "="
+          ],
+          "placeholder": "= or ==",
+          "width": "6rem"
+        },
+        "test": {
+          "accept": [
+            "=="
+          ],
+          "placeholder": "= or ==",
+          "width": "6rem"
+        }
+      }
+    },
+    "cp3-fix": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "score = 100\n\nif score = 100:\n    print('Perfect score')",
+      "cases": [
+        {
+          "name": "score = 100",
+          "expected": "Perfect score"
+        },
+        {
+          "name": "score = 99 (prints nothing)",
+          "rewrite": [
+            [
+              "score = 100",
+              "score = 99"
+            ]
+          ],
+          "expected": ""
+        }
+      ],
+      "check": "assert \"score == 100\" in __source__, \"The condition should test equality with score == 100.\"\nassert \"= 100:\" not in __source__.replace(\"==\", \"\"), \"An if condition must compare, not assign: use == in the condition.\"",
+      "answer": "c2NvcmUgPSAxMDAKCmlmIHNjb3JlID09IDEwMDoKICAgIHByaW50KCdQZXJmZWN0IHNjb3JlJyk="
+    },
+    "ex-w06": {
+      "type": "example",
+      "code": "floor = 12\n\nprint(floor + 1 == 13)\nprint(2 * floor > 20)",
+      "output": "True\nTrue"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "left value",
+          "width": "7rem"
+        },
+        "r1": {
+          "accept": [
+            "9"
+          ],
+          "placeholder": "right value",
+          "width": "7rem"
+        },
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "l2": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "left value",
+          "width": "7rem"
+        },
+        "r2": {
+          "accept": [
+            "8.0"
+          ],
+          "placeholder": "right value",
+          "width": "7rem"
+        },
+        "v2": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False",
+          "width": "7rem"
+        }
+      }
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "name1 = 'Ada'\nname2 = 'Ada'\nname3 = 'ada'\n\nprint(name1 == name2)\nprint(name1 == name3)\nprint(name1 != name3)",
+      "output": "True\nFalse\nTrue"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v2": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "v3": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNvbXBhcmlzb24gaXMgYFRydWVgIGJlY2F1c2UgdGhlIHR3byBzdHJpbmdzIGFyZSBkaWZmZXJlbnQ6IGAnaGVsbG8gJ2AgY29udGFpbnMgYSB0cmFpbGluZyBzcGFjZSwgYW5kIGEgc3BhY2UgaXMgYSBjaGFyYWN0ZXIgbGlrZSBhbnkgb3RoZXIu"
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "print('apple' < 'banana')\nprint('Zoe' < 'ada')\nprint('car' < 'cart')",
+      "output": "True\nTrue\nTrue"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v2": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v3": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        }
+      }
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGZpcnN0IGNoYXJhY3RlcnMgZGVjaWRlIHRoZSByZXN1bHQ6IHVwcGVyY2FzZSBgRGAgY29tZXMgYmVmb3JlIGxvd2VyY2FzZSBgY2AgaW4gUHl0aG9uJ3MgY2hhcmFjdGVyIG9yZGVyaW5nLCBzbyBgJ0RvZycgPCAnY2F0J2AgaXMgYFRydWVgLiBUaGUgcmVtYWluaW5nIGNoYXJhY3RlcnMgYXJlIG5ldmVyIGNvbXBhcmVkLg=="
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "answer = 'YES'\n\nif answer.lower() == 'yes':\n    print('Response accepted')\nelse:\n    print('Please enter yes')",
+      "output": "Response accepted"
+    },
+    "ex-w10": {
+      "type": "example",
+      "code": "first_name = 'Maya'\nsecond_name = 'MAYA'\n\nprint(first_name.lower() == second_name.lower())",
+      "output": "True"
+    },
+    "cp7-cond": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "choice = 'N'\n\nif False:  # replace False with your condition\n    print('Letter n')\nelse:\n    print('Something else')",
+      "cases": [
+        {
+          "name": "choice = 'N'",
+          "expected": "Letter n"
+        },
+        {
+          "name": "choice = 'n'",
+          "rewrite": [
+            [
+              "choice = 'N'",
+              "choice = 'n'"
+            ]
+          ],
+          "expected": "Letter n"
+        },
+        {
+          "name": "choice = 'y'",
+          "rewrite": [
+            [
+              "choice = 'N'",
+              "choice = 'y'"
+            ]
+          ],
+          "expected": "Something else"
+        },
+        {
+          "name": "choice = 'No'",
+          "rewrite": [
+            [
+              "choice = 'N'",
+              "choice = 'No'"
+            ]
+          ],
+          "expected": "Something else"
+        }
+      ],
+      "check": "assert \"False\" not in __source__.split(\"if\", 1)[1].split(\":\", 1)[0], \"Replace False with a comparison that uses choice.\"\nassert \".lower()\" in __source__ or \".upper()\" in __source__, \"Convert choice to one case (for example choice.lower()) before comparing it.\"",
+      "answer": "Y2hvaWNlID0gJ04nCgppZiBjaG9pY2UubG93ZXIoKSA9PSAnbic6CiAgICBwcmludCgnTGV0dGVyIG4nKQplbHNlOgogICAgcHJpbnQoJ1NvbWV0aGluZyBlbHNlJyk="
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YC5sb3dlcigpYCBwcm9kdWNlcyBhIGxvd2VyY2FzZSBjb3B5IG9mIGBjaG9pY2VgIGZvciB0aGUgY29tcGFyaXNvbiwgc28gYCdOJ2AgYW5kIGAnbidgIGJvdGggY29tcGFyZSBlcXVhbCB0byBgJ24nYC4gQ2FwaXRhbGl6YXRpb24gbm8gbG9uZ2VyIGFmZmVjdHMgdGhlIHJlc3VsdCwgYW5kIHRoZSBvcmlnaW5hbCBzdHJpbmcgaXMgdW5jaGFuZ2VkLg=="
+    },
+    "ex-w11": {
+      "type": "example",
+      "code": "total = 0.1 + 0.2\n\nprint(total)\nprint(total == 0.3)",
+      "output": "0.30000000000000004\nFalse"
+    },
+    "ex-w12": {
+      "type": "example",
+      "code": "total = 0.1 + 0.2\ntarget = 0.3\ntolerance = 1e-9\n\nclose_enough = abs(total - target) < tolerance\nprint(close_enough)",
+      "output": "True"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "diff": {
+          "accept": [
+            "measurement - expected",
+            "expected - measurement",
+            "measurement-expected",
+            "expected-measurement"
+          ],
+          "caseSensitive": true,
+          "placeholder": "an expression",
+          "width": "16rem"
+        }
+      }
+    },
+    "cp8-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Q29tcHV0ZWQgZmxvYXRzIGNhbiBkaWZmZXIgZnJvbSB0aGUgZXhhY3QgdmFsdWUgYnkgYSB0aW55IHJvdW5kaW5nIGFtb3VudCwgYXMgaW4gYDAuMSArIDAuMiA9PSAwLjNgIGJlaW5nIGBGYWxzZWAuIEV4YWN0IGA9PWAgdGhlbiByZWplY3RzIHZhbHVlcyB0aGF0IHRoZSBwcm9ibGVtIHRyZWF0cyBhcyBlcXVhbC4gQ29tcGFyZSB0aGUgc2l6ZSBvZiB0aGUgZGlmZmVyZW5jZSB3aXRoIGEgdG9sZXJhbmNlIGluc3RlYWQu"
+    },
+    "ex-w13": {
+      "type": "example",
+      "code": "print(10 == 10.0)\nprint('10' == 10)",
+      "output": "True\nFalse"
+    },
+    "ex-w14": {
+      "type": "example",
+      "code": "print('10' < 10)"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v2": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "v3": {
+          "accept": [
+            "TypeError",
+            "error",
+            "type error"
+          ],
+          "show": "TypeError",
+          "placeholder": "True / False / TypeError"
+        },
+        "conv": {
+          "accept": [
+            "int('5')",
+            "int(\"5\")",
+            "int",
+            "int()",
+            "int('5') > 5",
+            "int(\"5\") > 5",
+            "float('5')",
+            "float(\"5\")",
+            "float",
+            "float()",
+            "float('5') > 5"
+          ],
+          "caseSensitive": true,
+          "show": "int('5')",
+          "placeholder": "a conversion",
+          "width": "12rem"
+        }
+      }
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b": {
+          "accept": [
+            "30"
+          ],
+          "placeholder": "value"
+        },
+        "at": {
+          "accept": [
+            "accepted",
+            "accept"
+          ],
+          "show": "accepted",
+          "placeholder": "accepted / rejected"
+        },
+        "cond": {
+          "accept": [
+            "people <= 30",
+            "people<=30",
+            "30 >= people",
+            "30>=people",
+            "people < 31",
+            "people<31"
+          ],
+          "caseSensitive": true,
+          "show": "people <= 30",
+          "placeholder": "condition",
+          "width": "12rem"
+        }
+      }
+    },
+    "cp11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "-1",
+            "-2",
+            "-3",
+            "-4",
+            "-5",
+            "-6",
+            "-7",
+            "-8",
+            "-9",
+            "-10",
+            "-11",
+            "-12",
+            "-13",
+            "-14",
+            "-15",
+            "-16",
+            "-17",
+            "-18",
+            "-19",
+            "-20",
+            "-21",
+            "-22",
+            "-23",
+            "-24",
+            "-25",
+            "-26",
+            "-27",
+            "-28",
+            "-29",
+            "-30",
+            "-31",
+            "-32",
+            "-33",
+            "-34",
+            "-35",
+            "-36",
+            "-37",
+            "-38",
+            "-39",
+            "-40",
+            "-41",
+            "-42",
+            "-43",
+            "-44",
+            "-45",
+            "-46",
+            "-47",
+            "-48",
+            "-49",
+            "-50",
+            "-51",
+            "-52",
+            "-53",
+            "-54",
+            "-55",
+            "-56",
+            "-57",
+            "-58",
+            "-59",
+            "-60",
+            "-61",
+            "-62",
+            "-63",
+            "-64",
+            "-65",
+            "-66",
+            "-67",
+            "-68",
+            "-69",
+            "-70",
+            "-71",
+            "-72",
+            "-73",
+            "-74",
+            "-75",
+            "-76",
+            "-77",
+            "-78",
+            "-79",
+            "-80",
+            "-81",
+            "-82",
+            "-83",
+            "-84",
+            "-85",
+            "-86",
+            "-87",
+            "-88",
+            "-89",
+            "-90",
+            "-91",
+            "-92",
+            "-93",
+            "-94",
+            "-95",
+            "-96",
+            "-97",
+            "-98",
+            "-99",
+            "-100",
+            "-0.5",
+            "-1.0",
+            "-2.0",
+            "-5.0",
+            "-10.0",
+            "-0.1",
+            "-1.5",
+            "-2.5",
+            "-273"
+          ],
+          "show": "-1",
+          "placeholder": "temperature"
+        },
+        "e1": {
+          "accept": [
+            "warning",
+            "a warning",
+            "warning appears",
+            "warning shown",
+            "prints warning",
+            "warn"
+          ],
+          "show": "warning",
+          "placeholder": "warning / no warning"
+        },
+        "i2": {
+          "accept": [
+            "0",
+            "0.0"
+          ],
+          "placeholder": "temperature"
+        },
+        "e2": {
+          "accept": [
+            "no warning",
+            "none",
+            "nothing",
+            "no warning appears",
+            "no",
+            "no message"
+          ],
+          "show": "no warning",
+          "placeholder": "warning / no warning"
+        },
+        "i3": {
+          "accept": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+            "92",
+            "93",
+            "94",
+            "95",
+            "96",
+            "97",
+            "98",
+            "99",
+            "100",
+            "0.5",
+            "1.0",
+            "2.0",
+            "5.0",
+            "10.0",
+            "0.1",
+            "1.5",
+            "2.5",
+            "20.0",
+            "25.0",
+            "100.0"
+          ],
+          "show": "1",
+          "placeholder": "temperature"
+        },
+        "e3": {
+          "accept": [
+            "no warning",
+            "none",
+            "nothing",
+            "no warning appears",
+            "no",
+            "no message"
+          ],
+          "show": "no warning",
+          "placeholder": "warning / no warning"
+        }
+      }
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "<"
+          ],
+          "width": "6rem"
+        },
+        "o2": {
+          "accept": [
+            "<="
+          ],
+          "width": "6rem"
+        },
+        "o3": {
+          "accept": [
+            ">"
+          ],
+          "width": "6rem"
+        },
+        "o4": {
+          "accept": [
+            ">="
+          ],
+          "width": "6rem"
+        },
+        "o5": {
+          "accept": [
+            "=="
+          ],
+          "width": "6rem"
+        },
+        "o6": {
+          "accept": [
+            "!="
+          ],
+          "width": "6rem"
+        }
+      }
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YD1gIGlzIHRoZSBhc3NpZ25tZW50IG9wZXJhdG9yOiBpdCBnaXZlcyBhIHZhbHVlIHRvIGEgdmFyaWFibGUuIGA9PWAgaXMgdGhlIGVxdWFsaXR5IG9wZXJhdG9yOiBpdCBjb21wYXJlcyB0d28gdmFsdWVzIGFuZCBwcm9kdWNlcyBgVHJ1ZWAgb3IgYEZhbHNlYC4="
+    },
+    "fr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t": {
+          "accept": [
+            "bool",
+            "boolean"
+          ],
+          "show": "bool",
+          "placeholder": "type",
+          "width": "8rem"
+        }
+      }
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIGNvbXBhcmVzIGNoYXJhY3RlciBjb2Rlcywgbm90IGRpY3Rpb25hcnkgb3JkZXIuIFVwcGVyY2FzZSBsZXR0ZXJzIGNvbWUgYmVmb3JlIGxvd2VyY2FzZSBsZXR0ZXJzLCBzbyB1cHBlcmNhc2UgYFpgIGNvbWVzIGJlZm9yZSBsb3dlcmNhc2UgYGFgIGFuZCBgJ1pvZScgPCAnYWRhJ2AgaXMgYFRydWVgLg=="
+    },
+    "fr5": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "a.lower() == b.lower()",
+            "a.lower()==b.lower()",
+            "b.lower() == a.lower()",
+            "a.upper() == b.upper()",
+            "a.upper()==b.upper()",
+            "b.upper() == a.upper()",
+            "a.casefold() == b.casefold()"
+          ],
+          "caseSensitive": true,
+          "show": "a.lower() == b.lower()",
+          "placeholder": "comparison",
+          "width": "16rem"
+        }
+      }
+    },
+    "fr6": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "abs(x - y) < tolerance",
+            "abs(x-y) < tolerance",
+            "abs(x - y)<tolerance",
+            "abs(x-y)<tolerance",
+            "abs(y - x) < tolerance",
+            "abs(y-x) < tolerance",
+            "abs(x - y) < tol",
+            "abs(x-y) < tol",
+            "abs(x - y) < 1e-9",
+            "abs(x-y) < 1e-9"
+          ],
+          "caseSensitive": true,
+          "show": "abs(x - y) < tolerance",
+          "placeholder": "condition",
+          "width": "16rem"
+        }
+      }
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGJvdW5kYXJ5IGlzIHRoZSBvbmUgdmFsdWUgd2hlcmUgYD5gIGFuZCBgPj1gIChvciBgPGAgYW5kIGA8PWApIGdpdmUgZGlmZmVyZW50IHJlc3VsdHMuIEEgdGVzdCBhdCB0aGUgYm91bmRhcnkgaXMgdGhlIHRlc3QgdGhhdCBjYXRjaGVzIHRoZSB3cm9uZyBvcGVyYXRvcjsgdGVzdHMgb25seSBiZWxvdyBhbmQgYWJvdmUgaXQgd291bGQgcGFzcyB3aXRoIGVpdGhlciBvcGVyYXRvci4="
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v2": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "v3": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v4": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "v5": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "v6": {
+          "accept": [
+            "TypeError",
+            "error",
+            "type error"
+          ],
+          "show": "TypeError",
+          "placeholder": "True / False / TypeError"
+        }
+      }
+    },
+    "pb": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "age < 5",
+            "age<5",
+            "5 > age",
+            "5>age",
+            "child_age < 5",
+            "years < 5"
+          ],
+          "caseSensitive": true,
+          "show": "age < 5",
+          "placeholder": "condition",
+          "width": "14rem"
+        },
+        "c2": {
+          "accept": [
+            "attempt == password",
+            "attempt==password",
+            "password == attempt",
+            "password==attempt",
+            "guess == password",
+            "entry == password",
+            "password_attempt == password"
+          ],
+          "caseSensitive": true,
+          "show": "attempt == password",
+          "placeholder": "condition",
+          "width": "14rem"
+        },
+        "c3": {
+          "accept": [
+            "value != previous",
+            "value!=previous",
+            "previous != value",
+            "previous!=value"
+          ],
+          "caseSensitive": true,
+          "show": "value != previous",
+          "placeholder": "condition",
+          "width": "14rem"
+        },
+        "c4": {
+          "accept": [
+            "measurement <= 2.5",
+            "measurement<=2.5",
+            "2.5 >= measurement",
+            "2.5>=measurement"
+          ],
+          "caseSensitive": true,
+          "show": "measurement <= 2.5",
+          "placeholder": "condition",
+          "width": "14rem"
+        }
+      }
+    },
+    "pc": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "word1 = 'Hello'\nword2 = 'hello'\n\n# Print Match or Different.",
+      "cases": [
+        {
+          "name": "'Hello' and 'hello'",
+          "expected": "Match"
+        },
+        {
+          "name": "'Hello' and 'HELLO'",
+          "rewrite": [
+            [
+              "word2 = 'hello'",
+              "word2 = 'HELLO'"
+            ]
+          ],
+          "expected": "Match"
+        },
+        {
+          "name": "'Hello' and 'help'",
+          "rewrite": [
+            [
+              "word2 = 'hello'",
+              "word2 = 'help'"
+            ]
+          ],
+          "expected": "Different"
+        },
+        {
+          "name": "'Hello' and 'hello ' (trailing space)",
+          "rewrite": [
+            [
+              "word2 = 'hello'",
+              "word2 = 'hello '"
+            ]
+          ],
+          "expected": "Different"
+        }
+      ],
+      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__ or \".casefold()\" in __source__, \"Convert both strings to the same case (for example with .lower()) before comparing them.\"\nassert word1 == \"Hello\", \"Do not change word1 itself; convert a copy inside the comparison.\"",
+      "answer": "d29yZDEgPSAnSGVsbG8nCndvcmQyID0gJ2hlbGxvJwoKaWYgd29yZDEubG93ZXIoKSA9PSB3b3JkMi5sb3dlcigpOgogICAgcHJpbnQoJ01hdGNoJykKZWxzZToKICAgIHByaW50KCdEaWZmZXJlbnQnKQ=="
+    },
+    "pd": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "calculated = 0.1 + 0.2\nexpected = 0.3\n\n# Store the Boolean value, then print it.",
+      "cases": [
+        {
+          "name": "0.1 + 0.2 against 0.3",
+          "expected": "True"
+        },
+        {
+          "name": "0.1 + 0.2 against 0.31",
+          "rewrite": [
+            [
+              "expected = 0.3",
+              "expected = 0.31"
+            ]
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "0.1 + 0.2 against 0.30005",
+          "rewrite": [
+            [
+              "expected = 0.3",
+              "expected = 0.30005"
+            ]
+          ],
+          "expected": "True"
+        }
+      ],
+      "check": "assert \"abs(\" in __source__, \"Use abs() so the difference is a nonnegative distance.\"\nassert \"0.0001\" in __source__ or \"1e-4\" in __source__ or \"1e-04\" in __source__, \"Compare the difference with the tolerance 0.0001.\"\nuser = {k: v for k, v in globals().items() if not k.startswith(\"__\")}\nassert any(type(v) is bool for v in user.values()), \"Store the comparison result in a variable before printing it.\"",
+      "answer": "Y2FsY3VsYXRlZCA9IDAuMSArIDAuMgpleHBlY3RlZCA9IDAuMwoKY2xvc2VfZW5vdWdoID0gYWJzKGNhbGN1bGF0ZWQgLSBleHBlY3RlZCkgPCAwLjAwMDEKcHJpbnQoY2xvc2VfZW5vdWdoKQ=="
+    },
+    "pe": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "mass > 20",
+            "mass>20",
+            "20 < mass",
+            "20<mass",
+            "mass > 20.0",
+            "mass>20.0"
+          ],
+          "caseSensitive": true,
+          "show": "mass > 20",
+          "placeholder": "condition",
+          "width": "12rem"
+        },
+        "at": {
+          "accept": [
+            "no extra fee",
+            "no fee",
+            "no",
+            "none",
+            "not charged",
+            "no charge",
+            "regular price",
+            "no extra charge",
+            "nothing"
+          ],
+          "show": "no extra fee",
+          "placeholder": "fee or no fee?"
+        },
+        "m1": {
+          "accept": [
+            "19",
+            "19.9",
+            "19.5",
+            "19.99",
+            "18",
+            "15",
+            "10",
+            "5",
+            "1",
+            "0",
+            "12",
+            "16",
+            "17",
+            "19.0",
+            "0.5",
+            "2",
+            "3",
+            "4",
+            "6",
+            "7",
+            "8",
+            "9",
+            "11",
+            "13",
+            "14"
+          ],
+          "show": "19.9",
+          "placeholder": "kg"
+        },
+        "f1": {
+          "accept": [
+            "no",
+            "no fee",
+            "no extra fee",
+            "none",
+            "false"
+          ],
+          "show": "no",
+          "placeholder": "yes / no"
+        },
+        "m2": {
+          "accept": [
+            "20",
+            "20.0"
+          ],
+          "placeholder": "kg"
+        },
+        "f2": {
+          "accept": [
+            "no",
+            "no fee",
+            "no extra fee",
+            "none",
+            "false"
+          ],
+          "show": "no",
+          "placeholder": "yes / no"
+        },
+        "m3": {
+          "accept": [
+            "21",
+            "20.1",
+            "20.5",
+            "20.01",
+            "22",
+            "25",
+            "30",
+            "40",
+            "50",
+            "100",
+            "21.0",
+            "23",
+            "24",
+            "26",
+            "27",
+            "28",
+            "29",
+            "35",
+            "45",
+            "60",
+            "75",
+            "80",
+            "90",
+            "20.2",
+            "20.9"
+          ],
+          "show": "20.1",
+          "placeholder": "kg"
+        },
+        "f3": {
+          "accept": [
+            "yes",
+            "fee",
+            "extra fee",
+            "true"
+          ],
+          "show": "yes",
+          "placeholder": "yes / no"
+        }
+      }
+    },
+    "pf": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "answer = 'Yes'\ncalculated = 0.1 + 0.2\nexpected = 0.3\n\nif answer = 'yes':\n    print('Accepted')\n\nif calculated == expected:\n    print('Values match')",
+      "cases": [
+        {
+          "name": "answer = 'Yes'",
+          "expected": "Accepted\nValues match"
+        },
+        {
+          "name": "answer = 'YES'",
+          "rewrite": [
+            [
+              "answer = 'Yes'",
+              "answer = 'YES'"
+            ]
+          ],
+          "expected": "Accepted\nValues match"
+        },
+        {
+          "name": "answer = 'no'",
+          "rewrite": [
+            [
+              "answer = 'Yes'",
+              "answer = 'no'"
+            ]
+          ],
+          "expected": "Values match"
+        },
+        {
+          "name": "expected = 0.4",
+          "rewrite": [
+            [
+              "expected = 0.3",
+              "expected = 0.4"
+            ]
+          ],
+          "expected": "Accepted"
+        }
+      ],
+      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__, \"Normalize the answer with .lower() so any capitalization of yes is recognized.\"\nassert \"abs(\" in __source__, \"Compare the size of the float difference with abs().\"\nassert \"1e-9\" in __source__ or \"0.000000001\" in __source__, \"Use the stated tolerance 1e-9.\"",
+      "answer": "YW5zd2VyID0gJ1llcycKY2FsY3VsYXRlZCA9IDAuMSArIDAuMgpleHBlY3RlZCA9IDAuMwoKaWYgYW5zd2VyLmxvd2VyKCkgPT0gJ3llcyc6CiAgICBwcmludCgnQWNjZXB0ZWQnKQoKaWYgYWJzKGNhbGN1bGF0ZWQgLSBleHBlY3RlZCkgPCAxZS05OgogICAgcHJpbnQoJ1ZhbHVlcyBtYXRjaCcp"
+    },
+    "ex-w15": {
+      "type": "example",
+      "code": "expected_label = 'sensor-a'\nentered_label = input('Sensor label: ')\n\nlabel_matches = entered_label.lower() == expected_label.lower()\nif label_matches:\n    print('Label accepted')\nelse:\n    print('Check the sensor label')\n\nmeasured = float(input('Measured value: '))\ntarget = float(input('Target value: '))\ntolerance = 1.0\n\nwithin_tolerance = abs(measured - target) < tolerance\nif within_tolerance:\n    print('Measurement accepted')\nelse:\n    print('Measurement outside tolerance')"
+    },
+    "it-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "m1": {
+          "accept": [
+            "Label accepted"
+          ],
+          "caseSensitive": true,
+          "placeholder": "message",
+          "width": "16rem"
+        },
+        "b2": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "m2": {
+          "accept": [
+            "Measurement accepted"
+          ],
+          "caseSensitive": true,
+          "placeholder": "message",
+          "width": "16rem"
+        }
+      }
+    },
+    "it-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNvbmRpdGlvbiBgZGlmZmVyZW5jZSA8IHRvbGVyYW5jZWAgaGFzIGEgc3RyaWN0IGJvdW5kYXJ5IGF0IGAxLjBgLiBBIGRpZmZlcmVuY2UgYmVsb3cgYDEuMGAgaXMgYWNjZXB0ZWQsIGV4YWN0bHkgYDEuMGAgaXMgcmVqZWN0ZWQsIGFuZCBhYm92ZSBgMS4wYCBpcyByZWplY3RlZC4gT25seSBhIHRlc3QgYXQgYDEuMGAgc2hvd3Mgd2hldGhlciBgPGAgb3IgYDw9YCB3YXMgdXNlZC4="
+    },
+    "pr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SW50ZWdlcnMgYXJlIHN0b3JlZCBleGFjdGx5LCBzbyBgNSArIDVgIGlzIGV4YWN0bHkgYDEwYCBhbmQgYD09YCBpcyBkZXBlbmRhYmxlLiBBIGZsb2F0aW5nLXBvaW50IGNhbGN1bGF0aW9uIGNhbiBjYXJyeSBhIHRpbnkgcm91bmRpbmcgZGlmZmVyZW5jZSwgc28gaXRzIHJlc3VsdCBtYXkgbm90IGJlIGV4YWN0bHkgZXF1YWwgdG8gdGhlIHZhbHVlIHlvdSBleHBlY3QuIFVzZSBgY291bnQgPT0gMTBgIGFuZCBgYWJzKHJlYWRpbmcgLSAxMC4wKSA8IDAuMDAxYC4="
+    },
+    "pr1-cond": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "count == 10",
+            "count==10",
+            "10 == count",
+            "10==count"
+          ],
+          "caseSensitive": true,
+          "show": "count == 10",
+          "placeholder": "condition",
+          "width": "16rem"
+        },
+        "c2": {
+          "accept": [
+            "abs(reading - 10.0) < 0.001",
+            "abs(reading - 10) < 0.001",
+            "abs(reading-10.0) < 0.001",
+            "abs(reading-10) < 0.001",
+            "abs(reading - 10.0)<0.001",
+            "abs(reading-10.0)<0.001",
+            "abs(10.0 - reading) < 0.001",
+            "abs(10 - reading) < 0.001",
+            "abs(10.0-reading) < 0.001",
+            "abs(reading - 10.0) < 1e-3",
+            "abs(reading - 10) < 1e-3"
+          ],
+          "caseSensitive": true,
+          "show": "abs(reading - 10.0) < 0.001",
+          "placeholder": "condition",
+          "width": "16rem"
+        }
+      }
+    },
+    "pr2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 3,
+      "starter": "if floor = 13:\n    print(floor = 13)",
+      "cases": [
+        {
+          "name": "floor = 13",
+          "expected": "True"
+        },
+        {
+          "name": "floor = 12",
+          "rewrite": [
+            [
+              "floor = 13\n",
+              "floor = 12\n"
+            ]
+          ],
+          "expected": "False"
+        }
+      ],
+      "check": "assert \"floor == 13\" in __source__, \"The print should display the Boolean result of floor == 13.\"\nassert \"if\" not in __source__.split(\"#\")[0].split(), \"No if statement is needed: one assignment, then one print.\"\nassert type(floor) is int, \"Store the floor number as a whole number in floor.\"",
+      "answer": "Zmxvb3IgPSAxMwpwcmludChmbG9vciA9PSAxMyk="
+    },
+    "ex-w16": {
+      "type": "example",
+      "code": "entry = 'OPEN'\n\nif entry.lower() == 'open':\n    print('Accepted')\nelse:\n    print('Different')",
+      "output": "Accepted"
+    },
+    "pr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "True"
+          ],
+          "placeholder": "True / False"
+        },
+        "o1": {
+          "accept": [
+            "Accepted"
+          ],
+          "caseSensitive": true,
+          "placeholder": "output"
+        },
+        "c2": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "True / False"
+        },
+        "o2": {
+          "accept": [
+            "Different"
+          ],
+          "caseSensitive": true,
+          "placeholder": "output"
+        }
+      }
+    },
+    "pr4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "'start'",
+            "start",
+            "\"start\""
+          ],
+          "caseSensitive": true,
+          "show": "'start'",
+          "placeholder": "input"
+        },
+        "e1": {
+          "accept": [
+            "accepted",
+            "accept",
+            "yes",
+            "match",
+            "accepted command",
+            "command accepted"
+          ],
+          "show": "accepted",
+          "placeholder": "accepted / rejected"
+        },
+        "i2": {
+          "accept": [
+            "'START'",
+            "START",
+            "'Start'",
+            "Start",
+            "'StArT'",
+            "StArT",
+            "'sTART'",
+            "sTART",
+            "'StaRt'",
+            "StaRt",
+            "'sTaRt'",
+            "sTaRt",
+            "'STart'",
+            "STart",
+            "'starT'",
+            "starT",
+            "'Start'",
+            "\"START\"",
+            "\"Start\"",
+            "'STArt'",
+            "STArt",
+            "'stART'",
+            "stART",
+            "'sTArT'",
+            "sTArT",
+            "'StART'",
+            "StART",
+            "'STARt'",
+            "STARt",
+            "'sTart'",
+            "sTart",
+            "'stArt'",
+            "stArt",
+            "'staRT'",
+            "staRT",
+            "'stArT'",
+            "stArT",
+            "'StaRT'",
+            "StaRT",
+            "'STaRT'",
+            "STaRT"
+          ],
+          "caseSensitive": true,
+          "show": "'START'",
+          "placeholder": "input"
+        },
+        "e2": {
+          "accept": [
+            "accepted",
+            "accept",
+            "yes",
+            "match",
+            "accepted command",
+            "command accepted"
+          ],
+          "show": "accepted",
+          "placeholder": "accepted / rejected"
+        },
+        "i3": {
+          "accept": [
+            "'start '",
+            "start ",
+            "' start'",
+            " start",
+            "'stat'",
+            "stat",
+            "'starts'",
+            "starts",
+            "'star'",
+            "star",
+            "'strat'",
+            "strat",
+            "'start!'",
+            "start!",
+            "'begin'",
+            "begin",
+            "'stop'",
+            "stop",
+            "'sart'",
+            "sart",
+            "'startt'",
+            "startt",
+            "'st art'",
+            "st art",
+            "'start.'",
+            "start.",
+            "'restart'",
+            "restart",
+            "'starting'",
+            "starting",
+            "'started'",
+            "started",
+            "'go'",
+            "go",
+            "'run'",
+            "run",
+            "'quit'",
+            "quit",
+            "'start1'",
+            "start1",
+            "'s tart'",
+            "s tart",
+            "'srart'",
+            "srart"
+          ],
+          "caseSensitive": true,
+          "show": "'start '",
+          "placeholder": "input"
+        },
+        "e3": {
+          "accept": [
+            "rejected",
+            "reject",
+            "no",
+            "not accepted",
+            "different",
+            "unknown",
+            "unknown command",
+            "no match"
+          ],
+          "show": "rejected",
+          "placeholder": "accepted / rejected"
+        }
+      }
+    },
+    "pr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXBwZXJjYXNlIGxldHRlcnMgY29tZSBiZWZvcmUgbG93ZXJjYXNlIGxldHRlcnMsIHNvIGAnWm9lJ2AgY29tZXMgYmVmb3JlIGAnYWRhJ2AuIERpZ2l0cyBjb21lIGJlZm9yZSBsZXR0ZXJzLCBzbyBgJzljYXRzJ2AgY29tZXMgYmVmb3JlIGAnYmlyZHMnYC4gU3BhY2VzIGFuZCBwdW5jdHVhdGlvbiBhcmUgY2hhcmFjdGVycyB0b28gYW5kIHRha2UgcGFydCBpbiB0aGUgY29tcGFyaXNvbiwgYW5kIGEgc2hvcnRlciBzdHJpbmcgdGhhdCBiZWdpbnMgYSBsb25nZXIgb25lIGNvbWVzIGZpcnN0Lg=="
+    },
+    "pr6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "'map'",
+            "map",
+            "\"map\""
+          ],
+          "caseSensitive": true,
+          "show": "'map'",
+          "placeholder": "string"
+        },
+        "p1": {
+          "accept": [
+            "3",
+            "third",
+            "position 3",
+            "p"
+          ],
+          "show": "3",
+          "placeholder": "position"
+        },
+        "s2": {
+          "accept": [
+            "'Code'",
+            "Code",
+            "\"Code\""
+          ],
+          "caseSensitive": true,
+          "show": "'Code'",
+          "placeholder": "string"
+        },
+        "p2": {
+          "accept": [
+            "1",
+            "first",
+            "position 1",
+            "C"
+          ],
+          "show": "1",
+          "placeholder": "position"
+        },
+        "s3": {
+          "accept": [
+            "'car'",
+            "car",
+            "\"car\""
+          ],
+          "caseSensitive": true,
+          "show": "'car'",
+          "placeholder": "string"
+        },
+        "p3": {
+          "accept": [
+            "end of 'car'",
+            "end of car",
+            "4",
+            "end",
+            "the end",
+            "car ends",
+            "'car' ends",
+            "length",
+            "shorter",
+            "end of the shorter string",
+            "after 3",
+            "after position 3",
+            "fourth",
+            "position 4"
+          ],
+          "show": "end of 'car'",
+          "placeholder": "position or “end”"
+        },
+        "s4": {
+          "accept": [
+            "'9cats'",
+            "9cats",
+            "\"9cats\""
+          ],
+          "caseSensitive": true,
+          "show": "'9cats'",
+          "placeholder": "string"
+        },
+        "p4": {
+          "accept": [
+            "1",
+            "first",
+            "position 1",
+            "9"
+          ],
+          "show": "1",
+          "placeholder": "position"
+        }
+      }
+    },
+    "pr7": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 11,
+      "starter": "first = float(input('First number: '))\nsecond = float(input('Second number: '))\nthird = float(input('Third number: '))\n\nlargest = first\n# Compare second and third with largest.",
+      "cases": [
+        {
+          "name": "4, 9, 2.5",
+          "inputs": [
+            "4",
+            "9",
+            "2.5"
+          ],
+          "expected": "First number: Second number: Third number: Largest: 9.0"
+        },
+        {
+          "name": "7, 7, 3",
+          "inputs": [
+            "7",
+            "7",
+            "3"
+          ],
+          "expected": "First number: Second number: Third number: Largest: 7.0"
+        },
+        {
+          "name": "1, 2, 10",
+          "inputs": [
+            "1",
+            "2",
+            "10"
+          ],
+          "expected": "First number: Second number: Third number: Largest: 10.0"
+        },
+        {
+          "name": "-5, -2, -9",
+          "inputs": [
+            "-5",
+            "-2",
+            "-9"
+          ],
+          "expected": "First number: Second number: Third number: Largest: -2.0"
+        }
+      ],
+      "check": "assert \"max(\" not in __source__, \"Do not call max(); compare the values with if statements.\"\nassert __source__.count(\"if \") >= 2, \"Use two separate if statements, one for second and one for third.\"\nassert \"else\" not in __source__, \"Two separate if statements are enough here; no else is needed.\"",
+      "answer": "Zmlyc3QgPSBmbG9hdChpbnB1dCgnRmlyc3QgbnVtYmVyOiAnKSkKc2Vjb25kID0gZmxvYXQoaW5wdXQoJ1NlY29uZCBudW1iZXI6ICcpKQp0aGlyZCA9IGZsb2F0KGlucHV0KCdUaGlyZCBudW1iZXI6ICcpKQoKbGFyZ2VzdCA9IGZpcnN0CmlmIHNlY29uZCA+IGxhcmdlc3Q6CiAgICBsYXJnZXN0ID0gc2Vjb25kCmlmIHRoaXJkID4gbGFyZ2VzdDoKICAgIGxhcmdlc3QgPSB0aGlyZAoKcHJpbnQoJ0xhcmdlc3Q6JywgbGFyZ2VzdCk="
+    },
+    "pr8": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 11,
+      "starter": "first = input('First label: ')\nsecond = input('Second label: ')",
+      "cases": [
+        {
+          "name": "Cedar, Birch",
+          "inputs": [
+            "Cedar",
+            "Birch"
+          ],
+          "expected": "First label: Second label: First in Python order: Birch\nSecond in Python order: Cedar"
+        },
+        {
+          "name": "apple, Apricot",
+          "inputs": [
+            "apple",
+            "Apricot"
+          ],
+          "expected": "First label: Second label: First in Python order: Apricot\nSecond in Python order: apple"
+        },
+        {
+          "name": "note, notebook",
+          "inputs": [
+            "note",
+            "notebook"
+          ],
+          "expected": "First label: Second label: First in Python order: note\nSecond in Python order: notebook"
+        },
+        {
+          "name": "9cats, birds",
+          "inputs": [
+            "9cats",
+            "birds"
+          ],
+          "expected": "First label: Second label: First in Python order: 9cats\nSecond in Python order: birds"
+        }
+      ],
+      "check": "assert __source__.count(\"if \") == 1 and \"else\" in __source__, \"Use one if/else statement to decide the order.\"\nassert \".lower()\" not in __source__, \"Python order keeps capitalization significant; do not change the case.\"",
+      "answer": "Zmlyc3QgPSBpbnB1dCgnRmlyc3QgbGFiZWw6ICcpCnNlY29uZCA9IGlucHV0KCdTZWNvbmQgbGFiZWw6ICcpCgppZiBmaXJzdCA8IHNlY29uZDoKICAgIGVhcmxpZXIgPSBmaXJzdAogICAgbGF0ZXIgPSBzZWNvbmQKZWxzZToKICAgIGVhcmxpZXIgPSBzZWNvbmQKICAgIGxhdGVyID0gZmlyc3QKCnByaW50KCdGaXJzdCBpbiBQeXRob24gb3JkZXI6JywgZWFybGllcikKcHJpbnQoJ1NlY29uZCBpbiBQeXRob24gb3JkZXI6JywgbGF0ZXIp"
+    },
+    "pr9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "command = input('Command: ')",
+      "cases": [
+        {
+          "name": "QUIT",
+          "inputs": [
+            "QUIT"
+          ],
+          "expected": "Command: Command accepted"
+        },
+        {
+          "name": "quite",
+          "inputs": [
+            "quite"
+          ],
+          "expected": "Command: Unknown command"
+        },
+        {
+          "name": "Quit",
+          "inputs": [
+            "Quit"
+          ],
+          "expected": "Command: Command accepted"
+        },
+        {
+          "name": "quit (with a trailing space)",
+          "inputs": [
+            "quit "
+          ],
+          "expected": "Command: Unknown command"
+        }
+      ],
+      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__, \"Normalize the command with .lower() so any capitalization of quit matches.\"",
+      "answer": "Y29tbWFuZCA9IGlucHV0KCdDb21tYW5kOiAnKQoKaWYgY29tbWFuZC5sb3dlcigpID09ICdxdWl0JzoKICAgIHByaW50KCdDb21tYW5kIGFjY2VwdGVkJykKZWxzZToKICAgIHByaW50KCdVbmtub3duIGNvbW1hbmQnKQ=="
+    },
+    "pr10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "first = float(input('First reading: '))\nsecond = float(input('Second reading: '))",
+      "cases": [
+        {
+          "name": "2.0 and 1.995",
+          "inputs": [
+            "2.0",
+            "1.995"
+          ],
+          "expected": "First reading: Second reading: Match"
+        },
+        {
+          "name": "2.0 and 1.98",
+          "inputs": [
+            "2.0",
+            "1.98"
+          ],
+          "expected": "First reading: Second reading: Different"
+        },
+        {
+          "name": "1.995 and 2.0 (reversed)",
+          "inputs": [
+            "1.995",
+            "2.0"
+          ],
+          "expected": "First reading: Second reading: Match"
+        },
+        {
+          "name": "1.0 and 1.01 (exactly at the boundary)",
+          "inputs": [
+            "1.0",
+            "1.01"
+          ],
+          "expected": "First reading: Second reading: Different"
+        }
+      ],
+      "check": "assert \"abs(\" in __source__, \"Use abs() so the order of the two readings does not matter.\"\nassert \"0.01\" in __source__ or \"1e-2\" in __source__, \"Compare the difference with the tolerance 0.01.\"",
+      "answer": "Zmlyc3QgPSBmbG9hdChpbnB1dCgnRmlyc3QgcmVhZGluZzogJykpCnNlY29uZCA9IGZsb2F0KGlucHV0KCdTZWNvbmQgcmVhZGluZzogJykpCgppZiBhYnMoZmlyc3QgLSBzZWNvbmQpIDwgMC4wMToKICAgIHByaW50KCdNYXRjaCcpCmVsc2U6CiAgICBwcmludCgnRGlmZmVyZW50Jyk=",
+      "answerNote": "abs(1.0 - 1.01) is 0.010000000000000009 in floating point. The boundary case prints Different either way. The strict < is still the right operator."
+    },
+    "pr11": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 10,
+      "starter": "bill = float(input('Bill: $'))\nrating = int(input('Service rating (1 or 2): '))",
+      "cases": [
+        {
+          "name": "$40, rating 1",
+          "inputs": [
+            "40",
+            "1"
+          ],
+          "expected": "Bill: $Service rating (1 or 2): Tip: $8.00"
+        },
+        {
+          "name": "$40, rating 2",
+          "inputs": [
+            "40",
+            "2"
+          ],
+          "expected": "Bill: $Service rating (1 or 2): Tip: $6.00"
+        },
+        {
+          "name": "$25.50, rating 1",
+          "inputs": [
+            "25.50",
+            "1"
+          ],
+          "expected": "Bill: $Service rating (1 or 2): Tip: $5.10"
+        },
+        {
+          "name": "$0, rating 2",
+          "inputs": [
+            "0",
+            "2"
+          ],
+          "expected": "Bill: $Service rating (1 or 2): Tip: $0.00"
+        }
+      ],
+      "check": "assert __source__.count(\"if \") == 1 and \"else\" in __source__, \"Use one if/else statement to choose the tip rate.\"",
+      "answer": "YmlsbCA9IGZsb2F0KGlucHV0KCdCaWxsOiAkJykpCnJhdGluZyA9IGludChpbnB1dCgnU2VydmljZSByYXRpbmcgKDEgb3IgMik6ICcpKQoKaWYgcmF0aW5nID09IDE6CiAgICB0aXBfcmF0ZSA9IDAuMjAKZWxzZToKICAgIHRpcF9yYXRlID0gMC4xNQoKdGlwID0gYmlsbCAqIHRpcF9yYXRlCnByaW50KGYnVGlwOiAke3RpcDouMmZ9Jyk="
+    },
+    "pr12": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "frequency = float(input('Frequency in Hz: '))",
+      "cases": [
+        {
+          "name": "2.5e9 (below)",
+          "inputs": [
+            "2.5e9"
+          ],
+          "expected": "Frequency in Hz: Below threshold"
+        },
+        {
+          "name": "3e9 (at the boundary)",
+          "inputs": [
+            "3e9"
+          ],
+          "expected": "Frequency in Hz: At or above threshold"
+        },
+        {
+          "name": "3.5e9 (above)",
+          "inputs": [
+            "3.5e9"
+          ],
+          "expected": "Frequency in Hz: At or above threshold"
+        },
+        {
+          "name": "3000000000 (at the boundary, written out)",
+          "inputs": [
+            "3000000000"
+          ],
+          "expected": "Frequency in Hz: At or above threshold"
+        }
+      ],
+      "answer": "ZnJlcXVlbmN5ID0gZmxvYXQoaW5wdXQoJ0ZyZXF1ZW5jeSBpbiBIejogJykpCgppZiBmcmVxdWVuY3kgPCAzZTk6CiAgICBwcmludCgnQmVsb3cgdGhyZXNob2xkJykKZWxzZToKICAgIHByaW50KCdBdCBvciBhYm92ZSB0aHJlc2hvbGQnKQ=="
+    }
+  }
+}

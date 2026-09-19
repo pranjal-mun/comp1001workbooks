@@ -1,0 +1,13 @@
+{
+  "id": "lecture-03",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 3 Workbook",
+  "subtitle": "Algorithms, Pseudocode and Programs",
+  "exercises": {
+    "ex-pizza": {
+      "type": "example",
+      "code": "prices = input(\"Pizza prices: \").split()\ntip = float(input(\"Agreed tip: \"))\npeople = float(input(\"People: \"))\nif people < 1 or people != int(people):\n    print(\"Enter a whole number of people\"\n          \" of at least 1\")\nelse:\n    people = int(people)\n    food = sum(map(float, prices))\n    subtotal = round((food + 10) * 100)  # cents\n    tax = (subtotal * 15 + 50) // 100  # half-up\n    tip = round(tip * 100)\n    total = subtotal + tax + tip\n    while total % people:\n        tip += 1\n        total += 1\n    print(f\"Final tip: CA${tip/100:.2f}\")\n    print(f\"Total: CA${total/100:.2f}\")\n    print(f\"Each: CA${total/people/100:.2f}\")",
+      "title": "pizza.py"
+    }
+  }
+}

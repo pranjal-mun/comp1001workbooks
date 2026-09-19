@@ -1,0 +1,2005 @@
+{
+  "id": "lecture-11",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 11 Workbook",
+  "subtitle": "Boolean operators, bool, and input validation",
+  "exercises": {
+    "ex-e01": {
+      "type": "example",
+      "code": "age = 20\nis_adult = age >= 18\n\nprint(is_adult)\nprint(type(is_adult))",
+      "output": "True\n<class 'bool'>"
+    },
+    "ex-e02": {
+      "type": "example",
+      "code": "has_ticket = True\n\nif has_ticket:\n    print('Entry allowed')",
+      "output": "Entry allowed"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "paid": {
+          "accept": [
+            "has_paid",
+            "is_paid",
+            "was_paid",
+            "payment_received",
+            "has_payment",
+            "is_payment_received",
+            "payment_was_received",
+            "has_received_payment"
+          ],
+          "caseSensitive": true,
+          "placeholder": "name",
+          "width": "14rem"
+        },
+        "valid": {
+          "accept": [
+            "is_valid",
+            "is_score_valid",
+            "score_is_valid",
+            "has_valid_score",
+            "is_valid_score"
+          ],
+          "caseSensitive": true,
+          "placeholder": "name",
+          "width": "14rem"
+        },
+        "ready": {
+          "accept": [
+            "if is_ready:",
+            "if is_ready",
+            "is_ready"
+          ],
+          "caseSensitive": true,
+          "placeholder": "if …:",
+          "width": "14rem"
+        }
+      }
+    },
+    "ex-e03": {
+      "type": "example",
+      "code": "age = 20\nhas_id = True\n\ncan_enter = age >= 18 and has_id\nprint(can_enter)",
+      "output": "True"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "expr": {
+          "accept": [
+            "signed_in and is_available",
+            "is_available and signed_in"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "18rem"
+        },
+        "value": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "ex-e04": {
+      "type": "example",
+      "code": "day = 'Saturday'\nis_weekend = day == 'Saturday' or day == 'Sunday'\n\nprint(is_weekend)",
+      "output": "True"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "choice == 'y' or choice == 'Y'",
+            "choice == 'Y' or choice == 'y'",
+            "choice == \"y\" or choice == \"Y\"",
+            "choice == \"Y\" or choice == \"y\"",
+            "(choice == 'y') or (choice == 'Y')",
+            "(choice == 'Y') or (choice == 'y')",
+            "(choice == \"y\") or (choice == \"Y\")",
+            "(choice == \"Y\") or (choice == \"y\")"
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "20rem"
+        },
+        "both": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        }
+      }
+    },
+    "ex-e05": {
+      "type": "example",
+      "code": "is_closed = False\n\nif not is_closed:\n    print('The service is open')",
+      "output": "The service is open"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "nt": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "nf": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "rewrite": {
+          "accept": [
+            "not is_valid",
+            "(not is_valid)"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        }
+      }
+    },
+    "cp5-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1and": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r1or": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r2and": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r2or": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uJ3MgYG9yYCBhbHNvIHByb2R1Y2VzIGBUcnVlYCB3aGVuIGJvdGggaW5wdXRzIGFyZSBgVHJ1ZWA7IGl0IG1lYW5zICJhdCBsZWFzdCBvbmUuIg=="
+    },
+    "ex-e06": {
+      "type": "example",
+      "code": "a = True\nb = False\nc = False\n\nprint(a or b and c)\nprint((a or b) and c)",
+      "output": "True\nFalse"
+    },
+    "cp6-group": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "g": {
+          "accept": [
+            "(not a) or (b and c)",
+            "not a or (b and c)",
+            "((not a) or (b and c))"
+          ],
+          "caseSensitive": true,
+          "placeholder": "with parentheses",
+          "width": "16rem"
+        }
+      }
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIFRoZSB0d28gZXhwcmVzc2lvbnMgYXJlIG5vdCBhbHdheXMgZXF1YWwuIEZvciBleGFtcGxlLCB3aGVuIGBhYCBpcyBgVHJ1ZWAgYW5kIGBjYCBpcyBgRmFsc2VgLCBgYSBvciAoYiBhbmQgYylgIGlzIGBUcnVlYCBhbmQgYChhIG9yIGIpIGFuZCBjYCBpcyBgRmFsc2VgLg=="
+    },
+    "ex-e07": {
+      "type": "example",
+      "code": "count = 0\ntotal = 100\n\nhas_large_average = count > 0 and total / count > 50\nprint(has_large_average)",
+      "output": "False"
+    },
+    "cp7-first": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "first": {
+          "accept": [
+            "count > 0",
+            "(count > 0)",
+            "the left side",
+            "left side",
+            "the left part",
+            "left part",
+            "the first part"
+          ],
+          "caseSensitive": false,
+          "placeholder": "which part?",
+          "width": "12rem"
+        }
+      }
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIHNraXBzIGB0b3RhbCAvIGNvdW50ID4gNTBgIGJlY2F1c2UgYGNvdW50ID4gMGAgaXMgYEZhbHNlYCwgc28gdGhlIHdob2xlIGBhbmRgIGV4cHJlc3Npb24gaXMgYWxyZWFkeSBrbm93biB0byBiZSBgRmFsc2VgLiBSZXZlcnNpbmcgdGhlIHBhcnRzIHdvdWxkIGF0dGVtcHQgdGhlIGRpdmlzaW9uIGJ5IHplcm8gYmVmb3JlIHJlYWNoaW5nIHRoZSBndWFyZC4="
+    },
+    "ex-e08": {
+      "type": "example",
+      "code": "is_adult = True\nhas_id = False\n\nfirst = not (is_adult and has_id)\nsecond = (not is_adult) or (not has_id)\n\nprint(first)\nprint(second)",
+      "output": "True\nTrue"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "m1": {
+          "accept": [
+            "(not is_member) and (not has_pass)",
+            "not is_member and not has_pass",
+            "(not has_pass) and (not is_member)",
+            "not has_pass and not is_member"
+          ],
+          "caseSensitive": true,
+          "placeholder": "rewritten expression",
+          "width": "20rem"
+        },
+        "m2": {
+          "accept": [
+            "(not is_open) or (not is_staffed)",
+            "not is_open or not is_staffed",
+            "(not is_staffed) or (not is_open)",
+            "not is_staffed or not is_open"
+          ],
+          "caseSensitive": true,
+          "placeholder": "rewritten expression",
+          "width": "20rem"
+        }
+      }
+    },
+    "cp8-op": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 8,
+      "rows": 2,
+      "placeholder": "What happens to the operator?",
+      "answer": "VGhlIG9wZXJhdG9yIGNoYW5nZXMgZnJvbSBgb3JgIHRvIGBhbmRgLCBvciBmcm9tIGBhbmRgIHRvIGBvcmAu"
+    },
+    "ex-e09": {
+      "type": "example",
+      "code": "score = 84\nis_valid = 0 <= score <= 100\n\nprint(is_valid)",
+      "output": "True"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v": {
+          "accept": [
+            "1 <= value <= 10",
+            "10 >= value >= 1"
+          ],
+          "caseSensitive": true,
+          "placeholder": "chained comparison",
+          "width": "14rem"
+        },
+        "t": {
+          "accept": [
+            "0 < temperature < 100",
+            "100 > temperature > 0"
+          ],
+          "caseSensitive": true,
+          "placeholder": "chained comparison",
+          "width": "14rem"
+        }
+      }
+    },
+    "ex-e10": {
+      "type": "example",
+      "code": "code = 'COMP1001'\n\nprint(code.isalpha())\nprint(code.startswith('COMP'))\nprint(code.endswith('1001'))",
+      "output": "False\nTrue\nTrue"
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "b": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "c": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "d": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "cp10-why": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "answer": "VGhlIG1pbnVzIHNpZ24gaXMgYSBjaGFyYWN0ZXIsIGJ1dCBpdCBpcyBub3QgYSBkaWdpdC4="
+    },
+    "ex-e11": {
+      "type": "example",
+      "code": "raw = input('Enter your age: ').strip()\n\nif not raw.isdigit():\n    print('Please enter a whole number.')\nelif int(raw) > 130:\n    print('That age is outside the expected range.')\nelse:\n    age = int(raw)\n    print(f'Age recorded: {age}')"
+    },
+    "cp11-order": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "convert": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "#",
+          "width": "4rem"
+        },
+        "read": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "#",
+          "width": "4rem"
+        },
+        "test": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "#",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp11-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHRlc3QgcHJldmVudHMgYGludCgpYCBmcm9tIHJlY2VpdmluZyB0ZXh0IHRoYXQgd291bGQgY2F1c2UgYSBgVmFsdWVFcnJvcmAuIENvbnZlcnRpbmcgZmlyc3Qgd291bGQgZGVmZWF0IHRoZSBjaGVjayBiZWNhdXNlIGJhZCB0ZXh0IHdvdWxkIGFscmVhZHkgaGF2ZSBjYXVzZWQgdGhlIGVycm9yLg=="
+    },
+    "ex-e12": {
+      "type": "example",
+      "code": "choice = input('Choose small or large: ').strip().lower()\n\nif choice == 'small' or choice == 'large':\n    print('Choice recorded:', choice)\nelse:\n    print('Please enter small or large.')"
+    },
+    "ex-e13": {
+      "type": "example",
+      "code": "score = 108\nis_valid = 0 <= score <= 100\n\nif is_valid:\n    print('Score recorded')\nelse:\n    print('Score must be from 0 to 100.')",
+      "output": "Score must be from 0 to 100."
+    },
+    "cp12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "colour": {
+          "accept": [
+            "colour == 'red' or colour == 'green' or colour == 'blue'",
+            "colour == \"red\" or colour == \"green\" or colour == \"blue\"",
+            "colour == 'red' or colour == 'blue' or colour == 'green'",
+            "colour == \"red\" or colour == \"blue\" or colour == \"green\"",
+            "colour == 'green' or colour == 'red' or colour == 'blue'",
+            "colour == \"green\" or colour == \"red\" or colour == \"blue\"",
+            "colour == 'green' or colour == 'blue' or colour == 'red'",
+            "colour == \"green\" or colour == \"blue\" or colour == \"red\"",
+            "colour == 'blue' or colour == 'red' or colour == 'green'",
+            "colour == \"blue\" or colour == \"red\" or colour == \"green\"",
+            "colour == 'blue' or colour == 'green' or colour == 'red'",
+            "colour == \"blue\" or colour == \"green\" or colour == \"red\""
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "26rem"
+        },
+        "rating": {
+          "accept": [
+            "1 <= rating <= 5",
+            "5 >= rating >= 1"
+          ],
+          "caseSensitive": true,
+          "placeholder": "chained comparison",
+          "width": "14rem"
+        }
+      }
+    },
+    "cp12-where": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "answer": "SW1tZWRpYXRlbHkgYWZ0ZXIgcmVhZGluZyBhbmQgY2xlYW5pbmcgdGhlIGlucHV0LCBzbyB0aGF0IGxhdGVyIGNvZGUgY2FuIHJlbHkgb24gdGhlIHZhbHVlIGhhdmluZyBwYXNzZWQgdGhlIGNoZWNrcy4="
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "vals": {
+          "accept": [
+            "True and False",
+            "True, False",
+            "True False",
+            "False and True",
+            "False, True",
+            "False True",
+            "True/False",
+            "True or False",
+            "False or True"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the two values",
+          "width": "12rem"
+        }
+      }
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YEEgYW5kIEJgIGlzIHRydWUgb25seSB3aGVuIGJvdGggcGFydHMgYXJlIHRydWUuIGBBIG9yIEJgIGlzIHRydWUgd2hlbiBhdCBsZWFzdCBvbmUgcGFydCBpcyB0cnVlLCBpbmNsdWRpbmcgd2hlbiBib3RoIHBhcnRzIGFyZSB0cnVlLg=="
+    },
+    "fr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "order": {
+          "accept": [
+            "not, and, or",
+            "not and or",
+            "not, then and, then or",
+            "not then and then or",
+            "not > and > or",
+            "not; and; or",
+            "not / and / or",
+            "not → and → or",
+            "not, and, then or",
+            "not first, then and, then or"
+          ],
+          "placeholder": "first, second, third",
+          "width": "16rem",
+          "show": "not, and, or"
+        }
+      }
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIGV2YWx1YXRlcyBmcm9tIGxlZnQgdG8gcmlnaHQuIElmIHRoZSBsZWZ0IHBhcnQgaXMgZmFsc2UsIHRoZSB3aG9sZSBgYW5kYCBleHByZXNzaW9uIG11c3QgYmUgZmFsc2UsIHNvIFB5dGhvbiBza2lwcyB0aGUgcmlnaHQgcGFydC4="
+    },
+    "fr5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "eq": {
+          "accept": [
+            "(not A) and (not B)",
+            "not A and not B",
+            "(not B) and (not A)",
+            "not B and not A"
+          ],
+          "caseSensitive": true,
+          "placeholder": "equivalent expression",
+          "width": "16rem"
+        }
+      }
+    },
+    "fr6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "chain": {
+          "accept": [
+            "0 <= x <= 100",
+            "100 >= x >= 0"
+          ],
+          "caseSensitive": true,
+          "placeholder": "chained comparison",
+          "width": "12rem"
+        }
+      }
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QmFkIGRhdGEgaXMgcmVqZWN0ZWQgd2hlcmUgaXQgZW50ZXJzLiBDb2RlIGFmdGVyIHRoZSBjaGVjayBjYW4gdGhlbiByZWx5IG9uIHRoZSB2YWx1ZSBiZWluZyB1c2FibGUu"
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHZhcmlhYmxlIGFscmVhZHkgY29udGFpbnMgYSBCb29sZWFuIHZhbHVlLiBUaGUgZGlyZWN0IGZvcm0gc3RhdGVzIHRoZSBjb25kaXRpb24gd2l0aG91dCBhIHJlZHVuZGFudCBjb21wYXJpc29uLg=="
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1and": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r1or": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r2and": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r2or": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r3and": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r3or": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r4and": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r4or": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "pb": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "e2": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "e3": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "e4": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "e5": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        }
+      }
+    },
+    "pc": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "paid": {
+          "accept": [
+            "if has_paid:",
+            "if has_paid"
+          ],
+          "caseSensitive": true,
+          "placeholder": "if …:",
+          "width": "14rem"
+        },
+        "empty": {
+          "accept": [
+            "if not is_empty:",
+            "if not is_empty"
+          ],
+          "caseSensitive": true,
+          "placeholder": "if …:",
+          "width": "14rem"
+        },
+        "name": {
+          "accept": [
+            "was_found",
+            "is_file_found",
+            "is_found",
+            "file_found",
+            "file_was_found",
+            "has_file",
+            "has_found_file",
+            "found_file",
+            "is_file_present",
+            "file_exists",
+            "was_file_found"
+          ],
+          "caseSensitive": true,
+          "placeholder": "name",
+          "width": "14rem"
+        }
+      }
+    },
+    "pd-cond": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "count > 0 and total / count > 10",
+            "count > 0 and total/count > 10",
+            "count >= 1 and total / count > 10",
+            "count >= 1 and total/count > 10",
+            "(count > 0) and (total / count > 10)",
+            "(count > 0) and (total/count > 10)"
+          ],
+          "caseSensitive": true,
+          "placeholder": "condition",
+          "width": "22rem"
+        }
+      }
+    },
+    "pd-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXNlIGBjb3VudCA+IDAgYW5kIHRvdGFsIC8gY291bnQgPiAxMGAuIFdoZW4gYGNvdW50YCBpcyB6ZXJvLCB0aGUgZmFsc2UgbGVmdCBzaWRlIGNhdXNlcyBQeXRob24gdG8gc2tpcCB0aGUgdW5zYWZlIGRpdmlzaW9uLg=="
+    },
+    "pe": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "m1": {
+          "accept": [
+            "(not is_member) or (not has_paid)",
+            "not is_member or not has_paid",
+            "(not has_paid) or (not is_member)",
+            "not has_paid or not is_member"
+          ],
+          "caseSensitive": true,
+          "placeholder": "rewritten expression",
+          "width": "20rem"
+        },
+        "m2": {
+          "accept": [
+            "(not is_weekend) and (not is_holiday)",
+            "not is_weekend and not is_holiday",
+            "(not is_holiday) and (not is_weekend)",
+            "not is_holiday and not is_weekend"
+          ],
+          "caseSensitive": true,
+          "placeholder": "rewritten expression",
+          "width": "20rem"
+        }
+      }
+    },
+    "pf": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "s2": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "s3": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "s4": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "s5": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "pg": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "raw = input('Quantity: ')____________________\n\nif _________________________________________:\n    print('Enter a whole number.')\nelif _______________________________________:\n    print('Quantity must be from 1 to 20.')\nelse:\n    quantity = ______________________________\n    print('Quantity recorded:', quantity)",
+      "cases": [
+        {
+          "name": "'five' (nonnumeric text)",
+          "inputs": [
+            "five"
+          ],
+          "expected": "Quantity: Enter a whole number."
+        },
+        {
+          "name": "'0' (below range)",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Quantity: Quantity must be from 1 to 20."
+        },
+        {
+          "name": "'1' (lower boundary)",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Quantity: Quantity recorded: 1"
+        },
+        {
+          "name": "'20' (upper boundary)",
+          "inputs": [
+            "20"
+          ],
+          "expected": "Quantity: Quantity recorded: 20"
+        },
+        {
+          "name": "'21' (above range)",
+          "inputs": [
+            "21"
+          ],
+          "expected": "Quantity: Quantity must be from 1 to 20."
+        },
+        {
+          "name": "' 8 ' (surrounding spaces)",
+          "inputs": [
+            " 8 "
+          ],
+          "expected": "Quantity: Quantity recorded: 8"
+        }
+      ],
+      "check": "assert isinstance(globals().get('quantity', 0), int), 'quantity should hold the converted int, not the text.'",
+      "answer": "cmF3ID0gaW5wdXQoJ1F1YW50aXR5OiAnKS5zdHJpcCgpCgppZiBub3QgcmF3LmlzZGlnaXQoKToKICAgIHByaW50KCdFbnRlciBhIHdob2xlIG51bWJlci4nKQplbGlmIG5vdCAxIDw9IGludChyYXcpIDw9IDIwOgogICAgcHJpbnQoJ1F1YW50aXR5IG11c3QgYmUgZnJvbSAxIHRvIDIwLicpCmVsc2U6CiAgICBxdWFudGl0eSA9IGludChyYXcpCiAgICBwcmludCgnUXVhbnRpdHkgcmVjb3JkZWQ6JywgcXVhbnRpdHkp"
+    },
+    "ph": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "five": {
+          "accept": [
+            "whole-number error",
+            "whole number error",
+            "Enter a whole number.",
+            "Enter a whole number",
+            "error: whole number",
+            "whole-number message",
+            "whole number message"
+          ],
+          "placeholder": "result",
+          "width": "14rem"
+        },
+        "zero": {
+          "accept": [
+            "range error",
+            "Quantity must be from 1 to 20.",
+            "Quantity must be from 1 to 20",
+            "range message",
+            "out of range",
+            "error: range"
+          ],
+          "placeholder": "result",
+          "width": "14rem"
+        },
+        "one": {
+          "accept": [
+            "record 1",
+            "Quantity recorded: 1",
+            "recorded 1",
+            "records 1",
+            "accepted 1",
+            "accept 1",
+            "quantity recorded 1",
+            "Quantity recorded: 1."
+          ],
+          "placeholder": "result",
+          "width": "14rem",
+          "show": "record 1"
+        },
+        "twenty": {
+          "accept": [
+            "record 20",
+            "Quantity recorded: 20",
+            "recorded 20",
+            "records 20",
+            "accepted 20",
+            "accept 20",
+            "quantity recorded 20",
+            "Quantity recorded: 20."
+          ],
+          "placeholder": "result",
+          "width": "14rem",
+          "show": "record 20"
+        },
+        "twentyone": {
+          "accept": [
+            "range error",
+            "Quantity must be from 1 to 20.",
+            "Quantity must be from 1 to 20",
+            "range message",
+            "out of range",
+            "error: range"
+          ],
+          "placeholder": "result",
+          "width": "14rem"
+        },
+        "spaced": {
+          "accept": [
+            "record 8",
+            "Quantity recorded: 8",
+            "recorded 8",
+            "records 8",
+            "accepted 8",
+            "accept 8",
+            "quantity recorded 8",
+            "Quantity recorded: 8."
+          ],
+          "placeholder": "result",
+          "width": "14rem",
+          "show": "record 8"
+        }
+      }
+    },
+    "ex-e14": {
+      "type": "example",
+      "code": "course = input('Course code: ').strip().upper()\nraw_seats = input('Number of seats: ').strip()"
+    },
+    "syn": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 15,
+      "starter": "course = input('Course code: ').strip().upper()\nraw_seats = input('Number of seats: ').strip()\n\nis_comp_course = course.startswith('COMP')\nhas_whole_seats = raw_seats.isdigit()\n\nif not is_comp_course or not has_whole_seats:\n    print('Enter a COMP course and a whole seat count.')\nelse:\n    seats = _________________________________\n    is_valid_count = ________________________\n    if is_valid_count:\n        print('Request recorded')\n    else:\n        print('Seats must be from 1 to 40.')",
+      "cases": [
+        {
+          "name": "COMP1001, 24",
+          "inputs": [
+            "COMP1001",
+            "24"
+          ],
+          "expected": "Course code: Number of seats: Request recorded"
+        },
+        {
+          "name": "COMP1001, 0",
+          "inputs": [
+            "COMP1001",
+            "0"
+          ],
+          "expected": "Course code: Number of seats: Seats must be from 1 to 40."
+        },
+        {
+          "name": "comp2001, 40",
+          "inputs": [
+            "comp2001",
+            "40"
+          ],
+          "expected": "Course code: Number of seats: Request recorded"
+        },
+        {
+          "name": "COMP1001, 41",
+          "inputs": [
+            "COMP1001",
+            "41"
+          ],
+          "expected": "Course code: Number of seats: Seats must be from 1 to 40."
+        },
+        {
+          "name": "MATH1000, many",
+          "inputs": [
+            "MATH1000",
+            "many"
+          ],
+          "expected": "Course code: Number of seats: Enter a COMP course and a whole seat count."
+        }
+      ],
+      "check": "assert isinstance(globals().get('is_valid_count', True), bool), 'is_valid_count should hold a Boolean value from a comparison.'",
+      "answer": "Y291cnNlID0gaW5wdXQoJ0NvdXJzZSBjb2RlOiAnKS5zdHJpcCgpLnVwcGVyKCkKcmF3X3NlYXRzID0gaW5wdXQoJ051bWJlciBvZiBzZWF0czogJykuc3RyaXAoKQoKaXNfY29tcF9jb3Vyc2UgPSBjb3Vyc2Uuc3RhcnRzd2l0aCgnQ09NUCcpCmhhc193aG9sZV9zZWF0cyA9IHJhd19zZWF0cy5pc2RpZ2l0KCkKCmlmIG5vdCBpc19jb21wX2NvdXJzZSBvciBub3QgaGFzX3dob2xlX3NlYXRzOgogICAgcHJpbnQoJ0VudGVyIGEgQ09NUCBjb3Vyc2UgYW5kIGEgd2hvbGUgc2VhdCBjb3VudC4nKQplbHNlOgogICAgc2VhdHMgPSBpbnQocmF3X3NlYXRzKQogICAgaXNfdmFsaWRfY291bnQgPSAxIDw9IHNlYXRzIDw9IDQwCiAgICBpZiBpc192YWxpZF9jb3VudDoKICAgICAgICBwcmludCgnUmVxdWVzdCByZWNvcmRlZCcpCiAgICBlbHNlOgogICAgICAgIHByaW50KCdTZWF0cyBtdXN0IGJlIGZyb20gMSB0byA0MC4nKQ=="
+    },
+    "syn-msg": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "msg": {
+          "accept": [
+            "Seats must be from 1 to 40.",
+            "Seats must be from 1 to 40"
+          ],
+          "caseSensitive": true,
+          "placeholder": "the printed message",
+          "width": "18rem"
+        }
+      }
+    },
+    "ex-e15": {
+      "type": "example",
+      "code": "course = input('Course code: ').strip().upper()\nraw_seats = input('Number of seats: ').strip()\n\nis_comp_course = course.startswith('COMP')\nhas_whole_seats = raw_seats.isdigit()\n\nif not is_comp_course or not has_whole_seats:\n    print('Enter a COMP course and a whole seat count.')\nelse:\n    seats = int(raw_seats)\n    is_valid_count = 1 <= seats <= 40\n    if is_valid_count:\n        print('Request recorded:', course, seats)\n    else:\n        print('Seats must be from 1 to 40.')"
+    },
+    "cx1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a1": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "b1": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "a2": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "b2": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "a3": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "b3": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "a4": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "b4": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "a5": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "b5": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "a6": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "b6": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "a7": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "b7": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "a8": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "b8": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        }
+      }
+    },
+    "cx2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "ab1": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "ba1": {
+          "accept": [
+            "T",
+            "True"
+          ],
+          "show": "T",
+          "width": "4rem"
+        },
+        "ab2": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "ba2": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "ab3": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "ba3": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "ab4": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        },
+        "ba4": {
+          "accept": [
+            "F",
+            "False"
+          ],
+          "show": "F",
+          "width": "4rem"
+        }
+      }
+    },
+    "cx2-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "WWVzLiBCb3RoIGV4cHJlc3Npb25zIGFyZSB0cnVlIG9ubHkgaW4gdGhlIHJvdyB3aGVyZSBib3RoIGlucHV0cyBhcmUgdHJ1ZS4gSW4gdGhlIG90aGVyIHRocmVlIHJvd3MsIGJvdGggZXhwcmVzc2lvbnMgYXJlIGZhbHNlLiBUaGlzIHByb3BlcnR5IGlzIGNhbGxlZCBjb21tdXRhdGl2aXR5LCBidXQgdGhlIHRydXRoIHRhYmxlIGlzIGVub3VnaCB0byBlc3RhYmxpc2ggaXQgaGVyZS4="
+    },
+    "cx3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "and": {
+          "accept": [
+            "has_cats and has_dogs",
+            "has_dogs and has_cats"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "18rem"
+        },
+        "or": {
+          "accept": [
+            "has_cats or has_dogs",
+            "has_dogs or has_cats"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "18rem"
+        },
+        "not": {
+          "accept": [
+            "has_cats and not has_dogs",
+            "has_cats and (not has_dogs)",
+            "not has_dogs and has_cats",
+            "(not has_dogs) and has_cats"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "18rem"
+        }
+      }
+    },
+    "cx4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "v2": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "v3": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "v4": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "v5": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "v6": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "v7": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "v8": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        }
+      }
+    },
+    "cx5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "is_ready"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "s2": {
+          "accept": [
+            "not is_ready"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "s3": {
+          "accept": [
+            "not is_ready"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        },
+        "s4": {
+          "accept": [
+            "is_ready"
+          ],
+          "caseSensitive": true,
+          "placeholder": "expression",
+          "width": "12rem"
+        }
+      }
+    },
+    "cx6": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "a": {
+          "accept": [
+            "is_valid = score >= 50",
+            "score >= 50"
+          ],
+          "caseSensitive": true,
+          "placeholder": "is_valid = …",
+          "width": "22rem"
+        },
+        "b": {
+          "accept": [
+            "is_valid = count != 0 and count <= 30",
+            "is_valid = count <= 30 and count != 0",
+            "is_valid = not count == 0 and count <= 30",
+            "is_valid = count != 0 and count <= 30",
+            "count != 0 and count <= 30",
+            "count <= 30 and count != 0",
+            "not count == 0 and count <= 30",
+            "count != 0 and count <= 30"
+          ],
+          "caseSensitive": true,
+          "placeholder": "is_valid = …",
+          "width": "22rem"
+        }
+      }
+    },
+    "cx7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNvbnZlcnNpb24gaGFwcGVucyBiZWZvcmUgdGhlIGRpZ2l0IHRlc3QuIE5vbi1kaWdpdCB0ZXh0IGNhdXNlcyBhIGBWYWx1ZUVycm9yYCwgc28gdGhlIHZhbGlkYXRpb24gbWVzc2FnZSBuZXZlciBhcHBlYXJzLiBUZXN0IHRoZSB0ZXh0IGZpcnN0IGFuZCBjb252ZXJ0IG9ubHkgb24gdGhlIHNhZmUgcGF0aC4="
+    },
+    "cx7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "raw = input('Number of tickets: ').strip()\ntickets = int(raw)\n\nif raw.isdigit() and 1 <= tickets <= 8:\n    print('Accepted')\nelse:\n    print('Enter a whole number from 1 to 8.')",
+      "cases": [
+        {
+          "name": "'five' (must not crash)",
+          "inputs": [
+            "five"
+          ],
+          "expected": "Number of tickets: Enter a whole number from 1 to 8."
+        },
+        {
+          "name": "'3'",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Number of tickets: Accepted"
+        },
+        {
+          "name": "'9'",
+          "inputs": [
+            "9"
+          ],
+          "expected": "Number of tickets: Enter a whole number from 1 to 8."
+        },
+        {
+          "name": "'0'",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Number of tickets: Enter a whole number from 1 to 8."
+        },
+        {
+          "name": "' 8 '",
+          "inputs": [
+            " 8 "
+          ],
+          "expected": "Number of tickets: Accepted"
+        }
+      ],
+      "answer": "cmF3ID0gaW5wdXQoJ051bWJlciBvZiB0aWNrZXRzOiAnKS5zdHJpcCgpCgppZiBub3QgcmF3LmlzZGlnaXQoKToKICAgIHByaW50KCdFbnRlciBhIHdob2xlIG51bWJlciBmcm9tIDEgdG8gOC4nKQplbHNlOgogICAgdGlja2V0cyA9IGludChyYXcpCiAgICBpZiAxIDw9IHRpY2tldHMgPD0gODoKICAgICAgICBwcmludCgnQWNjZXB0ZWQnKQogICAgZWxzZToKICAgICAgICBwcmludCgnRW50ZXIgYSB3aG9sZSBudW1iZXIgZnJvbSAxIHRvIDguJyk="
+    },
+    "cx8": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "mode = input('Mode: ').strip().lower()\na = int(input('First: '))\nb = int(input('Second: '))\nc = int(input('Third: '))\n\n# Define increasing and decreasing, then print one result.",
+      "cases": [
+        {
+          "name": "strict, 3, 4, 4",
+          "inputs": [
+            "strict",
+            "3",
+            "4",
+            "4"
+          ],
+          "expected": "Mode: First: Second: Third: neither"
+        },
+        {
+          "name": "lenient, 4, 4, 4",
+          "inputs": [
+            "lenient",
+            "4",
+            "4",
+            "4"
+          ],
+          "expected": "Mode: First: Second: Third: both"
+        },
+        {
+          "name": "strict, 1, 2, 3",
+          "inputs": [
+            "strict",
+            "1",
+            "2",
+            "3"
+          ],
+          "expected": "Mode: First: Second: Third: increasing"
+        },
+        {
+          "name": "lenient, 5, 3, 3",
+          "inputs": [
+            "lenient",
+            "5",
+            "3",
+            "3"
+          ],
+          "expected": "Mode: First: Second: Third: decreasing"
+        },
+        {
+          "name": "STRICT, 9, 6, 2",
+          "inputs": [
+            "STRICT",
+            "9",
+            "6",
+            "2"
+          ],
+          "expected": "Mode: First: Second: Third: decreasing"
+        },
+        {
+          "name": "lenient, 2, 9, 1",
+          "inputs": [
+            "lenient",
+            "2",
+            "9",
+            "1"
+          ],
+          "expected": "Mode: First: Second: Third: neither"
+        },
+        {
+          "name": "fast, 1, 2, 3 (reject the mode)",
+          "inputs": [
+            "fast",
+            "1",
+            "2",
+            "3"
+          ],
+          "check": "import re\nwords = re.findall(r'\\b(increasing|decreasing|both|neither)\\b', __stdout__)\nassert not words, 'The mode \"fast\" is not strict or lenient. Reject it instead of printing a result.'\nassert __stdout__.strip().split('Third: ')[-1].strip(), 'Print a message that explains the mode must be strict or lenient.'"
+        }
+      ],
+      "answer": "bW9kZSA9IGlucHV0KCdNb2RlOiAnKS5zdHJpcCgpLmxvd2VyKCkKYSA9IGludChpbnB1dCgnRmlyc3Q6ICcpKQpiID0gaW50KGlucHV0KCdTZWNvbmQ6ICcpKQpjID0gaW50KGlucHV0KCdUaGlyZDogJykpCgppZiBtb2RlICE9ICdzdHJpY3QnIGFuZCBtb2RlICE9ICdsZW5pZW50JzoKICAgIHByaW50KCdNb2RlIG11c3QgYmUgc3RyaWN0IG9yIGxlbmllbnQuJykKZWxzZToKICAgIGlmIG1vZGUgPT0gJ3N0cmljdCc6CiAgICAgICAgaW5jcmVhc2luZyA9IGEgPCBiIDwgYwogICAgICAgIGRlY3JlYXNpbmcgPSBhID4gYiA+IGMKICAgIGVsc2U6CiAgICAgICAgaW5jcmVhc2luZyA9IGEgPD0gYiA8PSBjCiAgICAgICAgZGVjcmVhc2luZyA9IGEgPj0gYiA+PSBjCgogICAgaWYgaW5jcmVhc2luZyBhbmQgZGVjcmVhc2luZzoKICAgICAgICBwcmludCgnYm90aCcpCiAgICBlbGlmIGluY3JlYXNpbmc6CiAgICAgICAgcHJpbnQoJ2luY3JlYXNpbmcnKQogICAgZWxpZiBkZWNyZWFzaW5nOgogICAgICAgIHByaW50KCdkZWNyZWFzaW5nJykKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoJ25laXRoZXInKQ=="
+    },
+    "cx9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "a = int(input('First: '))\nb = int(input('Second: '))\nc = int(input('Third: '))\n\nis_in_order = __________________________________________",
+      "cases": [
+        {
+          "name": "1, 2, 2",
+          "inputs": [
+            "1",
+            "2",
+            "2"
+          ],
+          "expected": "First: Second: Third: in order"
+        },
+        {
+          "name": "1, 5, 2",
+          "inputs": [
+            "1",
+            "5",
+            "2"
+          ],
+          "expected": "First: Second: Third: not in order"
+        },
+        {
+          "name": "9, 4, 4",
+          "inputs": [
+            "9",
+            "4",
+            "4"
+          ],
+          "expected": "First: Second: Third: in order"
+        },
+        {
+          "name": "3, 3, 3",
+          "inputs": [
+            "3",
+            "3",
+            "3"
+          ],
+          "expected": "First: Second: Third: in order"
+        },
+        {
+          "name": "2, 1, 5",
+          "inputs": [
+            "2",
+            "1",
+            "5"
+          ],
+          "expected": "First: Second: Third: not in order"
+        }
+      ],
+      "check": "assert isinstance(globals().get('is_in_order'), bool), 'Keep the Boolean result in is_in_order, then test that variable.'",
+      "answer": "YSA9IGludChpbnB1dCgnRmlyc3Q6ICcpKQpiID0gaW50KGlucHV0KCdTZWNvbmQ6ICcpKQpjID0gaW50KGlucHV0KCdUaGlyZDogJykpCgppc19pbl9vcmRlciA9IGEgPD0gYiA8PSBjIG9yIGEgPj0gYiA+PSBjCgppZiBpc19pbl9vcmRlcjoKICAgIHByaW50KCdpbiBvcmRlcicpCmVsc2U6CiAgICBwcmludCgnbm90IGluIG9yZGVyJyk="
+    },
+    "cx10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "a = int(input('A: '))\nb = int(input('B: '))\nc = int(input('C: '))\nd = int(input('D: '))\n\n# Test the three possible pairings.",
+      "cases": [
+        {
+          "name": "1, 2, 2, 1",
+          "inputs": [
+            "1",
+            "2",
+            "2",
+            "1"
+          ],
+          "expected": "A: B: C: D: two pairs"
+        },
+        {
+          "name": "1, 2, 2, 3",
+          "inputs": [
+            "1",
+            "2",
+            "2",
+            "3"
+          ],
+          "expected": "A: B: C: D: not two pairs"
+        },
+        {
+          "name": "2, 2, 2, 2",
+          "inputs": [
+            "2",
+            "2",
+            "2",
+            "2"
+          ],
+          "expected": "A: B: C: D: two pairs"
+        },
+        {
+          "name": "7, 7, 3, 3",
+          "inputs": [
+            "7",
+            "7",
+            "3",
+            "3"
+          ],
+          "expected": "A: B: C: D: two pairs"
+        },
+        {
+          "name": "5, 1, 5, 1",
+          "inputs": [
+            "5",
+            "1",
+            "5",
+            "1"
+          ],
+          "expected": "A: B: C: D: two pairs"
+        },
+        {
+          "name": "4, 4, 4, 9",
+          "inputs": [
+            "4",
+            "4",
+            "4",
+            "9"
+          ],
+          "expected": "A: B: C: D: not two pairs"
+        }
+      ],
+      "answer": "YSA9IGludChpbnB1dCgnQTogJykpCmIgPSBpbnQoaW5wdXQoJ0I6ICcpKQpjID0gaW50KGlucHV0KCdDOiAnKSkKZCA9IGludChpbnB1dCgnRDogJykpCgpoYXNfdHdvX3BhaXJzID0gKChhID09IGIgYW5kIGMgPT0gZCkKICAgICAgICAgICAgICAgICBvciAoYSA9PSBjIGFuZCBiID09IGQpCiAgICAgICAgICAgICAgICAgb3IgKGEgPT0gZCBhbmQgYiA9PSBjKSkKCmlmIGhhc190d29fcGFpcnM6CiAgICBwcmludCgndHdvIHBhaXJzJykKZWxzZToKICAgIHByaW50KCdub3QgdHdvIHBhaXJzJyk="
+    },
+    "cx11": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "text = input('Text: ')\n\n# Print one labelled Boolean result for each property.",
+      "cases": [
+        {
+          "name": "COMP1001",
+          "inputs": [
+            "COMP1001"
+          ],
+          "check": "import re\nfound = re.findall(r'\\b(True|False)\\b', __stdout__)\nassert len(found) == 6, 'Print exactly six Boolean results, one per property, in the listed order (found ' + str(len(found)) + ').'\nassert found == ['False', 'True', 'False', 'False', 'True', 'False'], 'For ' + 'COMP1001' + ' the six results in order should be False, True, False, False, True, False; you printed ' + ', '.join(found) + '.'\nlines = [line for line in __stdout__.split('\\n') if line.strip()]\nassert all(re.search(r'[A-Za-z]', line.split('True')[0].split('False')[0].replace('Text:', '')) for line in lines), 'Label each result so a reader knows which property it reports.'"
+        },
+        {
+          "name": "notes.",
+          "inputs": [
+            "notes."
+          ],
+          "check": "import re\nfound = re.findall(r'\\b(True|False)\\b', __stdout__)\nassert len(found) == 6, 'Print exactly six Boolean results, one per property, in the listed order (found ' + str(len(found)) + ').'\nassert found == ['False', 'False', 'True', 'False', 'False', 'True'], 'For ' + 'notes.' + ' the six results in order should be False, False, True, False, False, True; you printed ' + ', '.join(found) + '.'\nlines = [line for line in __stdout__.split('\\n') if line.strip()]\nassert all(re.search(r'[A-Za-z]', line.split('True')[0].split('False')[0].replace('Text:', '')) for line in lines), 'Label each result so a reader knows which property it reports.'"
+        },
+        {
+          "name": "Memorial",
+          "inputs": [
+            "Memorial"
+          ],
+          "check": "import re\nfound = re.findall(r'\\b(True|False)\\b', __stdout__)\nassert len(found) == 6, 'Print exactly six Boolean results, one per property, in the listed order (found ' + str(len(found)) + ').'\nassert found == ['True', 'False', 'False', 'False', 'False', 'False'], 'For ' + 'Memorial' + ' the six results in order should be True, False, False, False, False, False; you printed ' + ', '.join(found) + '.'\nlines = [line for line in __stdout__.split('\\n') if line.strip()]\nassert all(re.search(r'[A-Za-z]', line.split('True')[0].split('False')[0].replace('Text:', '')) for line in lines), 'Label each result so a reader knows which property it reports.'"
+        },
+        {
+          "name": "2026",
+          "inputs": [
+            "2026"
+          ],
+          "check": "import re\nfound = re.findall(r'\\b(True|False)\\b', __stdout__)\nassert len(found) == 6, 'Print exactly six Boolean results, one per property, in the listed order (found ' + str(len(found)) + ').'\nassert found == ['False', 'False', 'False', 'True', 'False', 'False'], 'For ' + '2026' + ' the six results in order should be False, False, False, True, False, False; you printed ' + ', '.join(found) + '.'\nlines = [line for line in __stdout__.split('\\n') if line.strip()]\nassert all(re.search(r'[A-Za-z]', line.split('True')[0].split('False')[0].replace('Text:', '')) for line in lines), 'Label each result so a reader knows which property it reports.'"
+        },
+        {
+          "name": "COMPUTER",
+          "inputs": [
+            "COMPUTER"
+          ],
+          "check": "import re\nfound = re.findall(r'\\b(True|False)\\b', __stdout__)\nassert len(found) == 6, 'Print exactly six Boolean results, one per property, in the listed order (found ' + str(len(found)) + ').'\nassert found == ['True', 'True', 'False', 'False', 'True', 'False'], 'For ' + 'COMPUTER' + ' the six results in order should be True, True, False, False, True, False; you printed ' + ', '.join(found) + '.'\nlines = [line for line in __stdout__.split('\\n') if line.strip()]\nassert all(re.search(r'[A-Za-z]', line.split('True')[0].split('False')[0].replace('Text:', '')) for line in lines), 'Label each result so a reader knows which property it reports.'"
+        }
+      ],
+      "answer": "dGV4dCA9IGlucHV0KCdUZXh0OiAnKQoKcHJpbnQoJ2xldHRlcnMgb25seTonLCB0ZXh0LmlzYWxwaGEoKSkKcHJpbnQoJ3VwcGVyY2FzZTonLCB0ZXh0LmlzdXBwZXIoKSkKcHJpbnQoJ2xvd2VyY2FzZTonLCB0ZXh0LmlzbG93ZXIoKSkKcHJpbnQoJ2RpZ2l0cyBvbmx5OicsIHRleHQuaXNkaWdpdCgpKQpwcmludCgnYmVnaW5zIENPTVA6JywgdGV4dC5zdGFydHN3aXRoKCdDT01QJykpCnByaW50KCdlbmRzIHBlcmlvZDonLCB0ZXh0LmVuZHN3aXRoKCcuJykp",
+      "answerNote": "Any clear labels are fine; Check looks at the six True/False values in order."
+    },
+    "cx12": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "from_unit = input('From unit: ').strip().lower()\nto_unit = input('To unit: ').strip().lower()\nvalue = float(input('Value: '))\n\n# Name the compatibility tests, then convert on the safe path.",
+      "cases": [
+        {
+          "name": "cm, in, 25.4",
+          "inputs": [
+            "cm",
+            "in",
+            "25.4"
+          ],
+          "expected": "From unit: To unit: Value: 10.00 in"
+        },
+        {
+          "name": "in, cm, 10",
+          "inputs": [
+            "in",
+            "cm",
+            "10"
+          ],
+          "expected": "From unit: To unit: Value: 25.40 cm"
+        },
+        {
+          "name": "kg, kg, 3",
+          "inputs": [
+            "kg",
+            "kg",
+            "3"
+          ],
+          "expected": "From unit: To unit: Value: 3.00 kg"
+        },
+        {
+          "name": "CM, cm, 12.5",
+          "inputs": [
+            "CM",
+            "cm",
+            "12.5"
+          ],
+          "expected": "From unit: To unit: Value: 12.50 cm"
+        },
+        {
+          "name": "kg, cm, 3 (incompatible)",
+          "inputs": [
+            "kg",
+            "cm",
+            "3"
+          ],
+          "check": "import re\ntail = __stdout__.split('Value: ')[-1]\nassert not re.search(r'\\d+\\.\\d+ (cm|in|kg)', tail), 'These units are not compatible. Print an error message instead of a converted value.'\nassert tail.strip(), 'Print an error message for an unknown or incompatible pair.'"
+        },
+        {
+          "name": "m, cm, 1 (unknown unit)",
+          "inputs": [
+            "m",
+            "cm",
+            "1"
+          ],
+          "check": "import re\ntail = __stdout__.split('Value: ')[-1]\nassert not re.search(r'\\d+\\.\\d+ (cm|in|kg)', tail), 'These units are not compatible. Print an error message instead of a converted value.'\nassert tail.strip(), 'Print an error message for an unknown or incompatible pair.'"
+        }
+      ],
+      "answer": "ZnJvbV91bml0ID0gaW5wdXQoJ0Zyb20gdW5pdDogJykuc3RyaXAoKS5sb3dlcigpCnRvX3VuaXQgPSBpbnB1dCgnVG8gdW5pdDogJykuc3RyaXAoKS5sb3dlcigpCnZhbHVlID0gZmxvYXQoaW5wdXQoJ1ZhbHVlOiAnKSkKCmZyb21faXNfbGVuZ3RoID0gZnJvbV91bml0ID09ICdjbScgb3IgZnJvbV91bml0ID09ICdpbicKdG9faXNfbGVuZ3RoID0gdG9fdW5pdCA9PSAnY20nIG9yIHRvX3VuaXQgPT0gJ2luJwppc19sZW5ndGhfcGFpciA9IGZyb21faXNfbGVuZ3RoIGFuZCB0b19pc19sZW5ndGgKaXNfbWFzc19wYWlyID0gZnJvbV91bml0ID09ICdrZycgYW5kIHRvX3VuaXQgPT0gJ2tnJwoKaWYgbm90IChpc19sZW5ndGhfcGFpciBvciBpc19tYXNzX3BhaXIpOgogICAgcHJpbnQoJ1Vua25vd24gb3IgaW5jb21wYXRpYmxlIHVuaXRzLicpCmVsaWYgZnJvbV91bml0ID09IHRvX3VuaXQ6CiAgICBwcmludChmJ3t2YWx1ZTouMmZ9IHt0b191bml0fScpCmVsaWYgZnJvbV91bml0ID09ICdjbSc6CiAgICBwcmludChmJ3t2YWx1ZSAvIDIuNTQ6LjJmfSBpbicpCmVsc2U6CiAgICBwcmludChmJ3t2YWx1ZSAqIDIuNTQ6LjJmfSBjbScp",
+      "answerNote": "The wording of the error message is yours to choose."
+    },
+    "cx13": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 15,
+      "starter": "balance = float(input('Starting balance: $'))\naction = input('Action: ').strip().lower()\namount = float(input('Amount: $'))\n\n# Name the validity conditions before changing the balance.",
+      "cases": [
+        {
+          "name": "100, deposit, 25",
+          "inputs": [
+            "100",
+            "deposit",
+            "25"
+          ],
+          "expected": "Starting balance: $Action: Amount: $Balance: $125.00"
+        },
+        {
+          "name": "100, withdraw, 40",
+          "inputs": [
+            "100",
+            "withdraw",
+            "40"
+          ],
+          "expected": "Starting balance: $Action: Amount: $Balance: $60.00"
+        },
+        {
+          "name": "50, Withdraw, 50",
+          "inputs": [
+            "50",
+            "Withdraw",
+            "50"
+          ],
+          "expected": "Starting balance: $Action: Amount: $Balance: $0.00"
+        },
+        {
+          "name": "0, deposit, 12.5",
+          "inputs": [
+            "0",
+            "deposit",
+            "12.5"
+          ],
+          "expected": "Starting balance: $Action: Amount: $Balance: $12.50"
+        },
+        {
+          "name": "100, withdraw, 120 (insufficient funds)",
+          "inputs": [
+            "100",
+            "withdraw",
+            "120"
+          ],
+          "check": "tail = __stdout__.split('Amount: $')[-1]\nassert 'Balance:' not in tail, 'This transaction must be rejected. Do not print a new balance.'\nassert tail.strip(), 'Print a message that explains why the transaction was rejected.'\nassert 'insufficient' in tail.lower(), 'A withdrawal larger than the balance should print an insufficient-funds message.'"
+        },
+        {
+          "name": "-5, deposit, 10 (negative balance)",
+          "inputs": [
+            "-5",
+            "deposit",
+            "10"
+          ],
+          "check": "tail = __stdout__.split('Amount: $')[-1]\nassert 'Balance:' not in tail, 'This transaction must be rejected. Do not print a new balance.'\nassert tail.strip(), 'Print a message that explains why the transaction was rejected.'"
+        },
+        {
+          "name": "100, transfer, 10 (unknown action)",
+          "inputs": [
+            "100",
+            "transfer",
+            "10"
+          ],
+          "check": "tail = __stdout__.split('Amount: $')[-1]\nassert 'Balance:' not in tail, 'This transaction must be rejected. Do not print a new balance.'\nassert tail.strip(), 'Print a message that explains why the transaction was rejected.'"
+        },
+        {
+          "name": "100, deposit, -3 (negative amount)",
+          "inputs": [
+            "100",
+            "deposit",
+            "-3"
+          ],
+          "check": "tail = __stdout__.split('Amount: $')[-1]\nassert 'Balance:' not in tail, 'This transaction must be rejected. Do not print a new balance.'\nassert tail.strip(), 'Print a message that explains why the transaction was rejected.'"
+        }
+      ],
+      "answer": "YmFsYW5jZSA9IGZsb2F0KGlucHV0KCdTdGFydGluZyBiYWxhbmNlOiAkJykpCmFjdGlvbiA9IGlucHV0KCdBY3Rpb246ICcpLnN0cmlwKCkubG93ZXIoKQphbW91bnQgPSBmbG9hdChpbnB1dCgnQW1vdW50OiAkJykpCgppc19rbm93bl9hY3Rpb24gPSBhY3Rpb24gPT0gJ2RlcG9zaXQnIG9yIGFjdGlvbiA9PSAnd2l0aGRyYXcnCmhhc192YWxpZF9hbW91bnRzID0gYmFsYW5jZSA+PSAwIGFuZCBhbW91bnQgPj0gMApjYW5fYWZmb3JkID0gYWN0aW9uICE9ICd3aXRoZHJhdycgb3IgYW1vdW50IDw9IGJhbGFuY2UKCmlmIG5vdCBpc19rbm93bl9hY3Rpb24gb3Igbm90IGhhc192YWxpZF9hbW91bnRzOgogICAgcHJpbnQoJ0VudGVyIGEgdmFsaWQgYmFsYW5jZSwgYWN0aW9uLCBhbmQgYW1vdW50LicpCmVsaWYgbm90IGNhbl9hZmZvcmQ6CiAgICBwcmludCgnSW5zdWZmaWNpZW50IGZ1bmRzLicpCmVsc2U6CiAgICBpZiBhY3Rpb24gPT0gJ2RlcG9zaXQnOgogICAgICAgIGJhbGFuY2UgPSBiYWxhbmNlICsgYW1vdW50CiAgICBlbHNlOgogICAgICAgIGJhbGFuY2UgPSBiYWxhbmNlIC0gYW1vdW50CiAgICBwcmludChmJ0JhbGFuY2U6ICR7YmFsYW5jZTouMmZ9Jyk=",
+      "answerNote": "Rejection messages are yours to word; the insufficient-funds case must mention insufficient funds."
+    },
+    "cx14": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "pin = input('PIN: ').strip()\n\nhas_valid_format = ______________________________________",
+      "cases": [
+        {
+          "name": "4821",
+          "inputs": [
+            "4821"
+          ],
+          "expected": "PIN: PIN format accepted"
+        },
+        {
+          "name": "08A2",
+          "inputs": [
+            "08A2"
+          ],
+          "expected": "PIN: Enter four digits without a leading zero"
+        },
+        {
+          "name": "0821 (leading zero)",
+          "inputs": [
+            "0821"
+          ],
+          "expected": "PIN: Enter four digits without a leading zero"
+        },
+        {
+          "name": "482 (too short)",
+          "inputs": [
+            "482"
+          ],
+          "expected": "PIN: Enter four digits without a leading zero"
+        },
+        {
+          "name": "48213 (too long)",
+          "inputs": [
+            "48213"
+          ],
+          "expected": "PIN: Enter four digits without a leading zero"
+        },
+        {
+          "name": "12a4",
+          "inputs": [
+            "12a4"
+          ],
+          "expected": "PIN: Enter four digits without a leading zero"
+        },
+        {
+          "name": "1000",
+          "inputs": [
+            "1000"
+          ],
+          "expected": "PIN: PIN format accepted"
+        }
+      ],
+      "check": "import re\nassert not re.search(r'(?<![A-Za-z_0-9])int\\(', __source__), 'Do not convert the PIN to an integer; test it as text.'\nassert isinstance(globals().get('has_valid_format'), bool), 'Store the combined test in has_valid_format.'",
+      "answer": "cGluID0gaW5wdXQoJ1BJTjogJykuc3RyaXAoKQoKaGFzX3ZhbGlkX2Zvcm1hdCA9IChsZW4ocGluKSA9PSA0CiAgICAgICAgICAgICAgICAgICAgYW5kIHBpbi5pc2RpZ2l0KCkKICAgICAgICAgICAgICAgICAgICBhbmQgbm90IHBpbi5zdGFydHN3aXRoKCcwJykpCgppZiBoYXNfdmFsaWRfZm9ybWF0OgogICAgcHJpbnQoJ1BJTiBmb3JtYXQgYWNjZXB0ZWQnKQplbHNlOgogICAgcHJpbnQoJ0VudGVyIGZvdXIgZGlnaXRzIHdpdGhvdXQgYSBsZWFkaW5nIHplcm8nKQ=="
+    },
+    "cx15": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 18,
+      "maxLines": 30,
+      "starter": "left_dash = input('Left dashboard switch (0/1): ') == '1'\nright_dash = input('Right dashboard switch (0/1): ') == '1'\nchild_lock = input('Child lock (0/1): ') == '1'\nmaster_unlock = input('Master unlock (0/1): ') == '1'\nleft_inside = input('Left inside handle (0/1): ') == '1'\nleft_outside = input('Left outside handle (0/1): ') == '1'\nright_inside = input('Right inside handle (0/1): ') == '1'\nright_outside = input('Right outside handle (0/1): ') == '1'\ngear = input('Gear: ').strip().upper()\n\n# Build left_request, right_request, left_opens, right_opens.",
+      "cases": [
+        {
+          "name": "Outside left handle",
+          "inputs": [
+            "0",
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "0",
+            "P"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: left door opens"
+        },
+        {
+          "name": "Child-locked inside handles",
+          "inputs": [
+            "0",
+            "0",
+            "1",
+            "1",
+            "1",
+            "0",
+            "1",
+            "0",
+            "P"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: both doors stay closed"
+        },
+        {
+          "name": "Inside handles, child lock off",
+          "inputs": [
+            "0",
+            "0",
+            "0",
+            "1",
+            "1",
+            "0",
+            "1",
+            "0",
+            "P"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: left door opens\nright door opens"
+        },
+        {
+          "name": "Right dashboard switch",
+          "inputs": [
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "P"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: right door opens"
+        },
+        {
+          "name": "Both dashboard switches, gear D",
+          "inputs": [
+            "1",
+            "1",
+            "0",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "D"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: both doors stay closed"
+        },
+        {
+          "name": "Outside handles, master unlock off",
+          "inputs": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "P"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: both doors stay closed"
+        },
+        {
+          "name": "Lower-case gear p",
+          "inputs": [
+            "1",
+            "0",
+            "0",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "p"
+          ],
+          "expected": "Left dashboard switch (0/1): Right dashboard switch (0/1): Child lock (0/1): Master unlock (0/1): Left inside handle (0/1): Left outside handle (0/1): Right inside handle (0/1): Right outside handle (0/1): Gear: left door opens"
+        }
+      ],
+      "check": "assert isinstance(globals().get('left_request'), bool), 'Store left_request as a Boolean value.'\nassert isinstance(globals().get('right_request'), bool), 'Store right_request as a Boolean value.'\nassert isinstance(globals().get('left_opens'), bool), 'Store left_opens as a Boolean value.'\nassert isinstance(globals().get('right_opens'), bool), 'Store right_opens as a Boolean value.'",
+      "answer": "bGVmdF9kYXNoID0gaW5wdXQoJ0xlZnQgZGFzaGJvYXJkIHN3aXRjaCAoMC8xKTogJykgPT0gJzEnCnJpZ2h0X2Rhc2ggPSBpbnB1dCgnUmlnaHQgZGFzaGJvYXJkIHN3aXRjaCAoMC8xKTogJykgPT0gJzEnCmNoaWxkX2xvY2sgPSBpbnB1dCgnQ2hpbGQgbG9jayAoMC8xKTogJykgPT0gJzEnCm1hc3Rlcl91bmxvY2sgPSBpbnB1dCgnTWFzdGVyIHVubG9jayAoMC8xKTogJykgPT0gJzEnCmxlZnRfaW5zaWRlID0gaW5wdXQoJ0xlZnQgaW5zaWRlIGhhbmRsZSAoMC8xKTogJykgPT0gJzEnCmxlZnRfb3V0c2lkZSA9IGlucHV0KCdMZWZ0IG91dHNpZGUgaGFuZGxlICgwLzEpOiAnKSA9PSAnMScKcmlnaHRfaW5zaWRlID0gaW5wdXQoJ1JpZ2h0IGluc2lkZSBoYW5kbGUgKDAvMSk6ICcpID09ICcxJwpyaWdodF9vdXRzaWRlID0gaW5wdXQoJ1JpZ2h0IG91dHNpZGUgaGFuZGxlICgwLzEpOiAnKSA9PSAnMScKZ2VhciA9IGlucHV0KCdHZWFyOiAnKS5zdHJpcCgpLnVwcGVyKCkKCmxlZnRfcmVxdWVzdCA9IGxlZnRfZGFzaCBvciBsZWZ0X291dHNpZGUgb3IgKGxlZnRfaW5zaWRlIGFuZCBub3QgY2hpbGRfbG9jaykKcmlnaHRfcmVxdWVzdCA9IHJpZ2h0X2Rhc2ggb3IgcmlnaHRfb3V0c2lkZSBvciAocmlnaHRfaW5zaWRlIGFuZCBub3QgY2hpbGRfbG9jaykKbGVmdF9vcGVucyA9IGdlYXIgPT0gJ1AnIGFuZCBtYXN0ZXJfdW5sb2NrIGFuZCBsZWZ0X3JlcXVlc3QKcmlnaHRfb3BlbnMgPSBnZWFyID09ICdQJyBhbmQgbWFzdGVyX3VubG9jayBhbmQgcmlnaHRfcmVxdWVzdAoKaWYgbGVmdF9vcGVuczoKICAgIHByaW50KCdsZWZ0IGRvb3Igb3BlbnMnKQppZiByaWdodF9vcGVuczoKICAgIHByaW50KCdyaWdodCBkb29yIG9wZW5zJykKaWYgbm90IGxlZnRfb3BlbnMgYW5kIG5vdCByaWdodF9vcGVuczoKICAgIHByaW50KCdib3RoIGRvb3JzIHN0YXkgY2xvc2VkJyk="
+    },
+    "cx16": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "voltage = float(input('Sensor voltage: '))\n\n# Check the range before applying the formula.",
+      "cases": [
+        {
+          "name": "12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Sensor voltage: Temperature: 25.0 C"
+        },
+        {
+          "name": "11",
+          "inputs": [
+            "11"
+          ],
+          "expected": "Sensor voltage: Voltage must be from 12 to 18 volts."
+        },
+        {
+          "name": "18",
+          "inputs": [
+            "18"
+          ],
+          "expected": "Sensor voltage: Temperature: 1150.0 C"
+        },
+        {
+          "name": "15.5",
+          "inputs": [
+            "15.5"
+          ],
+          "expected": "Sensor voltage: Temperature: 316.7 C"
+        },
+        {
+          "name": "18.01",
+          "inputs": [
+            "18.01"
+          ],
+          "expected": "Sensor voltage: Voltage must be from 12 to 18 volts."
+        },
+        {
+          "name": "0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Sensor voltage: Voltage must be from 12 to 18 volts."
+        }
+      ],
+      "answer": "dm9sdGFnZSA9IGZsb2F0KGlucHV0KCdTZW5zb3Igdm9sdGFnZTogJykpCgppZiAxMiA8PSB2b2x0YWdlIDw9IDE4OgogICAgdGVtcGVyYXR1cmUgPSAoNzUgLyAwLjUpICogKHZvbHRhZ2UgLyAoMjAgLSB2b2x0YWdlKSkgLSAoMTAwIC8gMC41KQogICAgcHJpbnQoZidUZW1wZXJhdHVyZToge3RlbXBlcmF0dXJlOi4xZn0gQycpCmVsc2U6CiAgICBwcmludCgnVm9sdGFnZSBtdXN0IGJlIGZyb20gMTIgdG8gMTggdm9sdHMuJyk="
+    }
+  }
+}

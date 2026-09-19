@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 4 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-04-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 4 Boss Problems</h1>
+    <div class="wb-subtitle">Variables, types, and assignment</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lecture 4 covered: assignment and reassignment, adding with <code>+</code>, the four types and <code>type()</code>, <code>print()</code> with several values, readable names, constants, and comments. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Each problem starts with its values already assigned at the top of the program. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, swapping in different values each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with the given values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="swap" data-toc-title="👹 Trade places">👹 Boss 1: Trade Places</h2>
+<p>Oliver is a seven-year-old black toy poodle, and Sabina is a cat. Their favourite spots are stored as text in <code>oliver</code> and <code>sabina</code>.</p>
+<p>Today they want to switch spots. Swap the values so that <code>oliver</code> gets Sabina's original spot and <code>sabina</code> gets Oliver's original spot. Then print both spots on one line, with Oliver's first.</p>
+<p>Be careful: once you do <code>oliver = sabina</code>, Oliver's old value is lost. You will need a third variable to save it first. Three assignments do the whole job.</p>
+<table>
+  <thead><tr><th><code>oliver</code>, <code>sabina</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>'sofa'</code>, <code>'basket'</code></td><td><code>basket sofa</code></td></tr>
+    <tr><td><code>'bed'</code>, <code>'windowsill'</code></td><td><code>windowsill bed</code></td></tr>
+    <tr><td><code>'porch'</code>, <code>'kitchen'</code></td><td><code>kitchen porch</code></td></tr>
+    <tr><td><code>'rug'</code>, <code>'rug'</code></td><td><code>rug rug</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a third variable during the swap. Do not type the spot values again.</li>
+    <li>Use one assignment per statement. Do not use <code>a, b = b, a</code> (that form comes later in the course).</li>
+    <li>No <code>+=</code>.</li>
+    <li>Print both spots on one line using one <code>print()</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep <code>oliver = 'sofa'</code> and <code>sabina = 'basket'</code> unchanged. The checker will replace them with the other test values.</p>
+<wb-exercise id="swap"></wb-exercise>
+
+<h2 id="seats" data-toc-title="👾 Filling EN2043">👾 Boss 2: Filling EN2043</h2>
+<p>COMP 1001 meets in EN2043. The 120 students arrive in three groups.</p>
+<p>The program starts with <code>seated = 0</code>, and the three group sizes are stored in <code>group_1</code>, <code>group_2</code>, and <code>group_3</code>.</p>
+<p>After each group arrives, add that group to <code>seated</code> and print the new total in exactly this format:</p>
+<pre class="wb-output">After group 1: 40
+After group 2: 65
+After group 3: 120</pre>
+<p>Keep using the same variable, <code>seated</code>. Each time, take its current value, add the next group, and store the result back into <code>seated</code>. Each <code>print()</code> shows a text label followed by the current total.</p>
+<p>A negative group means some students left.</p>
+<table>
+  <thead><tr><th><code>group_1</code>, <code>group_2</code>, <code>group_3</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>40, 25, 55</td><td><code>After group 1: 40</code> / <code>After group 2: 65</code> / <code>After group 3: 120</code></td></tr>
+    <tr><td>0, 60, 60</td><td><code>After group 1: 0</code> / <code>After group 2: 60</code> / <code>After group 3: 120</code></td></tr>
+    <tr><td>50, -10, 80</td><td><code>After group 1: 50</code> / <code>After group 2: 40</code> / <code>After group 3: 120</code></td></tr>
+    <tr><td>120, 0, 0</td><td><code>After group 1: 120</code> / <code>After group 2: 120</code> / <code>After group 3: 120</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Update <code>seated</code> three times using <code>seated = seated + ...</code>.</li>
+    <li>No <code>+=</code>.</li>
+    <li>Print exactly three lines in the format shown.</li>
+    <li><code>seated</code> must still be an <code>int</code> at the end.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the four assignment lines unchanged. The checker will replace the group sizes.</p>
+<wb-exercise id="seats"></wb-exercise>
+
+<h2 id="vet" data-toc-title="🐉 Vet record">🐉 Boss 3: Vet Record</h2>
+<p>Oliver's vet record stores four values: <code>pet</code>, <code>age</code>, <code>weight</code> (in kilograms), and <code>vaccinated</code>.</p>
+<p>Print each value followed by its type, one per line, in this order:</p>
+<pre class="wb-output">Oliver &lt;class 'str'&gt;
+7 &lt;class 'int'&gt;
+3.5 &lt;class 'float'&gt;
+True &lt;class 'bool'&gt;</pre>
+<p>Do not assume the types will always stay the same. The checker will change both the values and their types. For example, in one run the record is Sabina's, <code>age</code> becomes the text <code>'unknown'</code>, and <code>weight</code> becomes the whole number <code>4</code>.</p>
+<p>The type belongs to the value, not the name, so your program must use <code>type()</code> to find the type each time it runs.</p>
+<table>
+  <thead><tr><th>Run</th><th><code>pet</code></th><th><code>age</code></th><th><code>weight</code></th><th><code>vaccinated</code></th></tr></thead>
+  <tbody>
+    <tr><td>Oliver, as given</td><td><code>'Oliver'</code></td><td><code>7</code></td><td><code>3.5</code></td><td><code>True</code></td></tr>
+    <tr><td>Sabina, age unknown</td><td><code>'Sabina'</code></td><td><code>'unknown'</code></td><td><code>4</code></td><td><code>True</code></td></tr>
+    <tr><td>Half years, text flag</td><td><code>'Oliver'</code></td><td><code>7.5</code></td><td><code>3.5</code></td><td><code>'yes'</code></td></tr>
+    <tr><td>Tag number, quoted weight</td><td><code>1001</code></td><td><code>7</code></td><td><code>'3.5'</code></td><td><code>True</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>type()</code> to get each type while the program runs.</li>
+    <li>Do not write <code>class</code>, <code>int</code>, <code>float</code>, <code>str</code>, or <code>bool</code> directly in your code.</li>
+    <li>Print the variables, not copied literal values. A run that changes a value must change the output.</li>
+    <li>Print exactly four lines in the order given.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the four assignment lines unchanged. The checker will replace the record values.</p>
+<wb-exercise id="vet"></wb-exercise>
+
+<h2 id="repair" data-toc-title="💀 Repair the course record">💀 Boss 4: Repair the Course Record</h2>
+<p>This boss already has some code, but the code is broken.</p>
+<p>It is supposed to print the lecture room, the course, the instructor, and the number of students after one more registers:</p>
+<pre class="wb-output">EN2043 COMP 1001 Pranjal Patra 120</pre>
+<p>There are five problems in the starter code. They are all based on Lecture 4 topics: invalid variable names, a reserved word being used as a variable name, a value that stays fixed all term but is not written as a constant, and inconsistent spelling of a variable name.</p>
+<p>Run the program, read the error, fix one thing at a time, and keep going until it prints the line above.</p>
+<p>You can rename variables, but keep the same meaning: the room, the course code, the instructor, and the number of students should each have their own variable.</p>
+<table>
+  <thead><tr><th><code>students</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>119</td><td><code>EN2043 COMP 1001 Pranjal Patra 120</code></td></tr>
+    <tr><td>0</td><td><code>EN2043 COMP 1001 Pranjal Patra 1</code></td></tr>
+    <tr><td>57</td><td><code>EN2043 COMP 1001 Pranjal Patra 58</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>lower_case_with_underscores</code> for variable names, with no single-letter names.</li>
+    <li>Store the room in an <code>ALL_CAPS</code> constant and keep its value as <code>'EN2043'</code>.</li>
+    <li>Keep the update as <code>students = students + 1</code>. Fix the spelling rather than typing the final number.</li>
+    <li>No <code>+=</code>.</li>
+    <li>Include one comment beginning with <code>#</code> that explains a choice.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep <code>students = 119</code> unchanged. The checker will replace that value for the other tests.</p>
+<wb-exercise id="repair"></wb-exercise>
+
+</main>
+</body>
+</html>

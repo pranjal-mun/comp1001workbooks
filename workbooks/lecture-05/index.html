@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 5 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-05", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 5 Workbook</h1>
+    <div class="wb-subtitle">Arithmetic, expressions, and modules</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Reading: §2.2, ST 1, §2.3.</p>
+  <p>After completing this workbook, you should be able to:</p>
+  <ul>
+    <li>evaluate arithmetic expressions using Python's operators and precedence rules;</li>
+    <li>distinguish <code>/</code>, <code>//</code>, and <code>%</code> and select the appropriate operation;</li>
+    <li>convert numeric types and explain the practical limits of rounding and floating-point values; and</li>
+    <li>import modules while keeping the namespace clear.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Expressions and arithmetic operators</h2>
+<p>An <strong>expression</strong> is code that Python evaluates to produce a value. An <strong>operator</strong> tells Python to perform an operation. The values it acts on are its <strong>operands</strong>.</p>
+<table>
+  <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td><code>+</code></td><td>addition</td><td><code>7 + 3</code></td><td><code>10</code></td></tr>
+    <tr><td><code>-</code></td><td>subtraction</td><td><code>7 - 3</code></td><td><code>4</code></td></tr>
+    <tr><td><code>*</code></td><td>multiplication</td><td><code>7 * 3</code></td><td><code>21</code></td></tr>
+    <tr><td><code>/</code></td><td>true division</td><td><code>7 / 2</code></td><td><code>3.5</code></td></tr>
+    <tr><td><code>//</code></td><td>floor division</td><td><code>7 // 2</code></td><td><code>3</code></td></tr>
+    <tr><td><code>%</code></td><td>remainder</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+    <tr><td><code>**</code></td><td>power</td><td><code>2 ** 4</code></td><td><code>16</code></td></tr>
+  </tbody>
+</table>
+<p>Python uses <code>**</code> for powers. The symbol <code>^</code> performs a different operation and must not be used for powers. Write multiplication explicitly: 3<i>x</i> becomes <code>3 * x</code>. Here, <code>print(...)</code> displays the value of the expression inside its parentheses.</p>
+<wb-example id="ex-w01"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Evaluate each expression.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>12 + 4</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>12 - 4</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>12 * 4</code></td><td data-blank="v3"></td></tr>
+        <tr><td><code>3 ** 3</code></td><td data-blank="v4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Which Python operator represents a power?</p>
+  <wb-table id="cp1-power">
+    <table>
+      <tbody><tr><td style="width: 40%">Power operator</td><td data-blank="op"></td></tr></tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Three division operators</h2>
+<p>Python separates division into three operations.</p>
+<wb-example id="ex-w02"></wb-example>
+<ul>
+  <li><code>/</code> gives the division result and produces a <code>float</code> for the numeric types used here.</li>
+  <li><code>//</code> gives the <strong>floor quotient</strong>: the quotient rounded down to a whole number. With positive integers, it counts complete groups.</li>
+  <li><code>%</code> gives the <strong>remainder</strong> left after those complete groups. It does not calculate a percentage.</li>
+</ul>
+<p>For positive values, 17 objects form 3 complete groups of 5, with 2 left over. The values fit together: 17 = 3 × 5 + 2. For integers <code>a</code> and nonzero <code>b</code>, the general relationship is</p>
+<p style="text-align: center"><code>a</code> = <code>(a // b) * b + (a % b)</code>.</p>
+<p>Do not divide by zero with <code>/</code>, <code>//</code>, or <code>%</code>.</p>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Negative values</div>
+  <p>Flooring and truncating differ for negative values: <code>-7 // 2</code> is <code>-4</code>, because rounding down from −3.5 moves toward the smaller number −4. Our grouping problems use nonnegative counts and positive group sizes.</p>
+</div>
+
+<div class="wb-block">
+  <div class="wb-block-title">Example: Converting minutes</div>
+  <wb-example id="ex-w03"></wb-example>
+</div>
+
+<h3>Other uses of the remainder</h3>
+<p>For a nonnegative integer <code>n</code>, <code>n % 2</code> is 0 for an even number and 1 for an odd number. A remainder of 0 after division by a positive integer <code>k</code> means that <code>n</code> is divisible by <code>k</code>. We will use these facts in later decision programs.</p>
+<p>Remainders also wrap a count back into a fixed range. On a clock numbered 0 through 11, <code>(10 + 5) % 12</code> gives 3: advance five hours from 10 and wrap past 11. The 0 label represents the usual 12 on a clock face.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>For 53 items packed into boxes of 8, give the expression and predict its value.</p>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Quantity</th><th>Expression</th><th>Predicted value</th></tr></thead>
+      <tbody>
+        <tr><td>Number of complete boxes</td><td data-blank="e1"></td><td data-blank="v1"></td></tr>
+        <tr><td>Number of items left over</td><td data-blank="e2"></td><td data-blank="v2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Then run this program to confirm your predictions.</p>
+  <wb-example id="cp2-check"></wb-example>
+</div>
+
+<h2 id="s3">3. Precedence and parentheses</h2>
+<p>Python follows an order of operations called <strong>precedence</strong>:</p>
+<ol>
+  <li>evaluate expressions inside parentheses;</li>
+  <li>evaluate powers, <code>**</code>;</li>
+  <li>evaluate <code>*</code>, <code>/</code>, <code>//</code>, and <code>%</code>, from left to right;</li>
+  <li>evaluate <code>+</code> and <code>-</code>, from left to right.</li>
+</ol>
+<wb-example id="ex-w04"></wb-example>
+<p>In the first line, multiply 3 × 4 before adding 2. In the second, add 2 + 3 before multiplying by 4. Parentheses override the usual order and make an expression easier to read. For an average, (<i>a</i> + <i>b</i>) / 2 becomes <code>(a + b) / 2</code>; <code>a + b / 2</code> divides only <code>b</code> by 2.</p>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Powers need care</div>
+  <p>Consecutive powers group from the right: <code>2 ** 3 ** 2</code> means <code>2 ** (3 ** 2)</code>, giving 512. A leading minus needs care: <code>-3 ** 2</code> means <code>-(3 ** 2)</code>, giving −9; <code>(-3) ** 2</code> gives 9. Use parentheses to make the intended base clear. Every opening parenthesis must have a matching closing parenthesis in the right order.</p>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Evaluate each expression one operation at a time.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>10 - 2 * 3</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>(10 - 2) * 3</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>18 / 3 + 2</code></td><td data-blank="v3"></td></tr>
+        <tr><td><code>18 / (3 + 2)</code></td><td data-blank="v4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Add parentheses so that <code>4 + 6 / 2</code> produces <code>5.0</code>. Edit the program, then press <strong>Check</strong>.</p>
+  <wb-exercise id="cp3-fix"></wb-exercise>
+</div>
+
+<h2 id="s4">4. Mixing <code>int</code> and <code>float</code></h2>
+<p>An arithmetic operation on an <code>int</code> and a <code>float</code> normally produces a <code>float</code>. That float then carries into the next arithmetic operation.</p>
+<wb-example id="ex-w05"></wb-example>
+<p>The <code>/</code> operator produces a <code>float</code> even when the mathematical answer is whole. Floor division does not guarantee an <code>int</code>: <code>7.0 // 2</code> gives <code>3.0</code>. The value is whole, but its type is <code>float</code>. An explicit conversion can change the type later.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Predict the value and type.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><code>5 + 2</code></td><td data-blank="v1"></td><td data-blank="t1"></td></tr>
+        <tr><td><code>5 + 2.0</code></td><td data-blank="v2"></td><td data-blank="t2"></td></tr>
+        <tr><td><code>9 / 3</code></td><td data-blank="v3"></td><td data-blank="t3"></td></tr>
+        <tr><td><code>9 // 3</code></td><td data-blank="v4"></td><td data-blank="t4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Then run this program to confirm your predictions.</p>
+  <wb-example id="cp4-check"></wb-example>
+</div>
+
+<h2 id="s5">5. Converting numeric types</h2>
+<p>A <strong>function call</strong> asks a named operation to do its work. The values inside its parentheses are its <strong>arguments</strong>. A returned value can be stored or used in another expression. For example, <code>int(3.9)</code> returns 3. Conversion functions create a value of another type: <code>int</code> creates an integer, <code>float</code> creates a floating-point number, and <code>str</code> creates text.</p>
+<wb-example id="ex-w06"></wb-example>
+<p>The third printed line looks numeric, but <code>str(42)</code> returns a string. <code>print</code> does not display quotation marks around string contents. Numeric text must suit the conversion: <code>int('42')</code> works; <code>int('3.5')</code> is not a valid conversion to an integer.</p>
+<p><code>int(3.9)</code> <strong>truncates</strong>: it removes the fractional part, moving toward zero. It does not round to the nearest integer. For a negative value, <code>int(-3.9)</code> produces <code>-3</code>.</p>
+
+<h3>Rounding</h3>
+<p>Use <code>round()</code> when rounding is the goal.</p>
+<wb-example id="ex-w07"></wb-example>
+<p>With one argument, <code>round</code> returns the nearest integer for these values. The second argument requests a number of decimal places. Exactly halfway values round to the nearest even choice: <code>round(2.5)</code> gives 2 and <code>round(3.5)</code> gives 4.</p>
+<p>Rounding a number does not specify how many digits <code>print</code> must show: <code>print(round(3.0, 2))</code> displays <code>3.0</code>, not two digits after the decimal point. Formatting numbers for display is part of Lecture 6.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Predict each result.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Expression</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td><code>int(8.75)</code></td><td data-blank="v1"></td></tr>
+        <tr><td><code>round(8.75)</code></td><td data-blank="v2"></td></tr>
+        <tr><td><code>round(8.756, 2)</code></td><td data-blank="v3"></td></tr>
+        <tr><td><code>float('8.75')</code></td><td data-blank="v4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain the difference between truncating and rounding.</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. Floating-point values</h2>
+<p>Computers store floating-point numbers in binary. Many ordinary decimal fractions have no exact finite binary representation, just as one third has no exact finite decimal representation. The stored value is an approximation.</p>
+<wb-example id="ex-w08"></wb-example>
+<p>This is a property of the number format, not a Python bug. Tiny errors can become visible after arithmetic. <code>round</code> can remove distracting digits from a result, but cannot make all earlier calculations exact. Because the stored input to rounding is approximate, even <code>round(2.675, 2)</code> gives <code>2.67</code>.</p>
+<div class="wb-callout is-bad">
+  <div class="wb-callout-title">Do not rely on exact equality</div>
+  <p>Do not rely on exact equality when comparing computed floats. The symbol <code>==</code> tests exact equality; the calculation <code>0.1 + 0.2 == 0.3</code> is false. A later lecture will teach comparison using a small tolerance. No comparison program is needed here.</p>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Why might Python store a decimal fraction only approximately?</p>
+  <wb-short id="cp6-why"></wb-short>
+  <p>Does rounding a displayed result change how every earlier value was stored? Explain.</p>
+  <wb-short id="cp6-round"></wb-short>
+</div>
+
+<h2 id="s7">7. Modules and <code>import</code></h2>
+<p>A <strong>module</strong> contains reusable Python code, usually stored in a file. The <strong>standard library</strong> is the collection of modules supplied with Python. Its <code>math</code> module provides mathematical functions and constants. <code>math.sqrt(x)</code> returns the square root of a nonnegative number; <code>math.pi</code> provides an approximation to π.</p>
+<wb-example id="ex-w09"></wb-example>
+<p>The dot in <code>math.sqrt</code> shows where the name comes from. A <strong>namespace</strong> associates names with the values they refer to. The name <code>sqrt</code> belongs to the <code>math</code> namespace.</p>
+<p>Python also permits a direct import:</p>
+<wb-example id="ex-w10"></wb-example>
+<p>This form places <code>sqrt</code> directly in the program's namespace. The course normally uses <code>import math</code>: a reader can see the function's source, and an unrelated local name <code>sqrt</code> does not replace <code>math.sqrt</code>. With a direct import, a later assignment <code>sqrt = 5</code> replaces the imported name in the program. Qualified imports reduce name conflicts, but do not prevent every conflict: avoid assigning another value to <code>math</code> itself. Built-in functions such as <code>int</code>, <code>float</code>, <code>str</code>, and <code>round</code> need no import.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Complete the preferred course form by filling in the two blanks, then press <strong>Check</strong>.</p>
+  <wb-exercise id="cp7"></wb-exercise>
+  <p>Why is the module name useful to a reader?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8">8. First do one case by hand</h2>
+<p>Before translating a calculation into Python, work through one concrete case on paper. Write the intermediate values. If the hand calculation is unclear, a plausible-looking Python expression will not repair the idea.</p>
+<p>Suppose a floor uses tiles that are 20 centimetres wide. For a width of 95 centimetres:</p>
+<ol>
+  <li>Four complete tiles cover 4 × 20 = 80 centimetres: <code>95 // 20</code> gives 4.</li>
+  <li>There are 95 − 80 = 15 centimetres remaining: <code>95 % 20</code> gives 15.</li>
+  <li>One more tile must be cut to cover that remaining width.</li>
+</ol>
+<p>Only after the steps are clear should you write the expressions in a program. An exact fit is another useful case: 100 centimetres uses five complete tiles and leaves no remainder.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>A trip lasts 185 minutes. Work by hand before writing Python. Find the complete hours, remaining minutes, and expressions used.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Quantity</th><th>Value</th><th>Expression</th></tr></thead>
+      <tbody>
+        <tr><td>Complete hours</td><td data-blank="h"></td><td data-blank="he"></td></tr>
+        <tr><td>Remaining minutes</td><td data-blank="m"></td><td data-blank="me"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="final-review">Final review</h2>
+<p>Read this program. Predict before you run it.</p>
+<wb-example id="ex-w11"></wb-example>
+<p><strong>1.</strong> Write the exact three output lines.</p>
+<wb-table id="fr1">
+  <table>
+    <thead><tr><th>Output line</th><th>Text</th></tr></thead>
+    <tbody>
+      <tr><td>First line</td><td data-blank="l1"></td></tr>
+      <tr><td>Second line</td><td data-blank="l2"></td></tr>
+      <tr><td>Third line</td><td data-blank="l3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> Explain why <code>//</code> is appropriate for <code>hours</code> and <code>minutes</code>.</p>
+<wb-short id="fr2"></wb-short>
+<p><strong>3.</strong> What does <code>%</code> preserve after the hours are removed?</p>
+<wb-short id="fr3"></wb-short>
+<p><strong>4.</strong> Which name shows that <code>sqrt</code> comes from an imported module?</p>
+<wb-table id="fr4">
+  <table>
+    <tbody><tr><td style="width: 40%">Name</td><td data-blank="name"></td></tr></tbody>
+  </table>
+</wb-table>
+
+<h2 id="additional-practice">Additional practice</h2>
+<h3>Practice A: Evaluate expressions</h3>
+<wb-table id="pa">
+  <table>
+    <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><code>5 + 2 ** 3</code></td><td data-blank="v1"></td></tr>
+      <tr><td><code>(5 + 2) ** 3</code></td><td data-blank="v2"></td></tr>
+      <tr><td><code>29 // 6</code></td><td data-blank="v3"></td></tr>
+      <tr><td><code>29 % 6</code></td><td data-blank="v4"></td></tr>
+      <tr><td><code>10 / 4</code></td><td data-blank="v5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then run this program to confirm your values.</p>
+<wb-example id="pa-check"></wb-example>
+
+<h3>Practice B: Choose an operation</h3>
+<p>For each task, choose <code>/</code>, <code>//</code>, or <code>%</code> and explain.</p>
+<wb-table id="pb">
+  <table>
+    <thead><tr><th>Task</th><th>Operator</th></tr></thead>
+    <tbody>
+      <tr><td>Find the average of three measurements.</td><td data-blank="o1"></td></tr>
+      <tr><td>Find the number of complete teams of four.</td><td data-blank="o2"></td></tr>
+      <tr><td>Find the people left after making complete teams.</td><td data-blank="o3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Explain each choice.</p>
+<wb-short id="pb-why"></wb-short>
+
+<h3>Practice C: Convert or round</h3>
+<p>Predict the result and explain the operation.</p>
+<wb-table id="pc">
+  <table>
+    <thead><tr><th>Expression</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><code>int(12.99)</code></td><td data-blank="v1"></td></tr>
+      <tr><td><code>round(12.99)</code></td><td data-blank="v2"></td></tr>
+      <tr><td><code>round(12.994, 2)</code></td><td data-blank="v3"></td></tr>
+      <tr><td><code>float('12.99')</code></td><td data-blank="v4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Explain what each operation does.</p>
+<wb-short id="pc-why"></wb-short>
+
+<h3>Practice D: Use a module</h3>
+<p>Write a short program that imports <code>math</code>, computes the square root of 144, and displays the result. Use the preferred course import style.</p>
+<wb-exercise id="pd"></wb-exercise>
+
+<h2 id="together">Putting It All Together</h2>
+<h3>Trip measurements</h3>
+<p>A map represents a straight trip by a horizontal change of 6 kilometres and a vertical change of 8 kilometres. The trip lasts 185 minutes, stored as the text <code>'185'</code>. We want complete hours, leftover minutes, and the average speed in kilometres per hour.</p>
+<p>The distance formula is <i>d</i> = √(<i>x</i><sup>2</sup> + <i>y</i><sup>2</sup>), where <i>x</i> and <i>y</i> are the two map changes. Average speed is distance divided by elapsed time in hours. Work through the quantities before combining them in a program.</p>
+
+<h3>Duration</h3>
+<p>Convert the text to an integer. As in Checkpoint 8, 185 minutes contains three complete hours and five minutes left over.</p>
+<wb-example id="ex-w12"></wb-example>
+<p>For speed, keep the fractional hour. Using <code>total_minutes // 60</code> as the elapsed time would discard five minutes.</p>
+<wb-example id="ex-w13"></wb-example>
+
+<h3>Distance and speed</h3>
+<p>The squared map changes are 6<sup>2</sup> = 36 and 8<sup>2</sup> = 64. Their sum is 100, whose square root is 10. The distance is 10 kilometres. Divide 10 by 185/60 hours to obtain about 3.24 kilometres per hour.</p>
+<wb-example id="ex-w14"></wb-example>
+
+<h3>Complete the trip summary</h3>
+<p>Write one program using the supplied duration text and map changes. Print complete hours, remaining minutes, and average speed rounded to two decimal places, in that order on separate lines. Use the preferred module import style. Assume that the duration is positive. The program does not read input.</p>
+<table>
+  <thead><tr><th>Duration text</th><th><i>x</i> (km)</th><th><i>y</i> (km)</th><th>Expected output lines</th></tr></thead>
+  <tbody>
+    <tr><td><code>'185'</code></td><td>6</td><td>8</td><td><code>3</code>, <code>5</code>, <code>3.24</code></td></tr>
+    <tr><td><code>'60'</code></td><td>0</td><td>8</td><td><code>1</code>, <code>0</code>, <code>8.0</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the three assignment lines as given: the checker swaps in <code>duration_text = '60'</code> and <code>x = 0</code> to test the second case.</p>
+<wb-exercise id="trip"></wb-exercise>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>Use assigned values in these exercises. For tasks with two cases, <strong>Check</strong> runs your program once with the values as given and once with the second case's values swapped in. Each output value occupies its own line unless the question says otherwise.</p>
+
+<h3>1. Formulas in Python</h3>
+<p>Write a Python assignment for each formula. Use the same variable names as in the mathematics and the preferred module import style.</p>
+<ol>
+  <li><i>s</i> = <i>ut</i> + <i>at</i><sup>2</sup> / 2.</li>
+  <li><i>b</i> = <i>p</i>(1 + <i>r</i>/100)<sup><i>n</i></sup>.</li>
+  <li><i>z</i> = 4π<sup>2</sup><i>x</i><sup>3</sup> / (<i>y</i><sup>2</sup>(<i>m</i> + <i>n</i>)).</li>
+  <li><i>d</i> = √(<i>x</i><sup>2</sup> + <i>y</i><sup>2</sup>).</li>
+</ol>
+<p>All required variables are given sample values in the starter code, and denominators are nonzero. Nothing needs to be printed: <strong>Check</strong> compares each assigned value with the formula, for the sample values and for a second set.</p>
+<wb-exercise id="c1"></wb-exercise>
+
+<h3>2. Python in mathematical notation</h3>
+<p>Rewrite each assignment using ordinary mathematical notation. Show the grouping with fraction bars, powers, and square roots. Assume <code>math</code> has been imported, all denominators are nonzero, and square-root arguments are nonnegative.</p>
+<pre class="wb-output">area = math.pi * radius ** 2 / 2
+length = math.sqrt(a ** 2 + 4 * b ** 2)
+scale = mass * (math.sqrt(1 + rate) / math.sqrt(1 - rate) - 1)</pre>
+<wb-short id="c2"></wb-short>
+
+<h3>3. Trace expressions</h3>
+<p>Use <code>x = 3.0</code>, <code>y = -2.0</code>, <code>m = 23</code>, and <code>n = 5</code>. Evaluate each expression independently. Show an intermediate value for each on paper. Assume <code>math</code> has been imported.</p>
+<wb-table id="c3">
+  <table>
+    <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><code>x + n * y - (x + n) * y</code></td><td data-blank="v1"></td></tr>
+      <tr><td><code>m // n + m % n</code></td><td data-blank="v2"></td></tr>
+      <tr><td><code>4 * x - n / 2</code></td><td data-blank="v3"></td></tr>
+      <tr><td><code>2 - (2 - (2 - n))</code></td><td data-blank="v4"></td></tr>
+      <tr><td><code>math.sqrt(math.sqrt(81))</code></td><td data-blank="v5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then run this program to confirm your values.</p>
+<wb-example id="c3-check"></wb-example>
+
+<h3>4. Digits and averages</h3>
+<p>Use <code>n = 27</code> and <code>m = 28</code>. Evaluate the expressions below, then explain why the two divisions give different types.</p>
+<wb-table id="c4">
+  <table>
+    <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><code>n // 10 + n % 10</code></td><td data-blank="v1"></td></tr>
+      <tr><td><code>n % 2 + m % 2</code></td><td data-blank="v2"></td></tr>
+      <tr><td><code>(m + n) // 2</code></td><td data-blank="v3"></td></tr>
+      <tr><td><code>(m + n) / 2</code></td><td data-blank="v4"></td></tr>
+      <tr><td><code>int((m + n) / 2)</code></td><td data-blank="v5"></td></tr>
+      <tr><td><code>round((m + n) / 2)</code></td><td data-blank="v6"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then run this program to confirm your values.</p>
+<wb-example id="c4-check"></wb-example>
+<p>Why do the two divisions give different types?</p>
+<wb-short id="c4-why"></wb-short>
+
+<h3>5. A decimal difference</h3>
+<p>Explain why the first program displays the shown extra digits.</p>
+<wb-example id="ex-w16"></wb-example>
+<wb-short id="c5-why"></wb-short>
+<p>Write a revised program that rounds the difference to two decimal places before displaying it.</p>
+<wb-exercise id="c5"></wb-exercise>
+<p>Explain whether that revision makes the original stored numbers exact.</p>
+<wb-short id="c5-exact"></wb-short>
+
+<h3>6. A rectangular panel</h3>
+<p>A rectangular panel has width <i>w</i> and height <i>h</i>, both measured in centimetres. Its perimeter is <i>P</i> = 2(<i>w</i> + <i>h</i>) and its diagonal is <i>d</i> = √(<i>w</i><sup>2</sup> + <i>h</i><sup>2</sup>). Write a program that assigns the dimensions, then prints the perimeter and diagonal. Use <code>import math</code> and <code>math.sqrt</code>. Test both cases.</p>
+<table>
+  <thead><tr><th>(<i>w</i>, <i>h</i>) in cm</th><th>Perimeter output</th><th>Diagonal output</th></tr></thead>
+  <tbody>
+    <tr><td>(9, 12)</td><td><code>42</code></td><td><code>15.0</code></td></tr>
+    <tr><td>(5, 12)</td><td><code>34</code></td><td><code>13.0</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the line <code>width = 9</code> as given: the checker swaps it for <code>width = 5</code> to test the second case.</p>
+<wb-exercise id="c6"></wb-exercise>
+
+<h3>7. A container made of three sections</h3>
+<p>A container consists of three stacked sections with circular ends. For one section with end radii <i>a</i>, <i>b</i> and height <i>h</i>, the volume is</p>
+<p style="text-align: center"><i>V</i> = π<i>h</i>(<i>a</i><sup>2</sup> + <i>ab</i> + <i>b</i><sup>2</sup>) / 3.</p>
+<p>All lengths are in centimetres; volumes are in cubic centimetres. Use these dimensions:</p>
+<table>
+  <thead><tr><th>Section</th><th><i>a</i></th><th><i>b</i></th><th><i>h</i></th></tr></thead>
+  <tbody>
+    <tr><td>Lower</td><td>2</td><td>3</td><td>3</td></tr>
+    <tr><td>Middle</td><td>3</td><td>3</td><td>4</td></tr>
+    <tr><td>Upper</td><td>3</td><td>1</td><td>3</td></tr>
+  </tbody>
+</table>
+<p>First calculate each volume by hand as a multiple of π, then find their sum.</p>
+<wb-table id="c7-hand">
+  <table>
+    <thead><tr><th>Section</th><th>Volume (multiple of π)</th></tr></thead>
+    <tbody>
+      <tr><td>Lower</td><td data-blank="v1"></td></tr>
+      <tr><td>Middle</td><td data-blank="v2"></td></tr>
+      <tr><td>Upper</td><td data-blank="v3"></td></tr>
+      <tr><td>Total</td><td data-blank="v4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Write a short sequence of steps that would work with other dimensions.</p>
+<wb-short id="c7-steps"></wb-short>
+<p>Finally implement the calculation with separate variables for all nine dimensions. Print the total volume rounded to two decimal places.</p>
+<p class="wb-meta">Keep the dimension lines as given: the checker swaps <code>h2 = 4</code> for <code>h2 = 1</code> to test a second container.</p>
+<wb-exercise id="c7"></wb-exercise>
+
+<h3>8. A resistance network</h3>
+<p>The diagram has resistor <i>R</i><sub>1</sub> followed by two parallel branches containing <i>R</i><sub>2</sub> and <i>R</i><sub>3</sub>. For this arrangement, use the supplied formula</p>
+<p style="text-align: center"><i>R</i><sub>total</sub> = <i>R</i><sub>1</sub> + <i>R</i><sub>2</sub><i>R</i><sub>3</sub> / (<i>R</i><sub>2</sub> + <i>R</i><sub>3</sub>).</p>
+<p>All three resistances are positive and measured in ohms (Ω).</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 300 120" width="300" height="120" role="img" aria-label="Circuit: R1 in series with a parallel pair R2 and R3" style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 2">
+    <path d="M0 60 H50"/>
+    <rect x="50" y="50" width="50" height="20"/>
+    <path d="M100 60 H130 M130 60 V25 H160 M130 60 V95 H160"/>
+    <rect x="160" y="15" width="50" height="20"/>
+    <rect x="160" y="85" width="50" height="20"/>
+    <path d="M210 25 H240 V95 H210 M240 60 H300"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-body, serif); font-style: italic; font-size: 14px" text-anchor="middle">
+      <text x="75" y="42">R<tspan font-size="10" dy="3">1</tspan></text>
+      <text x="185" y="10">R<tspan font-size="10" dy="3">2</tspan></text>
+      <text x="185" y="118">R<tspan font-size="10" dy="3">3</tspan></text>
+    </g>
+  </svg>
+</figure>
+<p>Identify the part of the formula that represents the two branches.</p>
+<wb-short id="c8-branch"></wb-short>
+<p>Calculate the first test case by hand.</p>
+<wb-table id="c8-hand">
+  <table>
+    <thead><tr><th>(<i>R</i><sub>1</sub>, <i>R</i><sub>2</sub>, <i>R</i><sub>3</sub>) = (10, 20, 20)</th><th>Ohms</th></tr></thead>
+    <tbody>
+      <tr><td>Resistance of the two branches together</td><td data-blank="branch"></td></tr>
+      <tr><td>Total resistance</td><td data-blank="total"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then write a program that prints the total resistance.</p>
+<table>
+  <thead><tr><th>(<i>R</i><sub>1</sub>, <i>R</i><sub>2</sub>, <i>R</i><sub>3</sub>) in ohms</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>(10, 20, 20)</td><td><code>20.0</code></td></tr>
+    <tr><td>(5, 12, 6)</td><td><code>9.0</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the three assignment lines as given: the checker swaps in <code>r1 = 5</code>, <code>r2 = 12</code>, <code>r3 = 6</code> to test the second case.</p>
+<wb-exercise id="c8"></wb-exercise>
+
+<h3>9. Electric force</h3>
+<p>For two nonnegative charges <i>q</i><sub>1</sub> and <i>q</i><sub>2</sub> separated by a positive distance <i>r</i>, use</p>
+<p style="text-align: center"><i>F</i> = <i>q</i><sub>1</sub><i>q</i><sub>2</sub> / (4πε<i>r</i><sup>2</sup>), &nbsp; ε = 8.854 × 10<sup>−12</sup>.</p>
+<p>Charges are measured in coulombs, distance in metres, ε in farads per metre, and force <i>F</i> in newtons. These quantities and the formula are supplied; no physics derivation is required. In Python, 10<sup>−12</sup> can be written <code>10 ** (-12)</code>.</p>
+<p>Write a program with assignments for the charges, distance, and <code>EPSILON</code>. Use the preferred module import style. Calculate the force and print it rounded to three decimal places. Test these two cases; the second has one zero charge.</p>
+<table>
+  <thead><tr><th><i>q</i><sub>1</sub> (C)</th><th><i>q</i><sub>2</sub> (C)</th><th><i>r</i> (m)</th><th>Expected output (N)</th></tr></thead>
+  <tbody>
+    <tr><td>0.000002</td><td>0.000003</td><td>0.5</td><td><code>0.216</code></td></tr>
+    <tr><td>0</td><td>0.000003</td><td>0.5</td><td><code>0.0</code></td></tr>
+  </tbody>
+</table>
+<p class="wb-meta">Keep the line <code>q1 = 0.000002</code> as given: the checker swaps it for <code>q1 = 0</code> to test the second case.</p>
+<wb-exercise id="c9"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 5 Workbook.</p>
+</main>
+</body>
+</html>

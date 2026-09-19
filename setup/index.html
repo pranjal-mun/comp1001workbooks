@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Setting Up Your Computer</title>
+  <link rel="icon" href="../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../runtime/workbook.js";
+    initWorkbook({ id: "setup", specs: "./exercises.json", python: false });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Setting Up Your Computer</h1>
+    <div class="wb-subtitle">Python and IDLE</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Before you start">Before you start</h2>
+  <p>The workbooks on this site run Python inside your browser, so nothing needs to be installed to use them. To write and run your own programs on your own computer, you need Python installed. This page installs Python 3 and IDLE, the editor that comes with it, and runs a first script. Pick the section for your operating system.</p>
+</section>
+<hr>
+
+<h2 id="windows">Windows</h2>
+
+<h3>Install Python</h3>
+<ol>
+  <li>Go to <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org/downloads</a>.</li>
+  <li>Download the latest Python 3 installer for Windows.</li>
+  <li>Run the installer.</li>
+  <li>On the first installer screen, check <strong>Add python.exe to PATH</strong>.</li>
+  <li>Click <strong>Install Now</strong>.</li>
+</ol>
+
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Do not skip step 4</div>
+  <p>The <strong>Add python.exe to PATH</strong> box is unchecked by default and is easy to miss. Without it, typing <code>python</code> in a terminal will not find Python. If you already installed without it, run the installer again and choose <strong>Modify</strong>.</p>
+</div>
+
+<h3>Open IDLE</h3>
+<ul>
+  <li>Open the Start menu.</li>
+  <li>Search for <strong>IDLE</strong>.</li>
+  <li>Open <strong>IDLE (Python 3.x)</strong>.</li>
+</ul>
+<p>You will first see the Python Shell.</p>
+
+<h3>Write a script</h3>
+<ol>
+  <li>In IDLE, click <strong>File → New File</strong>.</li>
+  <li>Type:
+<pre><code><span class="wb-fn">print</span>(<span class="wb-str">"Hello, world!"</span>)</code></pre>
+  </li>
+  <li>Click <strong>File → Save</strong>.</li>
+  <li>Save it as:
+<pre class="wb-output">hello.py</pre>
+  </li>
+</ol>
+
+<h3>Run it</h3>
+<ul>
+  <li>Click <strong>Run → Run Module</strong></li>
+  <li>Or press <kbd>F5</kbd></li>
+</ul>
+<p>The output appears in the Python Shell:</p>
+<pre class="wb-output">Hello, world!</pre>
+
+<h2 id="macos">macOS</h2>
+
+<h3>Install Python</h3>
+<ol>
+  <li>Go to <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org/downloads</a>.</li>
+  <li>Download the latest Python 3 installer for macOS.</li>
+  <li>Open the downloaded <code>.pkg</code> file.</li>
+  <li>Follow the installer steps.</li>
+</ol>
+<p>Python installed from python.org normally includes IDLE.</p>
+
+<h3>Open IDLE</h3>
+<ul>
+  <li>Press <kbd>Command</kbd> + <kbd>Space</kbd> to open Spotlight.</li>
+  <li>Type <strong>IDLE</strong>.</li>
+  <li>Press <kbd>Enter</kbd>.</li>
+</ul>
+
+<h3>Write a script</h3>
+<ol>
+  <li>Click <strong>File → New File</strong>.</li>
+  <li>Type:
+<pre><code><span class="wb-fn">print</span>(<span class="wb-str">"Hello, world!"</span>)</code></pre>
+  </li>
+  <li>Click <strong>File → Save</strong>.</li>
+  <li>Save it as:
+<pre class="wb-output">hello.py</pre>
+  </li>
+</ol>
+
+<h3>Run it</h3>
+<ul>
+  <li>Click <strong>Run → Run Module</strong></li>
+  <li>Or press <kbd>F5</kbd></li>
+</ul>
+<p>You should see:</p>
+<pre class="wb-output">Hello, world!</pre>
+
+<h2 id="shell" data-toc-title="The Shell and a script">The Shell and a Script</h2>
+<p>The window showing:</p>
+<pre class="wb-shell"><span class="wb-prompt">&gt;&gt;&gt;</span> </pre>
+<p>is the <strong>Python Shell</strong>. It is useful for trying individual Python commands: type one line, press <kbd>Enter</kbd>, and see the result at once.</p>
+<p>For programs with several lines, use a script instead:</p>
+<div class="wb-refers wb-stages">
+  <span class="wb-box">File → New File</span><span class="wb-arrow wb-plain">⟶</span>
+  <span class="wb-box">write code</span><span class="wb-arrow wb-plain">⟶</span>
+  <span class="wb-box">save as <code>.py</code></span><span class="wb-arrow wb-plain">⟶</span>
+  <span class="wb-box">Run Module</span>
+</div>
+<p>A script is saved as a file, so you can fix it and run it again. What you type in the Shell is gone when you close the window.</p>
+
+</main>
+</body>
+</html>

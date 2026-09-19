@@ -1,0 +1,839 @@
+{
+  "id": "lecture-06",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 6 Workbook",
+  "subtitle": "Input and output, and f-strings",
+  "exercises": {
+    "ex-area": {
+      "type": "example",
+      "code": "length = 8\nwidth = 5\narea = length * width\nprint(area)",
+      "output": "40"
+    },
+    "cp1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGlucHV0IHZhbHVlcyBhcmUgOCBhbmQgNS4gVGhlIHByb2Nlc3Npbmcgc3RlcCBtdWx0aXBsaWVzIGBsZW5ndGhgIGJ5IGB3aWR0aGAuIFRoZSBvdXRwdXQgaXMgNDAu"
+    },
+    "ex-print": {
+      "type": "example",
+      "code": "print('Total:', 42, 'items')\nprint('Finished')",
+      "output": "Total: 42 items\nFinished"
+    },
+    "ex-sep": {
+      "type": "example",
+      "code": "print('2026', '09', '21', sep='-')\nprint('A', 'B', 'C', sep=' | ')",
+      "output": "2026-09-21\nA | B | C"
+    },
+    "ex-end": {
+      "type": "example",
+      "code": "print('COMP', end=' ')\nprint('1001')",
+      "output": "COMP 1001"
+    },
+    "ex-cp2": {
+      "type": "example",
+      "code": "print('red', 'green', 'blue', sep=', ')\nprint('Loading', end='...')\nprint('done')"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "red, green, blue"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 1",
+          "width": "16rem"
+        },
+        "l2": {
+          "accept": [
+            "Loading...done"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 2",
+          "width": "16rem"
+        }
+      }
+    },
+    "ex-name": {
+      "type": "example",
+      "code": "name = input('Name: ')\nprint('Hello', name)"
+    },
+    "ex-age": {
+      "type": "example",
+      "code": "age = int(input('Age: '))\nnext_age = age + 1\nprint('Next age:', next_age)"
+    },
+    "ex-price": {
+      "type": "example",
+      "code": "price = float(input('Price: '))\nquantity = int(input('Quantity: '))\ntotal = price * quantity\nprint('Total:', total)"
+    },
+    "ex-twenty": {
+      "type": "example",
+      "code": "age = int('twenty')\nprint(age)"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 2,
+      "starter": "students = ______(input('Number of students: '))\ntemperature = ______(input('Temperature: '))",
+      "cases": [
+        {
+          "name": "Typed 28 and 21.5",
+          "inputs": [
+            "28",
+            "21.5"
+          ],
+          "check": "assert \"students\" in dir(), \"Keep the name students.\"\nassert \"temperature\" in dir(), \"Keep the name temperature.\"\nassert type(students) is int, \"students should be converted with int(): a count is a whole number.\"\nassert type(temperature) is float, \"temperature should be converted with float(): it may have a decimal part.\"\n"
+        }
+      ],
+      "answer": "c3R1ZGVudHMgPSBpbnQoaW5wdXQoJ051bWJlciBvZiBzdHVkZW50czogJykpCnRlbXBlcmF0dXJlID0gZmxvYXQoaW5wdXQoJ1RlbXBlcmF0dXJlOiAnKSk=",
+      "answerNote": "The program prints nothing; Check looks at the types of the two names."
+    },
+    "cp3-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YGlucHV0KClgIGFsd2F5cyByZXR1cm5zIGEgYHN0cmAsIGV2ZW4gd2hlbiB0aGUgdXNlciB0eXBlcyBkaWdpdHMuIENvbnZlcnNpb24gaXMgYSBzZXBhcmF0ZSBvcGVyYXRpb246IGBpbnQoKWAgb3IgYGZsb2F0KClgIG11c3QgYmUgYXBwbGllZCB0byB0aGUgdGV4dC4="
+    },
+    "cp3-error": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "err": {
+          "accept": [
+            "ValueError",
+            "a ValueError",
+            "value error"
+          ],
+          "placeholder": "name of the error",
+          "width": "12rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "ex-fstring": {
+      "type": "example",
+      "code": "name = 'Maya'\ncount = 3\n\nprint(f'{name} has {count} items')\nprint(f'{count} squared is {count ** 2}')",
+      "output": "Maya has 3 items\n3 squared is 9"
+    },
+    "cp4": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 3,
+      "check": "assert \"{course}\" in __source__, \"Put the variable name course inside braces: {course}.\"\nassert \"{students}\" in __source__, \"Put the variable name students inside braces: {students}.\"\nassert \"f'\" in __source__ or 'f\"' in __source__, \"Write f before the opening quote to make an f-string.\"\n",
+      "starter": "course = 'COMP 1001'\nstudents = 28\nprint(f'________________________________________')",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "COMP 1001 has 28 students"
+        },
+        {
+          "name": "students = 31",
+          "rewrite": [
+            [
+              "students = 28",
+              "students = 31"
+            ]
+          ],
+          "expected": "COMP 1001 has 31 students"
+        }
+      ],
+      "answer": "Y291cnNlID0gJ0NPTVAgMTAwMScKc3R1ZGVudHMgPSAyOApwcmludChmJ3tjb3Vyc2V9IGhhcyB7c3R1ZGVudHN9IHN0dWRlbnRzJyk="
+    },
+    "cp4-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHZhcmlhYmxlIG5hbWVzIGBjb3Vyc2VgIGFuZCBgc3R1ZGVudHNgIG11c3QgYmUgaW5zaWRlIGJyYWNlcy4gVGhlIGNvbm5lY3Rpbmcgd29yZHMgYW5kIHNwYWNlcyAoYCBoYXMgYCBhbmQgYCBzdHVkZW50c2ApIGFyZSBvcmRpbmFyeSBzdHJpbmcgdGV4dC4="
+    },
+    "ex-money": {
+      "type": "example",
+      "code": "subtotal = 19.5\nprint(f'Subtotal: ${subtotal:.2f}')",
+      "output": "Subtotal: $19.50"
+    },
+    "ex-thousands": {
+      "type": "example",
+      "code": "population = 1234567\nprint(f'{population:,}')",
+      "output": "1,234,567"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "f'{7.5:.2f}'",
+            "f\"{7.5:.2f}\"",
+            "{7.5:.2f}",
+            "7.5:.2f"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        },
+        "e2": {
+          "accept": [
+            "f'{2500.4:,.2f}'",
+            "f\"{2500.4:,.2f}\"",
+            "{2500.4:,.2f}",
+            "2500.4:,.2f"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        },
+        "e3": {
+          "accept": [
+            "f'{42:05d}'",
+            "f\"{42:05d}\"",
+            "{42:05d}",
+            "42:05d",
+            "f'{42:05}'",
+            "f\"{42:05}\"",
+            "{42:05}",
+            "42:05"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIEZvcm1hdHRpbmcgY3JlYXRlcyBkaXNwbGF5IHRleHQ7IGl0IGRvZXMgbm90IGNoYW5nZSB0aGUgc3RvcmVkIHZhbHVlLiBBZnRlciBgcHJpbnQoZid7c3VidG90YWw6LjJmfScpYCwgYHN1YnRvdGFsYCBzdGlsbCBob2xkcyB0aGUgc2FtZSBudW1iZXIu"
+    },
+    "ex-table": {
+      "type": "example",
+      "code": "print(f'{\"Item\":<12}{\"Price\":>8}')\nprint(f'{\"Coffee\":<12}{3.5:>8.2f}')\nprint(f'{\"Sandwich\":<12}{12.75:>8.2f}')",
+      "output": "Item           Price\nCoffee          3.50\nSandwich       12.75"
+    },
+    "cp6": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 2,
+      "check": "assert \"<10\" in __source__, \"Names use a left-aligned width of 10: the specifier is <10.\"\nassert \">6\" in __source__, \"Scores use a right-aligned width of 6: the specifier is >6.\"\n",
+      "starter": "print(f'{\"Name\":_____}{\"Score\":_____}')\nprint(f'{\"Ava\":_____}{91:_____}')",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "Name       Score\nAva           91"
+        }
+      ],
+      "answer": "cHJpbnQoZid7Ik5hbWUiOjwxMH17IlNjb3JlIjo+Nn0nKQpwcmludChmJ3siQXZhIjo8MTB9ezkxOj42fScp"
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UmlnaHQgYWxpZ25tZW50IHBsYWNlcyBkaWdpdHMgd2l0aCB0aGUgc2FtZSBwbGFjZSB2YWx1ZSBpbiB0aGUgc2FtZSBjb2x1bW4sIHNvIHRoZSBvbmVzLCB0ZW5zLCBhbmQgZGVjaW1hbCBwb2ludHMgbGluZSB1cCBhbmQgdGhlIG51bWJlcnMgYXJlIGVhc3kgdG8gY29tcGFyZS4="
+    },
+    "ex-legacy": {
+      "type": "example",
+      "code": "price = 3.5\nprint('Price: %.2f' % price)",
+      "output": "Price: 3.50"
+    },
+    "ex-legacy-f": {
+      "type": "example",
+      "code": "price = 3.5\nprint(f'Price: {price:.2f}')",
+      "output": "Price: 3.50"
+    },
+    "cp7": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 2,
+      "check": "assert \"%\" not in __source__, \"Remove the legacy % formatting: write an f-string instead.\"\nassert \"f'\" in __source__ or 'f\"' in __source__, \"Write f before the opening quote to make an f-string.\"\nassert \"{distance:.1f}\" in __source__.replace(\" \", \"\"), \"Put the value and its specifier inside braces: {distance:.1f}.\"\n",
+      "starter": "distance = 12.5\nprint('Distance: %.1f km' % distance)",
+      "cases": [
+        {
+          "name": "distance = 12.5",
+          "expected": "Distance: 12.5 km"
+        },
+        {
+          "name": "distance = 3",
+          "rewrite": [
+            [
+              "distance = 12.5",
+              "distance = 3"
+            ]
+          ],
+          "expected": "Distance: 3.0 km"
+        }
+      ],
+      "answer": "ZGlzdGFuY2UgPSAxMi41CnByaW50KGYnRGlzdGFuY2U6IHtkaXN0YW5jZTouMWZ9IGttJyk=",
+      "answerNote": "Keep the surrounding words and unit as ordinary text; only the value and its specifier go inside braces."
+    },
+    "ex-escape": {
+      "type": "example",
+      "code": "print('First line\\nSecond line')\nprint('A\\tB')\nprint(\"She said, \\\"Hello.\\\"\")\nprint('C:\\\\courses\\\\comp1001')",
+      "output": "First line\nSecond line\nA\tB\nShe said, \"Hello.\"\nC:\\courses\\comp1001"
+    },
+    "cp8": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 1,
+      "check": "assert __source__.count(\"print(\") == 1, \"Use one print() call with one string literal.\"\nassert \"\\\\n\" in __source__, \"Use the newline escape \\\\n inside the string to start each new line.\"\n",
+      "starter": "print('____________________')",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "input\nprocess\noutput"
+        }
+      ],
+      "answer": "cHJpbnQoJ2lucHV0XG5wcm9jZXNzXG5vdXRwdXQnKQ=="
+    },
+    "cp8-backslash": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "seq": {
+          "accept": [
+            "\\\\",
+            "'\\\\'",
+            "\"\\\\\"",
+            "two backslashes",
+            "a double backslash",
+            "double backslash",
+            "backslash backslash"
+          ],
+          "caseSensitive": true,
+          "placeholder": "escape sequence",
+          "width": "12rem",
+          "show": "\\\\"
+        }
+      }
+    },
+    "ex-fr": {
+      "type": "example",
+      "code": "item = input('Item: ')\nprice = float(input('Price: '))\nquantity = int(input('Quantity: '))\ntotal = price * quantity\n\nprint(f'{\"Item\":<12}{\"Quantity\":>10}{\"Total\":>12}')\nprint(f'{item:<12}{quantity:>10}{total:>12.2f}')"
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t": {
+          "accept": [
+            "str",
+            "string"
+          ],
+          "placeholder": "type",
+          "show": "str"
+        }
+      }
+    },
+    "fr2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "p": {
+          "accept": [
+            "float"
+          ]
+        },
+        "q": {
+          "accept": [
+            "int"
+          ]
+        }
+      }
+    },
+    "fr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "total": {
+          "accept": [
+            "14.25"
+          ],
+          "placeholder": "value"
+        }
+      }
+    },
+    "fr4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Item          Quantity       Total"
+          ],
+          "caseSensitive": true,
+          "placeholder": "heading line",
+          "width": "22rem"
+        },
+        "l2": {
+          "accept": [
+            "Notebook             3       14.25"
+          ],
+          "caseSensitive": true,
+          "placeholder": "data line",
+          "width": "22rem"
+        }
+      }
+    },
+    "pa": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 3,
+      "check": "assert \"sep=\" in __source__.replace(\" \", \"\"), \"Display A-B-C with one print() call that uses sep='-'.\"\nassert \"end=\" in __source__.replace(\" \", \"\"), \"Display Ready...go with two print() calls; the first uses end='...'.\"\nassert __source__.count(\"print(\") == 3, \"Use exactly three print() calls: one for A-B-C and two for Ready...go.\"\n",
+      "starter": "# Display A-B-C using sep, then Ready...go using end.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "A-B-C\nReady...go"
+        }
+      ],
+      "answer": "cHJpbnQoJ0EnLCAnQicsICdDJywgc2VwPSctJykKcHJpbnQoJ1JlYWR5JywgZW5kPScuLi4nKQpwcmludCgnZ28nKQ=="
+    },
+    "pb": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "check": "assert type(distance) is float, \"Convert the distance with float().\"\nassert type(trips) is int, \"Convert the number of trips with int().\"\nassert \"total_distance\" in dir() and total_distance == distance * trips, \"total_distance should be the distance multiplied by the number of trips.\"\nassert str(total_distance) in __stdout__, \"Display total_distance with print().\"\n",
+      "starter": "distance = ______(input('Distance: '))\ntrips = ______(input('Trips: '))\ntotal_distance = ____________________\nprint(______________________________)",
+      "cases": [
+        {
+          "name": "Typed 12.5 and 3",
+          "inputs": [
+            "12.5",
+            "3"
+          ]
+        },
+        {
+          "name": "Typed 8 and 4",
+          "inputs": [
+            "8",
+            "4"
+          ]
+        }
+      ],
+      "answer": "ZGlzdGFuY2UgPSBmbG9hdChpbnB1dCgnRGlzdGFuY2U6ICcpKQp0cmlwcyA9IGludChpbnB1dCgnVHJpcHM6ICcpKQp0b3RhbF9kaXN0YW5jZSA9IGRpc3RhbmNlICogdHJpcHMKcHJpbnQoZidUb3RhbCBkaXN0YW5jZToge3RvdGFsX2Rpc3RhbmNlfScp",
+      "answerNote": "Any label is fine as long as the product is displayed."
+    },
+    "pc": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "f'{5:05d}'",
+            "f\"{5:05d}\"",
+            "{5:05d}",
+            "5:05d",
+            "f'{5:05}'",
+            "f\"{5:05}\"",
+            "{5:05}",
+            "5:05"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        },
+        "e2": {
+          "accept": [
+            "f'{12345.6:,.2f}'",
+            "f\"{12345.6:,.2f}\"",
+            "{12345.6:,.2f}",
+            "12345.6:,.2f"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        },
+        "e3": {
+          "accept": [
+            "f'{'Lab':^9}'",
+            "f\"{'Lab':^9}\"",
+            "{'Lab':^9}",
+            "'Lab':^9",
+            "f'{\"Lab\":^9}'",
+            "f\"{\"Lab\":^9}\"",
+            "{\"Lab\":^9}",
+            "\"Lab\":^9"
+          ],
+          "caseSensitive": true,
+          "placeholder": "f'{…}'",
+          "width": "12rem"
+        }
+      }
+    },
+    "pd": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 3,
+      "check": "assert \"<10\" in __source__, \"Items use a left-aligned width of 10: <10.\"\nassert \">8.2f\" in __source__, \"Prices use a right-aligned width of 8 with two decimal places: >8.2f.\"\n",
+      "starter": "# Print the heading row, then Pen and Notebook.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "Item         Price\nPen           1.25\nNotebook      4.75"
+        }
+      ],
+      "answer": "cHJpbnQoZid7Ikl0ZW0iOjwxMH17IlByaWNlIjo+OH0nKQpwcmludChmJ3siUGVuIjo8MTB9ezEuMjU6PjguMmZ9JykKcHJpbnQoZid7Ik5vdGVib29rIjo8MTB9ezQuNzU6PjguMmZ9Jyk="
+    },
+    "pe": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 4,
+      "answer": "VGhlIGBmYCBtYXJrcyBhbiBmLXN0cmluZy4gVGhlIGJyYWNlcyBjb250YWluIHRoZSBleHByZXNzaW9uIHRvIGV2YWx1YXRlLiBUaGUgY29sb24gYmVnaW5zIHRoZSBmb3JtYXQgc3BlY2lmaWVyLiBUaGUgd2lkdGggYDEwYCByZXNlcnZlcyBhdCBsZWFzdCB0ZW4gY2hhcmFjdGVyIHBvc2l0aW9ucyBhbmQgcmlnaHQgYWxpZ25zIGJ5IGRlZmF1bHQuIGAuMmZgIGRpc3BsYXlzIGEgZmxvYXRpbmctcG9pbnQgdmFsdWUgd2l0aCB0d28gZGlnaXRzIGFmdGVyIHRoZSBkZWNpbWFsIHBvaW50Lg=="
+    },
+    "pt1": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "item = input('Item: ')\nunit_price = ______(input('Unit price: $'))\nquantity = ______(input('Quantity: '))\ntotal = __________________________",
+      "cases": [
+        {
+          "name": "Typed Marker set, 6.5, 2",
+          "inputs": [
+            "Marker set",
+            "6.5",
+            "2"
+          ],
+          "check": "assert type(unit_price) is float, \"Convert the unit price with float(): a price may have a decimal part.\"\nassert type(quantity) is int, \"Convert the quantity with int(): it is a whole number.\"\nassert \"total\" in dir() and total == unit_price * quantity, \"total should be the unit price multiplied by the quantity.\"\n"
+        }
+      ],
+      "answer": "aXRlbSA9IGlucHV0KCdJdGVtOiAnKQp1bml0X3ByaWNlID0gZmxvYXQoaW5wdXQoJ1VuaXQgcHJpY2U6ICQnKSkKcXVhbnRpdHkgPSBpbnQoaW5wdXQoJ1F1YW50aXR5OiAnKSkKdG90YWwgPSB1bml0X3ByaWNlICogcXVhbnRpdHk=",
+      "answerNote": "The program prints nothing yet; Check looks at the types and the total."
+    },
+    "pt2": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 5,
+      "check": "assert \"<14\" in __source__, \"The item column is left aligned with width 14: <14.\"\nassert \">8\" in __source__, \"The quantity column is right aligned with width 8: >8.\"\nassert \">12.2f\" in __source__, \"The total column is right aligned with width 12 and two decimal places: >12.2f.\"\n",
+      "starter": "item = 'Marker set'\nquantity = 2\ntotal = 13.0\n\nprint(f'{\"Item\":_____}{\"Qty\":_____}{\"Total\":_____}')\nprint(f'{item:_____}{quantity:_____}{total:_____}')",
+      "cases": [
+        {
+          "name": "Marker set, 2, 13.0",
+          "expected": "Item               Qty       Total\nMarker set           2       13.00"
+        },
+        {
+          "name": "Pen, 12, 15.0",
+          "rewrite": [
+            [
+              "item = 'Marker set'",
+              "item = 'Pen'"
+            ],
+            [
+              "quantity = 2",
+              "quantity = 12"
+            ],
+            [
+              "total = 13.0",
+              "total = 15.0"
+            ]
+          ],
+          "expected": "Item               Qty       Total\nPen                 12       15.00"
+        }
+      ],
+      "answer": "aXRlbSA9ICdNYXJrZXIgc2V0JwpxdWFudGl0eSA9IDIKdG90YWwgPSAxMy4wCgpwcmludChmJ3siSXRlbSI6PDE0fXsiUXR5Ijo+OH17IlRvdGFsIjo+MTJ9JykKcHJpbnQoZid7aXRlbTo8MTR9e3F1YW50aXR5Oj44fXt0b3RhbDo+MTIuMmZ9Jyk="
+    },
+    "ex-receipt": {
+      "type": "example",
+      "code": "item = input('Item: ')\nunit_price = float(input('Unit price: $'))\nquantity = int(input('Quantity: '))\ntotal = unit_price * quantity\n\nprint('\\nReceipt')\nprint(f'{\"Item\":<14}{\"Qty\":>8}{\"Total\":>12}')\nprint(f'{item:<14}{quantity:>8}{total:>12.2f}')"
+    },
+    "c1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "number = float(input('Number: '))\nsquare = ____________________\ncube = ______________________\nfourth = ____________________\n\n# Print the three labelled results.",
+      "cases": [
+        {
+          "name": "Typed 2.5",
+          "inputs": [
+            "2.5"
+          ],
+          "expected": "Number: Square: 6.25\nCube: 15.625\nFourth power: 39.0625"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Number: Square: 9.0\nCube: 27.0\nFourth power: 81.0"
+        }
+      ],
+      "check": "assert __source__.count(\"**\") == 1, \"Use ** only for the fourth power; build the square and cube by multiplication.\"",
+      "answer": "bnVtYmVyID0gZmxvYXQoaW5wdXQoJ051bWJlcjogJykpCnNxdWFyZSA9IG51bWJlciAqIG51bWJlcgpjdWJlID0gbnVtYmVyICogbnVtYmVyICogbnVtYmVyCmZvdXJ0aCA9IG51bWJlciAqKiA0CgpwcmludChmJ1NxdWFyZToge3NxdWFyZX0nKQpwcmludChmJ0N1YmU6IHtjdWJlfScpCnByaW50KGYnRm91cnRoIHBvd2VyOiB7Zm91cnRofScp"
+    },
+    "c2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "first = int(input('First integer: '))\nsecond = int(input('Second integer: '))\n\nsum_value = __________________\ndifference = __________________\nproduct = _____________________\naverage = _____________________\n\n# Print the four labelled results.",
+      "cases": [
+        {
+          "name": "Typed 20 and 25",
+          "inputs": [
+            "20",
+            "25"
+          ],
+          "expected": "First integer: Second integer: Sum: 45\nDifference: -5\nProduct: 500\nAverage: 22.50"
+        },
+        {
+          "name": "Typed 7 and 4",
+          "inputs": [
+            "7",
+            "4"
+          ],
+          "expected": "First integer: Second integer: Sum: 11\nDifference: 3\nProduct: 28\nAverage: 5.50"
+        }
+      ],
+      "answer": "Zmlyc3QgPSBpbnQoaW5wdXQoJ0ZpcnN0IGludGVnZXI6ICcpKQpzZWNvbmQgPSBpbnQoaW5wdXQoJ1NlY29uZCBpbnRlZ2VyOiAnKSkKCnN1bV92YWx1ZSA9IGZpcnN0ICsgc2Vjb25kCmRpZmZlcmVuY2UgPSBmaXJzdCAtIHNlY29uZApwcm9kdWN0ID0gZmlyc3QgKiBzZWNvbmQKYXZlcmFnZSA9IHN1bV92YWx1ZSAvIDIKCnByaW50KGYnU3VtOiB7c3VtX3ZhbHVlfScpCnByaW50KGYnRGlmZmVyZW5jZToge2RpZmZlcmVuY2V9JykKcHJpbnQoZidQcm9kdWN0OiB7cHJvZHVjdH0nKQpwcmludChmJ0F2ZXJhZ2U6IHthdmVyYWdlOi4yZn0nKQ=="
+    },
+    "c3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "check": "assert __source__.count(\"<12\") >= 4, \"Every label uses a left-aligned width of 12: <12.\"\nassert __source__.count(\">10\") >= 4, \"Every value uses a right-aligned width of 10: >10.\"\nassert \">10.2f\" in __source__, \"Keep two decimal places on the average: >10.2f.\"\n",
+      "starter": "sum_value = 45\ndifference = -5\nproduct = 500\naverage = 22.5\n\nprint(f'{\"Sum\":_____}{sum_value:_____}')\n# Add the other three rows.",
+      "cases": [
+        {
+          "name": "45, -5, 500, 22.5",
+          "expected": "Sum                 45\nDifference          -5\nProduct            500\nAverage          22.50"
+        },
+        {
+          "name": "11, 3, 28, 5.5",
+          "rewrite": [
+            [
+              "sum_value = 45",
+              "sum_value = 11"
+            ],
+            [
+              "difference = -5",
+              "difference = 3"
+            ],
+            [
+              "product = 500",
+              "product = 28"
+            ],
+            [
+              "average = 22.5",
+              "average = 5.5"
+            ]
+          ],
+          "expected": "Sum                 11\nDifference           3\nProduct             28\nAverage           5.50"
+        }
+      ],
+      "answer": "c3VtX3ZhbHVlID0gNDUKZGlmZmVyZW5jZSA9IC01CnByb2R1Y3QgPSA1MDAKYXZlcmFnZSA9IDIyLjUKCnByaW50KGYneyJTdW0iOjwxMn17c3VtX3ZhbHVlOj4xMH0nKQpwcmludChmJ3siRGlmZmVyZW5jZSI6PDEyfXtkaWZmZXJlbmNlOj4xMH0nKQpwcmludChmJ3siUHJvZHVjdCI6PDEyfXtwcm9kdWN0Oj4xMH0nKQpwcmludChmJ3siQXZlcmFnZSI6PDEyfXthdmVyYWdlOj4xMC4yZn0nKQ=="
+    },
+    "c4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "fuel = float(input('Fuel in tank (L): '))\nefficiency = float(input('Efficiency (km/L): '))\nprice = float(input('Price per litre: $'))\n\ncost_per_100 = __________________________\nrange_km = ______________________________\n\n# Print both results with units.",
+      "cases": [
+        {
+          "name": "Typed 40, 12.5, 1.75",
+          "inputs": [
+            "40",
+            "12.5",
+            "1.75"
+          ],
+          "expected": "Fuel in tank (L): Efficiency (km/L): Price per litre: $Cost per 100 km: $14.00\nRange: 500.0 km"
+        },
+        {
+          "name": "Typed 52, 9.6, 1.499",
+          "inputs": [
+            "52",
+            "9.6",
+            "1.499"
+          ],
+          "expected": "Fuel in tank (L): Efficiency (km/L): Price per litre: $Cost per 100 km: $15.61\nRange: 499.2 km"
+        }
+      ],
+      "answer": "ZnVlbCA9IGZsb2F0KGlucHV0KCdGdWVsIGluIHRhbmsgKEwpOiAnKSkKZWZmaWNpZW5jeSA9IGZsb2F0KGlucHV0KCdFZmZpY2llbmN5IChrbS9MKTogJykpCnByaWNlID0gZmxvYXQoaW5wdXQoJ1ByaWNlIHBlciBsaXRyZTogJCcpKQoKY29zdF9wZXJfMTAwID0gMTAwIC8gZWZmaWNpZW5jeSAqIHByaWNlCnJhbmdlX2ttID0gZnVlbCAqIGVmZmljaWVuY3kKCnByaW50KGYnQ29zdCBwZXIgMTAwIGttOiAke2Nvc3RfcGVyXzEwMDouMmZ9JykKcHJpbnQoZidSYW5nZToge3JhbmdlX2ttOi4xZn0ga20nKQ=="
+    },
+    "c5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "LETTER_O = '____________________________'\nLETTER_K = '____________________________'\n\nprint(LETTER_O)\nprint(LETTER_K)",
+      "cases": [
+        {
+          "name": "Two five-row letters",
+          "check": "assert isinstance(LETTER_O, str) and isinstance(LETTER_K, str), \"LETTER_O and LETTER_K must both be strings.\"\nfor name, letter in ((\"LETTER_O\", LETTER_O), (\"LETTER_K\", LETTER_K)):\n    rows = letter.rstrip(\"\\n\").split(\"\\n\")\n    assert len(rows) == 5, f\"{name} should draw five rows: use four newline escapes (\\\\n) inside the string.\"\n    assert all(row.strip() for row in rows), f\"Every row of {name} needs at least one symbol.\"\nlines = __stdout__.rstrip(\"\\n\").split(\"\\n\")\nassert len(lines) == 10, \"The output should be ten lines: five for O, then five for K.\"\n"
+        }
+      ],
+      "answer": "TEVUVEVSX08gPSAnICoqKlxuKiAgICpcbiogICAqXG4qICAgKlxuICoqKicKTEVUVEVSX0sgPSAnKiAgICpcbiogICpcbioqKlxuKiAgKlxuKiAgIConCgpwcmludChMRVRURVJfTykKcHJpbnQoTEVUVEVSX0sp",
+      "answerNote": "Any symbols are fine as long as each letter is one string with five rows."
+    },
+    "c6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "TAX_RATE = 0.15\nSHIPPING_PER_ITEM = 3.00\n\nsupplies_price = float(input('Supplies price: $'))\nitem_count = int(input('Number of items: '))\n\ntax = ______________________________\nshipping = _________________________\norder_total = ______________________\n\n# Print tax, shipping, and total.",
+      "cases": [
+        {
+          "name": "Typed 40 and 2",
+          "inputs": [
+            "40",
+            "2"
+          ],
+          "expected": "Supplies price: $Number of items: Tax: $6.00\nShipping: $6.00\nOrder total: $52.00"
+        },
+        {
+          "name": "Typed 129.99 and 5",
+          "inputs": [
+            "129.99",
+            "5"
+          ],
+          "expected": "Supplies price: $Number of items: Tax: $19.50\nShipping: $15.00\nOrder total: $164.49"
+        }
+      ],
+      "check": "assert \"TAX_RATE\" in __source__ and \"SHIPPING_PER_ITEM\" in __source__, \"Use the constants TAX_RATE and SHIPPING_PER_ITEM in the calculations.\"",
+      "answer": "VEFYX1JBVEUgPSAwLjE1ClNISVBQSU5HX1BFUl9JVEVNID0gMy4wMAoKc3VwcGxpZXNfcHJpY2UgPSBmbG9hdChpbnB1dCgnU3VwcGxpZXMgcHJpY2U6ICQnKSkKaXRlbV9jb3VudCA9IGludChpbnB1dCgnTnVtYmVyIG9mIGl0ZW1zOiAnKSkKCnRheCA9IHN1cHBsaWVzX3ByaWNlICogVEFYX1JBVEUKc2hpcHBpbmcgPSBpdGVtX2NvdW50ICogU0hJUFBJTkdfUEVSX0lURU0Kb3JkZXJfdG90YWwgPSBzdXBwbGllc19wcmljZSArIHRheCArIHNoaXBwaW5nCgpwcmludChmJ1RheDogJHt0YXg6LjJmfScpCnByaW50KGYnU2hpcHBpbmc6ICR7c2hpcHBpbmc6LjJmfScpCnByaW50KGYnT3JkZXIgdG90YWw6ICR7b3JkZXJfdG90YWw6LjJmfScp"
+    },
+    "c7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "price = float(input('Price: $'))\ntotal_cents = round(price * 100)\ndollars = __________________________\ncents = ____________________________\n\nprint(f'Dollars: {dollars}')\nprint(f'Cents: {cents:02d}')",
+      "cases": [
+        {
+          "name": "Typed 4.05",
+          "inputs": [
+            "4.05"
+          ],
+          "expected": "Price: $Dollars: 4\nCents: 05"
+        },
+        {
+          "name": "Typed 19.99",
+          "inputs": [
+            "19.99"
+          ],
+          "expected": "Price: $Dollars: 19\nCents: 99"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Price: $Dollars: 3\nCents: 00"
+        }
+      ],
+      "check": "assert \"//\" in __source__ and \"%\" in __source__, \"Use integer division (//) for the dollars and remainder (%) for the cents.\"",
+      "answer": "cHJpY2UgPSBmbG9hdChpbnB1dCgnUHJpY2U6ICQnKSkKdG90YWxfY2VudHMgPSByb3VuZChwcmljZSAqIDEwMCkKZG9sbGFycyA9IHRvdGFsX2NlbnRzIC8vIDEwMApjZW50cyA9IHRvdGFsX2NlbnRzICUgMTAwCgpwcmludChmJ0RvbGxhcnM6IHtkb2xsYXJzfScpCnByaW50KGYnQ2VudHM6IHtjZW50czowMmR9Jyk="
+    },
+    "c9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "balance = float(input('Initial balance: $'))\nannual_percent = float(input('Annual interest rate (%): '))\nmonthly_rate = __________________________\n\nmonth_1 = _______________________________\nmonth_2 = _______________________________\nmonth_3 = _______________________________\n\n# Print each monthly balance as money.",
+      "cases": [
+        {
+          "name": "Typed 1000 and 6",
+          "inputs": [
+            "1000",
+            "6"
+          ],
+          "expected": "Initial balance: $Annual interest rate (%): After month 1: $1005.00\nAfter month 2: $1010.02\nAfter month 3: $1015.08"
+        },
+        {
+          "name": "Typed 250 and 12",
+          "inputs": [
+            "250",
+            "12"
+          ],
+          "expected": "Initial balance: $Annual interest rate (%): After month 1: $252.50\nAfter month 2: $255.03\nAfter month 3: $257.58"
+        }
+      ],
+      "check": "assert \"for \" not in __source__ and \"while \" not in __source__, \"Do not use a loop: calculate the three months one after another.\"",
+      "answer": "YmFsYW5jZSA9IGZsb2F0KGlucHV0KCdJbml0aWFsIGJhbGFuY2U6ICQnKSkKYW5udWFsX3BlcmNlbnQgPSBmbG9hdChpbnB1dCgnQW5udWFsIGludGVyZXN0IHJhdGUgKCUpOiAnKSkKbW9udGhseV9yYXRlID0gYW5udWFsX3BlcmNlbnQgLyAxMDAgLyAxMgoKbW9udGhfMSA9IGJhbGFuY2UgKiAoMSArIG1vbnRobHlfcmF0ZSkKbW9udGhfMiA9IG1vbnRoXzEgKiAoMSArIG1vbnRobHlfcmF0ZSkKbW9udGhfMyA9IG1vbnRoXzIgKiAoMSArIG1vbnRobHlfcmF0ZSkKCnByaW50KGYnQWZ0ZXIgbW9udGggMTogJHttb250aF8xOi4yZn0nKQpwcmludChmJ0FmdGVyIG1vbnRoIDI6ICR7bW9udGhfMjouMmZ9JykKcHJpbnQoZidBZnRlciBtb250aCAzOiAke21vbnRoXzM6LjJmfScp"
+    },
+    "c10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "r1 = float(input('R1 (ohms): '))\nr2 = float(input('R2 (ohms): '))\nr3 = float(input('R3 (ohms): '))\n\ntotal = __________________________________________\nprint(____________________________________________)",
+      "cases": [
+        {
+          "name": "Typed 10, 20, 20",
+          "inputs": [
+            "10",
+            "20",
+            "20"
+          ],
+          "expected": "R1 (ohms): R2 (ohms): R3 (ohms): Total resistance: 20.00 ohms"
+        },
+        {
+          "name": "Typed 5, 10, 30",
+          "inputs": [
+            "5",
+            "10",
+            "30"
+          ],
+          "expected": "R1 (ohms): R2 (ohms): R3 (ohms): Total resistance: 12.50 ohms"
+        }
+      ],
+      "answer": "cjEgPSBmbG9hdChpbnB1dCgnUjEgKG9obXMpOiAnKSkKcjIgPSBmbG9hdChpbnB1dCgnUjIgKG9obXMpOiAnKSkKcjMgPSBmbG9hdChpbnB1dCgnUjMgKG9obXMpOiAnKSkKCnRvdGFsID0gcjEgKyAocjIgKiByMykgLyAocjIgKyByMykKcHJpbnQoZidUb3RhbCByZXNpc3RhbmNlOiB7dG90YWw6LjJmfSBvaG1zJyk="
+    },
+    "c11": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "import math\n\ntemperature = float(input('Temperature (C): '))\nhumidity = float(input('Relative humidity (0 to 1): '))\n\nf_value = ________________________________________\ndew_point = ______________________________________\nprint(____________________________________________)",
+      "cases": [
+        {
+          "name": "Typed 20 and 0.5",
+          "inputs": [
+            "20",
+            "0.5"
+          ],
+          "expected": "Temperature (C): Relative humidity (0 to 1): Dew point: 9.3 C"
+        },
+        {
+          "name": "Typed 30 and 0.8",
+          "inputs": [
+            "30",
+            "0.8"
+          ],
+          "expected": "Temperature (C): Relative humidity (0 to 1): Dew point: 26.2 C"
+        }
+      ],
+      "check": "assert \"math.log(\" in __source__, \"Use math.log() for the natural logarithm of the humidity.\"",
+      "answer": "aW1wb3J0IG1hdGgKCnRlbXBlcmF0dXJlID0gZmxvYXQoaW5wdXQoJ1RlbXBlcmF0dXJlIChDKTogJykpCmh1bWlkaXR5ID0gZmxvYXQoaW5wdXQoJ1JlbGF0aXZlIGh1bWlkaXR5ICgwIHRvIDEpOiAnKSkKCmZfdmFsdWUgPSAoMTcuMjcgKiB0ZW1wZXJhdHVyZSkgLyAoMjM3LjcgKyB0ZW1wZXJhdHVyZSkgKyBtYXRoLmxvZyhodW1pZGl0eSkKZGV3X3BvaW50ID0gKDIzNy43ICogZl92YWx1ZSkgLyAoMTcuMjcgLSBmX3ZhbHVlKQpwcmludChmJ0RldyBwb2ludDoge2Rld19wb2ludDouMWZ9IEMnKQ=="
+    },
+    "c12": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "import math\n\nEPSILON = 8.854e-12\nq1 = float(input('Charge 1 (C): '))\nq2 = float(input('Charge 2 (C): '))\ndistance = float(input('Distance (m): '))\n\nforce = __________________________________________\nprint(____________________________________________)",
+      "cases": [
+        {
+          "name": "Typed 1e-6, 2e-6, 0.5",
+          "inputs": [
+            "1e-6",
+            "2e-6",
+            "0.5"
+          ],
+          "expected": "Charge 1 (C): Charge 2 (C): Distance (m): Force: 0.07190 N"
+        },
+        {
+          "name": "Typed 3e-6, 3e-6, 0.2",
+          "inputs": [
+            "3e-6",
+            "3e-6",
+            "0.2"
+          ],
+          "expected": "Charge 1 (C): Charge 2 (C): Distance (m): Force: 2.02224 N"
+        }
+      ],
+      "check": "assert \"math.pi\" in __source__, \"Use math.pi for pi.\"",
+      "answer": "aW1wb3J0IG1hdGgKCkVQU0lMT04gPSA4Ljg1NGUtMTIKcTEgPSBmbG9hdChpbnB1dCgnQ2hhcmdlIDEgKEMpOiAnKSkKcTIgPSBmbG9hdChpbnB1dCgnQ2hhcmdlIDIgKEMpOiAnKSkKZGlzdGFuY2UgPSBmbG9hdChpbnB1dCgnRGlzdGFuY2UgKG0pOiAnKSkKCmZvcmNlID0gKHExICogcTIpIC8gKDQgKiBtYXRoLnBpICogRVBTSUxPTiAqIGRpc3RhbmNlICoqIDIpCnByaW50KGYnRm9yY2U6IHtmb3JjZTouNWZ9IE4nKQ=="
+    },
+    "c13": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "# Write your print calls here.",
+      "cases": [
+        {
+          "name": "A five-line face and its label",
+          "check": "lines = __stdout__.rstrip(\"\\n\").split(\"\\n\")\nassert len(lines) == 6, \"Display exactly six lines: a five-line face and then the label.\"\nassert lines[5] == \"Python face\", \"The sixth line must be exactly: Python face\"\nallowed = set(\"()|-\\\\/^o \")\nfor i, line in enumerate(lines[:5], start=1):\n    bad = sorted(set(line) - allowed)\n    assert not bad, f\"Line {i} uses {bad!r}; the face may only use ( ) | - \\\\ / ^ o and spaces.\"\n    assert line.strip(), f\"Line {i} is empty; every line of the face needs some symbols.\"\nassert \"\\\\\" in __stdout__, \"Include at least one backslash in the face; remember it is written \\\\\\\\ in a string literal.\"\n"
+        }
+      ],
+      "answer": "cHJpbnQoJyAvLS0tXFwnKQpwcmludCgnfCBvIG8gfCcpCnByaW50KCd8ICBeICB8JykKcHJpbnQoJ3wgLS0tIHwnKQpwcmludCgnIFxcLS0tLycpCnByaW50KCdQeXRob24nLCAnZmFjZScsIHNlcD0nICcp",
+      "answerNote": "Many faces are acceptable. This one uses a doubled backslash so one backslash appears in the output."
+    }
+  }
+}

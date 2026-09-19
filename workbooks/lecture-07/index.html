@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 7 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-07", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 7 Workbook</h1>
+    <div class="wb-subtitle">Strings</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>This workbook introduces strings as ordered sequences of characters. It includes short checks, a gradual complete program, and coding practice. Reading: §2.4 (p. 41).</p>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>create strings and use concatenation, repetition, membership, and <code>len()</code>;</li>
+    <li>index and slice strings while respecting valid index boundaries;</li>
+    <li>explain string immutability and why string methods return new strings; and</li>
+    <li>use common string methods to clean, inspect, and transform text.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Strings Are Sequences</h2>
+<p>A <strong>string</strong> is text stored as an ordered sequence of characters. A character can be a letter, digit, space, punctuation mark, or other symbol. The characters stay in a fixed order.</p>
+<wb-example id="ex-w01"></wb-example>
+<p>Single and double quotation marks both create strings. The opening and closing marks must match. The quotes mark the boundaries; they are not characters in the stored value.</p>
+<p>The function <code>len()</code> returns a string's number of characters. Spaces and punctuation count.</p>
+<wb-example id="ex-w02"></wb-example>
+<p>An empty string contains no characters. Write it as <code>''</code> or <code>""</code>; its length is zero.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1: Counting characters</div>
+  <p>Count without running Python.</p>
+  <wb-table id="cp1-count">
+    <table>
+      <thead><tr><th>Expression</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>len('Hello!')</code></td><td data-blank="n1"></td></tr>
+        <tr><td><code>len('ice cream')</code></td><td data-blank="n2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why does the space in <code>'ice cream'</code> matter?</p>
+  <wb-short id="cp1-why"></wb-short>
+</div>
+
+<h2 id="s2">2. Joining and Repeating Strings</h2>
+<p>For strings, the <code>+</code> operator means <strong>concatenation</strong>: joining strings end to end. It does not add numerical values.</p>
+<wb-example id="ex-w03"></wb-example>
+<p>The <code>*</code> operator repeats a string a whole number of times.</p>
+<wb-example id="ex-w04"></wb-example>
+<p>Python will not join a string and a number automatically. Use <code>str()</code> to create text from the number first. An f-string from Lecture 6 is also a good choice when the result is mainly output.</p>
+<wb-example id="ex-w05"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2: Building strings</div>
+  <p>Write one expression for each result: join <code>'COMP'</code>, one space, and <code>'1001'</code>; create a line of 20 equals signs; and complete the conversion <code>'Lab ' + ___(4)</code>. Replace each <code>...</code> in the starter, then press <strong>Check</strong>.</p>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<h2 id="s3">3. Character Positions and Indexes</h2>
+<p>An <strong>index</strong> is a character's position in a string. Python starts counting at zero, so index <code>0</code> refers to the first character.</p>
+<table>
+  <tbody>
+    <tr><th>positive</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+    <tr><th></th><td><code>P</code></td><td><code>y</code></td><td><code>t</code></td><td><code>h</code></td><td><code>o</code></td><td><code>n</code></td></tr>
+    <tr><th>negative</th><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr>
+  </tbody>
+</table>
+<wb-example id="ex-w06"></wb-example>
+<p>A negative index counts from the end. Index <code>-1</code> is the last character, <code>-2</code> is the second-last character, and so on.</p>
+<wb-example id="ex-w07"></wb-example>
+<p>For a string of length <code>n</code>, valid positive indexes run from <code>0</code> through <code>n - 1</code>. Valid negative indexes run from <code>-1</code> through <code>-n</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3: Reading indexes</div>
+  <p>Use <code>word = 'Python'</code>.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td><code>word[1]</code> gives</td><td data-blank="i1"></td></tr>
+        <tr><td><code>word[-3]</code> gives</td><td data-blank="i2"></td></tr>
+        <tr><td>The last valid positive index is</td><td data-blank="i3"></td></tr>
+        <tr><td>An expression that gets the last character without using <code>5</code></td><td data-blank="last"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s4">4. Indexes Must Be in Range</h2>
+<p>An index is <strong>in range</strong> when that character position exists. Asking for one character outside the valid range raises an <code>IndexError</code>.</p>
+<wb-example id="ex-w08"></wb-example>
+<p>Python reports an error similar to:</p>
+<pre class="wb-error">IndexError: string index out of range</pre>
+<p>The string has length 6, but its positive indexes stop at 5. A length is a count; an index is a position that starts at zero. Therefore, <code>word[len(word)]</code> is always one position too far for a non-empty string.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4: Checking a boundary</div>
+  <p>Use <code>city = 'St. John\'s'</code>.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>How many characters are in <code>city</code>?</td><td data-blank="n"></td></tr>
+        <tr><td>What is the last valid positive index?</td><td data-blank="last"></td></tr>
+        <tr><td>What error would <code>city[20]</code> raise?</td><td data-blank="err"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s5">5. Slicing a String</h2>
+<p>A <strong>slice</strong> selects a run of characters. Write <code>text[start:end]</code>. The slice includes <code>start</code> but excludes <code>end</code>.</p>
+<wb-example id="ex-w09"></wb-example>
+<p>The slice <code>word[0:3]</code> takes indexes 0, 1, and 2. Index 3 is the boundary where the slice stops. The length of <code>text[a:b]</code> is normally <code>b - a</code> when both boundaries are in range and <code>a &lt;= b</code>.</p>
+<p>Omit <code>start</code> to begin at the first character. Omit <code>end</code> to continue through the last character.</p>
+<wb-example id="ex-w10"></wb-example>
+<p>Unlike indexing, slicing may use a boundary past the end. Python returns the available characters instead of raising an error. For example, <code>word[3:20]</code> is <code>'hon'</code>.</p>
+<p>A useful identity is <code>text[:k] + text[k:] == text</code>. The two slices meet at the same boundary without losing or repeating a character.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5: Writing slices</div>
+  <p>Use <code>course = 'COMP1001'</code>. Write one slice for each result.</p>
+  <wb-table id="cp5-slices">
+    <table>
+      <thead><tr><th>Result</th><th>Slice</th></tr></thead>
+      <tbody>
+        <tr><td><code>'COMP'</code></td><td data-blank="s1"></td></tr>
+        <tr><td><code>'1001'</code></td><td data-blank="s2"></td></tr>
+        <tr><td><code>'MP1'</code></td><td data-blank="s3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain why the end boundary is not part of a slice.</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. Strings Are Immutable</h2>
+<p><strong>Immutable</strong> means that an existing value cannot be changed in place. Python does not allow assignment to one position in a string.</p>
+<wb-example id="ex-w11"></wb-example>
+<p>Python reports an error similar to:</p>
+<pre class="wb-error">TypeError: 'str' object does not support item assignment</pre>
+<p>Build a new string instead. A name may then be assigned to that new value.</p>
+<wb-example id="ex-w12"></wb-example>
+<p>The original string remains unchanged. The name <code>new_word</code> refers to a different string.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6: Building a replacement</div>
+  <p>Use <code>label = 'cat'</code>. Write an expression that builds <code>'hat'</code> from <code>'h'</code> and a slice of <code>label</code>.</p>
+  <wb-table id="cp6-expr">
+    <table>
+      <tbody><tr><td style="width: 40%">Expression</td><td data-blank="e"></td></tr></tbody>
+    </table>
+  </wb-table>
+  <p>Does that expression change the string stored in <code>label</code>? Explain.</p>
+  <wb-short id="cp6-why"></wb-short>
+</div>
+
+<h2 id="s7">7. Methods Create New Strings</h2>
+<p>A <strong>method</strong> is an operation called with dot notation after a value. String methods return new values; they do not change the original string.</p>
+<wb-example id="ex-w13"></wb-example>
+<p>Useful methods for transforming text include:</p>
+<ul>
+  <li><code>.upper()</code> returns an uppercase version;</li>
+  <li><code>.lower()</code> returns a lowercase version;</li>
+  <li><code>.strip()</code> removes whitespace from both ends; and</li>
+  <li><code>.replace(old, new)</code> replaces every occurrence of <code>old</code>.</li>
+</ul>
+<wb-example id="ex-w14"></wb-example>
+<p>If you need to keep a method's result, assign it. Calling <code>message.upper()</code> on its own creates a value and then discards it.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7: Keeping method results</div>
+  <p>Write statements that remove the outer spaces from <code>title</code>, change the result to lowercase, and store the final text in <code>clean_title</code>. The final <code>print</code> is there so that Check can see your result.</p>
+  <wb-exercise id="cp7"></wb-exercise>
+  <p>Why must the returned value be stored?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8">8. Inspecting and Separating Text</h2>
+<p>Some operations report information about text rather than transforming it.</p>
+<ul>
+  <li><code>.find(part)</code> returns the index where <code>part</code> first appears, or <code>-1</code> when it is absent.</li>
+  <li><code>.count(part)</code> returns the number of occurrences.</li>
+  <li><code>part in text</code> returns <code>True</code> or <code>False</code>.</li>
+</ul>
+<wb-example id="ex-w15"></wb-example>
+<p>Use <code>in</code> when you need only yes or no. Use <code>.find()</code> when you need the first position. Always check a <code>.find()</code> result before using it as an index: <code>-1</code> means “not found,” but it is also a valid negative index.</p>
+<p>The method <code>.split(separator)</code> separates text into pieces. Python shows the pieces inside square brackets. This displayed value is a <strong>list</strong>; list operations are taught in a later lecture.</p>
+<wb-example id="ex-w16"></wb-example>
+<p>Without an argument, <code>.split()</code> separates at whitespace.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8: Choosing an inspection operation</div>
+  <p>Use <code>text = 'mississippi'</code>.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>What does <code>text.find('ss')</code> return?</td><td data-blank="f"></td></tr>
+        <tr><td>What does <code>text.count('i')</code> return?</td><td data-blank="c"></td></tr>
+        <tr><td>Write an expression that asks whether <code>'sip'</code> occurs in <code>text</code>.</td><td data-blank="m"></td></tr>
+        <tr><td>Which operation should you use if you need the first position?</td><td data-blank="op"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9">9. Looking at the Digits of a Number</h2>
+<p>An integer is not a string, so it has no character length or indexes. Use <code>str()</code> to create a string representation first.</p>
+<wb-example id="ex-w17"></wb-example>
+<p>The variable <code>number</code> still refers to an <code>int</code>. The variable <code>digits</code> refers to a new <code>str</code>. This is useful when the written digits matter more than their numerical value.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9: Treating digits as characters</div>
+  <p>Use <code>code = 70921</code>.</p>
+  <wb-table id="cp9">
+    <table>
+      <thead><tr><th>Question</th><th>Expression</th></tr></thead>
+      <tbody>
+        <tr><td>How many digits are displayed in <code>code</code>?</td><td data-blank="n"></td></tr>
+        <tr><td>The last digit as a one-character string</td><td data-blank="d"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<p>Read the program. Predict its behaviour before you run it.</p>
+<wb-example id="ex-w18"></wb-example>
+<p><strong>1.</strong> What string is stored in <code>title</code>?</p>
+<wb-table id="fr1">
+  <table>
+    <tbody><tr><td style="width: 40%"><code>title</code></td><td data-blank="t"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> Which indexes are included in <code>title[:12]</code>?</p>
+<wb-table id="fr2">
+  <table>
+    <tbody><tr><td style="width: 40%">Indexes</td><td data-blank="r"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>3.</strong> Write all four output lines exactly.</p>
+<wb-table id="fr3">
+  <table>
+    <thead><tr><th>Output line</th><th>Text</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="l1"></td></tr>
+      <tr><td>2</td><td data-blank="l2"></td></tr>
+      <tr><td>3</td><td data-blank="l3"></td></tr>
+      <tr><td>4</td><td data-blank="l4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>4.</strong> Does <code>.strip()</code> change the string stored in <code>raw_title</code>? Explain.</p>
+<wb-short id="fr4"></wb-short>
+<p>Then run the program to confirm your predictions.</p>
+<wb-example id="ex-w18-run"></wb-example>
+
+<h2 id="together">Putting It All Together</h2>
+<p>This program will turn two untidy inputs into a simple text badge. It will:</p>
+<ol>
+  <li>remove outer whitespace from a name and a course code;</li>
+  <li>store the course code in uppercase;</li>
+  <li>join the cleaned values with <code>' | '</code>;</li>
+  <li>repeat <code>'-'</code> to make a border exactly as long as the badge; and</li>
+  <li>report whether <code>'COMP'</code> occurs in the course code.</li>
+</ol>
+<p>First, clean and transform the inputs:</p>
+<wb-example id="ex-w19"></wb-example>
+<p>Next, join the pieces and use the new string's length:</p>
+<pre><code>badge = name + <span class="wb-str">' | '</span> + code
+border = <span class="wb-str">'-'</span> * <span class="wb-fn">len</span>(badge)</code></pre>
+<p>Finally, print the result and perform the membership test. Complete the starter program by replacing each <code>...</code>. Press <strong>Run</strong> to try it with your own inputs, then <strong>Check</strong> to test it against the cases below.</p>
+<table>
+  <thead><tr><th>Name entered</th><th>Course code entered</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>  Ada Lovelace  </code></td><td><code> comp1001 </code></td><td><pre class="wb-output">-----------------------
+Ada Lovelace | COMP1001
+-----------------------
+COMP course: True</pre></td></tr>
+    <tr><td><code>Li</code></td><td><code>art</code></td><td><pre class="wb-output">--------
+Li | ART
+--------
+COMP course: False</pre></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="badge"></wb-exercise>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>These exercises move from short traces to complete programs. Each task uses only strings and ideas introduced earlier in this workbook or earlier lectures. For each program, write in the starter shell, then press <strong>Check</strong>: it runs your program with each sample input and compares the displayed output.</p>
+
+<h3>1. Trace string expressions</h3>
+<p>Use <code>s = 'ice'</code> and <code>t = 'cream'</code>. Find the value and type of each expression without running Python.</p>
+<wb-table id="cpr1">
+  <table>
+    <thead><tr><th>Expression</th><th>Value</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><code>len(s) + len(t)</code></td><td data-blank="v1"></td><td data-blank="t1"></td></tr>
+      <tr><td><code>s[1] + t[2]</code></td><td data-blank="v2"></td><td data-blank="t2"></td></tr>
+      <tr><td><code>s + t</code></td><td data-blank="v3"></td><td data-blank="t3"></td></tr>
+      <tr><td><code>t + s</code></td><td data-blank="v4"></td><td data-blank="t4"></td></tr>
+      <tr><td><code>s * 2</code></td><td data-blank="v5"></td><td data-blank="t5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>2. Explain two kinds of addition</h3>
+<p>Explain what each segment computes and why the two results differ.</p>
+<wb-example id="ex-p02"></wb-example>
+<wb-short id="cpr2"></wb-short>
+
+<h3>3. Select first, last, and middle characters</h3>
+<p>Write expressions that get the first character, last character, and middle character of a string named <code>word</code>. Assume its length is odd. Do not use a fixed numeric index.</p>
+<wb-table id="cpr3">
+  <table>
+    <thead><tr><th>Character</th><th>Expression</th></tr></thead>
+    <tbody>
+      <tr><td>First</td><td data-blank="first"></td></tr>
+      <tr><td>Last</td><td data-blank="last"></td></tr>
+      <tr><td>Middle (odd length)</td><td data-blank="mid"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>4. Look up a weekday abbreviation</h3>
+<p>Write a complete program that reads a day number from 0 through 6, where 0 is Sunday. Store <code>'SunMonTueWedThuFriSat'</code> once, then use multiplication and slicing to print the matching three-letter abbreviation. Assume the input is in range.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>0</code></td><td><code>Sun</code></td></tr>
+    <tr><td><code>6</code></td><td><code>Sat</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr4"></wb-exercise>
+
+<h3>5. Swap two letters everywhere</h3>
+<p>The string <code>word</code> may contain the letters stored in <code>first</code> and <code>second</code>. Write three <code>.replace()</code> calls that swap every occurrence of those letters. Use <code>'*'</code> as a temporary character. Then determine the result for the values below.</p>
+<p class="wb-meta">Keep the line <code>word = 'seesaw'</code> as given. The checker swaps it for <code>word = 'excess'</code> to test a second case.</p>
+<wb-exercise id="cpr5"></wb-exercise>
+<wb-table id="cpr5-value">
+  <table>
+    <tbody><tr><td style="width: 40%">Final value of <code>word</code></td><td data-blank="v"></td></tr></tbody>
+  </table>
+</wb-table>
+
+<h3>6. Select middle characters</h3>
+<p>Write expressions for a string named <code>text</code> that return:</p>
+<ol>
+  <li>its first character;</li>
+  <li>its last character;</li>
+  <li>its single middle character when its length is odd; and</li>
+  <li>its middle two characters when its length is even.</li>
+</ol>
+<p>Do not use fixed numeric indexes. Let the midpoint be <code>middle = len(text) // 2</code>. The starter prints all four for <code>'Python'</code>; the checker also runs it with <code>text = 'racecar'</code>.</p>
+<wb-exercise id="cpr6"></wb-exercise>
+
+<h3>7. Look up a month abbreviation</h3>
+<p>Write a complete program that reads a month number from 1 through 12 and prints its three-letter abbreviation. Store all abbreviations once in <code>'JanFebMarAprMayJunJulAugSepOctNovDec'</code>. Use calculated slice boundaries, and assume the input is in range.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1</code></td><td><code>Jan</code></td></tr>
+    <tr><td><code>12</code></td><td><code>Dec</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr7"></wb-exercise>
+
+<h3>8. Abbreviate a long word</h3>
+<p>Write a complete program that reads a word with at least six characters. Print its first three characters, three periods, and its last three characters.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Mississippi</code></td><td><code>Mis...ppi</code></td></tr>
+    <tr><td><code>Python</code></td><td><code>Pyt...hon</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr8"></wb-exercise>
+
+<h3>9. Format a telephone number</h3>
+<p>A user enters ten digits with no spaces or punctuation. Write a complete program that prints the digits in the form <code>(709) 555-0123</code>. Keep the input as a string so that slicing preserves every digit.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>7095550123</code></td><td><code>(709) 555-0123</code></td></tr>
+    <tr><td><code>0123456789</code></td><td><code>(012) 345-6789</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr9"></wb-exercise>
+
+<h3>10. Build a file name</h3>
+<p>Write a complete program that reads a folder, a file name, and an extension. Print them as one path using <code>/</code> between the folder and file name and <code>.</code> before the extension. The user enters the extension without a dot.</p>
+<table>
+  <thead><tr><th>Folder</th><th>File name</th><th>Extension</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>notes</code></td><td><code>lecture07</code></td><td><code>txt</code></td><td><code>notes/lecture07.txt</code></td></tr>
+    <tr><td><code>images</code></td><td><code>logo</code></td><td><code>png</code></td><td><code>images/logo.png</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr10"></wb-exercise>
+
+<h3>11. Insert a comma</h3>
+<p>Write a complete program that reads exactly five digits as a string and prints them with a comma after the first two digits.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>23456</code></td><td><code>23,456</code></td></tr>
+    <tr><td><code>10000</code></td><td><code>10,000</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr11"></wb-exercise>
+
+<h3>12. Format thousands</h3>
+<p>Write a complete program that reads a whole number from 1,000 through 999,999 as a string. Insert one comma before its final three digits. Do not convert the input to an integer.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1000</code></td><td><code>1,000</code></td></tr>
+    <tr><td><code>999999</code></td><td><code>999,999</code></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr12"></wb-exercise>
+
+<h3>13. Frame a name with text</h3>
+<p>Write a complete program that reads a name and prints it in a rectangular text frame. Put one space on each side of the name. Build the top and bottom lines by repeating <code>'-'</code>; do not type a fixed number of hyphens.</p>
+<table>
+  <thead><tr><th>Input</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Ada</code></td><td><pre class="wb-output">+-----+
+| Ada |
++-----+</pre></td></tr>
+    <tr><td><code>Li</code></td><td><pre class="wb-output">+----+
+| Li |
++----+</pre></td></tr>
+  </tbody>
+</table>
+<wb-exercise id="cpr13"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 7 Workbook.</p>
+</main>
+</body>
+</html>

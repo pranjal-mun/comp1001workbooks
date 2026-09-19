@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 7 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-07-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 7 Boss Problems</h1>
+    <div class="wb-subtitle">Strings</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 7 covered: <code>str()</code> and <code>len()</code>, indexes and slices, <code>+</code> and <code>*</code> on strings, the methods <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, and <code>.find()</code>, and f-strings. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Some problems start with their values already assigned at the top of the program; others read a value with <code>input()</code>. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, swapping in different values or typing different answers each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="digits" data-toc-title="👹 Digits as characters">👹 Boss 1: Digits as Characters</h2>
+<p>The program starts with a four-digit integer in <code>number</code>. Print the four digits added together, and their sum, on one line, like this for 3141:</p>
+<pre class="wb-output">3 + 1 + 4 + 1 = 9</pre>
+<p>In Lecture 5 this job was done with <code>//</code> and <code>%</code>. This time treat the number as text. <code>str(number)</code> gives the string <code>'3141'</code>, and an index picks out one character: <code>'3141'[0]</code> is <code>'3'</code>. Each character is a one-character string. Turn it back into a number with <code>int()</code> before adding. Adding the characters without converting joins them into <code>'3141'</code> instead.</p>
+<table>
+  <thead><tr><th><code>number</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>3141</td><td><code>3 + 1 + 4 + 1 = 9</code></td></tr>
+    <tr><td>8642</td><td><code>8 + 6 + 4 + 2 = 20</code></td></tr>
+    <tr><td>1000</td><td><code>1 + 0 + 0 + 0 = 1</code></td></tr>
+    <tr><td>2026</td><td><code>2 + 0 + 2 + 6 = 10</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep <code>number</code> as an <code>int</code>. Make a text copy with <code>str()</code>.</li>
+    <li>Pick out each digit with an index, as in <code>digits[0]</code>.</li>
+    <li>No <code>//</code> and no <code>%</code>.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Print everything on one line with a single <code>print()</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep <code>number = 3141</code> unchanged. The checker will replace it with the other numbers.</p>
+<wb-exercise id="digits"></wb-exercise>
+
+<h2 id="label" data-toc-title="👾 Mailing label">👾 Boss 2: Mailing Label</h2>
+<p>Memorial University's mailing address is 230 Elizabeth Avenue, St. John's, NL A1C 5S7. Canada Post asks for an address in capital letters, with the city, the province, two spaces, and then the postal code on the last line.</p>
+<p>The program starts with the five parts of an address in <code>name</code>, <code>street</code>, <code>city</code>, <code>province</code>, and <code>postal</code>. Some of them are typed in lowercase. Print the label in capitals, then a line of dashes exactly as long as the address line:</p>
+<pre class="wb-output">PRANJAL PATRA
+230 ELIZABETH AVENUE
+ST. JOHN'S NL  A1C 5S7
+----------------------</pre>
+<p>Use <code>.upper()</code> to make the capitals. Build the third line by joining the parts with <code>+</code>, then use <code>len()</code> on it and repeat <code>'-'</code> that many times with <code>*</code>. Every method returns a new string. The five variables at the top keep their original text.</p>
+<table>
+  <thead><tr><th><code>name</code></th><th><code>street</code></th><th><code>city</code>, <code>province</code>, <code>postal</code></th><th>Last two lines</th></tr></thead>
+  <tbody>
+    <tr><td><code>'Pranjal Patra'</code></td><td><code>'230 Elizabeth Avenue'</code></td><td><code>"St. John's"</code>, <code>'nl'</code>, <code>'a1c 5s7'</code></td><td><code>ST. JOHN'S NL  A1C 5S7</code> / 22 dashes</td></tr>
+    <tr><td><code>'Ada Lovelace'</code></td><td><code>'12 Water Street'</code></td><td><code>"St. John's"</code>, <code>'nl'</code>, <code>'A1C 1A1'</code></td><td><code>ST. JOHN'S NL  A1C 1A1</code> / 22 dashes</td></tr>
+    <tr><td><code>'Oliver Poodle'</code></td><td><code>'1 Bark Lane'</code></td><td><code>'Corner Brook'</code>, <code>'nl'</code>, <code>'a2h 6p9'</code></td><td><code>CORNER BROOK NL  A2H 6P9</code> / 24 dashes</td></tr>
+    <tr><td><code>'Sabina'</code></td><td><code>'9 Whisker Way'</code></td><td><code>'gander'</code>, <code>'Nl'</code>, <code>'a1v 1w8'</code></td><td><code>GANDER NL  A1V 1W8</code> / 18 dashes</td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>.upper()</code> for the capitals. Do not retype the values.</li>
+    <li>Make the dashes with <code>'-' * len(...)</code>.</li>
+    <li>Put exactly two spaces between the province and the postal code.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Print four lines: name, street, address line, dashes.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the five assignment lines unchanged. The checker will replace them with the other addresses.</p>
+<wb-exercise id="label"></wb-exercise>
+
+<h2 id="email" data-toc-title="🐉 MUN email">🐉 Boss 3: MUN Email Address</h2>
+<p>Every new student and instructor at Memorial gets an email address. In this problem the username is the first letter of the first name followed by the whole last name, all in lowercase, at <code>mun.ca</code>. Pranjal Patra becomes <code>ppatra@mun.ca</code>.</p>
+<p>The program starts with a full name in <code>name</code>: a first name, one space, and a last name. Print the initials, each capital followed by a full stop, and then the email address:</p>
+<pre class="wb-output">Initials: P.P.
+Email: ppatra@mun.ca</pre>
+<p>The name is different in every run. Do not use a fixed index. <code>name.find(' ')</code> returns the index of the space. The slice <code>name[:space]</code> stops just before it and gives the first name; <code>name[space + 1:]</code> starts just after it and gives the last name. In one run the name is typed in lowercase. Use <code>.upper()</code> for the initials and <code>.lower()</code> for the address.</p>
+<table>
+  <thead><tr><th><code>name</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>'Pranjal Patra'</code></td><td><code>Initials: P.P.</code> / <code>Email: ppatra@mun.ca</code></td></tr>
+    <tr><td><code>'Ada Lovelace'</code></td><td><code>Initials: A.L.</code> / <code>Email: alovelace@mun.ca</code></td></tr>
+    <tr><td><code>'grace hopper'</code></td><td><code>Initials: G.H.</code> / <code>Email: ghopper@mun.ca</code></td></tr>
+    <tr><td><code>'Oliver Poodle'</code></td><td><code>Initials: O.P.</code> / <code>Email: opoodle@mun.ca</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Find the space with <code>.find(' ')</code>. No fixed index like <code>name[8]</code>.</li>
+    <li>Cut the first and last names out with slices.</li>
+    <li>Use <code>.upper()</code> for the initials and <code>.lower()</code> for the address.</li>
+    <li>No <code>.split()</code>, <code>.title()</code>, or <code>.capitalize()</code>, and no <code>if</code> statements.</li>
+    <li>Print two lines: the initials, then the email address.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep <code>name = 'Pranjal Patra'</code> unchanged. The checker will replace it with the other names.</p>
+<wb-exercise id="email"></wb-exercise>
+
+<h2 id="tidy" data-toc-title="💀 Clean up the name">💀 Boss 4: Clean Up the Name</h2>
+<p>A sign-up form for COMP 1001 asks for a full name, and people often type extra spaces at the ends and capitals in the wrong places. <code>'  pRANJAL patra '</code> should be treated as <code>Pranjal Patra</code>.</p>
+<p>Read the name from the keyboard into <code>raw</code>. Fix it so that each of the two names starts with one capital and continues in lowercase. Then print a greeting, a roster line with the last name in capitals, and a count of the characters typed and the characters kept:</p>
+<pre class="wb-shell"><span class="wb-prompt">Name: </span><span class="wb-typed">  pRANJAL patra </span>
+Hello, Pranjal Patra!
+Roster: PATRA, Pranjal
+Typed 16 characters, kept 13.</pre>
+<p>Start with <code>.strip()</code> to remove the outer spaces, and store the result under a new name. A string cannot be changed in place, and the checker looks at <code>raw</code> afterwards to make sure it is still exactly what was typed. Then use <code>.find(' ')</code> and slices to separate the first name from the last name, and rebuild each one as its first character in <code>.upper()</code> plus the rest in <code>.lower()</code>. The characters kept are the two tidy names plus the one space between them.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>'  pRANJAL patra '</code></td><td><code>Hello, Pranjal Patra!</code> / <code>Roster: PATRA, Pranjal</code> / <code>Typed 16 characters, kept 13.</code></td></tr>
+    <tr><td><code>'ada LOVELACE  '</code></td><td><code>Hello, Ada Lovelace!</code> / <code>Roster: LOVELACE, Ada</code> / <code>Typed 14 characters, kept 12.</code></td></tr>
+    <tr><td><code>' oliver poodle'</code></td><td><code>Hello, Oliver Poodle!</code> / <code>Roster: POODLE, Oliver</code> / <code>Typed 14 characters, kept 13.</code></td></tr>
+    <tr><td><code>'SABINA cat '</code></td><td><code>Hello, Sabina Cat!</code> / <code>Roster: CAT, Sabina</code> / <code>Typed 11 characters, kept 10.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Remove the outer spaces with <code>.strip()</code>, and keep <code>raw</code> exactly as typed.</li>
+    <li>Find the space with <code>.find(' ')</code> and cut the names apart with slices.</li>
+    <li>Fix the capitals with <code>.upper()</code> and <code>.lower()</code>. No <code>.title()</code>, <code>.capitalize()</code>, or <code>.split()</code>.</li>
+    <li>Count the characters with <code>len()</code>.</li>
+    <li>No <code>if</code> statements.</li>
+    <li>Print three lines: the greeting, the roster line, and the character counts.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>raw = input('Name: ')</code> unchanged. The checker will type the other names, spaces included.</p>
+<wb-exercise id="tidy"></wb-exercise>
+
+</main>
+</body>
+</html>

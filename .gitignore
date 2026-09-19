@@ -1,0 +1,7 @@
+# OS / editor noise
+.DS_Store
+.claude/
+__pycache__/
+AGENTS.md
+IDEA.md
+CLAUDE.md

@@ -1,0 +1,886 @@
+{
+  "id": "lecture-05",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 5 Workbook",
+  "subtitle": "Arithmetic, expressions, and modules",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "print(8 + 5)\nprint(8 * 5)\nprint(2 ** 5)",
+      "output": "13\n40\n32"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "16"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "8"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "48"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "27"
+          ]
+        }
+      }
+    },
+    "cp1-power": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "op": {
+          "accept": [
+            "**"
+          ],
+          "placeholder": "operator",
+          "width": "8rem"
+        }
+      }
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "print(17 / 5)\nprint(17 // 5)\nprint(17 % 5)",
+      "output": "3.4\n3\n2"
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "total_minutes = 137\nhours = total_minutes // 60\nminutes = total_minutes % 60\n\nprint(hours)\nprint(minutes)",
+      "output": "2\n17"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "53 // 8",
+            "53//8"
+          ],
+          "placeholder": "expression",
+          "width": "9rem"
+        },
+        "v1": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "e2": {
+          "accept": [
+            "53 % 8",
+            "53%8"
+          ],
+          "placeholder": "expression",
+          "width": "9rem"
+        },
+        "v2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        }
+      }
+    },
+    "cp2-check": {
+      "type": "example",
+      "code": "print(53 // 8)\nprint(53 % 8)"
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "print(2 + 3 * 4)\nprint((2 + 3) * 4)\nprint(2 ** 3 * 4)",
+      "output": "14\n20\n32"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "4"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "24"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "8.0"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "3.6"
+          ]
+        }
+      }
+    },
+    "cp3-fix": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 2,
+      "maxLines": 6,
+      "starter": "print(4 + 6 / 2)",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "5.0"
+        }
+      ],
+      "check": "src = __source__.replace(\" \", \"\")\nassert \"(4+6)\" in src, \"Group the addition with parentheses so it happens before the division: (4 + 6).\"\nassert \"/2\" in src, \"Keep the division by 2.\"\nassert \"5.0\" not in src, \"Let Python compute the value; do not print 5.0 directly.\"",
+      "answer": "cHJpbnQoKDQgKyA2KSAvIDIp"
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "print(3 * 2)\nprint(3 * 2.0)\nprint(4 / 2)",
+      "output": "6\n6.0\n2.0"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "value"
+        },
+        "t1": {
+          "accept": [
+            "int"
+          ],
+          "placeholder": "type"
+        },
+        "v2": {
+          "accept": [
+            "7.0"
+          ],
+          "placeholder": "value"
+        },
+        "t2": {
+          "accept": [
+            "float"
+          ],
+          "placeholder": "type"
+        },
+        "v3": {
+          "accept": [
+            "3.0"
+          ],
+          "placeholder": "value"
+        },
+        "t3": {
+          "accept": [
+            "float"
+          ],
+          "placeholder": "type"
+        },
+        "v4": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value"
+        },
+        "t4": {
+          "accept": [
+            "int"
+          ],
+          "placeholder": "type"
+        }
+      }
+    },
+    "cp4-check": {
+      "type": "example",
+      "code": "print(5 + 2, type(5 + 2))\nprint(5 + 2.0, type(5 + 2.0))\nprint(9 / 3, type(9 / 3))\nprint(9 // 3, type(9 // 3))"
+    },
+    "ex-w06": {
+      "type": "example",
+      "code": "print(int('42'))\nprint(float('3.5'))\nprint(str(42))\nprint(int(3.9))",
+      "output": "42\n3.5\n42\n3"
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "print(round(3.9))\nprint(round(3.14159, 2))",
+      "output": "4\n3.14"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "8"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "9"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "8.76"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "8.75"
+          ]
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VHJ1bmNhdGluZyAoYGludCg4Ljc1KWApIGRpc2NhcmRzIHRoZSBmcmFjdGlvbmFsIHBhcnQsIG1vdmluZyB0b3dhcmQgemVybywgc28gdGhlIHJlc3VsdCBpcyA4LiBSb3VuZGluZyAoYHJvdW5kKDguNzUpYCkgY2hvb3NlcyB0aGUgbmVhcmVzdCB2YWx1ZSBhdCB0aGUgcmVxdWVzdGVkIHByZWNpc2lvbiwgc28gdGhlIHJlc3VsdCBpcyA5OyBleGFjdGx5IGhhbGZ3YXkgdmFsdWVzIGdvIHRvIHRoZSBldmVuIGNob2ljZS4="
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "result = 0.1 + 0.2\nprint(result)",
+      "output": "0.30000000000000004"
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "RmxvYXRzIGFyZSBzdG9yZWQgaW4gYmluYXJ5LiBNYW55IGRlY2ltYWwgZnJhY3Rpb25zIChzdWNoIGFzIDAuMSkgbmVlZCBpbmZpbml0ZWx5IG1hbnkgYmluYXJ5IGRpZ2l0cywgYnV0IGEgZmxvYXQgaGFzIGxpbWl0ZWQgc3RvcmFnZSwgc28gdGhlIHN0b3JlZCB2YWx1ZSBpcyB0aGUgbmVhcmVzdCByZXByZXNlbnRhYmxlIGFwcHJveGltYXRpb24u"
+    },
+    "cp6-round": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIGByb3VuZGAgcHJvZHVjZXMgYSBuZXcgcm91bmRlZCByZXN1bHQgZm9yIGRpc3BsYXkuIEl0IGRvZXMgbm90IGNoYW5nZSBob3cgdGhlIGVhcmxpZXIgdmFsdWVzIHdlcmUgc3RvcmVkIGFuZCBkb2VzIG5vdCB1bmRvIHRoZWlyIGFwcHJveGltYXRpb24gZXJyb3JzLg=="
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "import math\n\nprint(math.sqrt(81))\nprint(math.pi)",
+      "output": "9.0\n3.141592653589793"
+    },
+    "ex-w10": {
+      "type": "example",
+      "code": "from math import sqrt\nprint(sqrt(81))",
+      "output": "9.0"
+    },
+    "cp7": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 3,
+      "maxLines": 6,
+      "starter": "import __________\nanswer = __________.sqrt(49)\nprint(answer)",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "7.0"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nassert \"math.sqrt(49)\" in __source__.replace(\" \", \"\"), \"Call the function through its module: math.sqrt(49).\"",
+      "answer": "aW1wb3J0IG1hdGgKYW5zd2VyID0gbWF0aC5zcXJ0KDQ5KQpwcmludChhbnN3ZXIp"
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHByZWZpeCBgbWF0aC5gIHNob3dzIHRoZSByZWFkZXIgd2hlcmUgYHNxcnRgIGNvbWVzIGZyb206IGl0IGlzIHN1cHBsaWVkIGJ5IHRoZSBtYXRoIG1vZHVsZSwgbm90IGRlZmluZWQgaW4gdGhpcyBwcm9ncmFtLiBBIHJlYWRlciBjYW4gbG9vayB1cCB0aGUgZnVuY3Rpb24ncyBzb3VyY2UsIGFuZCBhbiB1bnJlbGF0ZWQgbG9jYWwgbmFtZSBgc3FydGAgY2Fubm90IHJlcGxhY2UgYG1hdGguc3FydGAu"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "h": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "he": {
+          "accept": [
+            "185 // 60",
+            "185//60"
+          ],
+          "placeholder": "expression",
+          "width": "9rem"
+        },
+        "m": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "me": {
+          "accept": [
+            "185 % 60",
+            "185%60"
+          ],
+          "placeholder": "expression",
+          "width": "9rem"
+        }
+      }
+    },
+    "ex-w11": {
+      "type": "example",
+      "code": "import math\n\ntotal_seconds = 3675\nhours = total_seconds // 3600\nremaining = total_seconds % 3600\nminutes = remaining // 60\n\nprint(hours)\nprint(minutes)\nprint(round(math.sqrt(50), 2))"
+    },
+    "fr1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "1"
+          ]
+        },
+        "l2": {
+          "accept": [
+            "1"
+          ]
+        },
+        "l3": {
+          "accept": [
+            "7.07"
+          ]
+        }
+      }
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Rmxvb3IgZGl2aXNpb24gY291bnRzIGNvbXBsZXRlIHVuaXRzOiBgdG90YWxfc2Vjb25kcyAvLyAzNjAwYCBpcyB0aGUgbnVtYmVyIG9mIGNvbXBsZXRlIGhvdXJzIGFuZCBgcmVtYWluaW5nIC8vIDYwYCB0aGUgbnVtYmVyIG9mIGNvbXBsZXRlIG1pbnV0ZXMuIEFueSBmcmFjdGlvbiBvZiBhbiBob3VyIG9yIG1pbnV0ZSBpcyBkaXNjYXJkZWQsIHdoaWNoIGlzIHdoYXQgYSBjbG9jayBkaXNwbGF5IG5lZWRzLg=="
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YHRvdGFsX3NlY29uZHMgJSAzNjAwYCBrZWVwcyB0aGUgc2Vjb25kcyBsZWZ0IG92ZXIgYWZ0ZXIgdGhlIGNvbXBsZXRlIGhvdXJzIGFyZSByZW1vdmVkOiA3NSBzZWNvbmRzIGhlcmUuIFRoYXQgcmVtYWluZGVyIGlzIHRoZW4gdXNlZCB0byBmaW5kIHRoZSBjb21wbGV0ZSBtaW51dGVzLg=="
+    },
+    "fr4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "name": {
+          "accept": [
+            "math",
+            "math.",
+            "math.sqrt",
+            "import math"
+          ],
+          "placeholder": "name",
+          "width": "10rem"
+        }
+      }
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "13"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "343"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "4"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "5"
+          ]
+        },
+        "v5": {
+          "accept": [
+            "2.5"
+          ]
+        }
+      }
+    },
+    "pa-check": {
+      "type": "example",
+      "code": "print(5 + 2 ** 3)\nprint((5 + 2) ** 3)\nprint(29 // 6)\nprint(29 % 6)\nprint(10 / 4)"
+    },
+    "pb": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "/"
+          ],
+          "placeholder": "operator",
+          "width": "6rem"
+        },
+        "o2": {
+          "accept": [
+            "//"
+          ],
+          "placeholder": "operator",
+          "width": "6rem"
+        },
+        "o3": {
+          "accept": [
+            "%"
+          ],
+          "placeholder": "operator",
+          "width": "6rem"
+        }
+      }
+    },
+    "pb-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXNlIGAvYCB0byBkaXZpZGUgdGhlIHN1bSBieSAzIHdpdGhvdXQgZGlzY2FyZGluZyBhIGZyYWN0aW9uLiBVc2UgYC8vYCB0byBjb3VudCB3aG9sZSB0ZWFtcyBvZiBmb3VyLiBVc2UgYCVgIHRvIGZpbmQgdGhlIHBlb3BsZSBsZWZ0IG92ZXIgYWZ0ZXIgdGhlIGNvbXBsZXRlIHRlYW1zLg=="
+    },
+    "pc": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "12"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "13"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "12.99"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "12.99"
+          ]
+        }
+      }
+    },
+    "pc-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YGludCgxMi45OSlgIHRydW5jYXRlcyB0b3dhcmQgemVybywgZ2l2aW5nIDEyLiBgcm91bmQoMTIuOTkpYCByb3VuZHMgdG8gdGhlIG5lYXJlc3QgaW50ZWdlciwgMTMuIGByb3VuZCgxMi45OTQsIDIpYCByb3VuZHMgdG8gdHdvIGRlY2ltYWwgcGxhY2VzLCAxMi45OS4gYGZsb2F0KCcxMi45OScpYCBjb252ZXJ0cyB0aGUgdGV4dCB0byB0aGUgZmxvYXQgMTIuOTku"
+    },
+    "pd": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "# Write your program here.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "12.0"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nassert \"math.sqrt(144)\" in __source__.replace(\" \", \"\"), \"Compute the square root with math.sqrt(144).\"",
+      "answer": "aW1wb3J0IG1hdGgKYW5zd2VyID0gbWF0aC5zcXJ0KDE0NCkKcHJpbnQoYW5zd2VyKQ=="
+    },
+    "ex-w12": {
+      "type": "example",
+      "code": "duration_text = '185'\ntotal_minutes = int(duration_text)\nhours = total_minutes // 60\nminutes = total_minutes % 60\nprint(hours)\nprint(minutes)",
+      "output": "3\n5"
+    },
+    "ex-w13": {
+      "type": "example",
+      "code": "total_minutes = 185\nelapsed_hours = total_minutes / 60\nprint(elapsed_hours)",
+      "output": "3.0833333333333335"
+    },
+    "ex-w14": {
+      "type": "example",
+      "code": "import math\nx = 6\ny = 8\ndistance = math.sqrt(x ** 2 + y ** 2)\nprint(distance)",
+      "output": "10.0"
+    },
+    "trip": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "duration_text = '185'\nx = 6\ny = 8\n# Complete the program.",
+      "cases": [
+        {
+          "name": "'185', 6, 8",
+          "expected": "3\n5\n3.24"
+        },
+        {
+          "name": "'60', 0, 8",
+          "rewrite": [
+            [
+              "duration_text = '185'",
+              "duration_text = '60'"
+            ],
+            [
+              "x = 6",
+              "x = 0"
+            ]
+          ],
+          "expected": "1\n0\n8.0"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nassert \"int(duration_text)\" in __source__.replace(\" \", \"\"), \"Convert the duration text with int(duration_text) before doing arithmetic on it.\"\nassert \"math.sqrt\" in __source__, \"Use math.sqrt for the distance.\"",
+      "answer": "aW1wb3J0IG1hdGgKZHVyYXRpb25fdGV4dCA9ICcxODUnCnggPSA2CnkgPSA4CnRvdGFsX21pbnV0ZXMgPSBpbnQoZHVyYXRpb25fdGV4dCkKaG91cnMgPSB0b3RhbF9taW51dGVzIC8vIDYwCm1pbnV0ZXMgPSB0b3RhbF9taW51dGVzICUgNjAKZGlzdGFuY2UgPSBtYXRoLnNxcnQoeCAqKiAyICsgeSAqKiAyKQpzcGVlZCA9IGRpc3RhbmNlIC8gKHRvdGFsX21pbnV0ZXMgLyA2MCkKcHJpbnQoaG91cnMpCnByaW50KG1pbnV0ZXMpCnByaW50KHJvdW5kKHNwZWVkLCAyKSk="
+    },
+    "c1": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "# Sample values; keep these lines. Add the import and the four assignments below.\nu = 3\nt = 2\na = 4\np = 100\nr = 10\nn = 2\nx = 3\ny = 4\nm = 1",
+      "cases": [
+        {
+          "name": "sample values"
+        },
+        {
+          "name": "other values",
+          "rewrite": [
+            [
+              "u = 3",
+              "u = 5"
+            ],
+            [
+              "x = 3",
+              "x = 6"
+            ],
+            [
+              "y = 4",
+              "y = 8"
+            ]
+          ]
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nimport math as _m\nfor _name in (\"s\", \"b\", \"z\", \"d\"):\n    assert _name in globals(), f\"Assign a value to {_name}.\"\nassert _m.isclose(s, u * t + a * t ** 2 / 2), \"s should be u*t + a*t^2/2: multiply a by t squared, then divide that product by 2.\"\nassert _m.isclose(b, p * (1 + r / 100) ** n), \"b should be p(1 + r/100)^n: raise the parenthesised sum to the power n, then multiply by p.\"\nassert _m.isclose(z, 4 * _m.pi ** 2 * x ** 3 / (y ** 2 * (m + n))), \"z should be 4*pi^2*x^3 divided by the whole denominator y^2*(m + n); parenthesise the denominator.\"\nassert _m.isclose(d, _m.sqrt(x ** 2 + y ** 2)), \"d should be the square root of x^2 + y^2, using math.sqrt.\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"",
+      "answer": "aW1wb3J0IG1hdGgKdSA9IDMKdCA9IDIKYSA9IDQKcCA9IDEwMApyID0gMTAKbiA9IDIKeCA9IDMKeSA9IDQKbSA9IDEKcyA9IHUgKiB0ICsgYSAqIHQgKiogMiAvIDIKYiA9IHAgKiAoMSArIHIgLyAxMDApICoqIG4KeiA9IDQgKiBtYXRoLnBpICoqIDIgKiB4ICoqIDMgLyAoeSAqKiAyICogKG0gKyBuKSkKZCA9IG1hdGguc3FydCh4ICoqIDIgKyB5ICoqIDIp",
+      "answerNote": "Nothing is printed; Check verifies the four assigned values against the formulas."
+    },
+    "c2": {
+      "type": "short",
+      "xp": 2,
+      "rows": 5,
+      "minChars": 30,
+      "placeholder": "Write each formula in mathematical notation; describe fraction bars, powers, and roots in words if needed…",
+      "answer": "YXJlYSA9IM+AIMK3IHJhZGl1c8KyIC8gMiAodGhlIHdob2xlIHByb2R1Y3Qgz4DCt3JhZGl1c8KyIGlzIG92ZXIgMikuCgpsZW5ndGggPSDiiJooYcKyICsgNGLCsikgKHRoZSBzcXVhcmUgcm9vdCBjb3ZlcnMgdGhlIHdob2xlIHN1bSkuCgpzY2FsZSA9IG1hc3Mgw5cgKCDiiJooMSArIHJhdGUpIC8g4oiaKDEg4oiSIHJhdGUpIOKIkiAxICkuIFRoZSBmaW5hbCBzdWJ0cmFjdGlvbiBvZiAxIGlzIG91dHNpZGUgdGhlIGZyYWN0aW9uIGJ1dCBpbnNpZGUgdGhlIG11bHRpcGxpY2F0aW9uIGJ5IG1hc3Mu"
+    },
+    "c3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "9.0"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "7"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "9.5"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "-3"
+          ]
+        },
+        "v5": {
+          "accept": [
+            "3.0"
+          ]
+        }
+      }
+    },
+    "c3-check": {
+      "type": "example",
+      "code": "import math\nx = 3.0\ny = -2.0\nm = 23\nn = 5\nprint(x + n * y - (x + n) * y)\nprint(m // n + m % n)\nprint(4 * x - n / 2)\nprint(2 - (2 - (2 - n)))\nprint(math.sqrt(math.sqrt(81)))"
+    },
+    "c4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "9"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "1"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "27"
+          ]
+        },
+        "v4": {
+          "accept": [
+            "27.5"
+          ]
+        },
+        "v5": {
+          "accept": [
+            "27"
+          ]
+        },
+        "v6": {
+          "accept": [
+            "28"
+          ]
+        }
+      }
+    },
+    "c4-check": {
+      "type": "example",
+      "code": "n = 27\nm = 28\nprint(n // 10 + n % 10)\nprint(n % 2 + m % 2)\nprint((m + n) // 2)\nprint((m + n) / 2)\nprint(int((m + n) / 2))\nprint(round((m + n) / 2))"
+    },
+    "c4-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Rmxvb3IgZGl2aXNpb24gb2YgdHdvIGludGVnZXJzIHJldHVybnMgYW4gYGludGAgKDI3KSwgd2hpbGUgdHJ1ZSBkaXZpc2lvbiBhbHdheXMgcmV0dXJucyBhIGBmbG9hdGAgKDI3LjUpLiBUaGUgYXZlcmFnZSBpcyBleGFjdGx5IGhhbGZ3YXk6IGBpbnRgIHRydW5jYXRlcyBpdCB0byAyNywgYW5kIGByb3VuZGAgY2hvb3NlcyB0aGUgZXZlbiBpbnRlZ2VyLCAyOC4="
+    },
+    "ex-w16": {
+      "type": "example",
+      "code": "measured = 1.2\nreference = 1.0\ndifference = measured - reference\nprint(difference)",
+      "output": "0.19999999999999996"
+    },
+    "c5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGZsb2F0IHJlcHJlc2VudGluZyAxLjIgaXMgb25seSBhbiBhcHByb3hpbWF0aW9uLCBiZWNhdXNlIDEuMiBoYXMgbm8gZXhhY3QgZmluaXRlIGJpbmFyeSByZXByZXNlbnRhdGlvbi4gU3VidHJhY3RpbmcgMS4wIGV4cG9zZXMgdGhhdCBzbWFsbCBlcnJvciBpbiB0aGUgcHJpbnRlZCBkaWdpdHMu"
+    },
+    "c5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "measured = 1.2\nreference = 1.0\n# Complete the revised program.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "0.2"
+        }
+      ],
+      "check": "assert \"round(\" in __source__, \"Use round(..., 2) on the difference before printing it.\"\nassert \"0.2\" not in __source__.replace(\"1.2\", \"\"), \"Compute the difference with subtraction; do not print 0.2 directly.\"",
+      "answer": "bWVhc3VyZWQgPSAxLjIKcmVmZXJlbmNlID0gMS4wCmRpZmZlcmVuY2UgPSBtZWFzdXJlZCAtIHJlZmVyZW5jZQpwcmludChyb3VuZChkaWZmZXJlbmNlLCAyKSk="
+    },
+    "c5-exact": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Tm8uIFJvdW5kaW5nIGltcHJvdmVzIHRoZSBkaXNwbGF5ZWQgcmVzdWx0LCBidXQgYG1lYXN1cmVkYCBhbmQgYHJlZmVyZW5jZWAgYXJlIHN0aWxsIHN0b3JlZCBhcyB0aGUgc2FtZSBhcHByb3hpbWF0ZSBmbG9hdHMuIFJvdW5kaW5nIGNhbm5vdCBtYWtlIGVhcmxpZXIgdmFsdWVzIGV4YWN0Lg=="
+    },
+    "c6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "width = 9\nheight = 12\n# Complete the program.",
+      "cases": [
+        {
+          "name": "(9, 12)",
+          "expected": "42\n15.0"
+        },
+        {
+          "name": "(5, 12)",
+          "rewrite": [
+            [
+              "width = 9",
+              "width = 5"
+            ]
+          ],
+          "expected": "34\n13.0"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nassert \"math.sqrt\" in __source__, \"Use math.sqrt for the diagonal.\"",
+      "answer": "aW1wb3J0IG1hdGgKd2lkdGggPSA5CmhlaWdodCA9IDEyCnBlcmltZXRlciA9IDIgKiAod2lkdGggKyBoZWlnaHQpCmRpYWdvbmFsID0gbWF0aC5zcXJ0KHdpZHRoICoqIDIgKyBoZWlnaHQgKiogMikKcHJpbnQocGVyaW1ldGVyKQpwcmludChkaWFnb25hbCk="
+    },
+    "c7-hand": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "19",
+            "19π",
+            "19 π",
+            "19pi",
+            "19 pi",
+            "19*pi",
+            "19 * pi"
+          ],
+          "placeholder": "multiple of π",
+          "show": "19π"
+        },
+        "v2": {
+          "accept": [
+            "36",
+            "36π",
+            "36 π",
+            "36pi",
+            "36 pi",
+            "36*pi",
+            "36 * pi"
+          ],
+          "placeholder": "multiple of π",
+          "show": "36π"
+        },
+        "v3": {
+          "accept": [
+            "13",
+            "13π",
+            "13 π",
+            "13pi",
+            "13 pi",
+            "13*pi",
+            "13 * pi"
+          ],
+          "placeholder": "multiple of π",
+          "show": "13π"
+        },
+        "v4": {
+          "accept": [
+            "68",
+            "68π",
+            "68 π",
+            "68pi",
+            "68 pi",
+            "68*pi",
+            "68 * pi"
+          ],
+          "placeholder": "multiple of π",
+          "show": "68π"
+        }
+      }
+    },
+    "c7-steps": {
+      "type": "short",
+      "xp": 2,
+      "rows": 4,
+      "answer": "Rm9yIGVhY2ggc2VjdGlvbjogY29tcHV0ZSB0aGUgcmFkaXVzIGV4cHJlc3Npb24gYcKyICsgYWIgKyBiwrIsIG11bHRpcGx5IGJ5IHRoYXQgc2VjdGlvbidzIGhlaWdodCBhbmQgYnkgz4AvMyB0byBnZXQgaXRzIHZvbHVtZS4gQWRkIHRoZSB0aHJlZSB2b2x1bWVzLiBSb3VuZCBvbmx5IHRoZSB0b3RhbCwgZm9yIGRpc3BsYXku"
+    },
+    "c7": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "a1 = 2\nb1 = 3\nh1 = 3\n# Add the other dimensions and complete the program.",
+      "cases": [
+        {
+          "name": "given dimensions",
+          "expected": "213.63"
+        },
+        {
+          "name": "middle height 1",
+          "rewrite": [
+            [
+              "h2 = 4",
+              "h2 = 1"
+            ]
+          ],
+          "expected": "128.81"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nfor _name in (\"a1\", \"b1\", \"h1\", \"a2\", \"b2\", \"h2\", \"a3\", \"b3\", \"h3\"):\n    assert _name in globals(), f\"Assign the dimension {_name} to its own variable.\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __source__, \"Round the total to two decimal places with round(..., 2).\"",
+      "answer": "aW1wb3J0IG1hdGgKYTEgPSAyCmIxID0gMwpoMSA9IDMKYTIgPSAzCmIyID0gMwpoMiA9IDQKYTMgPSAzCmIzID0gMQpoMyA9IDMKdjEgPSBtYXRoLnBpICogaDEgKiAoYTEgKiogMiArIGExICogYjEgKyBiMSAqKiAyKSAvIDMKdjIgPSBtYXRoLnBpICogaDIgKiAoYTIgKiogMiArIGEyICogYjIgKyBiMiAqKiAyKSAvIDMKdjMgPSBtYXRoLnBpICogaDMgKiAoYTMgKiogMiArIGEzICogYjMgKyBiMyAqKiAyKSAvIDMKcHJpbnQocm91bmQodjEgKyB2MiArIHYzLCAyKSk=",
+      "answerNote": "The second case sets h2 = 1, so the checker expects the line `h2 = 4` in your program."
+    },
+    "c8-branch": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 5,
+      "rows": 2,
+      "placeholder": "Which part of the formula?",
+      "answer": "VGhlIGZyYWN0aW9uIFLigoJS4oKDIC8gKFLigoIgKyBS4oKDKSByZXByZXNlbnRzIHRoZSB0d28gcGFyYWxsZWwgYnJhbmNoZXMuIFLigoEgaXMgYWRkZWQgdG8gaXQgYmVjYXVzZSBpdCBjb21lcyBiZWZvcmUgdGhlIGJyYW5jaGVzLg=="
+    },
+    "c8-hand": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "branch": {
+          "accept": [
+            "10",
+            "10.0"
+          ],
+          "placeholder": "ohms",
+          "width": "6rem"
+        },
+        "total": {
+          "accept": [
+            "20",
+            "20.0"
+          ],
+          "placeholder": "ohms",
+          "width": "6rem"
+        }
+      }
+    },
+    "c8": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "r1 = 10\nr2 = 20\nr3 = 20\n# Complete the program.",
+      "cases": [
+        {
+          "name": "(10, 20, 20)",
+          "expected": "20.0"
+        },
+        {
+          "name": "(5, 12, 6)",
+          "rewrite": [
+            [
+              "r1 = 10",
+              "r1 = 5"
+            ],
+            [
+              "r2 = 20",
+              "r2 = 12"
+            ],
+            [
+              "r3 = 20",
+              "r3 = 6"
+            ]
+          ],
+          "expected": "9.0"
+        }
+      ],
+      "check": "assert \"(r2+r3)\" in __source__.replace(\" \", \"\"), \"Put the complete sum r2 + r3 in parentheses so the whole sum is the denominator.\"",
+      "answer": "cjEgPSAxMApyMiA9IDIwCnIzID0gMjAKdG90YWwgPSByMSArIHIyICogcjMgLyAocjIgKyByMykKcHJpbnQodG90YWwp"
+    },
+    "c9": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 8,
+      "starter": "q1 = 0.000002\nq2 = 0.000003\nr = 0.5\n# Complete the program.",
+      "cases": [
+        {
+          "name": "both charges",
+          "expected": "0.216"
+        },
+        {
+          "name": "one zero charge",
+          "rewrite": [
+            [
+              "q1 = 0.000002",
+              "q1 = 0"
+            ]
+          ],
+          "expected": "0.0"
+        }
+      ],
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nimport math as _m\nassert \"EPSILON\" in globals(), \"Store the constant under the name EPSILON (capital letters, the constant convention).\"\nassert _m.isclose(EPSILON, 8.854e-12), \"EPSILON should be 8.854 * 10 ** (-12).\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __source__, \"Round the force to three decimal places with round(..., 3).\"",
+      "answer": "aW1wb3J0IG1hdGgKcTEgPSAwLjAwMDAwMgpxMiA9IDAuMDAwMDAzCnIgPSAwLjUKRVBTSUxPTiA9IDguODU0ICogMTAgKiogKC0xMikKZm9yY2UgPSBxMSAqIHEyIC8gKDQgKiBtYXRoLnBpICogRVBTSUxPTiAqIHIgKiogMikKcHJpbnQocm91bmQoZm9yY2UsIDMpKQ=="
+    }
+  }
+}

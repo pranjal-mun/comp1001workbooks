@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 6 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-06", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 6 Workbook</h1>
+    <div class="wb-subtitle">Input and output, and f-strings</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>read input, convert it to the required type, and display output with <code>print()</code>;</li>
+    <li>write f-strings that format numbers, money, alignment, and simple tables;</li>
+    <li>use <code>sep</code>, <code>end</code>, and escape sequences when controlling output; and</li>
+    <li>recognize the textbook's legacy <code>%</code> formatting without using it in course code.</li>
+  </ul>
+  <p>This workbook combines the notes and practice for Lecture 6 (Reading: §2.5). The final two sections combine the lesson in a complete receipt program and provide larger coding tasks.</p>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. When a program calls <code>input()</code>, a prompt appears under the code for you to type an answer. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. Input, Processing, and Output</h2>
+<p>Most programs follow the same three-stage pattern.</p>
+<div class="wb-refers wb-stages">
+  <span class="wb-box">Input</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Processing</span><span class="wb-arrow wb-plain">→</span>
+  <span class="wb-box">Output</span>
+</div>
+<ul>
+  <li><strong>Input</strong> brings values into the program.</li>
+  <li><strong>Processing</strong> calculates or transforms those values.</li>
+  <li><strong>Output</strong> presents the results.</li>
+</ul>
+<p>The program below uses assigned values as its input.</p>
+<wb-example id="ex-area"></wb-example>
+<p>The assigned values are the input, the multiplication is the processing, and <code>print()</code> produces the output. Later in this workbook, <code>input()</code> reads values from the keyboard instead of fixing them in the code.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Look at the area program above. Identify the two input values, the processing step, and the output.</p>
+  <wb-short id="cp1"></wb-short>
+</div>
+
+<h2 id="s2">2. Controlling <code>print()</code></h2>
+<p><code>print()</code> can display several values in one call. By default it separates them with a space and ends the line with a newline.</p>
+<wb-example id="ex-print"></wb-example>
+<p>The <code>sep</code> argument changes the separator placed between the values.</p>
+<wb-example id="ex-sep"></wb-example>
+<p>The <code>end</code> argument changes what is printed after the last value. The default is a newline.</p>
+<wb-example id="ex-end"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write the exact output of this program, then run it to confirm.</p>
+  <wb-example id="ex-cp2"></wb-example>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Output line</th><th>Text displayed</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. Reading Keyboard Input</h2>
+<p><code>input()</code> displays a prompt, waits for the user to type a line, and returns that line as a string. Press <strong>▶ Run</strong> and type a name when the prompt appears.</p>
+<wb-example id="ex-name"></wb-example>
+<pre class="wb-shell"><span class="wb-prompt">Name: </span><span class="wb-typed">Maya</span>
+Hello Maya</pre>
+<p><code>input()</code> always returns a string, even when the user types digits. To calculate with the value, convert it first. <code>int()</code> converts text to a whole number, and <code>float()</code> converts text to a number that may have a decimal part.</p>
+<wb-example id="ex-age"></wb-example>
+<pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">20</span>
+Next age: 21</pre>
+<p>Convert each value as soon as it is read, so the rest of the program works with numbers.</p>
+<wb-example id="ex-price"></wb-example>
+<pre class="wb-shell"><span class="wb-prompt">Price: </span><span class="wb-typed">3.5</span>
+<span class="wb-prompt">Quantity: </span><span class="wb-typed">4</span>
+Total: 14.0</pre>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Invalid text</div>
+  <p>If the text cannot be converted, Python raises a <code>ValueError</code>. Run the program below to see the error message. Handling this situation is a later topic; for now, assume the user types valid values.</p>
+  <wb-example id="ex-twenty"></wb-example>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Replace the blanks so that <code>students</code> is a whole number and <code>temperature</code> may have a decimal part. The program prints nothing; Check looks at the types of the two names.</p>
+  <wb-exercise id="cp3"></wb-exercise>
+  <p>Why does <code>input()</code> alone not produce a number?</p>
+  <wb-short id="cp3-why"></wb-short>
+  <p>What kind of error occurs if <code>int()</code> receives the text <code>'twenty'</code>?</p>
+  <wb-table id="cp3-error">
+    <table>
+      <tbody><tr><td style="width: 40%">Error raised</td><td data-blank="err"></td></tr></tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s4">4. Building Output with F-Strings</h2>
+<p>An <strong>f-string</strong> is a string literal with <code>f</code> before the opening quote. Any expression inside braces <code>{ }</code> is evaluated and its value is placed into the text.</p>
+<wb-example id="ex-fstring"></wb-example>
+<p>Text outside the braces is copied as written; the braces mark the parts that Python computes.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Complete the f-string so the program displays <code>COMP 1001 has 28 students</code>.</p>
+  <wb-exercise id="cp4"></wb-exercise>
+  <p>Which parts of the message must be inside braces, and which parts are ordinary text?</p>
+  <wb-short id="cp4-why"></wb-short>
+</div>
+
+<h2 id="s5">5. Format Specifiers</h2>
+<p>A colon inside the braces introduces a <strong>format specifier</strong>: <code>{value:specifier}</code>. The specifier controls how the value is displayed without changing the value itself.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Specifier</th><th>Meaning</th><th>Example result</th></tr></thead>
+  <tbody>
+    <tr><td><code>.2f</code></td><td>two digits after the decimal point</td><td><code>19.50</code></td></tr>
+    <tr><td><code>,.2f</code></td><td>thousands separators and two decimals</td><td><code>1,234.50</code></td></tr>
+    <tr><td><code>10.2f</code></td><td>width 10, right aligned, two decimals</td><td><code>     19.50</code></td></tr>
+    <tr><td><code>&lt;10</code></td><td>width 10, left aligned</td><td>text, then spaces</td></tr>
+    <tr><td><code>^10</code></td><td>width 10, centred</td><td>spaces on both sides</td></tr>
+    <tr><td><code>05d</code></td><td>width 5, zero-padded integer</td><td><code>00042</code></td></tr>
+  </tbody>
+</table>
+</div>
+<h3>Money and Thousands Separators</h3>
+<p>Money is usually displayed with exactly two decimal places. A dollar sign is ordinary text placed before the braces.</p>
+<wb-example id="ex-money"></wb-example>
+<p>A comma in the specifier inserts thousands separators.</p>
+<wb-example id="ex-thousands"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Write an f-string expression that produces each required display.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Value</th><th>Required display</th><th>Expression</th></tr></thead>
+      <tbody>
+        <tr><td><code>7.5</code></td><td><code>7.50</code></td><td data-blank="e1"></td></tr>
+        <tr><td><code>2500.4</code></td><td><code>2,500.40</code></td><td data-blank="e2"></td></tr>
+        <tr><td><code>42</code></td><td><code>00042</code></td><td data-blank="e3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Does formatting change the value stored in the variable? Explain.</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. Aligning a Simple Table</h2>
+<p>Width and alignment specifiers line up columns. <code>&lt;</code> aligns left, <code>&gt;</code> aligns right, and the number is the column width. The headings below are string literals inside the braces, so they use double quotes to avoid ending the f-string.</p>
+<wb-example id="ex-table"></wb-example>
+<p>The width is a <em>minimum</em>: a value longer than the width is displayed in full and pushes the rest of the line to the right.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Complete the specifiers so names are left aligned in width 10 and scores are right aligned in width 6.</p>
+  <wb-exercise id="cp6"></wb-exercise>
+  <p>Why are numeric columns usually right aligned?</p>
+  <wb-short id="cp6-why"></wb-short>
+</div>
+
+<h2 id="s7">7. Recognizing Legacy <code>%</code> Formatting</h2>
+<p>The textbook sometimes uses an older style in which <code>%</code> combines a format string with a value.</p>
+<wb-example id="ex-legacy"></wb-example>
+<p>Course code uses an f-string for the same result.</p>
+<wb-example id="ex-legacy-f"></wb-example>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">Two meanings of <code>%</code></div>
+  <p>Between a string and a value, <code>%</code> is legacy formatting. Between two numbers, <code>%</code> is the remainder operator. Recognize the legacy style when you read it, but write f-strings in your own programs.</p>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Rewrite the <code>print()</code> call as an f-string that produces the same output.</p>
+  <wb-exercise id="cp7"></wb-exercise>
+</div>
+
+<h2 id="s8">8. Escape Sequences</h2>
+<p>An <strong>escape sequence</strong> is a backslash followed by a character. It stands for a character that is awkward to type directly inside a string literal.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Sequence</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>\n</code></td><td>newline</td></tr>
+    <tr><td><code>\t</code></td><td>tab</td></tr>
+    <tr><td><code>\"</code></td><td>a double quote inside a double-quoted string</td></tr>
+    <tr><td><code>\\</code></td><td>one backslash</td></tr>
+  </tbody>
+</table>
+</div>
+<wb-example id="ex-escape"></wb-example>
+<p>The gap produced by a tab depends on where the text is displayed, so fixed-width specifiers are more reliable for tables.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>Write one string literal that displays <code>input</code>, <code>process</code>, and <code>output</code> on three separate lines.</p>
+  <wb-exercise id="cp8"></wb-exercise>
+  <p>Which escape sequence produces one backslash?</p>
+  <wb-table id="cp8-backslash">
+    <table>
+      <tbody><tr><td style="width: 40%">Escape sequence</td><td data-blank="seq"></td></tr></tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<p>Read the program, then answer the questions. Assume the user enters <code>Notebook</code>, <code>4.75</code>, and <code>3</code>. You can run it to confirm your answers.</p>
+<wb-example id="ex-fr"></wb-example>
+<p><strong>1.</strong> What type does each <code>input()</code> call return before any conversion?</p>
+<wb-table id="fr1">
+  <table>
+    <tbody><tr><td style="width: 40%">Type returned by <code>input()</code></td><td data-blank="t"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> What are the types of <code>price</code> and <code>quantity</code> after conversion?</p>
+<wb-table id="fr2">
+  <table>
+    <thead><tr><th>Variable</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><code>price</code></td><td data-blank="p"></td></tr>
+      <tr><td><code>quantity</code></td><td data-blank="q"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>3.</strong> What value does <code>total</code> hold?</p>
+<wb-table id="fr3">
+  <table>
+    <tbody><tr><td style="width: 40%"><code>total</code></td><td data-blank="total"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>4.</strong> Write the two table lines exactly as displayed, including every space.</p>
+<wb-table id="fr4">
+  <table>
+    <thead><tr><th>Line</th><th>Text displayed</th></tr></thead>
+    <tbody>
+      <tr><td>Heading</td><td data-blank="l1"></td></tr>
+      <tr><td>Data</td><td data-blank="l2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h2 id="additional-practice">Additional Practice</h2>
+<h3>Practice A: Control <code>print()</code></h3>
+<p>Display <code>A-B-C</code> using one <code>print()</code> call with <code>sep</code>. Then display <code>Ready...go</code> using two <code>print()</code> calls and <code>end</code>.</p>
+<wb-exercise id="pa"></wb-exercise>
+
+<h3>Practice B: Read and Convert</h3>
+<p>Read a distance that may have a decimal part and a whole number of trips. Calculate the total distance and display it with a label. When the user enters <code>12.5</code> and <code>3</code>, the program should display <code>Total distance: 37.5</code>.</p>
+<wb-exercise id="pb"></wb-exercise>
+
+<h3>Practice C: Format Values</h3>
+<p>Write an f-string expression for each required display.</p>
+<wb-table id="pc">
+  <table>
+    <thead><tr><th>Value</th><th>Required display</th><th>Expression</th></tr></thead>
+    <tbody>
+      <tr><td><code>5</code></td><td><code>00005</code></td><td data-blank="e1"></td></tr>
+      <tr><td><code>12345.6</code></td><td><code>12,345.60</code></td><td data-blank="e2"></td></tr>
+      <tr><td><code>'Lab'</code></td><td>centred in a width of 9</td><td data-blank="e3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Practice D: Build a Table</h3>
+<p>Display a heading row and two data rows. Item names are left aligned in width 10; prices are right aligned in width 8 with two decimal places.</p>
+<pre class="wb-output">Item         Price
+Pen           1.25
+Notebook      4.75</pre>
+<wb-exercise id="pd"></wb-exercise>
+
+<h3>Practice E: Explain the Syntax</h3>
+<p>Explain every part of <code>print(f'{total:10.2f}')</code>: the <code>f</code>, the braces, the colon, the <code>10</code>, and the <code>.2f</code>.</p>
+<wb-short id="pe"></wb-short>
+
+<h2 id="together">Putting It All Together</h2>
+<p>A receipt program combines everything in this lecture. Plan it in three stages before writing code.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input</th><th>Processing</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>item as text; unit price as a <code>float</code>; quantity as an <code>int</code></td>
+      <td>multiply price by quantity; store the total</td>
+      <td>aligned headings; item, quantity, and total; money with two decimals</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3>Part 1: Read and Convert</h3>
+<p>Complete the conversions and the total. The program prints nothing yet; Check looks at the types and the total.</p>
+<wb-exercise id="pt1"></wb-exercise>
+<h3>Part 2: Align the Output</h3>
+<p>Complete the specifiers: the item column is left aligned in width 14, the quantity column is right aligned in width 8, and the total is right aligned in width 12 with two decimal places. The values are assigned at the top so the rows can be checked.</p>
+<wb-exercise id="pt2"></wb-exercise>
+<h3>Complete Program</h3>
+<p>The finished program reads the values, then prints a blank line, a title, and the two aligned rows. Run it and type your own item.</p>
+<wb-example id="ex-receipt"></wb-example>
+<pre class="wb-shell"><span class="wb-prompt">Item: </span><span class="wb-typed">Marker set</span>
+<span class="wb-prompt">Unit price: $</span><span class="wb-typed">6.5</span>
+<span class="wb-prompt">Quantity: </span><span class="wb-typed">2</span>
+
+Receipt
+Item               Qty       Total
+Marker set           2       13.00</pre>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>Each task uses only the tools from this lecture: input, conversion, arithmetic, and output. Two functions from Lecture 5 are useful: <code>round(value)</code> rounds to the nearest whole number, and <code>math.log(value)</code> is the natural logarithm. Each task shows an example run; press <strong>Check</strong> to test your program with several sets of typed values.</p>
+
+<h3>Task 1: Power Report</h3>
+<p>Read a number and display its square, cube, and fourth power. Build the square and cube by multiplication and use <code>**</code> only for the fourth power.</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">2.5</span>
+Square: 6.25
+Cube: 15.625
+Fourth power: 39.0625</pre>
+<wb-exercise id="c1"></wb-exercise>
+
+<h3>Task 2: Two-Number Summary</h3>
+<p>Read two integers and display their sum, difference, product, and average. Display the average with two decimal places.</p>
+<pre class="wb-shell"><span class="wb-prompt">First integer: </span><span class="wb-typed">20</span>
+<span class="wb-prompt">Second integer: </span><span class="wb-typed">25</span>
+Sum: 45
+Difference: -5
+Product: 500
+Average: 22.50</pre>
+<wb-exercise id="c2"></wb-exercise>
+
+<h3>Task 3: Aligned Summary</h3>
+<p>Display the four results from Task 2 as a table: labels left aligned in width 12, values right aligned in width 10, and the average with two decimal places. The values are assigned at the top so the rows can be checked.</p>
+<pre class="wb-output">Sum                 45
+Difference          -5
+Product            500
+Average          22.50</pre>
+<wb-exercise id="c3"></wb-exercise>
+
+<h3>Task 4: Travel Estimate</h3>
+<p>Read the fuel in the tank (litres), the fuel efficiency (km per litre), and the price per litre. Display the cost of driving 100 km as money with two decimals, and the range on a full tank with one decimal.</p>
+<pre class="wb-shell"><span class="wb-prompt">Fuel in tank (L): </span><span class="wb-typed">40</span>
+<span class="wb-prompt">Efficiency (km/L): </span><span class="wb-typed">12.5</span>
+<span class="wb-prompt">Price per litre: $</span><span class="wb-typed">1.75</span>
+Cost per 100 km: $14.00
+Range: 500.0 km</pre>
+<wb-exercise id="c4"></wb-exercise>
+
+<h3>Task 5: Large Letters</h3>
+<p>Store each letter as one string constant that draws five rows using <code>\n</code>, then print both letters. Any symbols are fine; a sample is shown.</p>
+<pre class="wb-output"> ***
+*   *
+*   *
+*   *
+ ***
+*   *
+*  *
+***
+*  *
+*   *</pre>
+<wb-exercise id="c5"></wb-exercise>
+
+<h3>Task 6: Course-Supply Order</h3>
+<p>Read the price of the supplies and the number of items. Tax is 15% of the price, and shipping is $3.00 per item. Display the tax, the shipping, and the order total as money.</p>
+<pre class="wb-shell"><span class="wb-prompt">Supplies price: $</span><span class="wb-typed">40</span>
+<span class="wb-prompt">Number of items: </span><span class="wb-typed">2</span>
+Tax: $6.00
+Shipping: $6.00
+Order total: $52.00</pre>
+<wb-exercise id="c6"></wb-exercise>
+
+<h3>Task 7: Dollars and Cents</h3>
+<p>Read a price and split it into whole dollars and cents. The total number of cents is already calculated; use integer division and remainder to separate it.</p>
+<pre class="wb-shell"><span class="wb-prompt">Price: $</span><span class="wb-typed">4.05</span>
+Dollars: 4
+Cents: 05</pre>
+<wb-exercise id="c7"></wb-exercise>
+
+<h3>Task 8: Three-Month Balance</h3>
+<p>Read an initial balance and an annual interest rate as a percentage. The monthly rate is the annual percentage divided by 100 and then by 12. Each month the balance grows by that rate. Display the balance after each of three months as money.</p>
+<pre class="wb-shell"><span class="wb-prompt">Initial balance: $</span><span class="wb-typed">1000</span>
+<span class="wb-prompt">Annual interest rate (%): </span><span class="wb-typed">6</span>
+After month 1: $1005.00
+After month 2: $1010.02
+After month 3: $1015.08</pre>
+<wb-exercise id="c9"></wb-exercise>
+
+<h3>Task 9: Equivalent Resistance</h3>
+<p>Resistor R1 is in series with R2 and R3, which are in parallel. The total resistance is R<sub>total</sub> = R1 + R2 × R3 / (R2 + R3). Read the three resistances and display the total with two decimals.</p>
+<pre class="wb-shell"><span class="wb-prompt">R1 (ohms): </span><span class="wb-typed">10</span>
+<span class="wb-prompt">R2 (ohms): </span><span class="wb-typed">20</span>
+<span class="wb-prompt">R3 (ohms): </span><span class="wb-typed">20</span>
+Total resistance: 20.00 ohms</pre>
+<wb-exercise id="c10"></wb-exercise>
+
+<h3>Task 10: Dew-Point Estimate</h3>
+<p>Read the temperature T in °C and the relative humidity RH as a fraction from 0 to 1. Calculate f = 17.27 T / (237.7 + T) + ln(RH), then the dew point T<sub>d</sub> = 237.7 f / (17.27 − f). Display the dew point with one decimal.</p>
+<pre class="wb-shell"><span class="wb-prompt">Temperature (C): </span><span class="wb-typed">20</span>
+<span class="wb-prompt">Relative humidity (0 to 1): </span><span class="wb-typed">0.5</span>
+Dew point: 9.3 C</pre>
+<wb-exercise id="c11"></wb-exercise>
+
+<h3>Task 11: Electric Force</h3>
+<p>The force between two charges is F = Q1 Q2 / (4 π ε r²), where ε = 8.854 × 10<sup>−12</sup>. Read the two charges in coulombs and the distance in metres, and display the force in newtons with five decimals.</p>
+<pre class="wb-shell"><span class="wb-prompt">Charge 1 (C): </span><span class="wb-typed">1e-6</span>
+<span class="wb-prompt">Charge 2 (C): </span><span class="wb-typed">2e-6</span>
+<span class="wb-prompt">Distance (m): </span><span class="wb-typed">0.5</span>
+Force: 0.07190 N</pre>
+<wb-exercise id="c12"></wb-exercise>
+
+<h3>Task 12: Text Face</h3>
+<p>Draw a five-line face using only the characters <code>( ) | - \ / ^ o</code> and spaces, with two eyes, a nose, and a mouth. Include at least one backslash. On a sixth line display <code>Python face</code>. Any face that meets these rules is accepted.</p>
+<wb-exercise id="c13"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 6 Workbook.</p>
+
+</main>
+</body>
+</html>

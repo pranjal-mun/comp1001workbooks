@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 8 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-08-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 8 Boss Problems</h1>
+    <div class="wb-subtitle">Problem solving with decisions: the if statement</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 8 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>%</code>, string indexes and <code>.find()</code>, f-strings, and one two-way decision with <code>if</code> and <code>else</code>. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its value with <code>input()</code>. Keep that line exactly as it is: <strong>Check</strong> runs your program several times, typing a different answer at the prompt each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 🐉 and are worth 10, 15, and 20 XP.</p>
+</section>
+<hr>
+<h2 id="parity" data-toc-title="👹 Even or odd">👹 Boss 1: Even or Odd</h2>
+<p>Read an integer from the keyboard and report whether it is even or odd, in one sentence that ends with a full stop:</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">14</span>
+14 is even.</pre>
+<p>An even number leaves a remainder of 0 when divided by 2. Test <code>number % 2</code>. This also works for 0 and for negative numbers. Choose the word inside the branches and print the sentence once after them.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>14</code></td><td><code>14 is even.</code></td></tr>
+    <tr><td><code>7</code></td><td><code>7 is odd.</code></td></tr>
+    <tr><td><code>0</code></td><td><code>0 is even.</code></td></tr>
+    <tr><td><code>-3</code></td><td><code>-3 is odd.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>.</li>
+    <li>Use <code>%</code> to test the remainder.</li>
+    <li>One <code>print()</code>, after the branches.</li>
+    <li>End the sentence with a full stop.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>number = int(input('Number: '))</code> unchanged. The checker will type the other numbers.</p>
+<wb-exercise id="parity"></wb-exercise>
+
+<h2 id="dog" data-toc-title="👾 Dog years">👾 Boss 2: Dog Years</h2>
+<p>A common rule says one human year equals seven dog years. A better rule counts each of a dog's first two years as 10.5 dog years and every year after that as 4 dog years. Oliver is 7. The first two years count 21 dog years and the remaining five years count 20, which makes 41.</p>
+<p>Read the dog's age in human years as a <code>float</code> and print both ages to one decimal place:</p>
+<pre class="wb-shell"><span class="wb-prompt">Human years: </span><span class="wb-typed">7</span>
+7.0 human years is 41.0 dog years.</pre>
+<p>The decision is whether the dog is still in its first two years. Ages of 2 or less use the 10.5 rate on the whole age. Older dogs get 21 for the first two years plus 4 for each year beyond them. Work out the dog years inside the branches, then print once. A 2-year-old dog is 21 in dog years in either branch. Check that your program prints 21.0 for 2.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>7</code></td><td><code>7.0 human years is 41.0 dog years.</code></td></tr>
+    <tr><td><code>2</code></td><td><code>2.0 human years is 21.0 dog years.</code></td></tr>
+    <tr><td><code>1</code></td><td><code>1.0 human years is 10.5 dog years.</code></td></tr>
+    <tr><td><code>15</code></td><td><code>15.0 human years is 73.0 dog years.</code></td></tr>
+    <tr><td><code>1.2</code></td><td><code>1.2 human years is 12.6 dog years.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>.</li>
+    <li>Use the rates 10.5 and 4 in the code.</li>
+    <li>Show both numbers with <code>:.1f</code>.</li>
+    <li>One <code>print()</code>, after the branches.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>years = float(input('Human years: '))</code> unchanged. The checker will type the other ages.</p>
+<wb-exercise id="dog"></wb-exercise>
+
+<h2 id="square" data-toc-title="🐉 Chess square">🐉 Boss 3: Colour of a Chess Square</h2>
+<p>A chess board names each square with a column letter from <code>a</code> to <code>h</code> and a row number from 1 to 8. The square <code>a1</code> in the corner is black, and the colours alternate along every row and every column, so <code>b1</code> is white, <code>a2</code> is white, and <code>b2</code> is black again.</p>
+<p>Read a square name such as <code>d5</code> and print its colour:</p>
+<pre class="wb-shell"><span class="wb-prompt">Square: </span><span class="wb-typed">d5</span>
+d5 is a white square.</pre>
+<p>Do not write one <code>if</code> per letter. Turn the letter into a number instead: <code>'abcdefgh'.find(position[0])</code> is 0 for <code>a</code>, 1 for <code>b</code>, and so on up to 7. Turn the digit <code>position[1]</code> into an <code>int</code>. Moving one square in any direction changes the sum by one. The sum is odd on every black square and even on every white square. For <code>a1</code> it is 0 + 1. You may assume the square typed is valid.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>a1</code></td><td><code>a1 is a black square.</code></td></tr>
+    <tr><td><code>d5</code></td><td><code>d5 is a white square.</code></td></tr>
+    <tr><td><code>h1</code></td><td><code>h1 is a white square.</code></td></tr>
+    <tr><td><code>g7</code></td><td><code>g7 is a black square.</code></td></tr>
+    <tr><td><code>c6</code></td><td><code>c6 is a white square.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Pick the letter and the digit out of <code>position</code> with indexes.</li>
+    <li>Turn the letter into a number with <code>.find()</code>. No <code>ord()</code>.</li>
+    <li>Use <code>%</code> to decide the colour.</li>
+    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>.</li>
+    <li>One <code>print()</code>, after the branches.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>position = input('Square: ')</code> unchanged. The checker will type the other squares.</p>
+<wb-exercise id="square"></wb-exercise>
+
+</main>
+</body>
+</html>

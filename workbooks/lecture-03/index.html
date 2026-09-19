@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 3 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-03", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 3 Workbook</h1>
+    <div class="wb-subtitle">Algorithms, Pseudocode and Programs</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>explain why an algorithm needs clear, possible steps and a stopping condition;</li>
+    <li>read and describe the pizza solution in pseudocode, including decisions and repetition;</li>
+    <li>follow its flowchart and trace normal and boundary cases;</li>
+    <li>recognise the same method in plain English, pseudocode, a flowchart and supplied Python code; and</li>
+    <li>identify IDLE's editor and Shell, and describe how to open, save and run a supplied script.</li>
+  </ul>
+  <p><strong>Reading:</strong> §1.4; review §1.7 and HT 1.1.</p>
+  <p class="wb-meta">The supplied Python script on this page is live: press <strong>▶ Run</strong> to execute it in your browser and answer its prompts. There are no checked questions in this workbook: trace the method on paper, then run the script to compare.</p>
+</section>
+<hr>
+
+<h2 id="review-algorithms">Review and Algorithms</h2>
+<h3>The problem-solving framework</h3>
+<p>In Lecture 2 we used six activities: understand, decompose, recognise patterns, design and evaluate, implement, and reflect. These activities help us think about a task. We can revisit them when a check reveals something we missed.</p>
+<p>For the pizza order, a three-person example showed that the first sharing method needed another agreement. We will now express the revised method more precisely, draw its paths, and see a supplied program carry it out.</p>
+
+<h3>The pizza agreement</h3>
+<p>The shop charges a flat CA$10 delivery fee. Tax is 15% of food plus delivery. Round tax to the nearest cent; an exact half-cent rounds upward. The group agrees on a dollar tip, which is not taxed. Everyone pays an equal amount, in whole cents. There must be a whole number of people of at least one.</p>
+<p>If equal payments would need fractions of a cent, the group permits the <strong>smallest increase in the tip</strong> that makes equal whole-cent payments possible. Report the changed tip and total as well as each person's payment. There are no other charges in this example. Use nonnegative food prices and tip amounts in whole cents.</p>
+<p><strong>The order from Lecture 2:</strong></p>
+<table>
+  <tbody>
+    <tr><td>Food prices</td><td>CA$25 + CA$25 + CA$20 = CA$70</td></tr>
+    <tr><td>Food plus delivery</td><td>CA$70 + CA$10 = CA$80</td></tr>
+    <tr><td>Tax</td><td>80 × 0.15 = CA$12</td></tr>
+    <tr><td>Agreed tip</td><td>CA$8</td></tr>
+    <tr><td>Initial total</td><td>CA$80 + CA$12 + CA$8 = CA$100</td></tr>
+  </tbody>
+</table>
+
+<h3>An algorithm</h3>
+<p>An <strong>algorithm</strong> is an ordered method with clear actions that can be carried out and that finishes. A precise instruction removes a choice that the person following the method would otherwise have to guess. “Split fairly” is not precise enough. The whole-cent rule above tells us what to do.</p>
+<p>The algorithm from Lecture 2 is:</p>
+<ol>
+  <li>Obtain pizza prices, the agreed tip, and a whole number of people of at least 1.</li>
+  <li>Add the prices, then add CA$10 for delivery.</li>
+  <li>Multiply by 0.15; round tax to the nearest cent, half-cent upward.</li>
+  <li>Add this tax and the agreed tip to food plus delivery.</li>
+  <li>Convert the total to cents.</li>
+  <li>Until it divides into whole cents per person, add one cent to the tip and total.</li>
+  <li>Divide the final total in cents by the number of people.</li>
+  <li>Report the final tip, total, and payment in dollars and cents.</li>
+</ol>
+<p>The algorithm is the method. Plain English, pseudocode and a flowchart can describe that same method. A Python program can implement it. You do not have to produce all these representations for every problem.</p>
+
+<h3>Progress and stopping</h3>
+<p>For three people, 10000 cents does not divide into equal whole-cent payments. Neither does 10001. But 10002 does: each person pays 3334 cents. Each repetition increases the total by one cent. With a positive whole-number group size, this eventually reaches a total that divides equally. The first such total gives the smallest increase. The method then stops adjusting.</p>
+<p>A method can be precise and finish but still give an incorrect result. We must also compare its result with the agreement.</p>
+
+<h2 id="pseudocode">Pseudocode</h2>
+<p><strong>Pseudocode</strong> describes instructions in structured words for people to read. It is not executable Python. We use a few consistent words to make the method easy to follow: <code>READ</code> obtains information, <code>SET</code> calculates or stores a named value, and <code>DISPLAY</code> shows a result. A named value is a label for information used by the method.</p>
+<p>For example, these steps obtain prices, add them, and show the food cost:</p>
+<pre>READ pizza prices
+SET food TO the sum of the prices
+DISPLAY food</pre>
+<p>With prices CA$25, CA$25 and CA$20, the food cost is CA$70.</p>
+
+<h3>Inputs and decisions</h3>
+<p>A <strong>condition</strong> is a statement that is true or false. A decision chooses actions according to a condition. Indentation groups the actions belonging to a choice. <code>ELSE</code> introduces what happens when the condition is false.</p>
+<p>Check the group size before calculating a payment:</p>
+<pre>READ people
+IF people is a whole number at least 1
+    Continue to the bill calculation
+ELSE
+    DISPLAY the group-size message
+    STOP
+END IF</pre>
+<p>The <strong>group-size message</strong> is: Enter a whole number of people of at least 1. Three people pass the check. Zero people do not. A value such as 2.5 also fails because it is not a whole number. On failure, show the message and stop; this method does not ask again automatically.</p>
+
+<h3>Calculation and repetition</h3>
+<p>The subtotal is food plus delivery. Calculate tax from this subtotal, round it, and then add the rounded tax and tip. Keep calculations in an order that makes each value available before it is needed.</p>
+<p>We use cents for the adjustment: CA$100 becomes 10000 cents and CA$8 becomes 800 cents. “Total needs adjustment” means the total cannot yet divide into whole cents per person. <code>WHILE</code> checks this condition before each repetition. The indented actions both happen before the next check. When the condition is false, continue after <code>END WHILE</code>.</p>
+<p><strong>The complete pseudocode:</strong></p>
+<pre>READ pizza prices, tip, people
+IF the group size is invalid
+    DISPLAY the group-size message
+    STOP
+END IF
+SET food TO the sum of the prices
+SET subtotal TO food + 10 dollars
+SET tax TO 15% of subtotal
+ROUND tax to cents, half-cent upward
+SET total TO subtotal + tax + tip
+CONVERT total and tip to cents
+WHILE total needs adjustment
+    ADD 1 cent to total
+    ADD 1 cent to tip
+END WHILE
+SET payment TO total divided by people
+DISPLAY final tip, total and payment
+        in dollars and cents</pre>
+<p>Here the input check states the invalid case first. It is equivalent to the earlier <code>IF</code>/<code>ELSE</code>: an invalid group stops, and a valid group continues. The group-size message and “needs adjustment” have the meanings defined above.</p>
+
+<h3>Tracing the method</h3>
+<p>A <strong>trace</strong> follows the instructions and records the values that change. For the original CA$100 bill, follow each check and both updates:</p>
+<table>
+  <thead><tr><th>People</th><th>Total cents</th><th>Tip cents</th><th>Needs adjustment?</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td>10000</td><td>800</td><td>Yes</td></tr>
+    <tr><td>3</td><td>10001</td><td>801</td><td>Yes</td></tr>
+    <tr><td>3</td><td>10002</td><td>802</td><td>No: payment is 3334 cents</td></tr>
+    <tr><td>4</td><td>10000</td><td>800</td><td>No: payment is 2500 cents</td></tr>
+  </tbody>
+</table>
+<p>For three people, the final tip is CA$8.02, total CA$100.02, and each payment CA$33.34. For four people, no adjustment happens. Four payments of CA$25.00 cover the original CA$100.00 total.</p>
+
+<h3>Normal and boundary cases</h3>
+<p>A <strong>normal case</strong> uses ordinary valid input. A <strong>boundary case</strong> checks a limit, such as the smallest valid group of one person. Also check inputs just outside a limit, such as zero people, to see whether the method rejects them.</p>
+<table>
+  <thead><tr><th>People</th><th>Final tip</th><th>Final total</th><th>Each person</th></tr></thead>
+  <tbody>
+    <tr><td>3</td><td>CA$8.02</td><td>CA$100.02</td><td>CA$33.34</td></tr>
+    <tr><td>4</td><td>CA$8.00</td><td>CA$100.00</td><td>CA$25.00</td></tr>
+    <tr><td>1</td><td>CA$8.00</td><td>CA$100.00</td><td>CA$100.00</td></tr>
+    <tr><td>0</td><td colspan="3">Show the group-size message; no division.</td></tr>
+  </tbody>
+</table>
+<p>For every valid case, multiply each payment by the number of people. This must equal the revised total. Also check that subtotal, rounded tax and final tip add to that same total.</p>
+
+<h2 id="flowcharts">Flowcharts</h2>
+<p>A <strong>flowchart</strong> draws the steps and the paths between them. Follow arrows to find the next step. A rounded start/end shape marks a beginning or finish. A rectangle contains an action; a slanted input/output shape obtains information or shows a result. A diamond contains a condition with labelled Yes and No exits.</p>
+
+<h3>A decision</h3>
+<p>The group-size condition chooses between continuing and stopping. For three people, follow Yes. For zero, follow No and show the message.</p>
+<figure style="margin: 1rem 0; text-align: center;">
+  <svg viewBox="0 0 520 275" width="520" style="max-width: 100%; height: auto; font-family: var(--font-body); font-size: 14px;" role="img" aria-label="Flowchart: read the number of people; if it is a whole number of at least 1, continue to the bill calculation; otherwise show the group-size message and end.">
+    <defs><marker id="arr-decision" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <g fill="var(--panel)" stroke="currentColor" stroke-width="1.3">
+      <polygon points="160,10 330,10 310,42 140,42"/>
+      <polygon points="235,70 340,108 235,146 130,108"/>
+      <rect x="25" y="178" width="120" height="44" rx="2"/>
+      <polygon points="325,178 505,178 485,222 305,222"/>
+      <rect x="370" y="246" width="50" height="24" rx="12"/>
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arr-decision)">
+      <path d="M235,42 V70"/>
+      <path d="M130,108 H85 V178"/>
+      <path d="M340,108 H395 V178"/>
+      <path d="M395,222 V246"/>
+    </g>
+    <g fill="currentColor" text-anchor="middle">
+      <text x="235" y="31">Read number of people</text>
+      <text x="235" y="104">Whole number</text>
+      <text x="235" y="122">of people ≥ 1?</text>
+      <text x="108" y="100">Yes</text>
+      <text x="368" y="100">No</text>
+      <text x="85" y="196">Continue to</text>
+      <text x="85" y="214">bill calculation</text>
+      <text x="405" y="196">Enter a whole number</text>
+      <text x="405" y="214">of people of at least 1</text>
+      <text x="395" y="263">End</text>
+    </g>
+  </svg>
+</figure>
+
+<h3>A repeated action</h3>
+<p>The return arrow brings us back to the condition after both amounts change. The decision uses the same “needs adjustment” condition as the pseudocode.</p>
+<figure style="margin: 1rem 0; text-align: center;">
+  <svg viewBox="0 0 520 205" width="520" style="max-width: 100%; height: auto; font-family: var(--font-body); font-size: 14px;" role="img" aria-label="Flowchart: while the total still needs adjustment, add 1 cent to the total and 1 cent to the tip and return to the check; otherwise calculate the payment and report the final amounts.">
+    <defs><marker id="arr-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <g fill="var(--panel)" stroke="currentColor" stroke-width="1.3">
+      <polygon points="150,36 275,82 150,128 25,82"/>
+      <rect x="345" y="57" width="160" height="50" rx="2"/>
+      <polygon points="80,158 245,158 225,200 60,200"/>
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arr-loop)">
+      <path d="M275,82 H345"/>
+      <path d="M425,57 V16 H150 V36"/>
+      <path d="M150,128 V158"/>
+    </g>
+    <g fill="currentColor" text-anchor="middle">
+      <text x="150" y="78">Does the total</text>
+      <text x="150" y="96">still need adjustment?</text>
+      <text x="310" y="76">Yes</text>
+      <text x="164" y="147">No</text>
+      <text x="425" y="78">Add 1 cent to total.</text>
+      <text x="425" y="96">Add 1 cent to tip.</text>
+      <text x="152" y="176">Calculate payment.</text>
+      <text x="152" y="194">Report final amounts.</text>
+    </g>
+  </svg>
+</figure>
+<p>For three people, the route is Yes, Yes, No. For four, the first answer is No, so the adjustment is skipped. Both representations produce the same amounts.</p>
+
+<h3>The complete flowchart</h3>
+<p>The calculation box groups familiar steps already explained above. It includes food plus delivery, rounded tax, total including tip, and conversion to cents. “Valid group?” means a whole number of people of at least one. The short message label refers to the full group-size message in the pseudocode.</p>
+<figure style="margin: 1rem 0; text-align: center;">
+  <svg viewBox="0 0 460 470" width="400" style="max-width: 100%; height: auto; font-family: var(--font-body); font-size: 14px;" role="img" aria-label="Complete flowchart of the pizza method: start; read prices, tip and people; if the group is not valid show the group-size message and end; otherwise calculate the subtotal, rounded tax, total with tip and convert to cents; while the total needs adjustment add 1 cent to the total and to the tip; then divide by people, report tip, total and payment in CA$, and end.">
+    <defs><marker id="arr-whole" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <g fill="var(--panel)" stroke="currentColor" stroke-width="1.3">
+      <rect x="170" y="6" width="60" height="26" rx="13"/>
+      <polygon points="112,50 305,50 288,80 95,80"/>
+      <polygon points="200,95 285,122 200,149 115,122"/>
+      <rect x="315" y="97" width="130" height="50" rx="14"/>
+      <rect x="120" y="172" width="160" height="66" rx="2"/>
+      <polygon points="200,262 300,290 200,318 100,290"/>
+      <rect x="330" y="262" width="110" height="60" rx="2"/>
+      <polygon points="112,344 305,344 288,404 95,404"/>
+      <rect x="170" y="428" width="60" height="26" rx="13"/>
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arr-whole)">
+      <path d="M200,32 V50"/>
+      <path d="M200,80 V95"/>
+      <path d="M285,122 H315"/>
+      <path d="M200,149 V172"/>
+      <path d="M200,238 V262"/>
+      <path d="M300,290 H330"/>
+      <path d="M385,262 V250 H200 V262"/>
+      <path d="M200,318 V344"/>
+      <path d="M200,404 V428"/>
+    </g>
+    <g fill="currentColor" text-anchor="middle">
+      <text x="200" y="24">Start</text>
+      <text x="200" y="70">Read prices, tip, people</text>
+      <text x="200" y="127">Valid group?</text>
+      <text x="300" y="115">No</text>
+      <text x="380" y="117">Group-size</text>
+      <text x="380" y="135">message; end</text>
+      <text x="213" y="165" text-anchor="start">Yes</text>
+      <text x="200" y="193">Subtotal; round tax.</text>
+      <text x="200" y="211">Add tax and tip.</text>
+      <text x="200" y="229">Convert to cents.</text>
+      <text x="200" y="295">Needs adjustment?</text>
+      <text x="315" y="283">Yes</text>
+      <text x="385" y="285">Add 1 cent</text>
+      <text x="385" y="303">to total</text>
+      <text x="385" y="321" dy="-4">and to tip</text>
+      <text x="213" y="336" text-anchor="start">No</text>
+      <text x="200" y="365">Divide by people.</text>
+      <text x="200" y="383">Report tip, total,</text>
+      <text x="200" y="401" dy="-4">payment in CA$.</text>
+      <text x="200" y="446">End</text>
+    </g>
+  </svg>
+</figure>
+
+<h2 id="supplied-program">A Supplied Python Program</h2>
+<p><strong>Source code</strong> is the written program. The following script carries out the pizza calculation. Look for the purposes of its regions: obtain values, check the group, calculate the bill, adjust, and report.</p>
+<div class="wb-callout is-warn">
+  <div class="wb-callout-title">You do not need to understand the Python code yet</div>
+  <p>This is a demonstration of a runnable implementation. Later lectures teach how to write Python.</p>
+</div>
+<p><strong>The complete supplied script:</strong> press <strong>▶ Run</strong> and answer the three prompts. Enter prices separated by spaces, without currency symbols.</p>
+<wb-example id="ex-pizza"></wb-example>
+
+<h3>Using IDLE</h3>
+<p>IDLE has an <strong>editor</strong> where the saved script appears and a <strong>Shell</strong> where interaction and results appear. The script is saved in a file whose name ends in <code>.py</code>, such as <code>pizza.py</code>.</p>
+<ol>
+  <li>Open the supplied script in IDLE's editor.</li>
+  <li>Use File → Save As to save your working copy in a known folder.</li>
+  <li>In the editor, choose Run → Run Module.</li>
+  <li>In the Shell, respond to each prompt. Enter prices separated by spaces, without currency symbols. Use at least one price. Prices and tip are nonnegative amounts with no fractions of a cent. Enter the group size as a number.</li>
+  <li>Compare the results with the expected amounts. To use different inputs, run the saved script again.</li>
+</ol>
+<p>The editor contains the method. The Shell shows one run of it. Merely opening the file does not run the program.</p>
+<p>For the familiar order with three people, the Shell interaction is:</p>
+<pre class="wb-shell"><span class="wb-prompt">Pizza prices: </span><span class="wb-typed">25 25 20</span>
+<span class="wb-prompt">Agreed tip: </span><span class="wb-typed">8</span>
+<span class="wb-prompt">People: </span><span class="wb-typed">3</span>
+Final tip: CA$8.02
+Total: CA$100.02
+Each: CA$33.34</pre>
+<p>The values after the three prompts are typed by the person using the program. The final three lines are results from the program.</p>
+<p>Run again with four people:</p>
+<pre class="wb-shell"><span class="wb-prompt">Pizza prices: </span><span class="wb-typed">25 25 20</span>
+<span class="wb-prompt">Agreed tip: </span><span class="wb-typed">8</span>
+<span class="wb-prompt">People: </span><span class="wb-typed">4</span>
+Final tip: CA$8.00
+Total: CA$100.00
+Each: CA$25.00</pre>
+<p>The smallest allowed group has one person:</p>
+<pre class="wb-shell"><span class="wb-prompt">Pizza prices: </span><span class="wb-typed">25 25 20</span>
+<span class="wb-prompt">Agreed tip: </span><span class="wb-typed">8</span>
+<span class="wb-prompt">People: </span><span class="wb-typed">1</span>
+Final tip: CA$8.00
+Total: CA$100.00
+Each: CA$100.00</pre>
+<p>For zero people, the method stops without calculating payments:</p>
+<pre class="wb-shell"><span class="wb-prompt">Pizza prices: </span><span class="wb-typed">25 25 20</span>
+<span class="wb-prompt">Agreed tip: </span><span class="wb-typed">8</span>
+<span class="wb-prompt">People: </span><span class="wb-typed">0</span>
+Enter a whole number of people of at least 1</pre>
+
+<h2 id="comparing">Comparing Representations and Reflecting</h2>
+<p>The plain-English algorithm states what to do. Pseudocode groups instructions and makes decisions and repetition explicit. The flowchart shows the same paths with arrows. The script carries out the method and produces results we can check. Changing the representation should preserve the agreed calculation and results.</p>
+<p>In the pizza problem, the initial division needed fractions of a cent for three people. Revisiting the agreement gave a new rule: increase the tip by the smallest necessary amount. Tracing and running the revised solution both give tip CA$8.02, total CA$100.02 and three payments of CA$33.34.</p>
+<p>Reflection means explaining what changed, why it changed, and what the evidence shows. The useful lesson is to check the real requirements, including units and limits. Use a representation because it helps you think; these are not compulsory stages to repeat for every task.</p>
+
+<h2 id="review">Review</h2>
+<table>
+  <thead><tr><th>Idea</th><th>Remember</th></tr></thead>
+  <tbody>
+    <tr><td>Algorithm</td><td>Clear, possible steps with a stopping condition.</td></tr>
+    <tr><td>Pseudocode</td><td>Read values, calculate in order, make decisions and repeat as needed.</td></tr>
+    <tr><td>Flowchart</td><td>Follow arrows and label the decision paths; repetition returns to a check.</td></tr>
+    <tr><td>Trace</td><td>Record changing values and compare the result with the agreement.</td></tr>
+    <tr><td>Boundary</td><td>Test limits, including one person and the rejected zero-person case.</td></tr>
+    <tr><td>IDLE</td><td>Editor: saved script. Shell: interaction and results.</td></tr>
+    <tr><td>Reflection</td><td>Explain the revision and the evidence that supports it.</td></tr>
+  </tbody>
+</table>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,783 @@
+{
+  "id": "lecture-04",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 4 Workbook",
+  "subtitle": "Variables, types, and assignment",
+  "exercises": {
+    "ex-w01": {
+      "type": "example",
+      "code": "price = 24.95\nprint(price)",
+      "output": "24.95"
+    },
+    "ex-w02": {
+      "type": "example",
+      "code": "course = 'COMP 1001'\nroom = 2006"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "name1": {
+          "accept": [
+            "course"
+          ],
+          "placeholder": "name"
+        },
+        "name2": {
+          "accept": [
+            "room"
+          ],
+          "placeholder": "name"
+        },
+        "value1": {
+          "accept": [
+            "'COMP 1001'",
+            "\"COMP 1001\"",
+            "COMP 1001"
+          ],
+          "caseSensitive": true,
+          "placeholder": "value"
+        },
+        "value2": {
+          "accept": [
+            "2006"
+          ],
+          "placeholder": "value"
+        }
+      }
+    },
+    "ex-w03": {
+      "type": "example",
+      "code": "bottles = 6\nprint(bottles)\nbottles = 8\nprint(bottles)",
+      "output": "6\n8"
+    },
+    "ex-w04": {
+      "type": "example",
+      "code": "count = 4\ncount = count + 1\nprint(count)",
+      "output": "5"
+    },
+    "ex-w05": {
+      "type": "example",
+      "code": "score = 10\nscore = 12\nscore = score + 1"
+    },
+    "cp2-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "10"
+          ]
+        },
+        "s2": {
+          "accept": [
+            "12"
+          ]
+        },
+        "s3": {
+          "accept": [
+            "13"
+          ]
+        }
+      }
+    },
+    "cp2-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGxhc3Qgc3RhdGVtZW50IGV2YWx1YXRlcyBgMTIgKyAxYCBmaXJzdCBhbmQgYXNzaWducyB0aGUgcmVzdWx0LCAxMywgdG8gYHNjb3JlYC4gSXQgaXMgYW4gaW5zdHJ1Y3Rpb24gKCJtYWtlIGBzY29yZWAgcmVmZXIgdG8gdGhlIHZhbHVlIG9mIGBzY29yZSArIDFgIiksIG5vdCBhIG1hdGhlbWF0aWNhbCBlcXVhdGlvbiwgc28gaXQgaXMgdmFsaWQgZXZlbiB0aG91Z2ggYHNjb3JlYCBjYW5ub3QgZXF1YWwgYHNjb3JlICsgMWAgaW4gbWF0aGVtYXRpY3MuIFRoZSBwcm9ncmFtIGhhcyBubyBwcmludGVkIG91dHB1dC4="
+    },
+    "ex-w06": {
+      "type": "example",
+      "code": "print(type(42))\nprint(type(3.5))\nprint(type('42'))\nprint(type(True))",
+      "output": "<class 'int'>\n<class 'float'>\n<class 'str'>\n<class 'bool'>"
+    },
+    "cp3-types": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "t2": {
+          "accept": [
+            "float"
+          ]
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        },
+        "t4": {
+          "accept": [
+            "bool"
+          ]
+        }
+      }
+    },
+    "cp3-tool": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "tool": {
+          "accept": [
+            "type()",
+            "type",
+            "the type() function",
+            "type() function",
+            "print(type())",
+            "print(type(...))",
+            "type(...)",
+            "the type function",
+            "print(type(x))",
+            "type(x)"
+          ],
+          "placeholder": "a Python function",
+          "width": "18rem"
+        }
+      }
+    },
+    "ex-w07": {
+      "type": "example",
+      "code": "value = 10\nprint(value, type(value))\nvalue = 'ten'\nprint(value, type(value))",
+      "output": "10 <class 'int'>\nten <class 'str'>"
+    },
+    "ex-w08": {
+      "type": "example",
+      "code": "status = 'ready'\nstatus = True\nstatus = 1"
+    },
+    "cp4-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "'ready'",
+            "\"ready\"",
+            "ready"
+          ],
+          "caseSensitive": true
+        },
+        "t1": {
+          "accept": [
+            "str"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "True"
+          ],
+          "caseSensitive": true
+        },
+        "t2": {
+          "accept": [
+            "bool"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "1"
+          ]
+        },
+        "t3": {
+          "accept": [
+            "int"
+          ]
+        }
+      }
+    },
+    "cp4-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSByZWFkZXIgbXVzdCBrZWVwIGNoZWNraW5nIHdoYXQga2luZCBvZiB2YWx1ZSB0aGUgbmFtZSBjdXJyZW50bHkgcmVmZXJzIHRvLiBDb2RlIHdyaXR0ZW4gZm9yIHRoZSBlYXJsaWVyIGtpbmQgb2YgdmFsdWUgKGZvciBleGFtcGxlLCB0ZXh0KSBtYXkgbm8gbG9uZ2VyIHdvcmsgb25jZSB0aGUgbmFtZSByZWZlcnMgdG8gYSBudW1iZXIsIGFuZCBpdCBpcyBoYXJkZXIgdG8gdGVsbCB3aGF0IGBzdGF0dXNgIG1lYW5zIGF0IGFueSBnaXZlbiBsaW5lLg=="
+    },
+    "cp5-names": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n1": {
+          "accept": [
+            "valid"
+          ]
+        },
+        "n2": {
+          "accept": [
+            "valid"
+          ]
+        },
+        "n3": {
+          "accept": [
+            "invalid"
+          ]
+        },
+        "n4": {
+          "accept": [
+            "invalid"
+          ]
+        },
+        "n5": {
+          "accept": [
+            "valid"
+          ]
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YHN0dWRlbnRfY291bnRgIGJlc3QgZm9sbG93cyB0aGUgY291cnNlIGNvbnZlbnRpb246IGxvd2VyY2FzZSB3b3JkcyBzZXBhcmF0ZWQgYnkgYW4gdW5kZXJzY29yZSwgd2l0aCBhIGNsZWFyIG1lYW5pbmcuIGAzc3R1ZGVudHNgIGlzIGludmFsaWQgYmVjYXVzZSBpdCBzdGFydHMgd2l0aCBhIGRpZ2l0OyBgZm9yYCBpcyBpbnZhbGlkIGJlY2F1c2UgaXQgaXMgYSBrZXl3b3JkLiBgc3R1ZGVudENvdW50YCBhbmQgYFN0dWRlbnRzYCBhcmUgdmFsaWQgUHl0aG9uIGJ1dCBkbyBub3QgZm9sbG93IGBsb3dlcl9jYXNlX3dpdGhfdW5kZXJzY29yZXNgLg=="
+    },
+    "ex-w09": {
+      "type": "example",
+      "code": "TAX_RATE = 0.15\nMAX_ATTEMPTS = 3"
+    },
+    "ex-w10": {
+      "type": "example",
+      "code": "# Use one named value so the rate is easy to update later.\nTAX_RATE = 0.15\n\nprint('Current tax rate:', TAX_RATE)",
+      "output": "Current tax rate: 0.15"
+    },
+    "cp6-names": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "TAX_RATE",
+            "TAX_RATE_PERCENT",
+            "SALES_TAX_RATE",
+            "TAX"
+          ],
+          "caseSensitive": true,
+          "placeholder": "constant"
+        },
+        "r2": {
+          "accept": [
+            "number_of_seats",
+            "seat_count",
+            "num_seats",
+            "seats",
+            "seat_total",
+            "total_seats",
+            "num_of_seats",
+            "seats_count"
+          ],
+          "caseSensitive": true
+        },
+        "r3": {
+          "accept": [
+            "unit_price",
+            "price_per_unit",
+            "price",
+            "item_price",
+            "unit_cost"
+          ],
+          "caseSensitive": true
+        }
+      }
+    },
+    "cp6-comment": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "placeholder": "# …",
+      "answer": "T25lIHN1aXRhYmxlIGNvbW1lbnQgaXM6CgpgIyBLZWVwIHRoZSByYXRlIGluIG9uZSBwbGFjZSBzbyBsYXRlciBjaGFuZ2VzIHN0YXkgY29uc2lzdGVudC5gCgpBIHVzZWZ1bCBjb21tZW50IGdpdmVzIHRoZSByZWFzb24gZm9yIHRoZSBjaG9pY2UuIFRoZSBjYXBpdGFsIGxldHRlcnMgaW4gYFRBWF9SQVRFYCBleHByZXNzIHRoZSBpbnRlbnQgdGhhdCB0aGUgdmFsdWUgc3RheXMgZml4ZWQ7IFB5dGhvbiBkb2VzIG5vdCBlbmZvcmNlIGl0Lg=="
+    },
+    "ex-w11": {
+      "type": "example",
+      "code": "print(total_cost)"
+    },
+    "ex-w12": {
+      "type": "example",
+      "code": "total_cost = 25.0\nprint(totl_cost)"
+    },
+    "cp7-fix": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 3,
+      "starter": "room_capacity = 35\nprint(Room_capacity)",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "35"
+        }
+      ],
+      "check": "assert \"Room_capacity\" not in __source__, \"The name Room_capacity is still in the program. Make both spellings match the assignment.\"\nassert \"room_capacity\" in __source__, \"Keep the name room_capacity from the original assignment.\"",
+      "answer": "cm9vbV9jYXBhY2l0eSA9IDM1CnByaW50KHJvb21fY2FwYWNpdHkp"
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "UHl0aG9uIG5hbWVzIGFyZSBjYXNlLXNlbnNpdGl2ZS4gVGhlIGFzc2lnbm1lbnQgY3JlYXRlcyBgcm9vbV9jYXBhY2l0eWAsIHNvIGBSb29tX2NhcGFjaXR5YCAod2l0aCBhIGNhcGl0YWwgUikgaXMgYSBkaWZmZXJlbnQsIHVuZGVmaW5lZCBuYW1lIGFuZCBQeXRob24gcmFpc2VzIGEgYE5hbWVFcnJvcmAu"
+    },
+    "ex-w14": {
+      "type": "example",
+      "code": "MAX_SEATS = 30\navailable = 24\nlabel = 'Room A'\n\nprint(label, available)\navailable = 22\nprint(label, available)"
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YE1BWF9TRUFUU2AgaXMgdGhlIG5hbWUgaW50ZW5kZWQgYXMgYSBjb25zdGFudC4gYGF2YWlsYWJsZWAgYW5kIGBsYWJlbGAgYXJlIG9yZGluYXJ5IHZhcmlhYmxlIG5hbWVzLiBBbGwgdGhyZWUgbmFtZXMgYXJlIGFzc2lnbmVkIHVzaW5nIHRoZSBzYW1lIFB5dGhvbiBzeW50YXg7IG9ubHkgdGhlIGNhcGl0YWwgbGV0dGVycyBzaWduYWwgdGhlIGludGVudC4="
+    },
+    "fr2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "t2": {
+          "accept": [
+            "int"
+          ]
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        }
+      }
+    },
+    "fr3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a1": {
+          "accept": [
+            "24"
+          ]
+        },
+        "a2": {
+          "accept": [
+            "22"
+          ]
+        }
+      }
+    },
+    "fr4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Room A 24"
+          ],
+          "caseSensitive": true,
+          "placeholder": "first line",
+          "width": "14rem"
+        },
+        "l2": {
+          "accept": [
+            "Room A 22"
+          ],
+          "caseSensitive": true,
+          "placeholder": "second line",
+          "width": "14rem"
+        }
+      }
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNhcGl0YWwgbGV0dGVycyBjb21tdW5pY2F0ZSB0aGF0IHRoZSBtYXhpbXVtIGlzIGludGVuZGVkIHRvIHJlbWFpbiBmaXhlZCB3aGlsZSB0aGUgcHJvZ3JhbSBydW5zLiBQeXRob24gd291bGQgc3RpbGwgYWxsb3cgYSBsYXRlciByZWFzc2lnbm1lbnQ7IHRoZSBjb252ZW50aW9uIGlzIGZvciBodW1hbiByZWFkZXJzLg=="
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "t2": {
+          "accept": [
+            "float"
+          ]
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        },
+        "t4": {
+          "accept": [
+            "bool"
+          ]
+        }
+      }
+    },
+    "pb": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n1": {
+          "accept": [
+            "first_score",
+            "score_1",
+            "score1",
+            "initial_score",
+            "score_one",
+            "first_result"
+          ],
+          "caseSensitive": true
+        },
+        "n2": {
+          "accept": [
+            "total_price",
+            "price_total",
+            "total_cost",
+            "total"
+          ],
+          "caseSensitive": true
+        },
+        "n3": {
+          "accept": [
+            "class_name",
+            "class_code",
+            "course",
+            "course_code",
+            "course_name",
+            "class_level",
+            "class_size",
+            "class_label",
+            "class_title",
+            "class_id",
+            "class_number",
+            "class_type",
+            "class_year",
+            "class_section",
+            "student_class",
+            "python_class",
+            "class_period",
+            "class_room",
+            "classroom"
+          ],
+          "caseSensitive": true
+        },
+        "n4": {
+          "accept": [
+            "lab_seats",
+            "seat_count",
+            "number_of_seats",
+            "lab_seat_count",
+            "num_seats",
+            "seats",
+            "lab_capacity",
+            "seats_in_lab",
+            "total_seats",
+            "num_lab_seats",
+            "number_of_lab_seats",
+            "seats_available",
+            "available_seats"
+          ],
+          "caseSensitive": true
+        }
+      }
+    },
+    "ex-w15": {
+      "type": "example",
+      "code": "item_count = 5\nitem_count = 8\nitem_count = 'eight'"
+    },
+    "pc-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "5"
+          ]
+        },
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "v2": {
+          "accept": [
+            "8"
+          ]
+        },
+        "t2": {
+          "accept": [
+            "int"
+          ]
+        },
+        "v3": {
+          "accept": [
+            "'eight'",
+            "\"eight\"",
+            "eight"
+          ],
+          "caseSensitive": true
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        }
+      }
+    },
+    "pc-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHRoaXJkIGFzc2lnbm1lbnQsIGBpdGVtX2NvdW50ID0gJ2VpZ2h0J2AsIG1heSBiZSBhIGRlc2lnbiBtaXN0YWtlOiBhIGNvdW50IG5vcm1hbGx5IHJlbWFpbnMgbnVtZXJpYywgYW5kIGNvZGUgdGhhdCBleHBlY3RzIGEgbnVtYmVyIGluIGBpdGVtX2NvdW50YCBtYXkgc3RvcCB3b3JraW5nLiBJdCBpcyBsZWdhbCBQeXRob24gYW5kIHByb2R1Y2VzIG5vIG91dHB1dC4="
+    },
+    "pd": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 6,
+      "starter": "# Course information",
+      "cases": [
+        {
+          "name": "Your values, in the requested order",
+          "check": "user = {k: v for k, v in globals().items() if not k.startswith(\"__\")}\ntexts = {k: v for k, v in user.items() if isinstance(v, str)}\nwhole = {k: v for k, v in user.items() if type(v) is int}\nconstants = {k: v for k, v in whole.items() if k == k.upper() and any(ch.isalpha() for ch in k)}\ncounts = {k: v for k, v in whole.items() if k not in constants}\nassert texts, \"Store the course code as text (a str value in quotes) in a variable.\"\nassert counts, \"Store the number of students as a whole number (an int, no quotes) in a variable.\"\nassert constants, \"Store the maximum class size using the constant convention: an ALL_CAPS name such as MAX_CLASS_SIZE.\"\nlines = __stdout__.strip(\"\\n\").split(\"\\n\")\nassert len(lines) == 1, \"Display the three values on one line, with one print() call.\"\nexpected = {f\"{c} {n} {m}\" for c in texts.values() for n in counts.values() for m in constants.values()}\nassert lines[0] in expected, \"Print the course code, the number of students, and the maximum in that order, separated by spaces (one print with three values).\"\n"
+        }
+      ],
+      "answer": "Y291cnNlX2NvZGUgPSAnQ09NUCAxMDAxJwpzdHVkZW50X2NvdW50ID0gMjgKTUFYX0NMQVNTX1NJWkUgPSA0MApwcmludChjb3Vyc2VfY29kZSwgc3R1ZGVudF9jb3VudCwgTUFYX0NMQVNTX1NJWkUp",
+      "answerNote": "Output: COMP 1001 28 40. Other values are fine if the types, names, and display order meet the question."
+    },
+    "ex-w16": {
+      "type": "example",
+      "code": "# Keep the room limit in one place for future updates.\nMAX_SEATS = 30\nroom_label = 'Room A'\nbooked = 24"
+    },
+    "ex-w17": {
+      "type": "example",
+      "code": "# Keep the room limit in one place for future updates.\nMAX_SEATS = 30\nroom_label = 'Room A'\nbooked = 24\n\nprint('Capacity:', MAX_SEATS)\nprint(room_label, booked)\nbooked = booked + 1\nprint(room_label, booked)",
+      "output": "Capacity: 30\nRoom A 24\nRoom A 25"
+    },
+    "room-check": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Capacity: 30"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 1",
+          "width": "14rem"
+        },
+        "l2": {
+          "accept": [
+            "Room A 0"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 2",
+          "width": "14rem"
+        },
+        "l3": {
+          "accept": [
+            "Room A 1"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line 3",
+          "width": "14rem"
+        },
+        "t": {
+          "accept": [
+            "int"
+          ],
+          "placeholder": "type"
+        }
+      }
+    },
+    "ex-w17-zero": {
+      "type": "example",
+      "code": "# Keep the room limit in one place for future updates.\nMAX_SEATS = 30\nroom_label = 'Room A'\nbooked = 0\n\nprint('Capacity:', MAX_SEATS)\nprint(room_label, booked)\nbooked = booked + 1\nprint(room_label, booked)"
+    },
+    "room-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlcmUgaXMgbm8gbGF0ZXIgYXNzaWdubWVudCB0byBgTUFYX1NFQVRTYCwgc28gaXRzIHZhbHVlIG5ldmVyIGNoYW5nZXMuIFRoZSBjYXBpdGFsIGxldHRlcnMgYWxvbmUgZG8gbm90IHByZXZlbnQgYSBjaGFuZ2U7IGEgbGF0ZXIgYE1BWF9TRUFUUyA9IOKApmAgc3RhdGVtZW50IHdvdWxkIGJlIGFjY2VwdGVkIGJ5IFB5dGhvbi4="
+    },
+    "ca": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "first = 3\n# Add the remaining statements.",
+      "cases": [
+        {
+          "name": "first = 3",
+          "expected": "4 5"
+        },
+        {
+          "name": "first = 0",
+          "rewrite": [
+            [
+              "first = 3",
+              "first = 0"
+            ]
+          ],
+          "expected": "1 2"
+        }
+      ],
+      "answer": "Zmlyc3QgPSAzCnNlY29uZCA9IGZpcnN0ICsgMgpmaXJzdCA9IGZpcnN0ICsgMQpwcmludChmaXJzdCwgc2Vjb25kKQ=="
+    },
+    "ca-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "f1": {
+          "accept": [
+            "3"
+          ]
+        },
+        "s1": {
+          "accept": [
+            "not yet assigned",
+            "not assigned",
+            "unassigned",
+            "undefined",
+            "no value",
+            "none",
+            "-",
+            "—",
+            "not defined",
+            "does not exist",
+            "nothing"
+          ],
+          "placeholder": "e.g. not yet assigned"
+        },
+        "f2": {
+          "accept": [
+            "3"
+          ]
+        },
+        "s2": {
+          "accept": [
+            "5"
+          ]
+        },
+        "f3": {
+          "accept": [
+            "4"
+          ]
+        },
+        "s3": {
+          "accept": [
+            "5"
+          ]
+        }
+      }
+    },
+    "cb": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "first = 3\n# Add the remaining statements.",
+      "cases": [
+        {
+          "name": "first = 3",
+          "expected": "4 6"
+        },
+        {
+          "name": "first = 0",
+          "rewrite": [
+            [
+              "first = 3",
+              "first = 0"
+            ]
+          ],
+          "expected": "1 3"
+        }
+      ],
+      "answer": "Zmlyc3QgPSAzCmZpcnN0ID0gZmlyc3QgKyAxCnNlY29uZCA9IGZpcnN0ICsgMgpwcmludChmaXJzdCwgc2Vjb25kKQ=="
+    },
+    "cb-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SGVyZSBgc2Vjb25kYCBpcyBhc3NpZ25lZCBhZnRlciBgZmlyc3RgIGhhcyBhbHJlYWR5IGJlZW4gaW5jcmVhc2VkLCBzbyBpdCB1c2VzIHRoZSB1cGRhdGVkIHZhbHVlICg0ICsgMiA9IDYpLiBJbiBDb2RpbmcgUHJhY3RpY2UgQSwgYHNlY29uZGAgdXNlZCB0aGUgb3JpZ2luYWwgdmFsdWUgb2YgYGZpcnN0YCAoMyArIDIgPSA1KS4gVGhlIG9yZGVyIG9mIHN0YXRlbWVudHMgY2hhbmdlcyB3aGljaCB2YWx1ZSBpcyByZWFkLg=="
+    },
+    "cc-types": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "int"
+          ]
+        },
+        "t2": {
+          "accept": [
+            "float"
+          ]
+        },
+        "t3": {
+          "accept": [
+            "str"
+          ]
+        },
+        "t4": {
+          "accept": [
+            "str"
+          ]
+        },
+        "t5": {
+          "accept": [
+            "str"
+          ]
+        }
+      }
+    },
+    "cc-same": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 5,
+      "rows": 2,
+      "placeholder": "Which two literals?",
+      "answer": "YCc3J2AgYW5kIGAiNyJgIGNvbnRhaW4gdGhlIHNhbWUgdGV4dDogc2luZ2xlIGFuZCBkb3VibGUgcXVvdGVzIGJvdGggbWFyayBhIHN0cmluZywgYW5kIHRoZSBxdW90ZXMgYXJlIG5vdCBwYXJ0IG9mIHRoZSB2YWx1ZS4gYCI3LjAiYCBpcyBkaWZmZXJlbnQgdGV4dCBiZWNhdXNlIGl0IGluY2x1ZGVzIGEgZGVjaW1hbCBwb2ludCBhbmQgYSB6ZXJvIGFzIGNoYXJhY3RlcnMu"
+    },
+    "cc": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "# Display the five types in the requested order.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "<class 'int'>\n<class 'float'>\n<class 'str'>\n<class 'str'>\n<class 'str'>"
+        }
+      ],
+      "answer": "cHJpbnQodHlwZSg3KSkKcHJpbnQodHlwZSg3LjApKQpwcmludCh0eXBlKCc3JykpCnByaW50KHR5cGUoIjciKSkKcHJpbnQodHlwZSgiNy4wIikp"
+    },
+    "ex-w18": {
+      "type": "example",
+      "code": "m = 40\nn = 18\nt = 'Lab A'\nprint(t, n, m)",
+      "output": "Lab A 18 40"
+    },
+    "cd": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 7,
+      "starter": "# Write your revised program below.",
+      "check": "import re\nuser = {k: v for k, v in globals().items() if not k.startswith(\"__\")}\nfor short in (\"m\", \"n\", \"t\"):\n    assert short not in user, f\"The name {short} is still used. Replace every single-letter name with a meaningful one.\"\nconstants = {k: v for k, v in user.items() if type(v) is int and k == k.upper() and any(ch.isalpha() for ch in k)}\nassert constants, \"Store the fixed room capacity under an ALL_CAPS name (the constant convention), e.g. MAX_SEATS.\"\nassert any(v == 40 for v in constants.values()) or any(v == 40 for v in user.values()), \"Keep the capacity value 40.\"\ncounts = {k: v for k, v in user.items() if type(v) is int and k not in constants}\nassert counts, \"Store the booking count under a lowercase descriptive name (it is a value that can change, not a constant).\"\nassert any(isinstance(v, str) for v in user.values()), \"Store the room label as text under a descriptive name.\"\ncode_lines = [line for line in __source__.split(\"\\n\") if line.strip()]\nassert any(re.match(r\"\\s*#\", line) or \"#\" in line.split(\"'\")[0].split('\"')[0] for line in code_lines), \"Add one useful comment (a line or note starting with #) that explains a choice.\"\nfor k in user:\n    assert len(k) > 1, f\"The name {k} is too short to be meaningful.\"\n",
+      "cases": [
+        {
+          "name": "18 bookings",
+          "expected": "Lab A 18 40"
+        },
+        {
+          "name": "0 bookings",
+          "rewrite": [
+            [
+              "= 18",
+              "= 0"
+            ]
+          ],
+          "expected": "Lab A 0 40"
+        }
+      ],
+      "answer": "IyBLZWVwIHRoZSByb29tIGxpbWl0IGluIG9uZSBwbGFjZSBmb3IgZnV0dXJlIHVwZGF0ZXMuCk1BWF9TRUFUUyA9IDQwCmJvb2tlZCA9IDE4CnJvb21fbGFiZWwgPSAnTGFiIEEnCnByaW50KHJvb21fbGFiZWwsIGJvb2tlZCwgTUFYX1NFQVRTKQ==",
+      "answerNote": "Other meaningful names and a useful reason-based comment are acceptable."
+    },
+    "cd-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "RGVzY3JpcHRpdmUgbmFtZXMgKGByb29tX2xhYmVsYCwgYGJvb2tlZGAsIGBNQVhfU0VBVFNgKSBleHBsYWluIHdoYXQgZWFjaCB2YWx1ZSBtZWFucyB3aXRob3V0IGEgcmVhZGVyIGhhdmluZyB0byBndWVzcy4gQ2FwaXRhbCBsZXR0ZXJzIGRpc3Rpbmd1aXNoIHRoZSBpbnRlbmRlZCBmaXhlZCBjYXBhY2l0eSBmcm9tIGEgY291bnQgdGhhdCBtYXkgY2hhbmdlLiBUaGUgY29tbWVudCBleHBsYWlucyB3aHkgdGhlIHNldHRpbmcgaXMga2VwdCBpbiBvbmUgcGxhY2UsIHNvIGEgZnV0dXJlIGNoYW5nZSBpcyBtYWRlIG9uY2UgYW5kIHN0YXlzIGNvbnNpc3RlbnQu"
+    }
+  }
+}
