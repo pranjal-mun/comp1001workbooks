@@ -33,16 +33,37 @@
 </section>
 <hr>
 <h2 id="treats" data-toc-title="👹 Oliver's treat average">👹 Boss 1: Oliver's Treat Average</h2>
-<p>Oliver's daily treat count is always a nonnegative integer, so <code>-1</code> can mark the end of the data. Read daily counts until the user enters <code>-1</code>. Do not include the sentinel in the total or count. If at least one day was entered, print the average with two digits after the decimal point. Otherwise, print <code>No days were entered.</code></p>
-<p>Sample run 1:</p>
+<p>Oliver gets a whole number of treats each day. You are given the daily counts one at a time, ended by <code>-1</code>. Print the average treats per day with two digits after the decimal point. If no day was entered before the <code>-1</code>, print <code>No days were entered.</code></p>
+<p>Read the counts with <code>input()</code> inside a <code>while True</code> loop, leave the loop with <code>break</code> when <code>-1</code> arrives, and print once after the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: counts = 2, 4, 6, -1
+Output: Average treats: 4.00
+Explanation: (2 + 4 + 6) / 3 = 4. The -1 is not a day.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: counts = -1
+Output: No days were entered.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: counts = 1, 2, -1
+Output: Average treats: 1.50</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= treats &lt;= 100</code> on each day</li>
+    <li>at most 50 days before the <code>-1</code></li>
+  </ul>
+</div>
+<p>The program reads each count after the prompt <code>Treats (-1 to finish): </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">2</span>
 <span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">4</span>
 <span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">6</span>
 <span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">-1</span>
 Average treats: 4.00</pre>
-<p>Sample run 2:</p>
-<pre class="wb-shell"><span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">-1</span>
-No days were entered.</pre>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -67,17 +88,45 @@ No days were entered.</pre>
 <wb-exercise id="treats"></wb-exercise>
 
 <h2 id="cash" data-toc-title="👾 Campus shop cash total">👾 Boss 2: Campus Shop Cash Total</h2>
-<p>Read item prices for a Memorial University campus shop purchase. A blank line ends the input because it cannot be an item price. First print the card total to the nearest cent. Then print the cash total rounded to the nearest five cents. Work in cents for the final rounding: a remainder of 0, 1, or 2 cents rounds down, while a remainder of 3 or 4 cents rounds up. If the user enters a blank line immediately, both totals are <code>$0.00</code>.</p>
-<p>Sample run 1:</p>
+<p>At the Memorial University campus shop, a card payment is charged to the cent and a cash payment is rounded to the nearest five cents. You are given item prices one at a time, ended by a blank line. Print the card total, then the cash total.</p>
+<p>Round in whole cents: when the total divided by 5 leaves a remainder of 0, 1 or 2 cents, round down; when it leaves 3 or 4, round up.</p>
+<p>Read each price with <code>input()</code> inside a <code>while True</code> loop, leave the loop with <code>break</code> on the blank line, and print twice after the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: prices = 1.02, 2.01, blank
+Output:
+Card total: $3.03
+Cash total: $3.05
+Explanation: 303 cents leaves a remainder of 3, so cash rounds up to 305.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: prices = 1.01, blank
+Output:
+Card total: $1.01
+Cash total: $1.00
+Explanation: 101 cents leaves a remainder of 1, so cash rounds down to 100.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: prices = blank
+Output:
+Card total: $0.00
+Cash total: $0.00</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0.01 &lt;= price &lt;= 999.99</code>, with at most two digits after the decimal point</li>
+    <li>at most 50 prices before the blank line</li>
+  </ul>
+</div>
+<p>The program reads each price after the prompt <code>Price, or blank to finish: $</code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Price, or blank to finish: $</span><span class="wb-typed">1.02</span>
 <span class="wb-prompt">Price, or blank to finish: $</span><span class="wb-typed">2.01</span>
 <span class="wb-prompt">Price, or blank to finish: $</span>
 Card total: $3.03
 Cash total: $3.05</pre>
-<p>Sample run 2:</p>
-<pre class="wb-shell"><span class="wb-prompt">Price, or blank to finish: $</span>
-Card total: $0.00
-Cash total: $0.00</pre>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -104,16 +153,42 @@ Cash total: $0.00</pre>
 <wb-exercise id="cash"></wb-exercise>
 
 <h2 id="sqrt" data-toc-title="🐉 Square root check">🐉 Boss 3: Square Root Check</h2>
-<p>Read a positive number and estimate its square root. Start with half of the number as the first guess. While the difference between <code>guess * guess</code> and the number is greater than <code>0.000001</code>, replace the guess with the average of <code>guess</code> and <code>number / guess</code>. Count the updates. Print the final guess with six digits after the decimal point, followed by the update count.</p>
-<p>Sample run 1:</p>
-<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">4</span>
+<p>You are given a positive number, <code>number</code>. Estimate its square root. Start with <code>number / 2</code> as the guess. While <code>guess * guess</code> is more than <code>0.000001</code> away from <code>number</code>, replace the guess with the average of <code>guess</code> and <code>number / guess</code>. Print the final guess with six digits after the decimal point, then the number of times the guess was replaced.</p>
+<p>Read <code>number</code> with <code>input()</code>, improve the guess with a <code>while</code> loop whose header does the closeness test, and print twice after the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: number = 4
+Output:
 Square root: 2.000000
-Updates: 0</pre>
-<p>Sample run 2:</p>
+Updates: 0
+Explanation: the first guess, 4 / 2 = 2, is already exact, so the loop body never runs.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: number = 25
+Output:
+Square root: 5.000000
+Updates: 5
+Explanation: the guess goes 12.5, 7.25, 5.349138, 5.011394, 5.000013, 5.000000.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: number = 0.25
+Output:
+Square root: 0.500000
+Updates: 5
+Explanation: the first guess, 0.125, is too small, so the guess grows before it settles.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0.01 &lt;= number &lt;= 1000000</code></li>
+  </ul>
+</div>
+<p>The program reads the number after the prompt <code>Number: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">25</span>
 Square root: 5.000000
 Updates: 5</pre>
-<p>The difference can be negative when the guess is too small, so measure it with <code>abs()</code>. Trace the run for 4 by hand: the first guess is already exact, so the loop body never runs.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -137,19 +212,52 @@ Updates: 5</pre>
 <wb-exercise id="sqrt"></wb-exercise>
 
 <h2 id="factors" data-toc-title="💀 Factor trail">💀 Boss 4: Factor Trail</h2>
-<p>Read an integer that is at least 2. Print its prime factors in order, one per line. Begin with 2 as the possible factor. When the factor divides the remaining value exactly, print it and divide the remaining value by it. Otherwise, increase the possible factor by 1. Do not increase the factor after a successful division, because the same factor may occur again.</p>
-<p>Sample run 1:</p>
+<p>You are given an integer <code>number</code> that is at least 2. Print <code>Prime factors:</code>, then its prime factors in increasing order, one per line. A prime that divides the number more than once is printed that many times.</p>
+<p>Read <code>number</code> with <code>input()</code>, find the factors with one <code>while</code> loop, and print each factor as you find it.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: number = 84
+Output:
+Prime factors:
+2
+2
+3
+7
+Explanation: 84 = 2 * 2 * 3 * 7.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: number = 13
+Output:
+Prime factors:
+13
+Explanation: 13 is prime, so it is its only factor.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: number = 360
+Output:
+Prime factors:
+2
+2
+2
+3
+3
+5</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>2 &lt;= number &lt;= 1000000</code></li>
+  </ul>
+</div>
+<p>The program reads the number after the prompt <code>Number: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">84</span>
 Prime factors:
 2
 2
 3
 7</pre>
-<p>Sample run 2:</p>
-<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">13</span>
-Prime factors:
-13</pre>
-<p>Trace 84 before you code: 84 becomes 42, then 21 (two 2s), 3 does not divide 21 until the factor reaches 3, which leaves 7, and 7 is printed when the factor catches up with it. The loop ends once the factor is larger than what remains.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>

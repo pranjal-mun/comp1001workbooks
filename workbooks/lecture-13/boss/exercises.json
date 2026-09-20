@@ -59,6 +59,10 @@
       ],
       "check": "assert \"while True\" in __source__, \"Keep the while True loop and leave it with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nassert \"import\" not in __source__, \"Solve it with a while loop and arithmetic; no import is needed.\"\nimport re\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each count to total inside the loop with total = total + treats.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\nassert re.search(r\"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:\", __source__), \"Test count > 0 before dividing by it.\"\nassert \":.2f\" in __source__, \"Print the average with two digits after the decimal point using :.2f.\"\n",
       "answer": "dG90YWwgPSAwCmNvdW50ID0gMAoKd2hpbGUgVHJ1ZToKICAgIHRyZWF0cyA9IGludChpbnB1dCgnVHJlYXRzICgtMSB0byBmaW5pc2gpOiAnKSkKICAgIGlmIHRyZWF0cyA9PSAtMToKICAgICAgICBicmVhawogICAgdG90YWwgPSB0b3RhbCArIHRyZWF0cwogICAgY291bnQgPSBjb3VudCArIDEKCmlmIGNvdW50ID4gMDoKICAgIHByaW50KGYnQXZlcmFnZSB0cmVhdHM6IHt0b3RhbCAvIGNvdW50Oi4yZn0nKQplbHNlOgogICAgcHJpbnQoJ05vIGRheXMgd2VyZSBlbnRlcmVkLicp",
+      "hints": [
+        "Test `treats == -1` right after the `input()` line and `break` there, before `total` and `count` change.",
+        "After the loop, `total / count` fails when `count` is 0. Test `count > 0` with `if`: print the average with `:.2f` in the `if` branch and the message in the `else` branch."
+      ],
       "answerNote": "The sentinel is tested before either accumulator changes. The final decision checks count before division, so entering -1 first is safe."
     },
     "cash": {
@@ -129,6 +133,11 @@
       ],
       "check": "assert \"while True\" in __source__, \"Keep the while True loop and leave it with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nassert \"import\" not in __source__, \"Solve it with a while loop and arithmetic; no import is needed.\"\nassert \"float(\" in __source__, \"Convert each price with float() after the blank-line test.\"\nassert __source__.index(\"break\") < __source__.index(\"float(\"), \"Test text for the blank line before calling float() on it.\"\nassert \"round(\" in __source__, \"Convert the total to whole cents with round(total * 100).\"\nassert \"% 5\" in __source__ or \"%5\" in __source__, \"Use the remainder cents % 5 to round the cash total.\"\nassert __source__.count(\"print(\") == 2, \"Print exactly two lines: the card total and the cash total.\"\n",
       "answer": "dG90YWwgPSAwLjAKCndoaWxlIFRydWU6CiAgICB0ZXh0ID0gaW5wdXQoJ1ByaWNlLCBvciBibGFuayB0byBmaW5pc2g6ICQnKQogICAgaWYgdGV4dCA9PSAnJzoKICAgICAgICBicmVhawogICAgdG90YWwgPSB0b3RhbCArIGZsb2F0KHRleHQpCgpjZW50cyA9IHJvdW5kKHRvdGFsICogMTAwKQpyZW1haW5kZXIgPSBjZW50cyAlIDUKaWYgcmVtYWluZGVyIDwgMzoKICAgIGNhc2hfY2VudHMgPSBjZW50cyAtIHJlbWFpbmRlcgplbHNlOgogICAgY2FzaF9jZW50cyA9IGNlbnRzICsgNSAtIHJlbWFpbmRlcgoKcHJpbnQoZidDYXJkIHRvdGFsOiAke2NlbnRzIC8gMTAwOi4yZn0nKQpwcmludChmJ0Nhc2ggdG90YWw6ICR7Y2FzaF9jZW50cyAvIDEwMDouMmZ9Jyk=",
+      "hints": [
+        "Test `text == ''` right after the `input()` line and `break` there. Only then convert with `float(text)` and add it to `total`.",
+        "Turn the total into whole cents with `cents = round(total * 100)`. `cents % 5` is the remainder, 0 to 4.",
+        "When the remainder is less than 3 the cash total is `cents - remainder`; otherwise it is `cents + 5 - remainder`. Print both totals divided by 100 with `:.2f`."
+      ],
       "answerNote": "The blank string is tested before float is called. Converting the completed total to cents makes the last step an integer remainder calculation. The initialized total also gives a safe sentinel-first result."
     },
     "sqrt": {
@@ -183,6 +192,10 @@
       ],
       "check": "assert \"import\" not in __source__, \"Solve it with a while loop and arithmetic; no import is needed.\"\nassert \"while\" in __source__, \"Repeat the improvement with a while loop whose condition tests the error.\"\nassert \"abs(\" in __source__, \"Measure the error with abs(guess * guess - number).\"\nassert \"0.000001\" in __source__ or \"1e-6\" in __source__ or \"1e-06\" in __source__, \"Stop when the error is no longer greater than 0.000001.\"\nassert \"break\" not in __source__, \"Put the stopping test in the while header; no break is needed.\"\nassert \"** 0.5\" not in __source__ and \"**0.5\" not in __source__ and \"sqrt\" not in __source__, \"Estimate the root with the averaging step, not with ** 0.5 or a square-root function.\"\n",
       "answer": "bnVtYmVyID0gZmxvYXQoaW5wdXQoJ051bWJlcjogJykpCmd1ZXNzID0gbnVtYmVyIC8gMgp1cGRhdGVzID0gMAoKd2hpbGUgYWJzKGd1ZXNzICogZ3Vlc3MgLSBudW1iZXIpID4gMC4wMDAwMDE6CiAgICBndWVzcyA9IChndWVzcyArIG51bWJlciAvIGd1ZXNzKSAvIDIKICAgIHVwZGF0ZXMgPSB1cGRhdGVzICsgMQoKcHJpbnQoZidTcXVhcmUgcm9vdDoge2d1ZXNzOi42Zn0nKQpwcmludCgnVXBkYXRlczonLCB1cGRhdGVzKQ==",
+      "hints": [
+        "`guess * guess - number` is negative when the guess is too small, so wrap it in `abs()` and loop while that is greater than `0.000001`.",
+        "Inside the loop replace `guess` with `(guess + number / guess) / 2` and add 1 to `updates`. The two print lines are already in the starter."
+      ],
       "answerNote": "The loop tests the error in the current guess. For 4, the initial guess is already exact, so tracing shows zero passes. Each pass for 25 improves the guess and increments the counter once."
     },
     "factors": {
@@ -237,6 +250,11 @@
       ],
       "check": "assert \"import\" not in __source__, \"Solve it with a while loop and arithmetic; no import is needed.\"\nimport re\nassert len(re.findall(r\"^\\s*while\\b\", __source__, re.M)) == 1, \"Use one while loop that runs until remaining has been reduced to 1.\"\nassert \"%\" in __source__, \"Test whether factor divides remaining exactly with %.\"\nassert \"//\" in __source__, \"Divide remaining by the factor with // so that it stays an int.\"\nassert \"break\" not in __source__, \"Let the while condition end the loop; no break is needed.\"\nassert __stdout__.count(\"\\n\") >= 1, \"Print each prime factor on its own line.\"\n",
       "answer": "bnVtYmVyID0gaW50KGlucHV0KCdOdW1iZXI6ICcpKQpyZW1haW5pbmcgPSBudW1iZXIKZmFjdG9yID0gMgoKcHJpbnQoJ1ByaW1lIGZhY3RvcnM6JykKd2hpbGUgZmFjdG9yIDw9IHJlbWFpbmluZzoKICAgIGlmIHJlbWFpbmluZyAlIGZhY3RvciA9PSAwOgogICAgICAgIHByaW50KGZhY3RvcikKICAgICAgICByZW1haW5pbmcgPSByZW1haW5pbmcgLy8gZmFjdG9yCiAgICBlbHNlOgogICAgICAgIGZhY3RvciA9IGZhY3RvciArIDE=",
+      "hints": [
+        "`remaining` is what is left to factor and `factor` is the next candidate, starting at 2. Loop while `factor <= remaining`.",
+        "On each pass test `remaining % factor == 0`. If it divides, print `factor` and replace `remaining` with `remaining // factor`. Otherwise add 1 to `factor`.",
+        "Do not add 1 to `factor` after a successful division, because the same prime may divide again. For 84: 84 becomes 42, then 21 (2 printed twice), then 7 after the 3, and 7 is printed once `factor` reaches 7."
+      ],
       "answerNote": "A successful division reduces remaining but keeps the same possible factor, which is why 2 is printed twice for 84. If the input is prime, every smaller candidate fails and the input itself is eventually printed."
     }
   }

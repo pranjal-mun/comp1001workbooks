@@ -47,6 +47,10 @@
       ],
       "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert __source__.count(\"DISCOUNT_RATE\") >= 2, \"Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again.\"\nassert \":.2f\" in __source__, \"Show every amount with :.2f in the f-string.\"\nassert __source__.count(\"print(\") == 2, \"Print one row per pass with a single print() inside the loop, and keep the heading print() outside it.\"\nassert count == rows, \"Add 1 to count on every pass so the loop stops after rows passes.\"\n",
       "answer": "RElTQ09VTlRfUkFURSA9IDAuMjUKcHJpY2UgPSBmbG9hdChpbnB1dCgnRmlyc3QgcHJpY2U6ICQnKSkKcm93cyA9IGludChpbnB1dCgnUm93czogJykpCmNvdW50ID0gMAoKcHJpbnQoJ09yaWdpbmFsICBEaXNjb3VudCAgU2FsZScpCndoaWxlIGNvdW50IDwgcm93czoKICAgIGRpc2NvdW50ID0gcHJpY2UgKiBESVNDT1VOVF9SQVRFCiAgICBzYWxlX3ByaWNlID0gcHJpY2UgLSBkaXNjb3VudAogICAgcHJpbnQoZicke3ByaWNlOi4yZn0gICR7ZGlzY291bnQ6LjJmfSAgJHtzYWxlX3ByaWNlOi4yZn0nKQogICAgcHJpY2UgPSBwcmljZSArIDUKICAgIGNvdW50ID0gY291bnQgKyAx",
+      "hints": [
+        "Loop while `count < rows`. On each pass, `discount` is `price * DISCOUNT_RATE` and the sale price is `price - discount`.",
+        "Print the three amounts in one f-string with `:.2f` after each and two spaces between them. Then add 5 to `price` and 1 to `count`."
+      ],
       "answerNote": "Both price and count are updated on every pass. When rows is 0, the first test is false, so only the heading is printed."
     },
     "teams": {
@@ -99,6 +103,11 @@
       ],
       "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"%\" in __source__, \"Use % to test whether team_size divides a group exactly.\"\nassert \"gcd\" not in __source__ and \"import\" not in __source__, \"Search for the answer with the loop; do not import a module.\"\nassert \"team_size - 1\" in __source__ or \"team_size -= 1\" in __source__, \"Decrease team_size by 1 on each pass.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
       "answer": "Zmlyc3QgPSBpbnQoaW5wdXQoJ0ZpcnN0IGdyb3VwOiAnKSkKc2Vjb25kID0gaW50KGlucHV0KCdTZWNvbmQgZ3JvdXA6ICcpKQp0ZWFtX3NpemUgPSBtaW4oZmlyc3QsIHNlY29uZCkKCndoaWxlIGZpcnN0ICUgdGVhbV9zaXplICE9IDAgb3Igc2Vjb25kICUgdGVhbV9zaXplICE9IDA6CiAgICB0ZWFtX3NpemUgPSB0ZWFtX3NpemUgLSAxCgpwcmludCgnTGFyZ2VzdCBzaGFyZWQgdGVhbSBzaXplOicsIHRlYW1fc2l6ZSk=",
+      "hints": [
+        "The starter sets `team_size` to the largest size that could work. Try smaller sizes one at a time by subtracting 1 from `team_size` on each pass.",
+        "A size divides a group exactly when `first % team_size` is 0. Keep looping while at least one of the two remainders is not 0.",
+        "For 120 and 48 the search starts at 48 and stops at 24, the first size where both remainders are 0. A size of 1 divides every group, so the loop always stops."
+      ],
       "answerNote": "The loop continues while at least one group has a remainder. A team size of 1 divides every positive group size, so the search always stops."
     },
     "binary": {
@@ -191,6 +200,11 @@
       ],
       "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"math\" not in __source__ and \"import\" not in __source__, \"Build the estimate with the loop; do not import a module.\"\nassert \":.6f\" in __source__, \"Show the estimate with :.6f in the f-string.\"\nassert __source__.count(\"print(\") == 1, \"Print one estimate per pass with a single print() inside the loop.\"\nassert denominator == 2 * terms + 1, \"Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on.\"\nassert sign == (1 if terms % 2 == 0 else -1), \"Flip sign on every pass so the terms alternate between adding and subtracting.\"\nassert step == terms + 1, \"Add 1 to step on every pass and stop after terms passes.\"\n",
       "answer": "dGVybXMgPSBpbnQoaW5wdXQoJ1Rlcm1zOiAnKSkKc3RlcCA9IDEKZGVub21pbmF0b3IgPSAxCnNpZ24gPSAxCmVzdGltYXRlID0gMC4wCgp3aGlsZSBzdGVwIDw9IHRlcm1zOgogICAgZXN0aW1hdGUgPSBlc3RpbWF0ZSArIHNpZ24gKiA0IC8gZGVub21pbmF0b3IKICAgIHByaW50KGYnQWZ0ZXIge3N0ZXB9OiB7ZXN0aW1hdGU6LjZmfScpCiAgICBkZW5vbWluYXRvciA9IGRlbm9taW5hdG9yICsgMgogICAgc2lnbiA9IC1zaWduCiAgICBzdGVwID0gc3RlcCArIDE=",
+      "hints": [
+        "Loop while `step <= terms`. On each pass add one term to `estimate`, print, then update `denominator`, `sign` and `step`.",
+        "The term is `sign * 4 / denominator`. `sign` is 1 when adding and -1 when subtracting, so `sign = -sign` flips it for the next pass.",
+        "After the print, add 2 to `denominator` (1, 3, 5, 7 and so on), flip `sign`, and add 1 to `step`. The first pass adds 4/1 and prints 4.000000; the second subtracts 4/3 and prints 2.666667."
+      ],
       "answerNote": "The denominator advances through the positive odd integers, while sign = -sign alternates addition and subtraction. The inclusive test produces exactly the requested number of lines."
     }
   }

@@ -55,6 +55,10 @@ assert __source__.count("print(") == 2, "Print one row per pass with a single pr
 assert count == rows, "Add 1 to count on every pass so the loop stops after rows passes."
 """,
     "answer": b64(clearance),
+    "hints": [
+        'Loop while `count < rows`. On each pass, `discount` is `price * DISCOUNT_RATE` and the sale price is `price - discount`.',
+        'Print the three amounts in one f-string with `:.2f` after each and two spaces between them. Then add 5 to `price` and 1 to `count`.',
+    ],
     "answerNote": "Both price and count are updated on every pass. When rows is 0, the first test is false, so only the heading is printed."}
 
 # ---------------------------------------------------------------- 2 Shared Tutorial Teams
@@ -77,6 +81,11 @@ assert "team_size - 1" in __source__ or "team_size -= 1" in __source__, "Decreas
 assert __source__.count("print(") == 1, "Keep the single print() after the loop."
 """,
     "answer": b64(teams),
+    "hints": [
+        'The starter sets `team_size` to the largest size that could work. Try smaller sizes one at a time by subtracting 1 from `team_size` on each pass.',
+        'A size divides a group exactly when `first % team_size` is 0. Keep looping while at least one of the two remainders is not 0.',
+        'For 120 and 48 the search starts at 48 and stops at 24, the first size where both remainders are 0. A size of 1 divides every group, so the loop always stops.',
+    ],
     "answerNote": "The loop continues while at least one group has a remainder. A team size of 1 divides every positive group size, so the search always stops."}
 
 # ---------------------------------------------------------------- 3 Binary to Decimal
@@ -134,6 +143,11 @@ assert sign == (1 if terms % 2 == 0 else -1), "Flip sign on every pass so the te
 assert step == terms + 1, "Add 1 to step on every pass and stop after terms passes."
 """,
     "answer": b64(circle),
+    "hints": [
+        'Loop while `step <= terms`. On each pass add one term to `estimate`, print, then update `denominator`, `sign` and `step`.',
+        'The term is `sign * 4 / denominator`. `sign` is 1 when adding and -1 when subtracting, so `sign = -sign` flips it for the next pass.',
+        'After the print, add 2 to `denominator` (1, 3, 5, 7 and so on), flip `sign`, and add 1 to `step`. The first pass adds 4/1 and prints 4.000000; the second subtracts 4/3 and prints 2.666667.',
+    ],
     "answerNote": "The denominator advances through the positive odd integers, while sign = -sign alternates addition and subtraction. The inclusive test produces exactly the requested number of lines."}
 
 for spec in E.values():

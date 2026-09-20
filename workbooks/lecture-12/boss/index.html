@@ -34,14 +34,39 @@
 <hr>
 
 <h2 id="clearance" data-toc-title="👹 Clearance table">👹 Boss 1: Campus Shop Clearance Table</h2>
-<p>The Memorial University campus shop has reduced some course supplies by 25 percent. Read the first original price and the number of rows to display. The first row uses the entered price. Each later row increases the original price by $5.00. Print the heading shown below, followed by the original price, discount, and sale price for each row. Show every amount with two digits after the decimal point. If the number of rows is 0, print the heading and no price rows.</p>
+<p>The Memorial University campus shop has cut the price of some course supplies by 25 percent. You are given the original price of the first item, <code>price</code>, and a number of rows, <code>rows</code>. Print one row per item: the original price, the discount, and the sale price, each with two digits after the decimal point. The first row uses <code>price</code>. Each later row adds $5.00 to the original price.</p>
+<p>Read the two values with <code>input()</code>, print the heading once, then print the rows with a <code>while</code> loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: price = 20, rows = 3
+Output:
+Original  Discount  Sale
+$20.00  $5.00  $15.00
+$25.00  $6.25  $18.75
+$30.00  $7.50  $22.50
+Explanation: 25 percent of 20.00 is 5.00, so the sale price is 15.00. The next row starts from 25.00.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: price = 12.5, rows = 0
+Output:
+Original  Discount  Sale
+Explanation: no rows, so only the heading is printed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt; price &lt;= 1000</code></li>
+    <li><code>0 &lt;= rows &lt;= 20</code></li>
+  </ul>
+</div>
+<p>The program reads the values after the prompts <code>First price: $</code> and <code>Rows: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">First price: $</span><span class="wb-typed">20</span>
 <span class="wb-prompt">Rows: </span><span class="wb-typed">3</span>
 Original  Discount  Sale
 $20.00  $5.00  $15.00
 $25.00  $6.25  $18.75
 $30.00  $7.50  $22.50</pre>
-<p>The starter prints the heading and sets <code>count</code> to 0. Loop while <code>count &lt; rows</code>. On each pass, <code>discount</code> is <code>price * DISCOUNT_RATE</code> (5.0 for the first row above) and the sale price is <code>price - discount</code>. Print the three amounts in one f-string with <code>:.2f</code> and two spaces between them, then add 5 to <code>price</code> and 1 to <code>count</code>. When <code>rows</code> is 0, the first test is false and only the heading is printed.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output after the heading</th></tr></thead>
   <tbody>
@@ -65,11 +90,36 @@ $30.00  $7.50  $22.50</pre>
 <wb-exercise id="clearance"></wb-exercise>
 
 <h2 id="teams" data-toc-title="👾 Tutorial teams">👾 Boss 2: Shared Tutorial Teams</h2>
-<p>Pranjal wants to divide two tutorial groups into teams. Every team must have the same number of students, and nobody may be left over. Read the two positive group sizes. Starting with the smaller group size, work downward until you find the largest team size that divides both groups exactly.</p>
+<p>Pranjal wants to split two tutorial groups into teams. Every team must have the same number of students, and nobody can be left over. You are given the two group sizes, <code>first</code> and <code>second</code>. Print the largest team size that divides both groups exactly.</p>
+<p>Read the two sizes with <code>input()</code>, search downward from the smaller size with a <code>while</code> loop, and print once after the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: first = 120, second = 48
+Output: 24
+Explanation: teams of 24 give 5 teams from the first group and 2 from the second. Every size from 25 to 48 leaves students over in one of the groups.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: first = 7, second = 5
+Output: 1
+Explanation: 7 and 5 share no divisor above 1.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: first = 36, second = 36
+Output: 36</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= first &lt;= 1000</code></li>
+    <li><code>1 &lt;= second &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program reads the sizes after the prompts <code>First group: </code> and <code>Second group: </code> and prints <code>Largest shared team size:</code> followed by the answer.</p>
 <pre class="wb-shell"><span class="wb-prompt">First group: </span><span class="wb-typed">120</span>
 <span class="wb-prompt">Second group: </span><span class="wb-typed">48</span>
 Largest shared team size: 24</pre>
-<p>The starter sets <code>team_size</code> to <code>min(first, second)</code>, the largest possible answer. A team size divides a group exactly when <code>first % team_size</code> is 0. Loop while at least one of the two remainders is not 0, and subtract 1 from <code>team_size</code> on each pass. For 120 and 48 the search starts at 48 and stops at 24, the first value where both remainders are 0. A team size of 1 divides every positive group size, so the search always stops.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -148,13 +198,38 @@ Decimal: 45</pre>
 <wb-exercise id="binary"></wb-exercise>
 
 <h2 id="circle" data-toc-title="💀 Circle estimate">💀 Boss 4: Circle Estimate</h2>
-<p>A short alternating calculation can estimate π. Start at 0, then add 4/1, subtract 4/3, add 4/5, subtract 4/7, and continue with odd denominators. Read a positive number of terms. After adding each term, print the term number and the current estimate with six digits after the decimal point.</p>
+<p>Adding and subtracting fractions with odd denominators gives an estimate of π: 4/1 - 4/3 + 4/5 - 4/7 and so on. You are given a number of terms, <code>terms</code>. Add the terms one at a time. After each one, print the term number and the estimate so far with six digits after the decimal point.</p>
+<p>Read <code>terms</code> with <code>input()</code>, add one term per pass of a <code>while</code> loop, and print inside the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: terms = 2
+Output:
+After 1: 4.000000
+After 2: 2.666667
+Explanation: 4/1 = 4, then 4 - 4/3 = 2.666667.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: terms = 4
+Output:
+After 1: 4.000000
+After 2: 2.666667
+After 3: 3.466667
+After 4: 2.895238
+Explanation: the third term adds 4/5 and the fourth subtracts 4/7.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= terms &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program reads the count after the prompt <code>Terms: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Terms: </span><span class="wb-typed">4</span>
 After 1: 4.000000
 After 2: 2.666667
 After 3: 3.466667
 After 4: 2.895238</pre>
-<p>The starter sets <code>step</code> to 1, <code>denominator</code> to 1, <code>sign</code> to 1, and <code>estimate</code> to 0.0. Loop while <code>step &lt;= terms</code>. On each pass, add <code>sign * 4 / denominator</code> to <code>estimate</code> and print the step and the estimate with <code>:.6f</code>. Then add 2 to <code>denominator</code>, replace <code>sign</code> with <code>-sign</code>, and add 1 to <code>step</code>. The first pass adds 4/1 and prints 4.000000; the second subtracts 4/3 and prints 2.666667. The inclusive test produces exactly the requested number of lines.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>

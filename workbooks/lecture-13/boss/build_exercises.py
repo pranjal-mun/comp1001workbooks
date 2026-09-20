@@ -72,6 +72,10 @@ assert re.search(r"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:
 assert ":.2f" in __source__, "Print the average with two digits after the decimal point using :.2f."
 ''',
     "answer": b64(treats),
+    "hints": [
+        'Test `treats == -1` right after the `input()` line and `break` there, before `total` and `count` change.',
+        'After the loop, `total / count` fails when `count` is 0. Test `count > 0` with `if`: print the average with `:.2f` in the `if` branch and the message in the `else` branch.',
+    ],
     "answerNote": "The sentinel is tested before either accumulator changes. The final decision checks count before division, so entering -1 first is safe."}
 assert E["treats"]["cases"][0]["expected"].endswith("Average treats: 4.00")
 assert E["treats"]["cases"][1]["expected"].endswith("No days were entered.")
@@ -107,6 +111,11 @@ assert "% 5" in __source__ or "%5" in __source__, "Use the remainder cents % 5 t
 assert __source__.count("print(") == 2, "Print exactly two lines: the card total and the cash total."
 ''',
     "answer": b64(cash),
+    "hints": [
+        "Test `text == ''` right after the `input()` line and `break` there. Only then convert with `float(text)` and add it to `total`.",
+        'Turn the total into whole cents with `cents = round(total * 100)`. `cents % 5` is the remainder, 0 to 4.',
+        'When the remainder is less than 3 the cash total is `cents - remainder`; otherwise it is `cents + 5 - remainder`. Print both totals divided by 100 with `:.2f`.',
+    ],
     "answerNote": "The blank string is tested before float is called. Converting the completed total to cents makes the last step an integer remainder calculation. The initialized total also gives a safe sentinel-first result."}
 assert E["cash"]["cases"][0]["expected"].endswith("Card total: $3.03\nCash total: $3.05")
 assert E["cash"]["cases"][1]["expected"].endswith("Card total: $0.00\nCash total: $0.00")
@@ -136,6 +145,10 @@ assert "break" not in __source__, "Put the stopping test in the while header; no
 assert "** 0.5" not in __source__ and "**0.5" not in __source__ and "sqrt" not in __source__, "Estimate the root with the averaging step, not with ** 0.5 or a square-root function."
 ''',
     "answer": b64(sqrt),
+    "hints": [
+        '`guess * guess - number` is negative when the guess is too small, so wrap it in `abs()` and loop while that is greater than `0.000001`.',
+        'Inside the loop replace `guess` with `(guess + number / guess) / 2` and add 1 to `updates`. The two print lines are already in the starter.',
+    ],
     "answerNote": "The loop tests the error in the current guess. For 4, the initial guess is already exact, so tracing shows zero passes. Each pass for 25 improves the guess and increments the counter once."}
 assert E["sqrt"]["cases"][0]["expected"].endswith("Square root: 2.000000\nUpdates: 0")
 assert E["sqrt"]["cases"][1]["expected"].endswith("Square root: 5.000000\nUpdates: 5")
@@ -164,6 +177,11 @@ assert "break" not in __source__, "Let the while condition end the loop; no brea
 assert __stdout__.count("\\n") >= 1, "Print each prime factor on its own line."
 ''',
     "answer": b64(factors),
+    "hints": [
+        '`remaining` is what is left to factor and `factor` is the next candidate, starting at 2. Loop while `factor <= remaining`.',
+        'On each pass test `remaining % factor == 0`. If it divides, print `factor` and replace `remaining` with `remaining // factor`. Otherwise add 1 to `factor`.',
+        'Do not add 1 to `factor` after a successful division, because the same prime may divide again. For 84: 84 becomes 42, then 21 (2 printed twice), then 7 after the 3, and 7 is printed once `factor` reaches 7.',
+    ],
     "answerNote": "A successful division reduces remaining but keeps the same possible factor, which is why 2 is printed twice for 84. If the input is prime, every smaller candidate fails and the input itself is eventually printed."}
 assert E["factors"]["cases"][0]["expected"].endswith("Prime factors:\n2\n2\n3\n7")
 assert E["factors"]["cases"][1]["expected"].endswith("Prime factors:\n13")
