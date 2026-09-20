@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 12 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-12-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 12 Boss Problems</h1>
+    <div class="wb-subtitle">Problem solving with loops: the <code>while</code> loop</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 12 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>%</code>, string indexes and <code>len()</code>, f-strings, <code>if</code> statements, and the <code>while</code> loop with its initialization, test, and update. These problems combine the loop patterns from this lecture with ideas from earlier lectures. Plan the initialization, test, and update before writing each program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with <code>input()</code>. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, typing different answers at the prompts each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="clearance" data-toc-title="👹 Clearance table">👹 Boss 1: Campus Shop Clearance Table</h2>
+<p>The Memorial University campus shop has reduced some course supplies by 25 percent. Read the first original price and the number of rows to display. The first row uses the entered price. Each later row increases the original price by $5.00. Print the heading shown below, followed by the original price, discount, and sale price for each row. Show every amount with two digits after the decimal point. If the number of rows is 0, print the heading and no price rows.</p>
+<pre class="wb-shell"><span class="wb-prompt">First price: $</span><span class="wb-typed">20</span>
+<span class="wb-prompt">Rows: </span><span class="wb-typed">3</span>
+Original  Discount  Sale
+$20.00  $5.00  $15.00
+$25.00  $6.25  $18.75
+$30.00  $7.50  $22.50</pre>
+<p>The starter prints the heading and sets <code>count</code> to 0. Loop while <code>count &lt; rows</code>. On each pass, <code>discount</code> is <code>price * DISCOUNT_RATE</code> (5.0 for the first row above) and the sale price is <code>price - discount</code>. Print the three amounts in one f-string with <code>:.2f</code> and two spaces between them, then add 5 to <code>price</code> and 1 to <code>count</code>. When <code>rows</code> is 0, the first test is false and only the heading is printed.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output after the heading</th></tr></thead>
+  <tbody>
+    <tr><td><code>20</code>, <code>3</code></td><td><code>$20.00  $5.00  $15.00</code><br><code>$25.00  $6.25  $18.75</code><br><code>$30.00  $7.50  $22.50</code></td></tr>
+    <tr><td><code>12.5</code>, <code>0</code></td><td>nothing</td></tr>
+    <tr><td><code>9.99</code>, <code>2</code></td><td><code>$9.99  $2.50  $7.49</code><br><code>$14.99  $3.75  $11.24</code></td></tr>
+    <tr><td><code>4</code>, <code>1</code></td><td><code>$4.00  $1.00  $3.00</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Repeat the work with a <code>while</code> loop. No <code>for</code>.</li>
+    <li>Work out the discount with <code>price * DISCOUNT_RATE</code>; do not write 0.25 again.</li>
+    <li>Show every amount with <code>:.2f</code> in the f-string.</li>
+    <li>One <code>print()</code> inside the loop for the rows, and the heading <code>print()</code> outside it.</li>
+    <li>Add 1 to <code>count</code> on every pass so the loop stops after <code>rows</code> passes.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>price = float(input('First price: $'))</code> and <code>rows = int(input('Rows: '))</code> unchanged. The checker will type the other prices and row counts.</p>
+<wb-exercise id="clearance"></wb-exercise>
+
+<h2 id="teams" data-toc-title="👾 Tutorial teams">👾 Boss 2: Shared Tutorial Teams</h2>
+<p>Pranjal wants to divide two tutorial groups into teams. Every team must have the same number of students, and nobody may be left over. Read the two positive group sizes. Starting with the smaller group size, work downward until you find the largest team size that divides both groups exactly.</p>
+<pre class="wb-shell"><span class="wb-prompt">First group: </span><span class="wb-typed">120</span>
+<span class="wb-prompt">Second group: </span><span class="wb-typed">48</span>
+Largest shared team size: 24</pre>
+<p>The starter sets <code>team_size</code> to <code>min(first, second)</code>, the largest possible answer. A team size divides a group exactly when <code>first % team_size</code> is 0. Loop while at least one of the two remainders is not 0, and subtract 1 from <code>team_size</code> on each pass. For 120 and 48 the search starts at 48 and stops at 24, the first value where both remainders are 0. A team size of 1 divides every positive group size, so the search always stops.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>120</code>, <code>48</code></td><td><code>Largest shared team size: 24</code></td></tr>
+    <tr><td><code>7</code>, <code>5</code></td><td><code>Largest shared team size: 1</code></td></tr>
+    <tr><td><code>36</code>, <code>36</code></td><td><code>Largest shared team size: 36</code></td></tr>
+    <tr><td><code>9</code>, <code>27</code></td><td><code>Largest shared team size: 9</code></td></tr>
+    <tr><td><code>1</code>, <code>40</code></td><td><code>Largest shared team size: 1</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Repeat the work with a <code>while</code> loop. No <code>for</code>.</li>
+    <li>Use <code>%</code> to test whether <code>team_size</code> divides a group exactly.</li>
+    <li>Search for the answer with the loop. No <code>import</code> and no <code>gcd</code>.</li>
+    <li>Decrease <code>team_size</code> by 1 on each pass.</li>
+    <li>One <code>print()</code>, after the loop.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>first = int(input('First group: '))</code> and <code>second = int(input('Second group: '))</code> unchanged. The checker will type the other group sizes.</p>
+<wb-exercise id="teams"></wb-exercise>
+
+<h2 id="binary" data-toc-title="🐉 Binary room code">🐉 Boss 3: Binary Room Code</h2>
+<p>The display outside room EN2043 receives a room code as binary digits. Binary uses only 0 and 1. Read a valid, nonempty binary string and convert it to a decimal room number. Process the digits from left to right with a <code>while</code> loop. For each digit, double the value built so far and add the new digit.</p>
+<pre class="wb-shell"><span class="wb-prompt">Binary code: </span><span class="wb-typed">101101</span>
+Room number: 45</pre>
+<p>The starter sets <code>index</code> and <code>value</code> to 0. Loop while <code>index &lt; len(bits)</code>. On each pass, <code>bits[index]</code> is one character; <code>int(bits[index])</code> turns it into 0 or 1. Replace <code>value</code> with <code>value * 2</code> plus that digit, then add 1 to <code>index</code>. For <code>101101</code> the value goes 1, 2, 5, 11, 22, 45. The one-character input <code>0</code> leaves the value at 0.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>101101</code></td><td><code>Room number: 45</code></td></tr>
+    <tr><td><code>0</code></td><td><code>Room number: 0</code></td></tr>
+    <tr><td><code>1</code></td><td><code>Room number: 1</code></td></tr>
+    <tr><td><code>1000</code></td><td><code>Room number: 8</code></td></tr>
+    <tr><td><code>11111111</code></td><td><code>Room number: 255</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Repeat the work with a <code>while</code> loop. No <code>for</code>.</li>
+    <li>Test <code>index</code> against <code>len(bits)</code> so every character is processed once.</li>
+    <li>Pick one character out of <code>bits</code> with <code>bits[index]</code>.</li>
+    <li>Build the value one digit at a time. <code>int(bits, 2)</code> is not part of this course.</li>
+    <li>Double the value built so far before adding the new digit.</li>
+    <li>One <code>print()</code>, after the loop.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>bits = input('Binary code: ')</code> unchanged. The checker will type the other codes.</p>
+<wb-exercise id="binary"></wb-exercise>
+
+<h2 id="circle" data-toc-title="💀 Circle estimate">💀 Boss 4: Circle Estimate</h2>
+<p>A short alternating calculation can estimate π. Start at 0, then add 4/1, subtract 4/3, add 4/5, subtract 4/7, and continue with odd denominators. Read a positive number of terms. After adding each term, print the term number and the current estimate with six digits after the decimal point.</p>
+<pre class="wb-shell"><span class="wb-prompt">Terms: </span><span class="wb-typed">4</span>
+After 1: 4.000000
+After 2: 2.666667
+After 3: 3.466667
+After 4: 2.895238</pre>
+<p>The starter sets <code>step</code> to 1, <code>denominator</code> to 1, <code>sign</code> to 1, and <code>estimate</code> to 0.0. Loop while <code>step &lt;= terms</code>. On each pass, add <code>sign * 4 / denominator</code> to <code>estimate</code> and print the step and the estimate with <code>:.6f</code>. Then add 2 to <code>denominator</code>, replace <code>sign</code> with <code>-sign</code>, and add 1 to <code>step</code>. The first pass adds 4/1 and prints 4.000000; the second subtracts 4/3 and prints 2.666667. The inclusive test produces exactly the requested number of lines.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1</code></td><td><code>After 1: 4.000000</code></td></tr>
+    <tr><td><code>2</code></td><td><code>After 1: 4.000000</code><br><code>After 2: 2.666667</code></td></tr>
+    <tr><td><code>4</code></td><td><code>After 1: 4.000000</code><br><code>After 2: 2.666667</code><br><code>After 3: 3.466667</code><br><code>After 4: 2.895238</code></td></tr>
+    <tr><td><code>10</code></td><td>ten lines, ending with <code>After 10: 3.041840</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Repeat the work with a <code>while</code> loop. No <code>for</code>.</li>
+    <li>Build the estimate with the loop. No <code>import</code> and no <code>math</code>.</li>
+    <li>Show the estimate with <code>:.6f</code> in the f-string.</li>
+    <li>One <code>print()</code>, inside the loop.</li>
+    <li>Add 2 to <code>denominator</code> on every pass so it moves through 1, 3, 5, 7 and so on.</li>
+    <li>Flip <code>sign</code> on every pass so the terms alternate between adding and subtracting.</li>
+    <li>Add 1 to <code>step</code> on every pass and stop after <code>terms</code> passes.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>terms = int(input('Terms: '))</code> unchanged. The checker will type the other term counts.</p>
+<wb-exercise id="circle"></wb-exercise>
+
+</main>
+</body>
+</html>

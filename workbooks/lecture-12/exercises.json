@@ -1,0 +1,1381 @@
+{
+  "id": "lecture-12",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 12 Workbook",
+  "subtitle": "Problem solving with loops: the while loop",
+  "exercises": {
+    "ex-1": {
+      "type": "example",
+      "code": "count = 1\n\nwhile count <= 5:\n    print(count)\n    count = count + 1",
+      "output": "1\n2\n3\n4\n5"
+    },
+    "cp1-body": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Which statements form the loop body?",
+      "answer": "VGhlIGxvb3AgYm9keSBjb250YWlucyBgcHJpbnQoY291bnQpYCBhbmQgYGNvdW50ID0gY291bnQgKyAxYC4="
+    },
+    "cp1-count": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "iters": {
+          "accept": [
+            "5",
+            "five",
+            "5 iterations",
+            "five iterations"
+          ],
+          "placeholder": "how many?",
+          "width": "8rem",
+          "show": "5"
+        }
+      }
+    },
+    "cp1-changes": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "What changes from one iteration to the next?",
+      "answer": "VGhlIHZhbHVlIG9mIGBjb3VudGAgY2hhbmdlcyBmcm9tIG9uZSBwYXNzIHRvIHRoZSBuZXh0Lg=="
+    },
+    "cp2-words": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "w1": {
+          "accept": [
+            "keep reading",
+            "until",
+            "keep",
+            "reading",
+            "keep reading temperatures",
+            "count",
+            "and count"
+          ],
+          "placeholder": "word or phrase",
+          "width": "10rem",
+          "show": "keep reading"
+        },
+        "w2": {
+          "accept": [
+            "keep reading",
+            "until",
+            "keep",
+            "reading",
+            "keep reading temperatures",
+            "count",
+            "and count"
+          ],
+          "placeholder": "word or phrase",
+          "width": "10rem",
+          "show": "until"
+        }
+      }
+    },
+    "cp2-remember": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "What must the program remember while it repeats?",
+      "answer": "VGhlIHByb2dyYW0gbXVzdCByZW1lbWJlciBhIGNvdW50IG9mIHRoZSB0ZW1wZXJhdHVyZXMgYWJvdmUgemVyby4="
+    },
+    "ex-3": {
+      "type": "example",
+      "code": "balance = 100.0\ntarget = 200.0\n\nwhile balance < target:\n    balance = balance * 1.5\n\nprint(balance)",
+      "output": "225.0"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r1": {
+          "accept": [
+            "yes",
+            "y",
+            "runs",
+            "true"
+          ],
+          "placeholder": "yes or no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "c2": {
+          "accept": [
+            "True"
+          ],
+          "show": "True"
+        },
+        "r2": {
+          "accept": [
+            "yes",
+            "y",
+            "runs",
+            "true"
+          ],
+          "placeholder": "yes or no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "c3": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        },
+        "r3": {
+          "accept": [
+            "no",
+            "n",
+            "does not run",
+            "false"
+          ],
+          "placeholder": "yes or no",
+          "width": "6rem",
+          "show": "no"
+        }
+      }
+    },
+    "cp3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Why would while balance >= target: be the wrong condition?",
+      "answer": "VGhhdCBjb25kaXRpb24gaXMgZmFsc2UgYXQgdGhlIHN0YXJ0aW5nIGJhbGFuY2Ugb2YgMTAwLCBzbyB0aGUgbG9vcCB3b3VsZCBydW4gemVybyB0aW1lcy4gSXQgYWxzbyBkZXNjcmliZXMgd2hlbiB0aGUgcHJvZ3JhbSBoYXMgYWxyZWFkeSByZWFjaGVkIHRoZSB0YXJnZXQgcmF0aGVyIHRoYW4gd2hlbiBpdCBzdGlsbCBuZWVkcyB0byBrZWVwIGdvaW5nLg=="
+    },
+    "ex-4": {
+      "type": "example",
+      "code": "count = 1                 # initialize\n\nwhile count <= 5:        # test\n    print(count)\n    count = count + 1    # update",
+      "output": "1\n2\n3\n4\n5"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "initialize",
+            "initialise",
+            "initialization",
+            "initialisation",
+            "init"
+          ],
+          "placeholder": "label",
+          "width": "9rem",
+          "show": "initialize"
+        },
+        "l2": {
+          "accept": [
+            "test",
+            "the test",
+            "condition"
+          ],
+          "placeholder": "label",
+          "width": "9rem",
+          "show": "test"
+        },
+        "l3": {
+          "accept": [
+            "body work",
+            "body",
+            "work",
+            "body-work"
+          ],
+          "placeholder": "label",
+          "width": "9rem",
+          "show": "body work"
+        },
+        "l4": {
+          "accept": [
+            "update",
+            "the update"
+          ],
+          "placeholder": "label",
+          "width": "9rem",
+          "show": "update"
+        }
+      }
+    },
+    "ex-5a": {
+      "type": "example",
+      "code": "RATE = 50.0\nINITIAL_BALANCE = 100.0\nTARGET = 200.0\n\nbalance = INITIAL_BALANCE\nyear = 0"
+    },
+    "ex-5c": {
+      "type": "example",
+      "code": "RATE = 50.0\nINITIAL_BALANCE = 100.0\nTARGET = 200.0\n\nbalance = INITIAL_BALANCE\nyear = 0\n\nwhile balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n    print(f'After year {year}: ${balance:.2f}')\n\nprint(f'Target reached after {year} years.')",
+      "output": "After year 1: $150.00\nAfter year 2: $225.00\nTarget reached after 2 years."
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "y0": {
+          "accept": [
+            "0",
+            "0.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b0": {
+          "accept": [
+            "100.0",
+            "100"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "y1": {
+          "accept": [
+            "1",
+            "1.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b1": {
+          "accept": [
+            "150.0",
+            "150"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "i1": {
+          "accept": [
+            "50.0",
+            "50"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "y2": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b2": {
+          "accept": [
+            "225.0",
+            "225"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "i2": {
+          "accept": [
+            "75.0",
+            "75"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is the final message outside the loop?",
+      "answer": "SXQgc2hvdWxkIGJlIHByaW50ZWQgb25jZSwgYWZ0ZXIgdGhlIHRhcmdldCBoYXMgYmVlbiByZWFjaGVkLiBQdXR0aW5nIGl0IGluIHRoZSBsb29wIHdvdWxkIHByaW50IGl0IGFmdGVyIGV2ZXJ5IHllYXIu"
+    },
+    "ex-6": {
+      "type": "example",
+      "code": "level = 5\n\nwhile level < 3:\n    print('Inside the loop')\n    level = level + 1\n\nprint('Finished')",
+      "output": "Finished"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "z": {
+          "accept": [
+            "zero times",
+            "zero",
+            "0",
+            "0 times",
+            "never",
+            "runs zero times"
+          ],
+          "placeholder": "how many times?",
+          "width": "10rem",
+          "show": "zero times"
+        },
+        "o": {
+          "accept": [
+            "one time",
+            "once",
+            "one",
+            "1",
+            "1 time",
+            "runs once"
+          ],
+          "placeholder": "how many times?",
+          "width": "10rem",
+          "show": "one time"
+        },
+        "m": {
+          "accept": [
+            "more than one time",
+            "more than one",
+            "more than once",
+            "four times",
+            "4 times",
+            "4",
+            "four",
+            "more than one time (four)",
+            "more than once (four times)"
+          ],
+          "placeholder": "how many times?",
+          "width": "10rem",
+          "show": "more than one time"
+        }
+      }
+    },
+    "cp7": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 5,
+      "starter": "count = 3\nwhile count > 0:\n    print(count)",
+      "cases": [
+        {
+          "name": "prints 3, 2, 1",
+          "expected": "3\n2\n1"
+        }
+      ],
+      "check": "assert __source__.count('print(') == 1, 'Keep the single print(count) and let the loop repeat it.'\nassert count == 0, 'Subtract 1 from count on every pass so that count > 0 becomes False.'",
+      "answer": "Y291bnQgPSAzCndoaWxlIGNvdW50ID4gMDoKICAgIHByaW50KGNvdW50KQogICAgY291bnQgPSBjb3VudCAtIDE=",
+      "answerNote": "The update runs after the print, so 3, 2 and 1 are printed before count reaches 0."
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "How does your line make the condition eventually become false?",
+      "answer": "U3VidHJhY3RpbmcgMSBhZnRlciBlYWNoIGBwcmludGAgY2FsbCBjaGFuZ2VzIGBjb3VudGAgZnJvbSAzIHRvIDIgdG8gMSB0byAwLiBBdCAwLCBgY291bnQgPiAwYCBpcyBgRmFsc2VgLg=="
+    },
+    "ex-8": {
+      "type": "example",
+      "code": "n = 1\nwhile n <= 5:\n    print(n, end=' ')\n    n = n + 1\nprint()",
+      "output": "1 2 3 4 5 "
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "f1": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "l1": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "p1": {
+          "accept": [
+            "5",
+            "5.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "f2": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "l2": {
+          "accept": [
+            "5",
+            "5.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "p2": {
+          "accept": [
+            "4",
+            "4.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "f3": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "l3": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "p3": {
+          "accept": [
+            "5",
+            "5.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        }
+      }
+    },
+    "ex-9": {
+      "type": "example",
+      "code": "total = 0\nnumber = 1\n\nwhile number <= 5:\n    total = total + number\n    number = number + 1\n\nprint('Total:', total)",
+      "output": "Total: 15"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a1": {
+          "accept": [
+            "1",
+            "1.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b2": {
+          "accept": [
+            "1",
+            "1.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "a2": {
+          "accept": [
+            "3",
+            "3.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b3": {
+          "accept": [
+            "3",
+            "3.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "a3": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b4": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "a4": {
+          "accept": [
+            "10",
+            "10.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "b5": {
+          "accept": [
+            "10",
+            "10.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "a5": {
+          "accept": [
+            "15",
+            "15.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        }
+      }
+    },
+    "cp9-where": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Where must total = 0 appear?",
+      "answer": "SXQgbXVzdCBhcHBlYXIgYmVmb3JlIHRoZSBsb29wIHNvIHRoYXQgaW5pdGlhbGl6YXRpb24gaGFwcGVucyBvbmNlLg=="
+    },
+    "ex-10": {
+      "type": "example",
+      "code": "evens = 0\nnumber = 1\n\nwhile number <= 10:\n    if number % 2 == 0:\n        evens = evens + 1\n    number = number + 1\n\nprint('Even numbers:', evens)",
+      "output": "Even numbers: 5"
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "0",
+            "0.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        },
+        "e2": {
+          "accept": [
+            "1",
+            "1.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        },
+        "e3": {
+          "accept": [
+            "1",
+            "1.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        },
+        "e4": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        },
+        "e5": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        },
+        "e6": {
+          "accept": [
+            "3",
+            "3.0"
+          ],
+          "placeholder": "?",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp10-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Why must number = number + 1 run on every iteration?",
+      "answer": "VGhlIGxvb3AtY29udHJvbCB2YXJpYWJsZSBtdXN0IG1vdmUgdG93YXJkIDExIG9uIGV2ZXJ5IHBhc3MuIElmIHRoZSB1cGRhdGUgcmFuIG9ubHkgZm9yIGV2ZW4gdmFsdWVzLCB0aGUgbG9vcCB3b3VsZCBzdG9wIGNoYW5naW5nIGF0IHRoZSBmaXJzdCBvZGQgdmFsdWUgYW5kIHdvdWxkIGJlIGluZmluaXRlLg=="
+    },
+    "ex-11": {
+      "type": "example",
+      "code": "total = 0.0\ntext = input('Value, or press Enter to finish: ')\n\nwhile text != '':\n    total = total + float(text)\n    text = input('Value, or press Enter to finish: ')\n\nprint(f'Total: {total:.2f}')"
+    },
+    "cp11-before": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is an input call needed before this loop?",
+      "answer": "VGhlIGZpcnN0IGlucHV0IGluaXRpYWxpemVzIGB0ZXh0YCBmb3IgdGhlIGZpcnN0IGNvbmRpdGlvbiB0ZXN0Lg=="
+    },
+    "cp11-end": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is another input call needed at the end of the body?",
+      "answer": "VGhlIHNlY29uZCBpbnB1dCB1cGRhdGVzIGB0ZXh0YCBmb3IgdGhlIG5leHQgdGVzdC4="
+    },
+    "cp11-blank": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "What happens if the user presses Enter at the first prompt?",
+      "answer": "SWYgdGhlIGZpcnN0IGlucHV0IGlzIGJsYW5rLCB0aGUgbG9vcCBydW5zIHplcm8gdGltZXMgYW5kIHRoZSBwcm9ncmFtIHByaW50cyBgVG90YWw6IDAuMDBgLg=="
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "T25lIGl0ZXJhdGlvbiBpcyBvbmUgY29tcGxldGUgZXhlY3V0aW9uIG9mIHRoZSBsb29wIGJvZHku"
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "SW5pdGlhbGl6ZSBhIGxvb3AtY29udHJvbCB2YWx1ZSwgdGVzdCBhIGNvbmRpdGlvbiwgYW5kIHVwZGF0ZSBhIHZhbHVlIHNvIHRoYXQgdGhlIGNvbmRpdGlvbiBjYW4gZXZlbnR1YWxseSBiZWNvbWUgZmFsc2Uu"
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "SXQgcnVucyB6ZXJvIHRpbWVzIHdoZW4gaXRzIGNvbmRpdGlvbiBpcyBgRmFsc2VgIGF0IHRoZSBmaXJzdCB0ZXN0Lg=="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "VGhlIHVwZGF0ZSBtYXkgYmUgbWlzc2luZywgb3IgdGhlIHVwZGF0ZSBtYXkgbW92ZSB0aGUgbG9vcC1jb250cm9sIHZhbHVlIGF3YXkgZnJvbSBhIGZhbHNlIGNvbmRpdGlvbi4gQW4gdXBkYXRlIGhpZGRlbiBvbiBhIHBhdGggdGhhdCBuZXZlciBydW5zIGNhbiBjYXVzZSB0aGUgc2FtZSBwcm9ibGVtLg=="
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "SXQgaXMgYSBsb29wIGVycm9yIHRoYXQgY2F1c2VzIG9uZSB0b28gbWFueSBvciBvbmUgdG9vIGZldyBpdGVyYXRpb25zLg=="
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "U3RhcnQgYXQgMCBiZWNhdXNlIGFkZGluZyAwIGRvZXMgbm90IGNoYW5nZSB0aGUgZmlyc3QgdmFsdWUu"
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "QW4gYWNjdW11bGF0b3IgYWRkcyB2YWx1ZXMgdG8gYnVpbGQgYSByZXN1bHQuIEEgY291bnRlciBhZGRzIDEgd2hlbiBhbiBldmVudCBvY2N1cnMu"
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "answer": "VGhlIGZpcnN0IGlucHV0IGluaXRpYWxpemVzIHRoZSB2YWx1ZSB1c2VkIGJ5IHRoZSB0ZXN0LiBUaGUgc2Vjb25kIHVwZGF0ZXMgdGhhdCB2YWx1ZSBiZWZvcmUgdGhlIGxvb3AgcmV0dXJucyB0byB0aGUgdGVzdC4="
+    },
+    "ex-pt": {
+      "type": "example",
+      "code": "RATE = 50.0\nINITIAL_BALANCE = 100.0\nTARGET = 200.0\n\nbalance = INITIAL_BALANCE\nyear = 0\n\nwhile balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n\nprint(f'Years: {year}')\nprint(f'Final balance: ${balance:.2f}')",
+      "output": "Years: 2\nFinal balance: $225.00"
+    },
+    "cp-int": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "iters": {
+          "accept": [
+            "0",
+            "zero",
+            "none",
+            "0 iterations",
+            "zero iterations"
+          ],
+          "placeholder": "how many?",
+          "width": "8rem",
+          "show": "0"
+        },
+        "line1": {
+          "accept": [
+            "Years: 0",
+            "Years:0"
+          ],
+          "placeholder": "first line printed",
+          "width": "14rem",
+          "show": "Years: 0"
+        },
+        "line2": {
+          "accept": [
+            "Final balance: $200.00",
+            "Final balance: $200.0",
+            "Final balance: 200.00",
+            "Final balance:$200.00"
+          ],
+          "placeholder": "second line printed",
+          "width": "14rem",
+          "show": "Final balance: $200.00"
+        }
+      }
+    },
+    "cp-int-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Why does the program not need a special if statement for this case?",
+      "answer": "VGhlIGB3aGlsZWAgY29uZGl0aW9uIGlzIGFscmVhZHkgZmFsc2UsIGFuZCB0aGUgdmFyaWFibGVzIHdlcmUgaW5pdGlhbGl6ZWQgYmVmb3JlIHRoZSBsb29wLCBzbyB0aGUgZXhpc3Rpbmcgc3RydWN0dXJlIGhhbmRsZXMgdGhlIGNhc2Uu"
+    },
+    "ca": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "limit = int(input('Limit: '))\nnumber = 1\n\nwhile ______________________________:\n    print(________________, end=' ')\n    number = _________________________\n\nprint()",
+      "cases": [
+        {
+          "name": "limit = 20",
+          "inputs": [
+            "20"
+          ],
+          "expected": "Limit: 1 4 9 16 "
+        },
+        {
+          "name": "limit = 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Limit: "
+        },
+        {
+          "name": "limit = 16",
+          "inputs": [
+            "16"
+          ],
+          "expected": "Limit: 1 4 9 "
+        },
+        {
+          "name": "limit = 50",
+          "inputs": [
+            "50"
+          ],
+          "expected": "Limit: 1 4 9 16 25 36 49 "
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\n",
+      "answer": "bGltaXQgPSBpbnQoaW5wdXQoJ0xpbWl0OiAnKSkKbnVtYmVyID0gMQoKd2hpbGUgbnVtYmVyICogbnVtYmVyIDwgbGltaXQ6CiAgICBwcmludChudW1iZXIgKiBudW1iZXIsIGVuZD0nICcpCiAgICBudW1iZXIgPSBudW1iZXIgKyAxCgpwcmludCgp",
+      "answerNote": "The loop tests the next square before printing it. With limit = 1, the first test is false and the loop runs zero times."
+    },
+    "cb1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "first = int(input('First: '))\nlast = int(input('Last: '))\nnumber = first\ntotal = 0\n\nwhile ______________________________:\n    if ______________________________:\n        total = ______________________\n    number = _________________________\n\nprint('Total:', total)",
+      "cases": [
+        {
+          "name": "first = 3, last = 9",
+          "inputs": [
+            "3",
+            "9"
+          ],
+          "expected": "First: Last: Total: 24"
+        },
+        {
+          "name": "first = 2, last = 10",
+          "inputs": [
+            "2",
+            "10"
+          ],
+          "expected": "First: Last: Total: 24"
+        },
+        {
+          "name": "first = 4, last = 4",
+          "inputs": [
+            "4",
+            "4"
+          ],
+          "expected": "First: Last: Total: 0"
+        },
+        {
+          "name": "first = 1, last = 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "First: Last: Total: 1"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert '%' in __source__, 'Use % to tell an odd number from an even one.'\n",
+      "answer": "Zmlyc3QgPSBpbnQoaW5wdXQoJ0ZpcnN0OiAnKSkKbGFzdCA9IGludChpbnB1dCgnTGFzdDogJykpCm51bWJlciA9IGZpcnN0CnRvdGFsID0gMAoKd2hpbGUgbnVtYmVyIDw9IGxhc3Q6CiAgICBpZiBudW1iZXIgJSAyICE9IDA6CiAgICAgICAgdG90YWwgPSB0b3RhbCArIG51bWJlcgogICAgbnVtYmVyID0gbnVtYmVyICsgMQoKcHJpbnQoJ1RvdGFsOicsIHRvdGFsKQ==",
+      "answerNote": "A sum starts at 0. The loop-control variable number changes on every iteration, whether or not the value was added."
+    },
+    "cb2": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 8,
+      "starter": "number = 1\nproduct = 1\n\nwhile ______________________________:\n    product = ________________________\n    number = _________________________\n\nprint('Product:', product)",
+      "cases": [
+        {
+          "name": "1 through 5",
+          "expected": "Product: 120"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert '120' not in __source__, 'Multiply the numbers in the loop instead of writing 120 in the code.'\nassert number == 6, 'Add 1 to number on every pass so the loop stops after 5.'\n",
+      "answer": "bnVtYmVyID0gMQpwcm9kdWN0ID0gMQoKd2hpbGUgbnVtYmVyIDw9IDU6CiAgICBwcm9kdWN0ID0gcHJvZHVjdCAqIG51bWJlcgogICAgbnVtYmVyID0gbnVtYmVyICsgMQoKcHJpbnQoJ1Byb2R1Y3Q6JywgcHJvZHVjdCk=",
+      "answerNote": "A product starts at 1. Starting at 0 would make every later product 0."
+    },
+    "cc": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "t1": {
+          "accept": [
+            "2",
+            "2.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "u1": {
+          "accept": [
+            "4",
+            "4.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "v2": {
+          "accept": [
+            "4",
+            "4.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "t2": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "u2": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "v3": {
+          "accept": [
+            "6",
+            "6.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "t3": {
+          "accept": [
+            "12",
+            "12.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "u3": {
+          "accept": [
+            "8",
+            "8.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "v4": {
+          "accept": [
+            "8",
+            "8.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "t4": {
+          "accept": [
+            "20",
+            "20.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        },
+        "u4": {
+          "accept": [
+            "10",
+            "10.0"
+          ],
+          "placeholder": "?",
+          "width": "5rem"
+        }
+      }
+    },
+    "cc-final": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cond": {
+          "accept": [
+            "10 <= 8",
+            "10<=8",
+            "value <= 8 with value = 10",
+            "10 <= 8 is False"
+          ],
+          "placeholder": "the last test",
+          "width": "10rem",
+          "show": "10 <= 8"
+        },
+        "val": {
+          "accept": [
+            "False"
+          ],
+          "show": "False"
+        }
+      }
+    },
+    "cd": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "1 2 3 4",
+            "1 2 3 4 ",
+            "1, 2, 3, 4"
+          ],
+          "placeholder": "output",
+          "width": "10rem",
+          "show": "1 2 3 4"
+        },
+        "o2": {
+          "accept": [
+            "5 3 1",
+            "5 3 1 ",
+            "5, 3, 1"
+          ],
+          "placeholder": "output",
+          "width": "10rem",
+          "show": "5 3 1"
+        }
+      }
+    },
+    "cd-count": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 6,
+      "starter": "number = ____________________\n\nwhile ____________________:\n    print(number)\n    number = ____________________",
+      "cases": [
+        {
+          "name": "5 down to 1",
+          "expected": "5\n4\n3\n2\n1"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert __source__.count('print(') == 1, 'Keep the single print(number) and let the loop repeat it.'\nassert number == 0, 'Subtract 1 from number on every pass so that number >= 1 becomes False.'\n",
+      "answer": "bnVtYmVyID0gNQoKd2hpbGUgbnVtYmVyID49IDE6CiAgICBwcmludChudW1iZXIpCiAgICBudW1iZXIgPSBudW1iZXIgLSAx"
+    },
+    "ce-parts": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "p1": {
+          "accept": [
+            "initialize",
+            "initialise",
+            "initialization",
+            "initialisation",
+            "init",
+            "initialization"
+          ],
+          "placeholder": "part",
+          "width": "9rem",
+          "show": "initialize"
+        },
+        "p2": {
+          "accept": [
+            "test",
+            "the test",
+            "condition",
+            "testing"
+          ],
+          "placeholder": "part",
+          "width": "9rem",
+          "show": "test"
+        },
+        "p3": {
+          "accept": [
+            "update",
+            "the update",
+            "updating"
+          ],
+          "placeholder": "part",
+          "width": "9rem",
+          "show": "update"
+        }
+      }
+    },
+    "ce-repairs": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Describe a repair for each of the three programs.",
+      "answer": "QXNzaWduIGBjb3VudGAgYmVmb3JlIHRoZSBsb29wLiBVc2UgYGNvdW50IDw9IDVgIHNvIHRoYXQgNSBpcyBpbmNsdWRlZC4gQ2hhbmdlIGBjb3VudGAgb24gZXZlcnkgcGFzcyB0aHJvdWdoIHRoZSBib2R5Lg=="
+    },
+    "ce-line": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "line": {
+          "accept": [
+            "while n <= 10:",
+            "while n <= 10",
+            "n <= 10",
+            "while n < 11:",
+            "while n < 11",
+            "n < 11"
+          ],
+          "placeholder": "corrected line",
+          "width": "12rem",
+          "show": "while n <= 10:"
+        }
+      }
+    },
+    "ce-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why does the corrected line include 10?",
+      "answer": "VGhlIHZhbHVlIDEwIG11c3QgbWFrZSB0aGUgY29uZGl0aW9uIHRydWUgYmVjYXVzZSAxMCBiZWxvbmdzIGluIHRoZSByZXF1aXJlZCBvdXRwdXQuIE9uIHRoZSBuZXh0IHRlc3QsIDExIG1ha2VzIHRoZSBjb25kaXRpb24gZmFsc2Uu"
+    },
+    "cf": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "count = 0\ntext = input('Text, or press Enter to finish: ')\n\nwhile ______________________________:\n    count = __________________________\n    text = ___________________________\n\nprint('Lines:', count)",
+      "cases": [
+        {
+          "name": "three lines, then blank",
+          "inputs": [
+            "one",
+            "two",
+            "three",
+            ""
+          ],
+          "expected": "Text, or press Enter to finish: Text, or press Enter to finish: Text, or press Enter to finish: Text, or press Enter to finish: Lines: 3"
+        },
+        {
+          "name": "blank at once",
+          "inputs": [
+            ""
+          ],
+          "expected": "Text, or press Enter to finish: Lines: 0"
+        },
+        {
+          "name": "one line, then blank",
+          "inputs": [
+            "hello",
+            ""
+          ],
+          "expected": "Text, or press Enter to finish: Text, or press Enter to finish: Lines: 1"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\n",
+      "answer": "Y291bnQgPSAwCnRleHQgPSBpbnB1dCgnVGV4dCwgb3IgcHJlc3MgRW50ZXIgdG8gZmluaXNoOiAnKQoKd2hpbGUgdGV4dCAhPSAnJzoKICAgIGNvdW50ID0gY291bnQgKyAxCiAgICB0ZXh0ID0gaW5wdXQoJ1RleHQsIG9yIHByZXNzIEVudGVyIHRvIGZpbmlzaDogJykKCnByaW50KCdMaW5lczonLCBjb3VudCk=",
+      "answerNote": "The first input initializes text; the input inside the body updates it."
+    },
+    "cf-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is a blank line a suitable stopping value?",
+      "answer": "QSBibGFuayBsaW5lIGlzIHN1aXRhYmxlIGJlY2F1c2UgdGhlIHByb2dyYW0gaXMgY291bnRpbmcgbm9uYmxhbmsgbGluZXMsIHNvIHRoZSBibGFuayB2YWx1ZSBpcyBub3QgdmFsaWQgZGF0YS4="
+    },
+    "cg": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "number <= limit",
+            "n <= limit",
+            "count <= limit",
+            "i <= limit",
+            "number < limit + 1"
+          ],
+          "placeholder": "condition",
+          "width": "11rem",
+          "show": "number <= limit"
+        },
+        "u1": {
+          "accept": [
+            "number",
+            "n",
+            "count",
+            "i",
+            "the counter"
+          ],
+          "placeholder": "variable",
+          "width": "7rem",
+          "show": "number"
+        },
+        "c2": {
+          "accept": [
+            "balance < target",
+            "target > balance"
+          ],
+          "placeholder": "condition",
+          "width": "11rem",
+          "show": "balance < target"
+        },
+        "u2": {
+          "accept": [
+            "balance"
+          ],
+          "placeholder": "variable",
+          "width": "7rem",
+          "show": "balance"
+        },
+        "c3": {
+          "accept": [
+            "text != ''",
+            "text != \"\"",
+            "text != ''",
+            "text"
+          ],
+          "placeholder": "condition",
+          "width": "11rem",
+          "show": "text != ''"
+        },
+        "u3": {
+          "accept": [
+            "text"
+          ],
+          "placeholder": "variable",
+          "width": "7rem",
+          "show": "text"
+        }
+      }
+    },
+    "cg-code": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "number = 1\nmatches = 0\n\n# Write the loop here.\n\nprint('Matches:', matches)",
+      "cases": [
+        {
+          "name": "1 through 20",
+          "expected": "Matches: 6"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert '% 3' in __source__ or '%3' in __source__, 'Use number % 3 to test whether a number is divisible by 3.'\nassert number == 21, 'Add 1 to number on every pass so the loop stops after 20.'\n",
+      "answer": "bnVtYmVyID0gMQptYXRjaGVzID0gMAoKd2hpbGUgbnVtYmVyIDw9IDIwOgogICAgaWYgbnVtYmVyICUgMyA9PSAwOgogICAgICAgIG1hdGNoZXMgPSBtYXRjaGVzICsgMQogICAgbnVtYmVyID0gbnVtYmVyICsgMQoKcHJpbnQoJ01hdGNoZXM6JywgbWF0Y2hlcyk=",
+      "answerNote": "The counter matches changes only when the test is true. The loop-control variable number changes on every pass."
+    },
+    "ch": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "limit = int(input('Limit: '))\nnumber = 2\ntotal = 0\n\n# Write the loop here.\n\nprint('Total:', total)",
+      "cases": [
+        {
+          "name": "limit = 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Limit: Total: 30"
+        },
+        {
+          "name": "limit = 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Limit: Total: 0"
+        },
+        {
+          "name": "limit = 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "Limit: Total: 12"
+        },
+        {
+          "name": "limit = 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Limit: Total: 0"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\n",
+      "answer": "bGltaXQgPSBpbnQoaW5wdXQoJ0xpbWl0OiAnKSkKbnVtYmVyID0gMgp0b3RhbCA9IDAKCndoaWxlIG51bWJlciA8PSBsaW1pdDoKICAgIHRvdGFsID0gdG90YWwgKyBudW1iZXIKICAgIG51bWJlciA9IG51bWJlciArIDIKCnByaW50KCdUb3RhbDonLCB0b3RhbCk=",
+      "answerNote": "The update skips directly to the next even integer. With limit = 1, the first test is false and the initialized total remains 0."
+    },
+    "ci": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "total = 0.0\ncount = 0\ntext = input('Value, or press Enter to finish: ')\n\n# Write the loop and final calculation here.",
+      "cases": [
+        {
+          "name": "4, 7.5, 2, blank",
+          "inputs": [
+            "4",
+            "7.5",
+            "2",
+            ""
+          ],
+          "expected": "Value, or press Enter to finish: Value, or press Enter to finish: Value, or press Enter to finish: Value, or press Enter to finish: Average: 4.50"
+        },
+        {
+          "name": "8, blank",
+          "inputs": [
+            "8",
+            ""
+          ],
+          "expected": "Value, or press Enter to finish: Value, or press Enter to finish: Average: 8.00"
+        },
+        {
+          "name": "1, 2, 3, 4, blank",
+          "inputs": [
+            "1",
+            "2",
+            "3",
+            "4",
+            ""
+          ],
+          "expected": "Value, or press Enter to finish: Value, or press Enter to finish: Value, or press Enter to finish: Value, or press Enter to finish: Value, or press Enter to finish: Average: 2.50"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert ':.2f' in __source__, 'Show the average to two decimal places with :.2f in the f-string.'\n",
+      "answer": "dG90YWwgPSAwLjAKY291bnQgPSAwCnRleHQgPSBpbnB1dCgnVmFsdWUsIG9yIHByZXNzIEVudGVyIHRvIGZpbmlzaDogJykKCndoaWxlIHRleHQgIT0gJyc6CiAgICB0b3RhbCA9IHRvdGFsICsgZmxvYXQodGV4dCkKICAgIGNvdW50ID0gY291bnQgKyAxCiAgICB0ZXh0ID0gaW5wdXQoJ1ZhbHVlLCBvciBwcmVzcyBFbnRlciB0byBmaW5pc2g6ICcpCgphdmVyYWdlID0gdG90YWwgLyBjb3VudApwcmludChmJ0F2ZXJhZ2U6IHthdmVyYWdlOi4yZn0nKQ==",
+      "answerNote": "The total accumulates the values and the counter records how many values were entered. The promise of at least one value means count is not zero when the division runs."
+    },
+    "cj": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "CAD_PER_USD = 1.36\ncount = 0\ntext = input('USD, or press Enter to finish: ')\n\n# Write the loop here.\n\nprint('Converted:', count)",
+      "cases": [
+        {
+          "name": "10, 0, blank",
+          "inputs": [
+            "10",
+            "0",
+            ""
+          ],
+          "expected": "USD, or press Enter to finish: CAD: $13.60\nUSD, or press Enter to finish: CAD: $0.00\nUSD, or press Enter to finish: Converted: 2"
+        },
+        {
+          "name": "blank at once",
+          "inputs": [
+            ""
+          ],
+          "expected": "USD, or press Enter to finish: Converted: 0"
+        },
+        {
+          "name": "2.5, 19.99, 100, blank",
+          "inputs": [
+            "2.5",
+            "19.99",
+            "100",
+            ""
+          ],
+          "expected": "USD, or press Enter to finish: CAD: $3.40\nUSD, or press Enter to finish: CAD: $27.19\nUSD, or press Enter to finish: CAD: $136.00\nUSD, or press Enter to finish: Converted: 3"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert __source__.count('CAD_PER_USD') >= 2, 'Multiply by the constant CAD_PER_USD instead of writing 1.36 again.'\nassert ':.2f' in __source__, 'Show each amount to two decimal places with :.2f in the f-string.'\n",
+      "answer": "Q0FEX1BFUl9VU0QgPSAxLjM2CmNvdW50ID0gMAp0ZXh0ID0gaW5wdXQoJ1VTRCwgb3IgcHJlc3MgRW50ZXIgdG8gZmluaXNoOiAnKQoKd2hpbGUgdGV4dCAhPSAnJzoKICAgIHVzZCA9IGZsb2F0KHRleHQpCiAgICBjYWQgPSB1c2QgKiBDQURfUEVSX1VTRAogICAgcHJpbnQoZidDQUQ6ICR7Y2FkOi4yZn0nKQogICAgY291bnQgPSBjb3VudCArIDEKICAgIHRleHQgPSBpbnB1dCgnVVNELCBvciBwcmVzcyBFbnRlciB0byBmaW5pc2g6ICcpCgpwcmludCgnQ29udmVydGVkOicsIGNvdW50KQ==",
+      "answerNote": "The loop tests the text before converting it. A blank string stops the loop, while the string '0' is valid data and converts to 0.0."
+    },
+    "ck": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "target = float(input('Target price: $'))\ncurrent = float(input('Current price: $'))\nupdates = 0\n\n# Write the loop here.\n\nprint(f'Target reached after {updates} updates.')",
+      "cases": [
+        {
+          "name": "target 50; prices 45, 48, 52",
+          "inputs": [
+            "50",
+            "45",
+            "48",
+            "52"
+          ],
+          "expected": "Target price: $Current price: $Updated price: $Updated price: $Target reached after 2 updates."
+        },
+        {
+          "name": "target 50; price 50",
+          "inputs": [
+            "50",
+            "50"
+          ],
+          "expected": "Target price: $Current price: $Target reached after 0 updates."
+        },
+        {
+          "name": "target 100; prices 20, 100",
+          "inputs": [
+            "100",
+            "20",
+            "100"
+          ],
+          "expected": "Target price: $Current price: $Updated price: $Target reached after 1 updates."
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\n",
+      "answer": "dGFyZ2V0ID0gZmxvYXQoaW5wdXQoJ1RhcmdldCBwcmljZTogJCcpKQpjdXJyZW50ID0gZmxvYXQoaW5wdXQoJ0N1cnJlbnQgcHJpY2U6ICQnKSkKdXBkYXRlcyA9IDAKCndoaWxlIGN1cnJlbnQgPCB0YXJnZXQ6CiAgICBjdXJyZW50ID0gZmxvYXQoaW5wdXQoJ1VwZGF0ZWQgcHJpY2U6ICQnKSkKICAgIHVwZGF0ZXMgPSB1cGRhdGVzICsgMQoKcHJpbnQoZidUYXJnZXQgcmVhY2hlZCBhZnRlciB7dXBkYXRlc30gdXBkYXRlcy4nKQ==",
+      "answerNote": "If the current price starts at the target, the loop runs zero times. The condition uses <, not <=, because a price equal to the target has reached it."
+    },
+    "cl": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 10,
+      "starter": "HALF_LIFE = 6\namount = 80.0\nhour = 0\n\n# Write the loop here.",
+      "cases": [
+        {
+          "name": "24 hours",
+          "expected": "Hour 6: 40.00 mg\nHour 12: 20.00 mg\nHour 18: 10.00 mg\nHour 24: 5.00 mg"
+        }
+      ],
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert '0.5 **' in __source__ or '0.5**' in __source__, 'Multiply the amount by 0.5 ** (1 / HALF_LIFE) once per hour.'\nassert hour == 24, 'Add 1 to hour on every pass and stop after 24 hourly updates.'\nassert ':.2f' in __source__, 'Show the amount to two decimal places with :.2f in the f-string.'\n",
+      "answer": "SEFMRl9MSUZFID0gNgphbW91bnQgPSA4MC4wCmhvdXIgPSAwCgp3aGlsZSBob3VyIDwgMjQ6CiAgICBhbW91bnQgPSBhbW91bnQgKiAwLjUgKiogKDEgLyBIQUxGX0xJRkUpCiAgICBob3VyID0gaG91ciArIDEKICAgIGlmIGhvdXIgJSA2ID09IDA6CiAgICAgICAgcHJpbnQoZidIb3VyIHtob3VyfToge2Ftb3VudDouMmZ9IG1nJyk=",
+      "answerNote": "The loop performs 24 hourly updates. The counter selects hours 6, 12, 18, and 24 for output."
+    }
+  }
+}

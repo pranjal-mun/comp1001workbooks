@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 13 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-13-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 13 Boss Problems</h1>
+    <div class="wb-subtitle">Hand-tracing, sentinels, and common loop bugs</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems combine tracing and sentinel-controlled input with the <code>while</code> patterns from Lecture 12. They use only what Lectures 4 to 13 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>%</code> and <code>//</code>, f-strings, <code>if</code> and <code>else</code>, and <code>while</code> loops with a sentinel or a counter. Test the sentinel-first or smallest useful case as well as a typical case. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with <code>input()</code>. Keep the input line exactly as the starter shows it: <strong>Check</strong> runs your program several times, typing a different sequence of answers at the prompts each time, and every run must print exactly what the sample runs show. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="treats" data-toc-title="👹 Oliver's treat average">👹 Boss 1: Oliver's Treat Average</h2>
+<p>Oliver's daily treat count is always a nonnegative integer, so <code>-1</code> can mark the end of the data. Read daily counts until the user enters <code>-1</code>. Do not include the sentinel in the total or count. If at least one day was entered, print the average with two digits after the decimal point. Otherwise, print <code>No days were entered.</code></p>
+<p>Sample run 1:</p>
+<pre class="wb-shell"><span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">2</span>
+<span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">4</span>
+<span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">6</span>
+<span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">-1</span>
+Average treats: 4.00</pre>
+<p>Sample run 2:</p>
+<pre class="wb-shell"><span class="wb-prompt">Treats (-1 to finish): </span><span class="wb-typed">-1</span>
+No days were entered.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2, 4, 6, -1</code></td><td><code>Average treats: 4.00</code></td></tr>
+    <tr><td><code>-1</code></td><td><code>No days were entered.</code></td></tr>
+    <tr><td><code>5, -1</code></td><td><code>Average treats: 5.00</code></td></tr>
+    <tr><td><code>0, 0, 3, -1</code></td><td><code>Average treats: 1.00</code></td></tr>
+    <tr><td><code>1, 2, -1</code></td><td><code>Average treats: 1.50</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep the <code>while True</code> loop and leave it with exactly one <code>break</code>.</li>
+    <li>Test the sentinel and <code>break</code> before <code>total</code> and <code>count</code> are updated.</li>
+    <li>Test <code>count &gt; 0</code> before dividing by it.</li>
+    <li>Print the average with <code>:.2f</code>.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>treats = int(input('Treats (-1 to finish): '))</code> unchanged. The checker will type the other sequences.</p>
+<wb-exercise id="treats"></wb-exercise>
+
+<h2 id="cash" data-toc-title="👾 Campus shop cash total">👾 Boss 2: Campus Shop Cash Total</h2>
+<p>Read item prices for a Memorial University campus shop purchase. A blank line ends the input because it cannot be an item price. First print the card total to the nearest cent. Then print the cash total rounded to the nearest five cents. Work in cents for the final rounding: a remainder of 0, 1, or 2 cents rounds down, while a remainder of 3 or 4 cents rounds up. If the user enters a blank line immediately, both totals are <code>$0.00</code>.</p>
+<p>Sample run 1:</p>
+<pre class="wb-shell"><span class="wb-prompt">Price, or blank to finish: $</span><span class="wb-typed">1.02</span>
+<span class="wb-prompt">Price, or blank to finish: $</span><span class="wb-typed">2.01</span>
+<span class="wb-prompt">Price, or blank to finish: $</span>
+Card total: $3.03
+Cash total: $3.05</pre>
+<p>Sample run 2:</p>
+<pre class="wb-shell"><span class="wb-prompt">Price, or blank to finish: $</span>
+Card total: $0.00
+Cash total: $0.00</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1.02, 2.01, blank</code></td><td><code>Card total: $3.03</code> then <code>Cash total: $3.05</code></td></tr>
+    <tr><td><code>blank</code></td><td><code>Card total: $0.00</code> then <code>Cash total: $0.00</code></td></tr>
+    <tr><td><code>0.99, blank</code></td><td><code>Card total: $0.99</code> then <code>Cash total: $1.00</code></td></tr>
+    <tr><td><code>1.01, blank</code></td><td><code>Card total: $1.01</code> then <code>Cash total: $1.00</code></td></tr>
+    <tr><td><code>1.03, blank</code></td><td><code>Card total: $1.03</code> then <code>Cash total: $1.05</code></td></tr>
+    <tr><td><code>2.50, 2.50, blank</code></td><td><code>Card total: $5.00</code> then <code>Cash total: $5.00</code></td></tr>
+    <tr><td><code>4.99, 0.08, blank</code></td><td><code>Card total: $5.07</code> then <code>Cash total: $5.05</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep the <code>while True</code> loop and leave it with exactly one <code>break</code>.</li>
+    <li>Test <code>text</code> for the blank line before calling <code>float()</code> on it.</li>
+    <li>Convert the total to whole cents with <code>round()</code>, and use the remainder <code>cents % 5</code> for the cash total.</li>
+    <li>Exactly two <code>print()</code> calls: the card total, then the cash total.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>text = input('Price, or blank to finish: $')</code> unchanged. The checker will type the other sequences.</p>
+<wb-exercise id="cash"></wb-exercise>
+
+<h2 id="sqrt" data-toc-title="🐉 Square root check">🐉 Boss 3: Square Root Check</h2>
+<p>Read a positive number and estimate its square root. Start with half of the number as the first guess. While the difference between <code>guess * guess</code> and the number is greater than <code>0.000001</code>, replace the guess with the average of <code>guess</code> and <code>number / guess</code>. Count the updates. Print the final guess with six digits after the decimal point, followed by the update count.</p>
+<p>Sample run 1:</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">4</span>
+Square root: 2.000000
+Updates: 0</pre>
+<p>Sample run 2:</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">25</span>
+Square root: 5.000000
+Updates: 5</pre>
+<p>The difference can be negative when the guess is too small, so measure it with <code>abs()</code>. Trace the run for 4 by hand: the first guess is already exact, so the loop body never runs.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4</code></td><td><code>Square root: 2.000000</code> then <code>Updates: 0</code></td></tr>
+    <tr><td><code>25</code></td><td><code>Square root: 5.000000</code> then <code>Updates: 5</code></td></tr>
+    <tr><td><code>2</code></td><td><code>Square root: 1.414214</code> then <code>Updates: 4</code></td></tr>
+    <tr><td><code>100</code></td><td><code>Square root: 10.000000</code> then <code>Updates: 6</code></td></tr>
+    <tr><td><code>0.25</code></td><td><code>Square root: 0.500000</code> then <code>Updates: 5</code></td></tr>
+    <tr><td><code>1</code></td><td><code>Square root: 1.000000</code> then <code>Updates: 4</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>A <code>while</code> loop whose header tests the error with <code>abs(guess * guess - number)</code> against <code>0.000001</code>. No <code>break</code>.</li>
+    <li>Estimate the root with the averaging step, not with <code>** 0.5</code> or a square-root function.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>number = float(input('Number: '))</code> and the two <code>print</code> lines unchanged. The checker will type the other numbers.</p>
+<wb-exercise id="sqrt"></wb-exercise>
+
+<h2 id="factors" data-toc-title="💀 Factor trail">💀 Boss 4: Factor Trail</h2>
+<p>Read an integer that is at least 2. Print its prime factors in order, one per line. Begin with 2 as the possible factor. When the factor divides the remaining value exactly, print it and divide the remaining value by it. Otherwise, increase the possible factor by 1. Do not increase the factor after a successful division, because the same factor may occur again.</p>
+<p>Sample run 1:</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">84</span>
+Prime factors:
+2
+2
+3
+7</pre>
+<p>Sample run 2:</p>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">13</span>
+Prime factors:
+13</pre>
+<p>Trace 84 before you code: 84 becomes 42, then 21 (two 2s), 3 does not divide 21 until the factor reaches 3, which leaves 7, and 7 is printed when the factor catches up with it. The loop ends once the factor is larger than what remains.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>84</code></td><td><code>Prime factors:</code> then <code>2</code>, <code>2</code>, <code>3</code>, <code>7</code></td></tr>
+    <tr><td><code>13</code></td><td><code>Prime factors:</code> then <code>13</code></td></tr>
+    <tr><td><code>2</code></td><td><code>Prime factors:</code> then <code>2</code></td></tr>
+    <tr><td><code>360</code></td><td><code>Prime factors:</code> then <code>2</code>, <code>2</code>, <code>2</code>, <code>3</code>, <code>3</code>, <code>5</code></td></tr>
+    <tr><td><code>97</code></td><td><code>Prime factors:</code> then <code>97</code></td></tr>
+    <tr><td><code>1000</code></td><td><code>Prime factors:</code> then <code>2</code>, <code>2</code>, <code>2</code>, <code>5</code>, <code>5</code>, <code>5</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>while</code> loop, ended by its own condition. No <code>break</code>.</li>
+    <li>Test whether the factor divides <code>remaining</code> exactly with <code>%</code>, and reduce <code>remaining</code> with <code>//</code>.</li>
+    <li>Each prime factor on its own line.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>number = int(input('Number: '))</code> unchanged. The checker will type the other numbers.</p>
+<wb-exercise id="factors"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 13 Boss Problems.</p>
+</main>
+</body>
+</html>

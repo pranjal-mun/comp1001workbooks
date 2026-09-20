@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 12 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-12", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 12 Workbook</h1>
+    <div class="wb-subtitle">Problem solving with loops: the <code>while</code> loop</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Reading: §4.1 (p. 126). By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>apply the problem-solving stages to a task that requires repetition;</li>
+    <li>write and trace a <code>while</code> loop with initialization, testing, and update steps;</li>
+    <li>use counters and accumulators inside a loop; and</li>
+    <li>recognize zero-iteration, infinite-loop, and off-by-one cases.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<h2 id="s1">1. A loop repeats work</h2>
+<p>A <strong>loop</strong> repeats a block of statements. A loop is useful when the same kind of work must happen several times. Without a loop, printing the numbers 1 through 5 would require five separate statements. A <code>while</code> loop expresses the repeated action once.</p>
+<wb-example id="ex-1"></wb-example>
+<p>The indented statements are the <strong>loop body</strong>. One complete execution of the body is an <strong>iteration</strong>, also called a pass.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>In the program above, which statements form the loop body?</p>
+  <wb-short id="cp1-body"></wb-short>
+  <p>How many iterations occur?</p>
+  <wb-table id="cp1-count">
+    <table>
+      <tbody><tr><td>Iterations</td><td data-blank="iters"></td></tr></tbody>
+    </table>
+  </wb-table>
+  <p>What changes from one iteration to the next?</p>
+  <wb-short id="cp1-changes"></wb-short>
+</div>
+
+<h2 id="s2">2. Spot repetition in a problem</h2>
+<p>Problem statements often describe a loop without using the word <em>loop</em>. Look for words such as <em>repeat</em>, <em>each</em>, <em>every</em>, <em>until</em>, <em>keep going</em>, <em>total</em>, and <em>count</em>.</p>
+<p>Consider this problem:</p>
+<blockquote><p>An investment starts at $100 and grows by 50 percent each year. Report how many years it takes to reach at least $200.</p></blockquote>
+<p>The phrase <em>each year until the balance reaches $200</em> describes repetition. The exact number of years is not known before the program starts, so a condition must decide when to stop.</p>
+<p>The six problem-solving stages organize the work:</p>
+<ol>
+  <li><strong>Understand:</strong> Identify the starting balance, growth rate, target, and required result.</li>
+  <li><strong>Decompose:</strong> Set up the values, repeat one year's calculation, then report the answer.</li>
+  <li><strong>Find patterns:</strong> This is a keep-going-until-a-target loop.</li>
+  <li><strong>Design:</strong> Start at year 0. While the balance is below the target, add one year and update the balance.</li>
+  <li><strong>Implement:</strong> Translate that design into Python.</li>
+  <li><strong>Reflect:</strong> Trace small values and test a case that reaches the target exactly.</li>
+</ol>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write down the two words or phrases that suggest repetition.</p>
+  <blockquote><p>Keep reading temperatures until the user enters a blank line, and count how many temperatures were above zero.</p></blockquote>
+  <wb-table id="cp2-words">
+    <table>
+      <thead><tr><th>First</th><th>Second</th></tr></thead>
+      <tbody><tr><td data-blank="w1"></td><td data-blank="w2"></td></tr></tbody>
+    </table>
+  </wb-table>
+  <p>What result must the program remember while it repeats?</p>
+  <wb-short id="cp2-remember"></wb-short>
+</div>
+
+<h2 id="s3">3. A <code>while</code> loop tests a condition</h2>
+<p>A <code>while</code> statement has a Boolean condition, a colon, and an indented body.</p>
+<pre><code><span class="wb-kw">while</span> condition:
+    statement
+    statement</code></pre>
+<p>Python follows this cycle:</p>
+<ol>
+  <li>Evaluate the condition.</li>
+  <li>If it is <code>True</code>, run the body.</li>
+  <li>Return to the condition and test it again.</li>
+  <li>Stop when the condition is <code>False</code>.</li>
+</ol>
+<p>The condition means <strong>keep going while this is true</strong>. It does not mean stop when this becomes true.</p>
+<wb-example id="ex-3"></wb-example>
+<p>The loop continues while the balance is below the target. It stops as soon as <code>balance &lt; target</code> becomes <code>False</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Complete the trace for the balance loop.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Balance</th><th>Value of condition</th><th>Does the body run?</th></tr></thead>
+      <tbody>
+        <tr><td><code>100.0</code></td><td data-blank="c1"></td><td data-blank="r1"></td></tr>
+        <tr><td><code>150.0</code></td><td data-blank="c2"></td><td data-blank="r2"></td></tr>
+        <tr><td><code>225.0</code></td><td data-blank="c3"></td><td data-blank="r3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why would <code>while balance &gt;= target:</code> be the wrong condition?</p>
+  <wb-short id="cp3-why"></wb-short>
+</div>
+
+<h2 id="s4">4. Every <code>while</code> loop needs three parts</h2>
+<p>A useful <code>while</code> loop has three connected parts.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Part</th><th>Purpose</th><th>Counting example</th></tr></thead>
+    <tbody>
+      <tr><td>Initialize</td><td>Give the loop variable its first value</td><td><code>count = 1</code></td></tr>
+      <tr><td>Test</td><td>Decide whether another iteration should run</td><td><code>count &lt;= 5</code></td></tr>
+      <tr><td>Update</td><td>Move the loop toward a false condition</td><td><code>count = count + 1</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<wb-example id="ex-4"></wb-example>
+<p>Initialization happens once, before the loop. The test happens before every possible iteration. The update normally happens inside the body.</p>
+
+<div class="wb-block">
+  <div class="wb-block-title">Worked trace</div>
+  <p>Trace <code>count = 1</code> and <code>while count &lt;= 3</code>.</p>
+  <div class="wb-table-wrap">
+    <table>
+      <thead><tr><th>Moment</th><th><code>count</code></th><th>Condition</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>before the loop</td><td>1</td><td><code>True</code></td><td>print 1; update to 2</td></tr>
+        <tr><td>next test</td><td>2</td><td><code>True</code></td><td>print 2; update to 3</td></tr>
+        <tr><td>next test</td><td>3</td><td><code>True</code></td><td>print 3; update to 4</td></tr>
+        <tr><td>final test</td><td>4</td><td><code>False</code></td><td>leave the loop</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Label each line as <strong>initialize</strong>, <strong>test</strong>, <strong>update</strong>, or <strong>body work</strong>.</p>
+<pre><code>level = <span class="wb-num">3</span>
+<span class="wb-kw">while</span> level &gt; <span class="wb-num">0</span>:
+    <span class="wb-fn">print</span>(level)
+    level = level - <span class="wb-num">1</span></code></pre>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Line</th><th>Label</th></tr></thead>
+      <tbody>
+        <tr><td><code>level = 3</code></td><td data-blank="l1"></td></tr>
+        <tr><td><code>level &gt; 0</code></td><td data-blank="l2"></td></tr>
+        <tr><td><code>print(level)</code></td><td data-blank="l3"></td></tr>
+        <tr><td><code>level = level - 1</code></td><td data-blank="l4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s5">5. Build the investment program gradually</h2>
+<p>First, define the values that do not change and initialize the values that do.</p>
+<wb-example id="ex-5a"></wb-example>
+<p>Next, describe one year of growth. The balance and year both change during an iteration.</p>
+<pre><code>year = year + <span class="wb-num">1</span>
+interest = balance * RATE / <span class="wb-num">100</span>
+balance = balance + interest</code></pre>
+<p>Now place that repeated work in a loop and report the progress.</p>
+<wb-example id="ex-5c"></wb-example>
+<p>The balance is $225 after the second iteration, so the next condition is false. The final <code>print</code> call is not indented, so it runs after the loop ends.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Trace the first two iterations.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Moment</th><th><code>year</code></th><th><code>balance</code></th><th><code>interest</code></th></tr></thead>
+      <tbody>
+        <tr><td>before loop</td><td data-blank="y0"></td><td data-blank="b0"></td><td>not assigned</td></tr>
+        <tr><td>after pass 1</td><td data-blank="y1"></td><td data-blank="b1"></td><td data-blank="i1"></td></tr>
+        <tr><td>after pass 2</td><td data-blank="y2"></td><td data-blank="b2"></td><td data-blank="i2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is the final message outside the loop?</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6">6. A <code>while</code> loop may run zero times</h2>
+<p>Python tests the condition before the first iteration. If the condition starts as <code>False</code>, the body does not run.</p>
+<wb-example id="ex-6"></wb-example>
+<p>This is a <strong>zero-iteration loop</strong>. It is not automatically an error. Sometimes there is no work to do. Any result needed after the loop should still be initialized before the loop.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Does each loop run zero times, one time, or more than one time?</p>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th>Loop</th><th>How many times?</th></tr></thead>
+      <tbody>
+        <tr><td><code>x = 5</code> followed by <code>while x &lt; 5:</code></td><td data-blank="z"></td></tr>
+        <tr><td><code>x = 5</code> followed by <code>while x &lt;= 5:</code> and an update to 6</td><td data-blank="o"></td></tr>
+        <tr><td><code>x = 1</code> followed by <code>while x &lt; 5:</code> and <code>x = x + 1</code></td><td data-blank="m"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s7">7. An infinite loop never reaches its stopping point</h2>
+<p>An <strong>infinite loop</strong> keeps running because its condition never becomes <code>False</code>. This example is missing its update:</p>
+<pre><code>count = <span class="wb-num">1</span>
+<span class="wb-kw">while</span> count &lt;= <span class="wb-num">5</span>:
+    <span class="wb-fn">print</span>(count)</code></pre>
+<p>The program prints <code>1</code> repeatedly. The value of <code>count</code> never changes, so the condition stays true. Press <strong>Ctrl+C</strong> to interrupt a program that is stuck in an infinite loop.</p>
+<p>An update can also move in the wrong direction:</p>
+<pre><code>count = <span class="wb-num">5</span>
+<span class="wb-kw">while</span> count &gt; <span class="wb-num">0</span>:
+    <span class="wb-fn">print</span>(count)
+    count = count + <span class="wb-num">1</span></code></pre>
+<p>Here <code>count</code> grows, so it never becomes 0. When a loop does not stop, check the test and update together. Every possible path through the body must move the program toward a false test.</p>
+<p class="wb-meta">These two listings have no Run button. A code box on this page stops a program that is still running after a few seconds and reports a timeout, which is how an infinite loop shows up here.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Repair this loop so it prints <code>3</code>, <code>2</code>, <code>1</code>, then stops. Add the missing line to the code box.</p>
+  <wb-exercise id="cp7"></wb-exercise>
+  <p>Explain how your line makes the condition eventually become false.</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8">8. Off-by-one errors change the number of passes</h2>
+<p>An <strong>off-by-one error</strong> makes a loop run one time too many or one time too few. Small boundary changes matter.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Initialization and test</th><th>Values used in the body</th><th>Passes</th></tr></thead>
+    <tbody>
+      <tr><td><code>n = 1</code>, <code>n &lt;= 5</code></td><td>1, 2, 3, 4, 5</td><td>5</td></tr>
+      <tr><td><code>n = 1</code>, <code>n &lt; 5</code></td><td>1, 2, 3, 4</td><td>4</td></tr>
+      <tr><td><code>n = 0</code>, <code>n &lt;= 5</code></td><td>0, 1, 2, 3, 4, 5</td><td>6</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Do not repair this bug by randomly adding or subtracting 1. Write down the value on the first pass and the value on the last pass. Then check whether both boundaries should be included.</p>
+<wb-example id="ex-8"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>Complete the table without running the loops.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Initialization and test</th><th>First</th><th>Last</th><th>Passes</th></tr></thead>
+      <tbody>
+        <tr><td><code>n = 2</code>, <code>n &lt;= 6</code></td><td data-blank="f1"></td><td data-blank="l1"></td><td data-blank="p1"></td></tr>
+        <tr><td><code>n = 2</code>, <code>n &lt; 6</code></td><td data-blank="f2"></td><td data-blank="l2"></td><td data-blank="p2"></td></tr>
+        <tr><td><code>n = 6</code>, <code>n &gt;= 2</code>, subtract 1</td><td data-blank="f3"></td><td data-blank="l3"></td><td data-blank="p3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9">9. An accumulator builds a result</h2>
+<p>An <strong>accumulator</strong> stores a result that grows during a loop. For a sum, start at 0 and add each new value.</p>
+<wb-example id="ex-9"></wb-example>
+<p>The accumulator must be initialized before the loop. If <code>total = 0</code> were inside the body, every iteration would erase the earlier work.</p>
+<p>For a product, start at 1. Starting at 0 would make every later product 0.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9</div>
+  <p>Trace the sum.</p>
+  <wb-table id="cp9">
+    <table>
+      <thead><tr><th><code>number</code> used</th><th><code>total</code> before addition</th><th><code>total</code> after addition</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>0</td><td data-blank="a1"></td></tr>
+        <tr><td>2</td><td data-blank="b2"></td><td data-blank="a2"></td></tr>
+        <tr><td>3</td><td data-blank="b3"></td><td data-blank="a3"></td></tr>
+        <tr><td>4</td><td data-blank="b4"></td><td data-blank="a4"></td></tr>
+        <tr><td>5</td><td data-blank="b5"></td><td data-blank="a5"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Where must <code>total = 0</code> appear?</p>
+  <wb-short id="cp9-where"></wb-short>
+</div>
+
+<h2 id="s10">10. A counter records how many times something happens</h2>
+<p>A <strong>counter</strong> is a variable that increases by 1 when an event occurs. It counts items rather than adding their values.</p>
+<wb-example id="ex-10"></wb-example>
+<p>The variables have different jobs:</p>
+<ul>
+  <li><code>number</code> controls the loop and changes every iteration.</li>
+  <li><code>evens</code> changes only when the condition is true.</li>
+</ul>
+<p>The update to <code>number</code> is outside the <code>if</code>. If it were inside, odd values would never update and the loop would become infinite.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10</div>
+  <p>For <code>number</code> from 1 through 6, write the value of <code>evens</code> after each pass.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th><code>number</code> used</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+      <tbody>
+        <tr><td><code>evens</code> after pass</td><td data-blank="e1"></td><td data-blank="e2"></td><td data-blank="e3"></td><td data-blank="e4"></td><td data-blank="e5"></td><td data-blank="e6"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why must <code>number = number + 1</code> run on every iteration?</p>
+  <wb-short id="cp10-why"></wb-short>
+</div>
+
+<h2 id="s11">11. A loop can read until the user stops</h2>
+<p>Sometimes the number of values is unknown. The program can read once before the loop, test the text, process it, and then read again.</p>
+<wb-example id="ex-11"></wb-example>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Value, or press Enter to finish: </span><span class="wb-typed">12.5</span>
+<span class="wb-prompt">Value, or press Enter to finish: </span><span class="wb-typed">7.5</span>
+<span class="wb-prompt">Value, or press Enter to finish: </span>
+Total: 20.00</pre>
+<p>The first <code>input</code> call gives the condition a value to test. The second gets ready for the next test. This duplicated read is sometimes called a <strong>loop and a half</strong>. Lecture 13 studies this input pattern and introduces sentinels and another structure for stopping.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 11</div>
+  <p>Why is an <code>input</code> call needed before this loop?</p>
+  <wb-short id="cp11-before"></wb-short>
+  <p>Why is another <code>input</code> call needed at the end of the body?</p>
+  <wb-short id="cp11-end"></wb-short>
+  <p>What happens if the user presses Enter at the first prompt?</p>
+  <wb-short id="cp11-blank"></wb-short>
+</div>
+
+<h2 id="final-review">Final review</h2>
+<ol>
+  <li>What is one iteration of a loop?
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>State the three parts needed by a <code>while</code> loop.
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>When does a <code>while</code> loop run zero times?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>Give two reasons a loop may become infinite.
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>What is an off-by-one error?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>What starting value should a sum accumulator use? Why?
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>Explain the difference between an accumulator and a counter.
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>Why does a loop-and-a-half program contain two input statements?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h2 id="together" data-toc-title="Putting It All Together">Putting It All Together</h2>
+<p>The investment problem combines the six stages, a target-controlled loop, an accumulator-like balance, a counter, and boundary testing. Build the program in the same order as the design.</p>
+
+<h3>1. State the values and repeated step</h3>
+<p>The program starts with an initial balance, an annual percentage rate, and a target balance. One iteration represents one year. During that iteration, the program calculates interest, adds it to the balance, and increases the year counter.</p>
+<pre class="wb-output">Set the constants.
+Initialize balance and year.
+While the balance is below the target:
+    Increase the year.
+    Calculate one year's interest.
+    Add the interest to the balance.
+Report the year and final balance.</pre>
+
+<h3>2. Identify initialization, test, and update</h3>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Loop part</th><th>Investment program</th></tr></thead>
+    <tbody>
+      <tr><td>Initialize</td><td><code>balance = INITIAL_BALANCE</code>, <code>year = 0</code></td></tr>
+      <tr><td>Test</td><td><code>balance &lt; TARGET</code></td></tr>
+      <tr><td>Update</td><td>add interest to <code>balance</code>, add 1 to <code>year</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<p>The body contains two updates because both values must describe the same point in time. After pass 1, the year is 1 and the balance is the balance at the end of year 1.</p>
+
+<h3>3. Complete and test the program</h3>
+<wb-example id="ex-pt"></wb-example>
+<p>Test a starting balance that is already at the target. The loop should run zero times and the year should stay 0. Test a rate that reaches the target exactly. The condition must stop without adding another year.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Integrated checkpoint</div>
+  <p>Suppose <code>INITIAL_BALANCE</code> is <code>200.0</code> and <code>TARGET</code> is <code>200.0</code>.</p>
+  <wb-table id="cp-int">
+    <table>
+      <tbody>
+        <tr><td>How many iterations run?</td><td data-blank="iters"></td></tr>
+        <tr><td>First line printed</td><td data-blank="line1"></td></tr>
+        <tr><td>Second line printed</td><td data-blank="line2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why does the program not need a special <code>if</code> statement for this case?</p>
+  <wb-short id="cp-int-why"></wb-short>
+</div>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>Each task uses only the statements and expressions introduced by this lecture or an earlier lecture. For each loop, mark its initialization, test, and update before running it.</p>
+
+<h3>A. Print square numbers</h3>
+<p>Write a program that reads a positive integer <code>limit</code> and prints every square number less than <code>limit</code>. Start with <code>number = 1</code> and increase <code>number</code> by 1 after printing its square.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Input</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>20</code></td><td><code>1 4 9 16</code></td></tr>
+      <tr><td><code>1</code></td><td>no square numbers</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Complete the program. <strong>Check</strong> types the limits 20, 1, 16 and 50 at the prompt.</p>
+<wb-exercise id="ca"></wb-exercise>
+
+<h3>B. Build totals and products</h3>
+<p>Write each program with a <code>while</code> loop.</p>
+<ol>
+  <li>Read integers <code>first</code> and <code>last</code>. Add the odd integers from <code>first</code> through <code>last</code>, including both boundaries. For <code>first = 3</code> and <code>last = 9</code>, print <code>Total: 24</code>.</li>
+  <li>Multiply the integers 1 through 5. Store the result in <code>product</code> and print <code>Product: 120</code>.</li>
+</ol>
+<p>Starter code for the odd-number total. <strong>Check</strong> also tries <code>first = 2</code>, <code>last = 10</code>, a range with one even number, and a range with one odd number.</p>
+<wb-exercise id="cb1"></wb-exercise>
+<p>Starter code for the product:</p>
+<wb-exercise id="cb2"></wb-exercise>
+
+<h3>C. Trace a loop</h3>
+<p>Trace the program without running it.</p>
+<pre><code>value = <span class="wb-num">2</span>
+total = <span class="wb-num">0</span>
+
+<span class="wb-kw">while</span> value &lt;= <span class="wb-num">8</span>:
+    total = total + value
+    <span class="wb-fn">print</span>(value, total)
+    value = value + <span class="wb-num">2</span></code></pre>
+<wb-table id="cc">
+  <table>
+    <thead><tr><th>Pass</th><th><code>value</code> printed</th><th><code>total</code> printed</th><th><code>value</code> after update</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="v1"></td><td data-blank="t1"></td><td data-blank="u1"></td></tr>
+      <tr><td>2</td><td data-blank="v2"></td><td data-blank="t2"></td><td data-blank="u2"></td></tr>
+      <tr><td>3</td><td data-blank="v3"></td><td data-blank="t3"></td><td data-blank="u3"></td></tr>
+      <tr><td>4</td><td data-blank="v4"></td><td data-blank="t4"></td><td data-blank="u4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Final condition tested, and its value:</p>
+<wb-table id="cc-final">
+  <table>
+    <thead><tr><th>Final test</th><th>Value</th></tr></thead>
+    <tbody><tr><td data-blank="cond"></td><td data-blank="val"></td></tr></tbody>
+  </table>
+</wb-table>
+
+<h3>D. Predict and complete loops</h3>
+<p>Without running the programs, write the output of each loop.</p>
+<p><strong>a.</strong></p>
+<pre><code>n = <span class="wb-num">1</span>
+<span class="wb-kw">while</span> n &lt; <span class="wb-num">5</span>:
+    <span class="wb-fn">print</span>(n, end=<span class="wb-str">' '</span>)
+    n = n + <span class="wb-num">1</span></code></pre>
+<p><strong>b.</strong></p>
+<pre><code>n = <span class="wb-num">5</span>
+<span class="wb-kw">while</span> n &gt;= <span class="wb-num">1</span>:
+    <span class="wb-fn">print</span>(n, end=<span class="wb-str">' '</span>)
+    n = n - <span class="wb-num">2</span></code></pre>
+<wb-table id="cd">
+  <table>
+    <thead><tr><th>Loop</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>a.</td><td data-blank="o1"></td></tr>
+      <tr><td>b.</td><td data-blank="o2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Complete this loop so it prints the integers from 5 down to 1.</p>
+<wb-exercise id="cd-count"></wb-exercise>
+
+<h3>E. Diagnose loop bugs</h3>
+<p>For each description, identify whether the main problem is initialization, testing, or updating. Then describe a repair.</p>
+<wb-table id="ce-parts">
+  <table>
+    <thead><tr><th>Program description</th><th>Problem part</th></tr></thead>
+    <tbody>
+      <tr><td><code>count</code> is tested before it is assigned</td><td data-blank="p1"></td></tr>
+      <tr><td><code>count</code> starts at 1 and tests <code>count &lt; 5</code>, but 5 must be included</td><td data-blank="p2"></td></tr>
+      <tr><td><code>count</code> never changes inside the loop</td><td data-blank="p3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Describe a repair for each program.</p>
+<wb-short id="ce-repairs"></wb-short>
+<p>The following program should print 1 through 10, but it stops at 9. Write the corrected line and explain why it includes 10.</p>
+<pre><code>n = <span class="wb-num">1</span>
+<span class="wb-kw">while</span> n &lt; <span class="wb-num">10</span>:
+    <span class="wb-fn">print</span>(n)
+    n = n + <span class="wb-num">1</span></code></pre>
+<wb-table id="ce-line">
+  <table>
+    <tbody><tr><td>Corrected line</td><td data-blank="line"></td></tr></tbody>
+  </table>
+</wb-table>
+<wb-short id="ce-why"></wb-short>
+
+<h3>F. Stop on a blank line</h3>
+<p>Complete a program that counts nonblank lines of text. A blank line ends the input. The blank line is tested but is not counted. <strong>Check</strong> types three lines and then a blank line, a blank line at once, and one line and then a blank line.</p>
+<wb-exercise id="cf"></wb-exercise>
+<p>Why is a blank line a suitable stopping value for this program?</p>
+<wb-short id="cf-why"></wb-short>
+
+<h3>G. Choose the controlling condition</h3>
+<p>Write a <code>while</code> condition for each task. State which variable needs an update inside the loop.</p>
+<wb-table id="cg">
+  <table>
+    <thead><tr><th>Task</th><th>Condition</th><th>Variable to update</th></tr></thead>
+    <tbody>
+      <tr><td>Print the integers from 1 through <code>limit</code>.</td><td data-blank="c1"></td><td data-blank="u1"></td></tr>
+      <tr><td>Keep increasing <code>balance</code> until it reaches <code>target</code>.</td><td data-blank="c2"></td><td data-blank="u2"></td></tr>
+      <tr><td>Read and process text until the user enters a blank line.</td><td data-blank="c3"></td><td data-blank="u3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then write a loop that examines the integers 1 through 20 and counts how many are divisible by 3.</p>
+<wb-exercise id="cg-code"></wb-exercise>
+
+<h3>H. Sum even numbers</h3>
+<p>Write a program that reads a nonnegative integer <code>limit</code> and adds the even integers from 2 through <code>limit</code>. Print the total.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th><code>limit</code></th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>10</td><td><code>Total: 30</code></td></tr>
+      <tr><td>1</td><td><code>Total: 0</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<p><strong>Check</strong> also types 7 and 0 at the prompt.</p>
+<wb-exercise id="ch"></wb-exercise>
+
+<h3>I. Average entered values</h3>
+<p>Write a program that reads floating-point values until the user enters a blank line. The user will enter at least one value. Use a total and a count, then print the average to two decimal places.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Values entered</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>4</code>, <code>7.5</code>, <code>2</code>, blank</td><td><code>Average: 4.50</code></td></tr>
+      <tr><td><code>8</code>, blank</td><td><code>Average: 8.00</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<wb-exercise id="ci"></wb-exercise>
+
+<h3>J. Convert a sequence of prices</h3>
+<p>A shop records some prices in US dollars. Use the fixed rate <code>CAD_PER_USD = 1.36</code>. Read US-dollar amounts until the user enters a blank line. Print each Canadian-dollar amount to two decimal places, then print how many amounts were converted. Zero is a valid amount and must be converted.</p>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">USD, or press Enter to finish: </span><span class="wb-typed">10</span>
+CAD: $13.60
+<span class="wb-prompt">USD, or press Enter to finish: </span><span class="wb-typed">0</span>
+CAD: $0.00
+<span class="wb-prompt">USD, or press Enter to finish: </span>
+Converted: 2</pre>
+<wb-exercise id="cj"></wb-exercise>
+
+<h3>K. Wait for a target price</h3>
+<p>Write a program that reads a target stock price and the current price. While the current price is below the target, read an updated price and count the update. When the target is reached, print the number of updates.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Target</th><th>Current and updated prices</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>50</td><td>45, 48, 52</td><td><code>Target reached after 2 updates.</code></td></tr>
+      <tr><td>50</td><td>50</td><td><code>Target reached after 0 updates.</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Read each updated price with the prompt <code>Updated price: $</code>.</p>
+<wb-exercise id="ck"></wb-exercise>
+
+<h3>L. Model radioactive decay</h3>
+<p>A sample has an initial amount of 80 milligrams and a half-life of 6 hours. In each hour, multiply the current amount by <code>0.5 ** (1 / HALF_LIFE)</code>. Repeat for 24 hours. Print the amount every 6 hours, formatted to two decimal places.</p>
+<p>Expected output:</p>
+<pre class="wb-output">Hour 6: 40.00 mg
+Hour 12: 20.00 mg
+Hour 18: 10.00 mg
+Hour 24: 5.00 mg</pre>
+<wb-exercise id="cl"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 12 Workbook.</p>
+</main>
+</body>
+</html>

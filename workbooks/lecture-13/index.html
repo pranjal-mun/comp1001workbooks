@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 13 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-13", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 13 Workbook</h1>
+    <div class="wb-subtitle">Hand-tracing, sentinels, and common loop bugs</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Reading: §4.2 (p. 133), §4.3 (p. 135), §4.4 (p. 139). By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>hand-trace a loop using a trace table;</li>
+    <li>design a sentinel-controlled loop and choose a safe sentinel value;</li>
+    <li>compare priming-read and loop-and-a-half structures; and</li>
+    <li>compute an average safely when no values may have been entered.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<h2 id="s1" data-toc-title="Hand-tracing">1. Hand-tracing executes code on paper</h2>
+<p><strong>Hand-tracing</strong> means following a program one statement at a time and writing down each value as it changes. It replaces guessing with a record of what Python actually does.</p>
+<p>Consider a loop that adds the digits of a positive whole number.</p>
+<wb-example id="ex-digits"></wb-example>
+<p>The <code>% 10</code> operation gives the last digit. The <code>// 10</code> operation removes the last digit. The loop repeats until no digits remain.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Before tracing, predict the first value assigned to <code>digit</code>. Then name the statement that makes <code>n</code> smaller.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>The first value assigned to <code>digit</code></td><td data-blank="digit"></td></tr>
+        <tr><td>The statement that makes <code>n</code> smaller</td><td data-blank="stmt"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>What condition ends the loop?</p>
+  <wb-short id="cp1-end"></wb-short>
+</div>
+
+<h2 id="s2" data-toc-title="Trace tables">2. A trace table records each pass</h2>
+<p>A <strong>trace table</strong> has a column for each changing variable. Start with the initialized values. For each pass, evaluate the condition using the old value, then record the updates in statement order.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Moment</th><th>Condition tested</th><th><code>n</code> after pass</th><th><code>digit</code></th><th><code>total</code> after pass</th></tr></thead>
+  <tbody>
+    <tr><td>start</td><td><code>1729 &gt; 0</code> is <code>True</code></td><td>–</td><td>–</td><td>0</td></tr>
+    <tr><td>pass 1</td><td>–</td><td>172</td><td>9</td><td>9</td></tr>
+    <tr><td>pass 2</td><td><code>172 &gt; 0</code> is <code>True</code></td><td>17</td><td>2</td><td>11</td></tr>
+    <tr><td>pass 3</td><td><code>17 &gt; 0</code> is <code>True</code></td><td>1</td><td>7</td><td>18</td></tr>
+    <tr><td>pass 4</td><td><code>1 &gt; 0</code> is <code>True</code></td><td>0</td><td>1</td><td>19</td></tr>
+    <tr><td>exit</td><td><code>0 &gt; 0</code> is <code>False</code></td><td>0</td><td>1</td><td>19</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The first row checks initialization. The last row confirms that the loop stops. Those two rows catch many loop errors.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Trace this program. Write each condition in the form <code>3 &gt; 0 is True</code>.</p>
+  <wb-example id="ex-cp2"></wb-example>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Moment</th><th>Condition</th><th><code>n</code></th><th><code>total</code></th></tr></thead>
+      <tbody>
+        <tr><td>start</td><td data-blank="c0"></td><td>3</td><td>0</td></tr>
+        <tr><td>after pass 1</td><td data-blank="c1"></td><td data-blank="n1"></td><td data-blank="t1"></td></tr>
+        <tr><td>after pass 2</td><td data-blank="c2"></td><td data-blank="n2"></td><td data-blank="t2"></td></tr>
+        <tr><td>after pass 3</td><td data-blank="c3"></td><td data-blank="n3"></td><td data-blank="t3"></td></tr>
+        <tr><td>exit</td><td data-blank="c4"></td><td data-blank="n4"></td><td data-blank="t4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>The condition column records the test that allows each pass. The exit row records the first false test.</p>
+</div>
+
+<h2 id="s3" data-toc-title="Common loop bugs">3. Tracing exposes common loop bugs</h2>
+<p>A trace table makes several bugs visible.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Symptom in the table</th><th>Likely cause</th></tr></thead>
+  <tbody>
+    <tr><td>The first row already has the wrong value</td><td>incorrect initialization</td></tr>
+    <tr><td>The loop has one extra or missing pass</td><td>incorrect boundary in the test</td></tr>
+    <tr><td>The control value stops changing</td><td>missing or unreachable update</td></tr>
+    <tr><td>A running total repeatedly returns to its starting value</td><td>accumulator initialized inside the loop</td></tr>
+  </tbody>
+</table>
+</div>
+<p>This loop is supposed to total 1 through 4, but it resets <code>total</code> on every pass.</p>
+<wb-example id="ex-reset"></wb-example>
+<p>The final total is only the last value. Moving <code>total = 0</code> before the loop repairs the program.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>In the faulty program, complete the values of <code>total</code> after each pass. Then write the line that must move.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Pass</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+      <tbody>
+        <tr><td><code>total</code></td><td data-blank="p1"></td><td data-blank="p2"></td><td data-blank="p3"></td><td data-blank="p4"></td></tr>
+        <tr><td>The line that must move</td><td colspan="4" data-blank="line"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>State where the line belongs.</p>
+  <wb-short id="cp3-where"></wb-short>
+</div>
+
+<h2 id="s4" data-toc-title="Sentinels">4. A sentinel marks the end of input</h2>
+<p>A <strong>sentinel</strong> is a special input value that means <em>there are no more data values</em>. The sentinel controls the loop but is not part of the data.</p>
+<p>The following program reads marks until the user enters <code>-1</code>.</p>
+<wb-example id="ex-marks"></wb-example>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">72</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">84</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
+Values entered: 2
+Total: 156.0</pre>
+<p>The loop tests the sentinel before adding or counting. Therefore, <code>-1</code> is not included in the total or count.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>For the sample run, complete the table. Write <code>yes</code> or <code>no</code> in the first two columns.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Input</th><th>Is it the sentinel?</th><th>Added to total?</th><th>Count after input</th></tr></thead>
+      <tbody>
+        <tr><td>72</td><td data-blank="s72"></td><td data-blank="a72"></td><td data-blank="c72"></td></tr>
+        <tr><td>84</td><td data-blank="s84"></td><td data-blank="a84"></td><td data-blank="c84"></td></tr>
+        <tr><td>-1</td><td data-blank="s-1"></td><td data-blank="a-1"></td><td data-blank="c-1"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why must the sentinel test happen before the addition?</p>
+  <wb-short id="cp4-why"></wb-short>
+</div>
+
+<h2 id="s5" data-toc-title="Choosing a sentinel">5. Choose a sentinel that cannot be real data</h2>
+<p>A safe sentinel is outside the set of valid data.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Data being entered</th><th>Possible sentinel</th><th>Safe?</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td>marks from 0 to 100</td><td><code>-1</code></td><td>yes</td><td>a valid mark cannot be negative</td></tr>
+    <tr><td>item prices</td><td><code>-1</code></td><td>yes</td><td>a valid price cannot be negative</td></tr>
+    <tr><td>temperatures</td><td><code>-1</code></td><td>no</td><td>-1 is a possible temperature</td></tr>
+    <tr><td>changes to a bank balance</td><td><code>0</code></td><td>no</td><td>no change may be real data</td></tr>
+  </tbody>
+</table>
+</div>
+<p>When every number could be valid, read text first and use a word such as <code>'done'</code> or an empty string as the sentinel. Convert only after the test.</p>
+<wb-example id="ex-temps"></wb-example>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Temperature, or done: </span><span class="wb-typed">-1</span>
+<span class="wb-prompt">Temperature, or done: </span><span class="wb-typed">4</span>
+<span class="wb-prompt">Temperature, or done: </span><span class="wb-typed">done</span>
+Total: 3.0</pre>
+<p>Here <code>-1</code> remains valid data. The word <code>'done'</code> is tested before <code>float(text)</code> is called.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Choose a safe sentinel for each situation.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Data</th><th>Sentinel</th></tr></thead>
+      <tbody>
+        <tr><td>Positive distances in kilometres</td><td data-blank="dist"></td></tr>
+        <tr><td>Any whole number, including negative values</td><td data-blank="whole"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain each choice.</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6" data-toc-title="Priming reads">6. A priming read prepares the first test</h2>
+<p>The input statement before a sentinel loop is a <strong>priming read</strong>. It gives the loop condition its first value.</p>
+<wb-example id="ex-priming"></wb-example>
+<p>The two reads have different moments but the same job: obtain the value for the next test. A priming-read loop is correct and often easy to trace. Its drawback is duplicated code. If one prompt changes and the other does not, the program becomes inconsistent.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Label the purpose of each input.</p>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th>Input</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>The input before the loop</td><td data-blank="before"></td></tr>
+        <tr><td>The input at the bottom of the body</td><td data-blank="bottom"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>What would happen if the second input were missing?</p>
+  <wb-short id="cp6-missing"></wb-short>
+</div>
+
+<h2 id="s7" data-toc-title="while True with break">7. <code>while True</code> with <code>break</code> avoids the duplicate read</h2>
+<p><code>while True</code> begins a loop whose header never becomes false. A <code>break</code> statement leaves the nearest loop immediately.</p>
+<wb-example id="ex-break"></wb-example>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">72</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">84</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
+Values entered: 2</pre>
+<p>The input appears once. The test occurs after reading but before processing. Use <code>break</code> for one clear exit when the condition cannot naturally be tested at the top. Several hidden <code>break</code> statements make a loop hard to trace.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>In the program above, where does execution continue after <code>break</code> runs? How many <code>break</code> statements does this loop need?</p>
+  <wb-table id="cp7">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>Where execution continues after <code>break</code></td><td data-blank="where"></td></tr>
+        <tr><td>Number of <code>break</code> statements needed</td><td data-blank="breaks"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is the sentinel not added to <code>total</code>?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8" data-toc-title="Two sentinel structures">8. Compare the two sentinel structures</h2>
+<p>Both structures can solve the same problem.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Priming-read loop</th><th><code>while True</code> with <code>break</code></th></tr></thead>
+  <tbody>
+    <tr><td>first read occurs before the loop</td><td>every read occurs inside the loop</td></tr>
+    <tr><td>condition is visible in the header</td><td>exit test appears after the read</td></tr>
+    <tr><td>input line appears twice</td><td>input line appears once</td></tr>
+    <tr><td>natural when the first value is already available</td><td>natural for a read-test-process cycle</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The important order is the same in both:</p>
+<ol>
+  <li>read a value;</li>
+  <li>test whether it is the sentinel;</li>
+  <li>process it only if it is data.</li>
+</ol>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>Write <strong>priming read</strong> or <strong>while True</strong>.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Statement</th><th>Structure</th></tr></thead>
+      <tbody>
+        <tr><td>The input line should appear only once</td><td data-blank="once"></td></tr>
+        <tr><td>The stopping condition should appear in the loop header</td><td data-blank="header"></td></tr>
+        <tr><td>The course's standard form for a sentinel loop</td><td data-blank="standard"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9" data-toc-title="Storyboards">9. Plan the user conversation with a storyboard</h2>
+<p>A <strong>storyboard</strong> is a written sample of the prompts, user responses, and final output. It describes the interaction before the code is written.</p>
+<pre class="wb-shell"><span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">72</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">84</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
+Average of 2 marks: 78.00</pre>
+<p>This small plan answers useful questions:</p>
+<ul>
+  <li>Does the prompt clearly state the sentinel?</li>
+  <li>Is the sentinel ever printed as data?</li>
+  <li>What appears after the final input?</li>
+  <li>What should happen if the sentinel is entered immediately?</li>
+</ul>
+<p>A storyboard is especially valuable for loops because the same prompt may appear many times during a real run.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9</div>
+  <p>Write a storyboard for a program that reads positive distances until the user enters <code>0</code>, then prints their total. Include two distances and the sentinel.</p>
+  <wb-short id="cp9-story"></wb-short>
+  <p>What should the program print if the first input is <code>0</code>?</p>
+  <wb-table id="cp9-zero">
+    <table>
+      <tbody><tr><td>Output when the first input is <code>0</code></td><td data-blank="zero"></td></tr></tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s10" data-toc-title="Guarding an average">10. Guard an average against empty input</h2>
+<p>An average needs both a total and a count. A sentinel loop may receive no data: the user can enter the sentinel immediately. Dividing by a count of 0 raises a <code>ZeroDivisionError</code>.</p>
+<wb-example id="ex-average"></wb-example>
+<p>Sample run with data:</p>
+<pre class="wb-shell"><span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">72</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">84</span>
+<span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
+Average of 2 marks: 78.00</pre>
+<p>Sample run without data:</p>
+<pre class="wb-shell"><span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
+No marks were entered.</pre>
+<p>The guard tests <code>count &gt; 0</code> before division. Both possible paths produce a clear result.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10</div>
+  <p>Complete the state after the user enters the sentinel immediately.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td><code>total</code></td><td data-blank="total"></td></tr>
+        <tr><td><code>count</code></td><td data-blank="count"></td></tr>
+        <tr><td>Is <code>total / count</code> safe?</td><td data-blank="safe"></td></tr>
+        <tr><td>Which branch should run?</td><td data-blank="branch"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s11" data-toc-title="Boundary tests">11. Test sentinel loops at their boundaries</h2>
+<p>Do not test only a typical run. A useful set of tests includes:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Test</th><th>What it checks</th></tr></thead>
+  <tbody>
+    <tr><td>sentinel entered first</td><td>zero data and safe final calculation</td></tr>
+    <tr><td>one value, then sentinel</td><td>first and last data item</td></tr>
+    <tr><td>several values</td><td>repeated updates</td></tr>
+    <tr><td>a value close to the sentinel</td><td>sentinel is not confused with data</td></tr>
+    <tr><td>a legitimate negative value, when allowed</td><td>sentinel choice is safe</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Hand-trace at least the first two passes and the exit. Check that the sentinel does not change the total, count, minimum, or other result.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 11</div>
+  <p>Design three tests for a loop that reads prices until <code>-1</code>. For each test, give the input sequence, the expected result or behaviour, and its purpose.</p>
+  <wb-short id="cp11"></wb-short>
+</div>
+
+<h2 id="final-review">Final Review</h2>
+<ol>
+  <li>What does it mean to hand-trace a program?
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>What should each row of a trace table record?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>Name two loop bugs that a trace table can expose.
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>What is a sentinel?
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Why is <code>-1</code> unsafe as a sentinel for temperatures?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>What is a priming read?
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>What does <code>break</code> do?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>Why must an average calculation test the count first?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h2 id="together">Putting It All Together</h2>
+<p>Design a program that reads nonnegative study times in minutes. The value <code>-1</code> ends input. The program prints the number of entries and their average. Start with the conversation.</p>
+
+<h3>1. Write two storyboards</h3>
+<p>Typical data:</p>
+<pre class="wb-shell"><span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">30</span>
+<span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">45</span>
+<span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">-1</span>
+Average of 2 entries: 37.50 minutes</pre>
+<p>Boundary case:</p>
+<pre class="wb-shell"><span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">-1</span>
+No study times were entered.</pre>
+
+<h3>2. Plan the state and order</h3>
+<p>The program needs <code>total</code> and <code>count</code>. Each loop pass follows the read-test-process order. After the loop, the program checks <code>count &gt; 0</code> before division.</p>
+
+<h3>3. Complete the program</h3>
+<p>Fill in the five blanks. <strong>Check</strong> runs the program with the two storyboards above and two more input sequences.</p>
+<wb-exercise id="syn"></wb-exercise>
+
+<h3>4. Trace the boundary</h3>
+<p>For input <code>-1</code>, the loop exits with <code>total = 0.0</code> and <code>count = 0</code>. The <code>else</code> branch runs. The program does not divide.</p>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>The exercises below use only ideas introduced by this point in the course.</p>
+
+<h3>A. Trace a digit loop</h3>
+<p>Trace the program for <code>n = 305</code>.</p>
+<pre><code>total = <span class="wb-num">0</span>
+<span class="wb-kw">while</span> n &gt; <span class="wb-num">0</span>:
+    digit = n % <span class="wb-num">10</span>
+    total = total + digit
+    n = n // <span class="wb-num">10</span></code></pre>
+<wb-table id="pa">
+  <table>
+    <thead><tr><th>Pass</th><th><code>n</code> before pass</th><th><code>digit</code></th><th><code>total</code> after addition</th><th><code>n</code> after pass</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="n1"></td><td data-blank="d1"></td><td data-blank="t1"></td><td data-blank="a1"></td></tr>
+      <tr><td>2</td><td data-blank="n2"></td><td data-blank="d2"></td><td data-blank="t2"></td><td data-blank="a2"></td></tr>
+      <tr><td>3</td><td data-blank="n3"></td><td data-blank="d3"></td><td data-blank="t3"></td><td data-blank="a3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>B. Choose sentinels</h3>
+<p>For each data set, propose a sentinel and explain whether it is guaranteed to be outside the valid data.</p>
+<wb-table id="pb">
+  <table>
+    <thead><tr><th>Data</th><th>Sentinel</th></tr></thead>
+    <tbody>
+      <tr><td>ages from 0 through 130</td><td data-blank="ages"></td></tr>
+      <tr><td>any temperature</td><td data-blank="temps"></td></tr>
+      <tr><td>ratings from 1 through 5</td><td data-blank="ratings"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Explain each choice.</p>
+<wb-short id="pb-why"></wb-short>
+
+<h3>C. Convert a priming-read loop</h3>
+<p>Rewrite this loop using <code>while True</code> and one <code>break</code>. The box holds the priming-read version; replace it with your rewrite. Keep the prompt <code>'Word, or blank to finish: '</code>.</p>
+<wb-exercise id="pc"></wb-exercise>
+
+<h3>D. Repair sentinel placement</h3>
+<p>This program incorrectly adds the sentinel. Rewrite the body in a safe order. The box adds the two accumulators and two <code>print</code> lines so that the program runs; leave those as they are.</p>
+<wb-exercise id="pd"></wb-exercise>
+
+<h3>E. Complete a safe average</h3>
+<p>Complete the final decision. The box starts with <code>total = 156.0</code> and <code>count = 2</code>; <strong>Check</strong> also rewrites those two lines to <code>total = 0.0</code>, <code>count = 0</code> and to <code>total = 90.0</code>, <code>count = 1</code>.</p>
+<wb-exercise id="pe"></wb-exercise>
+
+<h3>F. Design and test a sentinel loop</h3>
+<p>Design a program that reads nonnegative study times in minutes. The value <code>-1</code> ends input. The program prints the number of entries and their total. Use a <code>while True</code> loop with one <code>break</code>.</p>
+<p>Storyboard:</p>
+<wb-short id="pf-story"></wb-short>
+<p>Code. Use the prompt <code>'Study time (-1 to finish): '</code> and print <code>Entries:</code> followed by the count, then <code>Total minutes:</code> followed by the total with one digit after the decimal point.</p>
+<wb-exercise id="pf"></wb-exercise>
+<p>Zero-data test result:</p>
+<wb-table id="pf-zero">
+  <table>
+    <thead><tr><th>Input</th><th>First line printed</th><th>Second line printed</th></tr></thead>
+    <tbody>
+      <tr><td><code>-1</code></td><td data-blank="entries"></td><td data-blank="total"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>G. Predict loop output</h3>
+<p>Without running the program, write its exact output, one value after another. Then run it to check.</p>
+<pre><code>value = <span class="wb-num">2</span>
+<span class="wb-kw">while</span> value &lt;= <span class="wb-num">6</span>:
+    <span class="wb-fn">print</span>(value)
+    value = value + <span class="wb-num">2</span></code></pre>
+<wb-table id="pg">
+  <table>
+    <tbody><tr><td>Output</td><td data-blank="out"></td></tr></tbody>
+  </table>
+</wb-table>
+<wb-example id="ex-evens"></wb-example>
+
+<h3>H. Find the loop bugs and count the passes</h3>
+<p>Answer each part.</p>
+<p>1. Why does this loop never end? Repair it in the box so that it prints <code>3</code>, <code>2</code>, <code>1</code>. <strong>Check</strong> also runs it with <code>number = 5</code>.</p>
+<wb-short id="ph1-why"></wb-short>
+<wb-exercise id="ph1"></wb-exercise>
+<p>2. A program should process exactly three values. Why does this test allow four passes? Repair it. The box prints the number of passes after the loop.</p>
+<wb-short id="ph2-why"></wb-short>
+<wb-exercise id="ph2"></wb-exercise>
+<p>3. How many passes does each loop make?</p>
+<wb-example id="ex-passes"></wb-example>
+<wb-table id="ph3">
+  <table>
+    <thead><tr><th>Loop</th><th>Passes</th></tr></thead>
+    <tbody>
+      <tr><td><code>i</code></td><td data-blank="i"></td></tr>
+      <tr><td><code>j</code></td><td data-blank="j"></td></tr>
+      <tr><td><code>k</code></td><td data-blank="k"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>I. Track a minimum safely</h3>
+<p>A program reads integers until the user enters <code>0</code>. The sentinel is not data. Complete the program so that it prints the smallest value. If the first input is <code>0</code>, print <code>No values were entered.</code> Do not initialize the minimum to zero because every valid value may be positive.</p>
+<p>Sample run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">4</span>
+<span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">7</span>
+<span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">-2</span>
+<span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">-5</span>
+<span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">0</span>
+Minimum: -5</pre>
+<p>Boundary run:</p>
+<pre class="wb-shell"><span class="wb-prompt">Value (0 to finish): </span><span class="wb-typed">0</span>
+No values were entered.</pre>
+<wb-exercise id="pi"></wb-exercise>
+
+<h3>J. Convert two currency sequences</h3>
+<p>An exchange kiosk uses a rate of <code>1.36</code> Canadian dollars for one U.S. dollar. First, read U.S. dollar amounts and print each amount in Canadian dollars. The value <code>0</code> ends that sequence. Then read Canadian dollar amounts and print each amount in U.S. dollars. Another <code>0</code> ends the program. Use two sentinel-controlled loops. Print each converted amount with two digits after the decimal point.</p>
+<p>Sample cases:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Sequence</th><th>Input</th><th>Expected conversion</th></tr></thead>
+  <tbody>
+    <tr><td>U.S. to Canadian</td><td><code>10</code></td><td><code>CAD 13.60</code></td></tr>
+    <tr><td>Canadian to U.S.</td><td><code>13.60</code></td><td><code>USD 10.00</code></td></tr>
+    <tr><td>either sequence</td><td><code>0</code></td><td>stop that sequence without converting 0</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use the prompts <code>'USD amount (0 to finish): '</code> and <code>'CAD amount (0 to finish): '</code>, and print each amount as <code>CAD 13.60</code> or <code>USD 10.00</code>.</p>
+<wb-exercise id="pj"></wb-exercise>
+
+<h3>K. Control room occupancy</h3>
+<p>A study room holds at most 12 people. A positive input is a group arriving. A negative input is a group leaving. Assume a departing group never contains more people than are currently in the room. If an arriving group would exceed the capacity, do not admit that group and print <code>Group cannot enter.</code> After each accepted change, print the occupancy. Stop when the room reaches 12 people. The value <code>0</code> closes the room early.</p>
+<p>Sample cases:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Inputs</th><th>Important output</th></tr></thead>
+  <tbody>
+    <tr><td><code>5, 8, 7</code></td><td>5; group rejected at 8; 12 and stop</td></tr>
+    <tr><td><code>4, -2, 0</code></td><td>4; 2; stop with occupancy 2</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use the prompt <code>'Group change (0 to close): '</code>. Print <code>Occupancy:</code> followed by the number after each accepted change, and <code>Final occupancy:</code> followed by the number after the loop.</p>
+<pre class="wb-shell"><span class="wb-prompt">Group change (0 to close): </span><span class="wb-typed">4</span>
+Occupancy: 4
+<span class="wb-prompt">Group change (0 to close): </span><span class="wb-typed">-2</span>
+Occupancy: 2
+<span class="wb-prompt">Group change (0 to close): </span><span class="wb-typed">0</span>
+Final occupancy: 2</pre>
+<wb-exercise id="pk"></wb-exercise>
+
+<h3>L. Trace the minimum program</h3>
+<p>Use the program from Exercise I with inputs <code>4, 7, -2, -5, 0</code>. Complete the trace. Write <code>True</code> or <code>False</code> for <code>first</code> and <code>yes</code> or <code>no</code> for Stop?</p>
+<wb-table id="pl">
+  <table>
+    <thead><tr><th>Input</th><th><code>first</code> after input</th><th><code>minimum</code> after input</th><th>Stop?</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td data-blank="f1"></td><td data-blank="m1"></td><td data-blank="s1"></td></tr>
+      <tr><td>7</td><td data-blank="f2"></td><td data-blank="m2"></td><td data-blank="s2"></td></tr>
+      <tr><td>-2</td><td data-blank="f3"></td><td data-blank="m3"></td><td data-blank="s3"></td></tr>
+      <tr><td>-5</td><td data-blank="f4"></td><td data-blank="m4"></td><td data-blank="s4"></td></tr>
+      <tr><td>0</td><td data-blank="f5"></td><td data-blank="m5"></td><td data-blank="s5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Why would <code>minimum = 0</code> before the loop give a wrong answer for inputs <code>4, 7, 2, 0</code>?</p>
+<wb-short id="pl-why"></wb-short>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 13 Workbook.</p>
+</main>
+</body>
+</html>

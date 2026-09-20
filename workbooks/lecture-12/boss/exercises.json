@@ -1,0 +1,192 @@
+{
+  "id": "lecture-12-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 12 Boss Problems",
+  "short": "L12 bosses",
+  "subtitle": "Problem solving with loops: the while loop",
+  "exercises": {
+    "clearance": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 12,
+      "starter": "DISCOUNT_RATE = 0.25\nprice = float(input('First price: $'))\nrows = int(input('Rows: '))\ncount = 0\n\nprint('Original  Discount  Sale')\n\n# Write the loop here.",
+      "cases": [
+        {
+          "name": "Typed 20 and 3",
+          "inputs": [
+            "20",
+            "3"
+          ],
+          "expected": "First price: $Rows: Original  Discount  Sale\n$20.00  $5.00  $15.00\n$25.00  $6.25  $18.75\n$30.00  $7.50  $22.50"
+        },
+        {
+          "name": "Typed 12.5 and 0",
+          "inputs": [
+            "12.5",
+            "0"
+          ],
+          "expected": "First price: $Rows: Original  Discount  Sale"
+        },
+        {
+          "name": "Typed 9.99 and 2",
+          "inputs": [
+            "9.99",
+            "2"
+          ],
+          "expected": "First price: $Rows: Original  Discount  Sale\n$9.99  $2.50  $7.49\n$14.99  $3.75  $11.24"
+        },
+        {
+          "name": "Typed 4 and 1",
+          "inputs": [
+            "4",
+            "1"
+          ],
+          "expected": "First price: $Rows: Original  Discount  Sale\n$4.00  $1.00  $3.00"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert __source__.count(\"DISCOUNT_RATE\") >= 2, \"Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again.\"\nassert \":.2f\" in __source__, \"Show every amount with :.2f in the f-string.\"\nassert __source__.count(\"print(\") == 2, \"Print one row per pass with a single print() inside the loop, and keep the heading print() outside it.\"\nassert count == rows, \"Add 1 to count on every pass so the loop stops after rows passes.\"\n",
+      "answer": "RElTQ09VTlRfUkFURSA9IDAuMjUKcHJpY2UgPSBmbG9hdChpbnB1dCgnRmlyc3QgcHJpY2U6ICQnKSkKcm93cyA9IGludChpbnB1dCgnUm93czogJykpCmNvdW50ID0gMAoKcHJpbnQoJ09yaWdpbmFsICBEaXNjb3VudCAgU2FsZScpCndoaWxlIGNvdW50IDwgcm93czoKICAgIGRpc2NvdW50ID0gcHJpY2UgKiBESVNDT1VOVF9SQVRFCiAgICBzYWxlX3ByaWNlID0gcHJpY2UgLSBkaXNjb3VudAogICAgcHJpbnQoZicke3ByaWNlOi4yZn0gICR7ZGlzY291bnQ6LjJmfSAgJHtzYWxlX3ByaWNlOi4yZn0nKQogICAgcHJpY2UgPSBwcmljZSArIDUKICAgIGNvdW50ID0gY291bnQgKyAx",
+      "answerNote": "Both price and count are updated on every pass. When rows is 0, the first test is false, so only the heading is printed."
+    },
+    "teams": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 8,
+      "starter": "first = int(input('First group: '))\nsecond = int(input('Second group: '))\nteam_size = min(first, second)\n\n# Decrease team_size until it divides both groups.\n\nprint('Largest shared team size:', team_size)",
+      "cases": [
+        {
+          "name": "Typed 120 and 48",
+          "inputs": [
+            "120",
+            "48"
+          ],
+          "expected": "First group: Second group: Largest shared team size: 24"
+        },
+        {
+          "name": "Typed 7 and 5",
+          "inputs": [
+            "7",
+            "5"
+          ],
+          "expected": "First group: Second group: Largest shared team size: 1"
+        },
+        {
+          "name": "Typed 36 and 36",
+          "inputs": [
+            "36",
+            "36"
+          ],
+          "expected": "First group: Second group: Largest shared team size: 36"
+        },
+        {
+          "name": "Typed 9 and 27",
+          "inputs": [
+            "9",
+            "27"
+          ],
+          "expected": "First group: Second group: Largest shared team size: 9"
+        },
+        {
+          "name": "Typed 1 and 40",
+          "inputs": [
+            "1",
+            "40"
+          ],
+          "expected": "First group: Second group: Largest shared team size: 1"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"%\" in __source__, \"Use % to test whether team_size divides a group exactly.\"\nassert \"gcd\" not in __source__ and \"import\" not in __source__, \"Search for the answer with the loop; do not import a module.\"\nassert \"team_size - 1\" in __source__ or \"team_size -= 1\" in __source__, \"Decrease team_size by 1 on each pass.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
+      "answer": "Zmlyc3QgPSBpbnQoaW5wdXQoJ0ZpcnN0IGdyb3VwOiAnKSkKc2Vjb25kID0gaW50KGlucHV0KCdTZWNvbmQgZ3JvdXA6ICcpKQp0ZWFtX3NpemUgPSBtaW4oZmlyc3QsIHNlY29uZCkKCndoaWxlIGZpcnN0ICUgdGVhbV9zaXplICE9IDAgb3Igc2Vjb25kICUgdGVhbV9zaXplICE9IDA6CiAgICB0ZWFtX3NpemUgPSB0ZWFtX3NpemUgLSAxCgpwcmludCgnTGFyZ2VzdCBzaGFyZWQgdGVhbSBzaXplOicsIHRlYW1fc2l6ZSk=",
+      "answerNote": "The loop continues while at least one group has a remainder. A team size of 1 divides every positive group size, so the search always stops."
+    },
+    "binary": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 9,
+      "starter": "bits = input('Binary code: ')\nindex = 0\nvalue = 0\n\n# Process one character on each pass.\n\nprint('Room number:', value)",
+      "cases": [
+        {
+          "name": "Typed 101101",
+          "inputs": [
+            "101101"
+          ],
+          "expected": "Binary code: Room number: 45"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Binary code: Room number: 0"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Binary code: Room number: 1"
+        },
+        {
+          "name": "Typed 1000",
+          "inputs": [
+            "1000"
+          ],
+          "expected": "Binary code: Room number: 8"
+        },
+        {
+          "name": "Typed 11111111",
+          "inputs": [
+            "11111111"
+          ],
+          "expected": "Binary code: Room number: 255"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\n\nassert \"len(bits)\" in __source__, \"Test index against len(bits) so every character is processed once.\"\nassert \"bits[index]\" in __source__, \"Pick one character out of bits with bits[index].\"\nassert not re.search(r\"int\\(\\s*bits\\s*,\", __source__), \"Build the value one digit at a time; int(bits, 2) is not part of this course.\"\nassert \"* 2\" in __source__ or \"*2\" in __source__, \"Double the value built so far before adding the new digit.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
+      "answer": "Yml0cyA9IGlucHV0KCdCaW5hcnkgY29kZTogJykKaW5kZXggPSAwCnZhbHVlID0gMAoKd2hpbGUgaW5kZXggPCBsZW4oYml0cyk6CiAgICB2YWx1ZSA9IHZhbHVlICogMiArIGludChiaXRzW2luZGV4XSkKICAgIGluZGV4ID0gaW5kZXggKyAxCgpwcmludCgnUm9vbSBudW1iZXI6JywgdmFsdWUp",
+      "answerNote": "Multiplying by 2 makes room for the next binary digit. The index starts at 0 and advances once per pass, so every character is processed exactly once."
+    },
+    "circle": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 12,
+      "starter": "terms = int(input('Terms: '))\nstep = 1\ndenominator = 1\nsign = 1\nestimate = 0.0\n\n# Add one term and print one estimate on each pass.",
+      "cases": [
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Terms: After 1: 4.000000"
+        },
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "Terms: After 1: 4.000000\nAfter 2: 2.666667\nAfter 3: 3.466667\nAfter 4: 2.895238"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Terms: After 1: 4.000000\nAfter 2: 2.666667"
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Terms: After 1: 4.000000\nAfter 2: 2.666667\nAfter 3: 3.466667\nAfter 4: 2.895238\nAfter 5: 3.339683\nAfter 6: 2.976046\nAfter 7: 3.283738\nAfter 8: 3.017072\nAfter 9: 3.252366\nAfter 10: 3.041840"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"math\" not in __source__ and \"import\" not in __source__, \"Build the estimate with the loop; do not import a module.\"\nassert \":.6f\" in __source__, \"Show the estimate with :.6f in the f-string.\"\nassert __source__.count(\"print(\") == 1, \"Print one estimate per pass with a single print() inside the loop.\"\nassert denominator == 2 * terms + 1, \"Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on.\"\nassert sign == (1 if terms % 2 == 0 else -1), \"Flip sign on every pass so the terms alternate between adding and subtracting.\"\nassert step == terms + 1, \"Add 1 to step on every pass and stop after terms passes.\"\n",
+      "answer": "dGVybXMgPSBpbnQoaW5wdXQoJ1Rlcm1zOiAnKSkKc3RlcCA9IDEKZGVub21pbmF0b3IgPSAxCnNpZ24gPSAxCmVzdGltYXRlID0gMC4wCgp3aGlsZSBzdGVwIDw9IHRlcm1zOgogICAgZXN0aW1hdGUgPSBlc3RpbWF0ZSArIHNpZ24gKiA0IC8gZGVub21pbmF0b3IKICAgIHByaW50KGYnQWZ0ZXIge3N0ZXB9OiB7ZXN0aW1hdGU6LjZmfScpCiAgICBkZW5vbWluYXRvciA9IGRlbm9taW5hdG9yICsgMgogICAgc2lnbiA9IC1zaWduCiAgICBzdGVwID0gc3RlcCArIDE=",
+      "answerNote": "The denominator advances through the positive odd integers, while sign = -sign alternates addition and subtraction. The inclusive test produces exactly the requested number of lines."
+    }
+  }
+}

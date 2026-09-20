@@ -1,0 +1,1522 @@
+{
+  "id": "lecture-13",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 13 Workbook",
+  "subtitle": "Hand-tracing, sentinels, and common loop bugs",
+  "exercises": {
+    "ex-digits": {
+      "type": "example",
+      "code": "n = 1729\ntotal = 0\n\nwhile n > 0:\n    digit = n % 10\n    total = total + digit\n    n = n // 10\n\nprint(total)",
+      "output": "19"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "digit": {
+          "accept": [
+            "9"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "stmt": {
+          "accept": [
+            "n = n // 10",
+            "n //= 10",
+            "n=n//10",
+            "n//=10",
+            "n = n//10",
+            "n // 10",
+            "n//10",
+            "// 10",
+            "//"
+          ],
+          "caseSensitive": true,
+          "placeholder": "statement",
+          "width": "10rem",
+          "show": "n = n // 10"
+        }
+      }
+    },
+    "cp1-end": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "When does the loop end?",
+      "answer": "VGhlIGxvb3AgZW5kcyB3aGVuIGBuID4gMGAgaXMgZmFsc2UuIEZvciB0aGlzIHByb2dyYW0sIHRoYXQgaGFwcGVucyB3aGVuIGBuYCBpcyBgMGAu"
+    },
+    "ex-cp2": {
+      "type": "example",
+      "code": "n = 3\ntotal = 0\nwhile n > 0:\n    total = total + n\n    n = n - 1"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c0": {
+          "accept": [
+            "3 > 0 is True",
+            "3 > 0 True",
+            "3 > 0: True",
+            "3 > 0 -> True",
+            "3 > 0 → True",
+            "3 > 0 = True",
+            "3 > 0 == True",
+            "True",
+            "3 > 0",
+            "3>0 is True",
+            "3>0 True",
+            "3>0: True",
+            "3>0 -> True",
+            "3>0 → True",
+            "3>0 = True",
+            "3>0 == True",
+            "3>0"
+          ],
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "3 > 0 is True"
+        },
+        "c1": {
+          "accept": [
+            "3 > 0 is True",
+            "3 > 0 True",
+            "3 > 0: True",
+            "3 > 0 -> True",
+            "3 > 0 → True",
+            "3 > 0 = True",
+            "3 > 0 == True",
+            "True",
+            "3 > 0",
+            "3>0 is True",
+            "3>0 True",
+            "3>0: True",
+            "3>0 -> True",
+            "3>0 → True",
+            "3>0 = True",
+            "3>0 == True",
+            "3>0"
+          ],
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "3 > 0 is True"
+        },
+        "n1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t1": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c2": {
+          "accept": [
+            "2 > 0 is True",
+            "2 > 0 True",
+            "2 > 0: True",
+            "2 > 0 -> True",
+            "2 > 0 → True",
+            "2 > 0 = True",
+            "2 > 0 == True",
+            "True",
+            "2 > 0",
+            "2>0 is True",
+            "2>0 True",
+            "2>0: True",
+            "2>0 -> True",
+            "2>0 → True",
+            "2>0 = True",
+            "2>0 == True",
+            "2>0"
+          ],
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "2 > 0 is True"
+        },
+        "n2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c3": {
+          "accept": [
+            "1 > 0 is True",
+            "1 > 0 True",
+            "1 > 0: True",
+            "1 > 0 -> True",
+            "1 > 0 → True",
+            "1 > 0 = True",
+            "1 > 0 == True",
+            "True",
+            "1 > 0",
+            "1>0 is True",
+            "1>0 True",
+            "1>0: True",
+            "1>0 -> True",
+            "1>0 → True",
+            "1>0 = True",
+            "1>0 == True",
+            "1>0"
+          ],
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "1 > 0 is True"
+        },
+        "n3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t3": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c4": {
+          "accept": [
+            "0 > 0 is False",
+            "0 > 0 False",
+            "0 > 0: False",
+            "0 > 0 -> False",
+            "0 > 0 → False",
+            "0 > 0 = False",
+            "0 > 0 == False",
+            "False",
+            "0 > 0",
+            "0>0 is False",
+            "0>0 False",
+            "0>0: False",
+            "0>0 -> False",
+            "0>0 → False",
+            "0>0 = False",
+            "0>0 == False",
+            "0>0"
+          ],
+          "placeholder": "condition",
+          "width": "10rem",
+          "show": "0 > 0 is False"
+        },
+        "n4": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t4": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-reset": {
+      "type": "example",
+      "code": "n = 1\nwhile n <= 4:\n    total = 0\n    total = total + n\n    n = n + 1\n\nprint(total)",
+      "output": "4"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "p1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p4": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "line": {
+          "accept": [
+            "total = 0",
+            "total=0"
+          ],
+          "caseSensitive": true,
+          "placeholder": "line",
+          "width": "8rem",
+          "show": "total = 0"
+        }
+      }
+    },
+    "cp3-where": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Where does the line belong?",
+      "answer": "TW92ZSBgdG90YWwgPSAwYCBiZWZvcmUgdGhlIGxvb3Agc28gdGhhdCBpdCBydW5zIG9uY2UsIGJlZm9yZSBhbnkgdmFsdWVzIGFyZSBhZGRlZC4="
+    },
+    "ex-marks": {
+      "type": "example",
+      "code": "total = 0.0\ncount = 0\nmark = float(input('Mark (-1 to finish): '))\n\nwhile mark != -1:\n    total = total + mark\n    count = count + 1\n    mark = float(input('Mark (-1 to finish): '))\n\nprint('Values entered:', count)\nprint(f'Total: {total:.1f}')"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s72": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "a72": {
+          "accept": [
+            "yes",
+            "y"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "c72": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s84": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "a84": {
+          "accept": [
+            "yes",
+            "y"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "c84": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s-1": {
+          "accept": [
+            "yes",
+            "y"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "a-1": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "c-1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp4-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHRlc3QgbXVzdCBoYXBwZW4gZmlyc3QgYmVjYXVzZSB0aGUgc2VudGluZWwgaXMgYSBjb250cm9sIHZhbHVlLCBub3QgYSBtYXJrLiBBZGRpbmcgaXQgd291bGQgY2hhbmdlIHRoZSByZXN1bHQu"
+    },
+    "ex-temps": {
+      "type": "example",
+      "code": "total = 0.0\ntext = input('Temperature, or done: ').strip().lower()\n\nwhile text != 'done':\n    temperature = float(text)\n    total = total + temperature\n    text = input('Temperature, or done: ').strip().lower()\n\nprint(f'Total: {total:.1f}')"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "dist": {
+          "accept": [
+            "0",
+            "0.0",
+            "-1",
+            "-1.0",
+            "zero"
+          ],
+          "placeholder": "sentinel",
+          "width": "8rem",
+          "show": "0"
+        },
+        "whole": {
+          "accept": [
+            "none",
+            "no numeric sentinel",
+            "there is none",
+            "no number",
+            "not a number",
+            "a word",
+            "text",
+            "done",
+            "'done'",
+            "\"done\"",
+            "blank line",
+            "a blank line",
+            "blank",
+            "empty string",
+            "an empty string",
+            "''",
+            "\"\"",
+            "the empty string",
+            "a blank line or 'done'",
+            "blank line or 'done'",
+            "a blank line or a word such as 'done'",
+            "read text",
+            "read text first"
+          ],
+          "placeholder": "sentinel",
+          "width": "12rem",
+          "show": "a blank line or 'done'"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Rm9yIHBvc2l0aXZlIGRpc3RhbmNlcywgYDBgIGlzIHNhZmUgYmVjYXVzZSBhIHBvc2l0aXZlIGRpc3RhbmNlIG11c3QgYmUgZ3JlYXRlciB0aGFuIHplcm8uCgpGb3IgYW55IHdob2xlIG51bWJlciwgbm8gbnVtZXJpYyBzZW50aW5lbCBpcyBzYWZlLiBSZWFkIHRleHQgYW5kIHVzZSBhIGJsYW5rIGxpbmUgb3IgYSB3b3JkIHN1Y2ggYXMgYCdkb25lJ2Au"
+    },
+    "ex-priming": {
+      "type": "example",
+      "code": "text = input('Value, or blank to finish: ')   # priming read\n\nwhile text != '':\n    value = float(text)\n    print(f'Received: {value:.1f}')\n    text = input('Value, or blank to finish: ')  # next read"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "before": {
+          "accept": [
+            "priming read",
+            "the priming read",
+            "priming",
+            "a priming read",
+            "priming-read",
+            "gives the loop condition its first value",
+            "provides the first value for the test",
+            "provides a value for the first test",
+            "first value for the loop condition",
+            "the first test"
+          ],
+          "placeholder": "purpose",
+          "width": "14rem",
+          "show": "priming read"
+        },
+        "bottom": {
+          "accept": [
+            "next read",
+            "the next read",
+            "next",
+            "reads the next value",
+            "obtains the value for the next test",
+            "the value for the next test",
+            "value for the next test",
+            "gets the next value",
+            "read the next value",
+            "next value"
+          ],
+          "placeholder": "purpose",
+          "width": "14rem",
+          "show": "next read"
+        }
+      }
+    },
+    "cp6-missing": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SWYgdGhlIHNlY29uZCBpbnB1dCB3ZXJlIG1pc3NpbmcgYW5kIHRoZSBmaXJzdCB2YWx1ZSB3ZXJlIG5vdCBibGFuaywgYHRleHRgIHdvdWxkIG5ldmVyIGNoYW5nZSBhbmQgdGhlIGxvb3Agd291bGQgbm90IGVuZC4="
+    },
+    "ex-break": {
+      "type": "example",
+      "code": "total = 0.0\ncount = 0\n\nwhile True:\n    text = input('Mark (-1 to finish): ')\n    mark = float(text)\n    if mark == -1:\n        break\n    total = total + mark\n    count = count + 1\n\nprint('Values entered:', count)"
+    },
+    "cp7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "where": {
+          "accept": [
+            "the first line after the loop",
+            "first line after the loop",
+            "the line after the loop",
+            "after the loop",
+            "at the first line after the loop",
+            "the first statement after the loop",
+            "first statement after the loop",
+            "the statement after the loop",
+            "the print",
+            "the print statement",
+            "the print line",
+            "at the print",
+            "print('Values entered:', count)",
+            "print",
+            "the last line",
+            "after the while loop",
+            "the line after the while loop",
+            "outside the loop"
+          ],
+          "placeholder": "where?",
+          "width": "16rem",
+          "show": "the first line after the loop"
+        },
+        "breaks": {
+          "accept": [
+            "1",
+            "one"
+          ],
+          "placeholder": "how many?",
+          "width": "6rem",
+          "show": "1"
+        }
+      }
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGBicmVha2AgcnVucyBiZWZvcmUgdGhlIGFkZGl0aW9uLCBzbyB0aGUgc2VudGluZWwgaXMgbm90IHByb2Nlc3NlZC4="
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "once": {
+          "accept": [
+            "while True",
+            "while true",
+            "while True with break",
+            "while True with one break",
+            "while True with one clear break",
+            "while True and break",
+            "while True / break",
+            "while true with break",
+            "while True with a break"
+          ],
+          "placeholder": "structure",
+          "width": "10rem",
+          "show": "while True"
+        },
+        "header": {
+          "accept": [
+            "priming read",
+            "priming-read",
+            "priming",
+            "a priming read",
+            "the priming read",
+            "priming read loop",
+            "priming-read loop"
+          ],
+          "placeholder": "structure",
+          "width": "10rem",
+          "show": "priming read"
+        },
+        "standard": {
+          "accept": [
+            "while True",
+            "while true",
+            "while True with break",
+            "while True with one break",
+            "while True with one clear break",
+            "while True and break",
+            "while True / break",
+            "while true with break",
+            "while True with a break"
+          ],
+          "placeholder": "structure",
+          "width": "14rem",
+          "show": "while True with one clear break"
+        }
+      }
+    },
+    "cp9-story": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "Prompt and reply on each line, then the final output…",
+      "answer": "T25lIHBvc3NpYmxlIHN0b3J5Ym9hcmQ6CgpgRGlzdGFuY2UgKDAgdG8gZmluaXNoKTogMi41YApgRGlzdGFuY2UgKDAgdG8gZmluaXNoKTogMS4yNWAKYERpc3RhbmNlICgwIHRvIGZpbmlzaCk6IDBgCmBUb3RhbCBkaXN0YW5jZTogMy43NSBrbWA="
+    },
+    "cp9-zero": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "zero": {
+          "accept": [
+            "Total distance: 0.00 km",
+            "Total distance: 0.0 km",
+            "Total distance: 0 km",
+            "Total distance: 0.00",
+            "Total distance: 0.0",
+            "Total distance: 0",
+            "0.00 km",
+            "0.0 km",
+            "0 km",
+            "0.00",
+            "0.0",
+            "0",
+            "a total of 0",
+            "a total of zero",
+            "total 0",
+            "zero",
+            "Total: 0.00",
+            "Total: 0.0",
+            "Total: 0"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "Total distance: 0.00 km"
+        }
+      }
+    },
+    "ex-average": {
+      "type": "example",
+      "code": "total = 0.0\ncount = 0\n\nwhile True:\n    mark = float(input('Mark (-1 to finish): '))\n    if mark == -1:\n        break\n    total = total + mark\n    count = count + 1\n\nif count > 0:\n    average = total / count\n    print(f'Average of {count} marks: {average:.2f}')\nelse:\n    print('No marks were entered.')"
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "total": {
+          "accept": [
+            "0.0",
+            "0",
+            "0.00"
+          ],
+          "placeholder": "value",
+          "width": "5rem",
+          "show": "0.0"
+        },
+        "count": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "safe": {
+          "accept": [
+            "no",
+            "n",
+            "not safe",
+            "unsafe",
+            "no, ZeroDivisionError",
+            "no (ZeroDivisionError)"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "branch": {
+          "accept": [
+            "else",
+            "the else branch",
+            "else branch",
+            "the else",
+            "else:",
+            "the else:",
+            "No marks were entered.",
+            "print('No marks were entered.')",
+            "the second branch",
+            "the else part"
+          ],
+          "placeholder": "branch",
+          "width": "10rem",
+          "show": "the else branch"
+        }
+      }
+    },
+    "cp11": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 6,
+      "placeholder": "One test per line: input sequence, expected result, purpose…",
+      "answer": "T25lIHVzZWZ1bCBzZXQgaXM6CgpgLTFgOiB6ZXJvIHByaWNlczsgbm8gZGl2aXNpb24gYnkgemVybyAoc2VudGluZWwgZmlyc3QpLgoKYDEyLjUwLCAtMWA6IGNvdW50IDE7IHRvdGFsIDEyLjUwIChvbmUgZGF0YSB2YWx1ZSkuCgpgMCwgOC4yNSwgMy43NSwgLTFgOiBjb3VudCAzOyB0b3RhbCAxMi4wMCAoemVybyBwcmljZSBhbmQgcmVwZWF0ZWQgdXBkYXRlcyku"
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Rm9sbG93IHRoZSBwcm9ncmFtIG9uZSBzdGF0ZW1lbnQgYXQgYSB0aW1lIGFuZCByZWNvcmQgZWFjaCB2YWx1ZSBhcyBpdCBjaGFuZ2VzLg=="
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSByb3cgc2hvdWxkIHJlY29yZCB0aGUgY29uZGl0aW9uIGFuZCB2YXJpYWJsZSBzdGF0ZSBhdCBhIGNsZWFyIG1vbWVudCwgdXN1YWxseSBiZWZvcmUgdGhlIGxvb3AsIGFmdGVyIGEgcGFzcywgb3IgYXQgZXhpdC4gVXBkYXRlcyBzaG91bGQgYmUgcmVjb3JkZWQgaW4gc3RhdGVtZW50IG9yZGVyLg=="
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "RXhhbXBsZXMgaW5jbHVkZSBhbiBpbmNvcnJlY3QgaW5pdGlhbCB2YWx1ZSwgYW4gb2ZmLWJ5LW9uZSBib3VuZGFyeSwgYSBtaXNzaW5nIHVwZGF0ZSwgYW5kIGFuIGFjY3VtdWxhdG9yIHJlc2V0IGluc2lkZSB0aGUgbG9vcC4="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSBzZW50aW5lbCBpcyBhIHNwZWNpYWwgaW5wdXQgdmFsdWUgdGhhdCBtYXJrcyB0aGUgZW5kIG9mIGEgc2VxdWVuY2UgYW5kIGlzIG5vdCBwcm9jZXNzZWQgYXMgZGF0YS4="
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSB0ZW1wZXJhdHVyZSBvZiBgLTFgIGlzIHZhbGlkIGRhdGEsIHNvIHRoZSBwcm9ncmFtIGNvdWxkIHN0b3AgYmVmb3JlIHByb2Nlc3NpbmcgYWxsIHRlbXBlcmF0dXJlcy4="
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSBwcmltaW5nIHJlYWQgaXMgdGhlIGlucHV0IG9wZXJhdGlvbiBiZWZvcmUgYSBsb29wIHRoYXQgcHJvdmlkZXMgdGhlIGZpcnN0IHZhbHVlIGZvciB0aGUgbG9vcCBjb25kaXRpb24u"
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SXQgbGVhdmVzIHRoZSBuZWFyZXN0IGVuY2xvc2luZyBsb29wIGltbWVkaWF0ZWx5IGFuZCBjb250aW51ZXMgYXQgdGhlIGZpcnN0IHN0YXRlbWVudCBhZnRlciB0aGF0IGxvb3Au"
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGNvdW50IG1heSBiZSB6ZXJvIHdoZW4gdGhlIHNlbnRpbmVsIGlzIGVudGVyZWQgZmlyc3QuIFRlc3RpbmcgdGhlIGNvdW50IHByZXZlbnRzIGRpdmlzaW9uIGJ5IHplcm8u"
+    },
+    "syn": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 15,
+      "starter": "total = 0.0\ncount = 0\n\nwhile True:\n    minutes = float(input('Study time (-1 to finish): '))\n    if ________________________________________________:\n        break\n    _________________________________________________\n    _________________________________________________\n\nif _________________________________________________:\n    average = ________________________________________\n    print(f'Average of {count} entries: {average:.2f} minutes')\nelse:\n    print('No study times were entered.')",
+      "cases": [
+        {
+          "name": "30, 45, -1",
+          "inputs": [
+            "30",
+            "45",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Study time (-1 to finish): Average of 2 entries: 37.50 minutes"
+        },
+        {
+          "name": "-1 first",
+          "inputs": [
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): No study times were entered."
+        },
+        {
+          "name": "60, -1",
+          "inputs": [
+            "60",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Average of 1 entries: 60.00 minutes"
+        },
+        {
+          "name": "0, 0, 90, -1",
+          "inputs": [
+            "0",
+            "0",
+            "90",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Study time (-1 to finish): Study time (-1 to finish): Average of 3 entries: 30.00 minutes"
+        }
+      ],
+      "check": "import re\nassert \"while True\" in __source__, \"Keep the while True loop with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each value to total with total = total + ... inside the loop.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\nimport re\nassert re.search(r\"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:\", __source__), \"Test count > 0 before dividing by it.\"\n",
+      "answer": "dG90YWwgPSAwLjAKY291bnQgPSAwCgp3aGlsZSBUcnVlOgogICAgbWludXRlcyA9IGZsb2F0KGlucHV0KCdTdHVkeSB0aW1lICgtMSB0byBmaW5pc2gpOiAnKSkKICAgIGlmIG1pbnV0ZXMgPT0gLTE6CiAgICAgICAgYnJlYWsKICAgIHRvdGFsID0gdG90YWwgKyBtaW51dGVzCiAgICBjb3VudCA9IGNvdW50ICsgMQoKaWYgY291bnQgPiAwOgogICAgYXZlcmFnZSA9IHRvdGFsIC8gY291bnQKICAgIHByaW50KGYnQXZlcmFnZSBvZiB7Y291bnR9IGVudHJpZXM6IHthdmVyYWdlOi4yZn0gbWludXRlcycpCmVsc2U6CiAgICBwcmludCgnTm8gc3R1ZHkgdGltZXMgd2VyZSBlbnRlcmVkLicp",
+      "answerNote": "The sentinel is tested before the two updates, and the count is tested before division."
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n1": {
+          "accept": [
+            "305"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "d1": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t1": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a1": {
+          "accept": [
+            "30"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n2": {
+          "accept": [
+            "30"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "d2": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "d3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t3": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "pb": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "ages": {
+          "accept": [
+            "-1",
+            "-2",
+            "-5",
+            "-10",
+            "-99",
+            "-100",
+            "-999",
+            "131",
+            "150",
+            "200",
+            "999",
+            "1000"
+          ],
+          "placeholder": "sentinel",
+          "width": "8rem",
+          "show": "-1"
+        },
+        "temps": {
+          "accept": [
+            "blank line",
+            "a blank line",
+            "blank",
+            "empty string",
+            "an empty string",
+            "the empty string",
+            "''",
+            "\"\"",
+            "done",
+            "'done'",
+            "\"done\"",
+            "stop",
+            "'stop'",
+            "quit",
+            "'quit'",
+            "a word",
+            "a word such as 'done'",
+            "text",
+            "none",
+            "no numeric sentinel"
+          ],
+          "placeholder": "sentinel",
+          "width": "8rem",
+          "show": "a blank line"
+        },
+        "ratings": {
+          "accept": [
+            "0",
+            "-1",
+            "6",
+            "10",
+            "99",
+            "100",
+            "-5",
+            "-10"
+          ],
+          "placeholder": "sentinel",
+          "width": "8rem",
+          "show": "0"
+        }
+      }
+    },
+    "pb-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YC0xYCBmb3IgYWdlcyBiZWNhdXNlIGl0IGlzIG91dHNpZGUgMCB0aHJvdWdoIDEzMC4gQSBibGFuayBsaW5lIGZvciB0ZW1wZXJhdHVyZXMgYmVjYXVzZSBldmVyeSBudW1lcmljIHZhbHVlIG1heSBiZSB2YWxpZC4gYDBgIGZvciByYXRpbmdzIGJlY2F1c2UgaXQgaXMgb3V0c2lkZSAxIHRocm91Z2ggNS4="
+    },
+    "pc": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "text = input('Word, or blank to finish: ')\nwhile text != '':\n    print(text.upper())\n    text = input('Word, or blank to finish: ')",
+      "cases": [
+        {
+          "name": "hello, world, blank",
+          "inputs": [
+            "hello",
+            "world",
+            ""
+          ],
+          "expected": "Word, or blank to finish: HELLO\nWord, or blank to finish: WORLD\nWord, or blank to finish: "
+        },
+        {
+          "name": "blank first",
+          "inputs": [
+            ""
+          ],
+          "expected": "Word, or blank to finish: "
+        },
+        {
+          "name": "Ada, blank",
+          "inputs": [
+            "Ada",
+            ""
+          ],
+          "expected": "Word, or blank to finish: ADA\nWord, or blank to finish: "
+        }
+      ],
+      "check": "assert \"while True\" in __source__, \"Rewrite the loop as while True with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nassert __source__.count(\"input(\") == 1, \"The input line should appear once, inside the loop.\"\n",
+      "answer": "d2hpbGUgVHJ1ZToKICAgIHRleHQgPSBpbnB1dCgnV29yZCwgb3IgYmxhbmsgdG8gZmluaXNoOiAnKQogICAgaWYgdGV4dCA9PSAnJzoKICAgICAgICBicmVhawogICAgcHJpbnQodGV4dC51cHBlcigpKQ==",
+      "answerNote": "The input appears once, and the blank line is tested before text.upper() is printed."
+    },
+    "pd": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "total = 0.0\ncount = 0\n\nwhile True:\n    value = float(input('Value (-1 to finish): '))\n    total = total + value\n    count = count + 1\n    if value == -1:\n        break\n\nprint('Count:', count)\nprint(f'Total: {total:.1f}')",
+      "cases": [
+        {
+          "name": "5, 10, -1",
+          "inputs": [
+            "5",
+            "10",
+            "-1"
+          ],
+          "expected": "Value (-1 to finish): Value (-1 to finish): Value (-1 to finish): Count: 2\nTotal: 15.0"
+        },
+        {
+          "name": "-1 first",
+          "inputs": [
+            "-1"
+          ],
+          "expected": "Value (-1 to finish): Count: 0\nTotal: 0.0"
+        },
+        {
+          "name": "2.5, -1",
+          "inputs": [
+            "2.5",
+            "-1"
+          ],
+          "expected": "Value (-1 to finish): Value (-1 to finish): Count: 1\nTotal: 2.5"
+        }
+      ],
+      "check": "import re\nassert \"while True\" in __source__, \"Keep the while True loop with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each value to total with total = total + ... inside the loop.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\n",
+      "answer": "dG90YWwgPSAwLjAKY291bnQgPSAwCgp3aGlsZSBUcnVlOgogICAgdmFsdWUgPSBmbG9hdChpbnB1dCgnVmFsdWUgKC0xIHRvIGZpbmlzaCk6ICcpKQogICAgaWYgdmFsdWUgPT0gLTE6CiAgICAgICAgYnJlYWsKICAgIHRvdGFsID0gdG90YWwgKyB2YWx1ZQogICAgY291bnQgPSBjb3VudCArIDEKCnByaW50KCdDb3VudDonLCBjb3VudCkKcHJpbnQoZidUb3RhbDoge3RvdGFsOi4xZn0nKQ==",
+      "answerNote": "The test now occurs before either update."
+    },
+    "pe": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 8,
+      "starter": "total = 156.0\ncount = 2\n\nif ____________________:\n    average = total / count\n    print(f'Average: {average:.2f}')\nelse:\n    ________________________________________________",
+      "cases": [
+        {
+          "name": "total = 156.0, count = 2",
+          "inputs": [],
+          "expected": "Average: 78.00"
+        },
+        {
+          "name": "total = 0.0, count = 0",
+          "rewrite": [
+            [
+              "total = 156.0",
+              "total = 0.0"
+            ],
+            [
+              "count = 2",
+              "count = 0"
+            ]
+          ],
+          "expected": "No values were entered."
+        },
+        {
+          "name": "total = 90.0, count = 1",
+          "rewrite": [
+            [
+              "total = 156.0",
+              "total = 90.0"
+            ],
+            [
+              "count = 2",
+              "count = 1"
+            ]
+          ],
+          "expected": "Average: 90.00"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:\", __source__), \"Test count > 0 before dividing by it.\"\n",
+      "answer": "dG90YWwgPSAxNTYuMApjb3VudCA9IDIKCmlmIGNvdW50ID4gMDoKICAgIGF2ZXJhZ2UgPSB0b3RhbCAvIGNvdW50CiAgICBwcmludChmJ0F2ZXJhZ2U6IHthdmVyYWdlOi4yZn0nKQplbHNlOgogICAgcHJpbnQoJ05vIHZhbHVlcyB3ZXJlIGVudGVyZWQuJyk=",
+      "answerNote": "The test prevents division by zero when no data values were entered."
+    },
+    "pf-story": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "Prompt and reply on each line, then the two output lines…",
+      "answer": "T25lIHN0b3J5Ym9hcmQ6CgpgU3R1ZHkgdGltZSAoLTEgdG8gZmluaXNoKTogMzBgCmBTdHVkeSB0aW1lICgtMSB0byBmaW5pc2gpOiA0NWAKYFN0dWR5IHRpbWUgKC0xIHRvIGZpbmlzaCk6IC0xYApgRW50cmllczogMmAKYFRvdGFsIG1pbnV0ZXM6IDc1LjBg"
+    },
+    "pf": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "total = 0.0\ncount = 0\n\n# Read study times with input('Study time (-1 to finish): ') until -1.",
+      "cases": [
+        {
+          "name": "30, 45, -1",
+          "inputs": [
+            "30",
+            "45",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Study time (-1 to finish): Entries: 2\nTotal minutes: 75.0"
+        },
+        {
+          "name": "-1 first",
+          "inputs": [
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Entries: 0\nTotal minutes: 0.0"
+        },
+        {
+          "name": "0, 15, -1",
+          "inputs": [
+            "0",
+            "15",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Study time (-1 to finish): Entries: 2\nTotal minutes: 15.0"
+        },
+        {
+          "name": "120, -1",
+          "inputs": [
+            "120",
+            "-1"
+          ],
+          "expected": "Study time (-1 to finish): Study time (-1 to finish): Entries: 1\nTotal minutes: 120.0"
+        }
+      ],
+      "check": "import re\nassert \"while True\" in __source__, \"Keep the while True loop with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each value to total with total = total + ... inside the loop.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\nassert __source__.count(\"input(\") == 1, \"The input line should appear once, inside the while True loop.\"\n",
+      "answer": "dG90YWwgPSAwLjAKY291bnQgPSAwCgp3aGlsZSBUcnVlOgogICAgbWludXRlcyA9IGZsb2F0KGlucHV0KCdTdHVkeSB0aW1lICgtMSB0byBmaW5pc2gpOiAnKSkKICAgIGlmIG1pbnV0ZXMgPT0gLTE6CiAgICAgICAgYnJlYWsKICAgIHRvdGFsID0gdG90YWwgKyBtaW51dGVzCiAgICBjb3VudCA9IGNvdW50ICsgMQoKcHJpbnQoJ0VudHJpZXM6JywgY291bnQpCnByaW50KGYnVG90YWwgbWludXRlczoge3RvdGFsOi4xZn0nKQ=="
+    },
+    "pf-zero": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "entries": {
+          "accept": [
+            "Entries: 0",
+            "0"
+          ],
+          "placeholder": "first line",
+          "width": "10rem",
+          "show": "Entries: 0"
+        },
+        "total": {
+          "accept": [
+            "Total minutes: 0.0",
+            "0.0",
+            "0",
+            "Total minutes: 0"
+          ],
+          "placeholder": "second line",
+          "width": "12rem",
+          "show": "Total minutes: 0.0"
+        }
+      }
+    },
+    "pg": {
+      "type": "table",
+      "xp": 2,
+      "blanks": {
+        "out": {
+          "accept": [
+            "2 4 6",
+            "2, 4, 6",
+            "2,4,6",
+            "2; 4; 6",
+            "2 / 4 / 6",
+            "2 4 6 (one per line)"
+          ],
+          "placeholder": "output, separated by spaces",
+          "width": "14rem",
+          "show": "2 4 6"
+        }
+      }
+    },
+    "ex-evens": {
+      "type": "example",
+      "code": "value = 2\nwhile value <= 6:\n    print(value)\n    value = value + 2",
+      "output": "2\n4\n6"
+    },
+    "ph1-why": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Why does it never end?",
+      "answer": "VGhlIGxvb3AgbmV2ZXIgY2hhbmdlcyBgbnVtYmVyYCwgc28gYG51bWJlciA+IDBgIHN0YXlzIHRydWUuIEFkZCBgbnVtYmVyID0gbnVtYmVyIC0gMWAgaW5zaWRlIHRoZSBsb29wLg=="
+    },
+    "ph1": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "number = 3\nwhile number > 0:\n    print(number)",
+      "cases": [
+        {
+          "name": "number = 3",
+          "expected": "3\n2\n1"
+        },
+        {
+          "name": "number = 5",
+          "rewrite": [
+            [
+              "number = 3",
+              "number = 5"
+            ]
+          ],
+          "expected": "5\n4\n3\n2\n1"
+        }
+      ],
+      "check": "assert \"while\" in __source__, \"Keep the while loop and repair it.\"\n",
+      "answer": "bnVtYmVyID0gMwp3aGlsZSBudW1iZXIgPiAwOgogICAgcHJpbnQobnVtYmVyKQogICAgbnVtYmVyID0gbnVtYmVyIC0gMQ==",
+      "answerNote": "The update makes number smaller on every pass, so the condition eventually becomes false."
+    },
+    "ph2-why": {
+      "type": "short",
+      "xp": 1,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "Why four passes?",
+      "answer": "VGhlIGxvb3Agc3RhcnRzIGF0IHplcm8gYW5kIGFjY2VwdHMgMCwgMSwgMiwgYW5kIDMuIENoYW5nZSB0aGUgdGVzdCB0byBgY291bnQgPCAzYC4="
+    },
+    "ph2": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "count = 0\nwhile count <= 3:\n    count = count + 1\n\nprint('Passes:', count)",
+      "cases": [
+        {
+          "name": "three passes",
+          "expected": "Passes: 3"
+        }
+      ],
+      "check": "assert \"count = 0\" in __source__, \"Keep count starting at 0 and repair the test instead.\"\nassert \"while\" in __source__, \"Keep the while loop and repair its test.\"\n",
+      "answer": "Y291bnQgPSAwCndoaWxlIGNvdW50IDwgMzoKICAgIGNvdW50ID0gY291bnQgKyAxCgpwcmludCgnUGFzc2VzOicsIGNvdW50KQ=="
+    },
+    "ex-passes": {
+      "type": "example",
+      "code": "i = 1\nwhile i < 11:\n    i = i + 1\n\nj = 10\nwhile j > 0:\n    j = j - 2\n\nk = -10\nwhile k <= 10:\n    k = k + 3"
+    },
+    "ph3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i": {
+          "accept": [
+            "10"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "j": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "k": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "pi": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 16,
+      "starter": "first = True\n\nwhile True:\n    value = int(input('Value (0 to finish): '))\n    if value == 0:\n        break\n    if ________________________________________________:\n        minimum = value\n        first = False\n    elif _____________________________________________:\n        minimum = value\n\nif first:\n    print('No values were entered.')\nelse:\n    print('Minimum:', minimum)",
+      "cases": [
+        {
+          "name": "4, 7, -2, -5, 0",
+          "inputs": [
+            "4",
+            "7",
+            "-2",
+            "-5",
+            "0"
+          ],
+          "expected": "Value (0 to finish): Value (0 to finish): Value (0 to finish): Value (0 to finish): Value (0 to finish): Minimum: -5"
+        },
+        {
+          "name": "0 first",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Value (0 to finish): No values were entered."
+        },
+        {
+          "name": "9, 0",
+          "inputs": [
+            "9",
+            "0"
+          ],
+          "expected": "Value (0 to finish): Value (0 to finish): Minimum: 9"
+        },
+        {
+          "name": "5, 5, 3, 0",
+          "inputs": [
+            "5",
+            "5",
+            "3",
+            "0"
+          ],
+          "expected": "Value (0 to finish): Value (0 to finish): Value (0 to finish): Value (0 to finish): Minimum: 3"
+        }
+      ],
+      "check": "assert \"minimum = 0\" not in __source__, \"Do not start minimum at 0; let the first data value initialize it.\"\nassert \"first\" in __source__, \"Use the first flag to notice the first data value.\"\n",
+      "answer": "Zmlyc3QgPSBUcnVlCgp3aGlsZSBUcnVlOgogICAgdmFsdWUgPSBpbnQoaW5wdXQoJ1ZhbHVlICgwIHRvIGZpbmlzaCk6ICcpKQogICAgaWYgdmFsdWUgPT0gMDoKICAgICAgICBicmVhawogICAgaWYgZmlyc3Q6CiAgICAgICAgbWluaW11bSA9IHZhbHVlCiAgICAgICAgZmlyc3QgPSBGYWxzZQogICAgZWxpZiB2YWx1ZSA8IG1pbmltdW06CiAgICAgICAgbWluaW11bSA9IHZhbHVlCgppZiBmaXJzdDoKICAgIHByaW50KCdObyB2YWx1ZXMgd2VyZSBlbnRlcmVkLicpCmVsc2U6CiAgICBwcmludCgnTWluaW11bTonLCBtaW5pbXVtKQ==",
+      "answerNote": "The first data value initializes minimum. Later values replace it only when they are smaller. For inputs 4, 7, -2, -5, 0, the minimum states are 4, 4, -2, -5."
+    },
+    "pj": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "rate = 1.36\n\n# First loop: input('USD amount (0 to finish): '), print CAD amounts.\n\n# Second loop: input('CAD amount (0 to finish): '), print USD amounts.",
+      "cases": [
+        {
+          "name": "10, 0, 13.60, 0",
+          "inputs": [
+            "10",
+            "0",
+            "13.60",
+            "0"
+          ],
+          "expected": "USD amount (0 to finish): CAD 13.60\nUSD amount (0 to finish): CAD amount (0 to finish): USD 10.00\nCAD amount (0 to finish): "
+        },
+        {
+          "name": "0, 0",
+          "inputs": [
+            "0",
+            "0"
+          ],
+          "expected": "USD amount (0 to finish): CAD amount (0 to finish): "
+        },
+        {
+          "name": "5, 20, 0, 6.80, 34, 0",
+          "inputs": [
+            "5",
+            "20",
+            "0",
+            "6.80",
+            "34",
+            "0"
+          ],
+          "expected": "USD amount (0 to finish): CAD 6.80\nUSD amount (0 to finish): CAD 27.20\nUSD amount (0 to finish): CAD amount (0 to finish): USD 5.00\nCAD amount (0 to finish): USD 25.00\nCAD amount (0 to finish): "
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*while\\b\", __source__, re.M)) == 2, \"Use two sentinel-controlled while loops, one for each currency.\"\nassert \"1.36\" in __source__, \"Use the rate 1.36 in both conversions.\"\nassert \":.2f\" in __source__, \"Print each converted amount with two digits after the decimal point using :.2f.\"\n",
+      "answer": "cmF0ZSA9IDEuMzYKCndoaWxlIFRydWU6CiAgICB1c2QgPSBmbG9hdChpbnB1dCgnVVNEIGFtb3VudCAoMCB0byBmaW5pc2gpOiAnKSkKICAgIGlmIHVzZCA9PSAwOgogICAgICAgIGJyZWFrCiAgICBwcmludChmJ0NBRCB7dXNkICogcmF0ZTouMmZ9JykKCndoaWxlIFRydWU6CiAgICBjYWQgPSBmbG9hdChpbnB1dCgnQ0FEIGFtb3VudCAoMCB0byBmaW5pc2gpOiAnKSkKICAgIGlmIGNhZCA9PSAwOgogICAgICAgIGJyZWFrCiAgICBwcmludChmJ1VTRCB7Y2FkIC8gcmF0ZTouMmZ9Jyk=",
+      "answerNote": "Each sentinel is tested before conversion. Inputs 10, 0, 13.60, 0 print CAD 13.60 and USD 10.00. Inputs 0, 0 print no conversions."
+    },
+    "pk": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "capacity = 12\noccupancy = 0\n\n# Read each change with input('Group change (0 to close): ').",
+      "cases": [
+        {
+          "name": "5, 8, 7",
+          "inputs": [
+            "5",
+            "8",
+            "7"
+          ],
+          "expected": "Group change (0 to close): Occupancy: 5\nGroup change (0 to close): Group cannot enter.\nGroup change (0 to close): Occupancy: 12\nFinal occupancy: 12"
+        },
+        {
+          "name": "4, -2, 0",
+          "inputs": [
+            "4",
+            "-2",
+            "0"
+          ],
+          "expected": "Group change (0 to close): Occupancy: 4\nGroup change (0 to close): Occupancy: 2\nGroup change (0 to close): Final occupancy: 2"
+        },
+        {
+          "name": "12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Group change (0 to close): Occupancy: 12\nFinal occupancy: 12"
+        },
+        {
+          "name": "0 first",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Group change (0 to close): Final occupancy: 0"
+        },
+        {
+          "name": "10, 3, -4, 6, 0",
+          "inputs": [
+            "10",
+            "3",
+            "-4",
+            "6",
+            "0"
+          ],
+          "expected": "Group change (0 to close): Occupancy: 10\nGroup change (0 to close): Group cannot enter.\nGroup change (0 to close): Occupancy: 6\nGroup change (0 to close): Occupancy: 12\nFinal occupancy: 12"
+        }
+      ],
+      "check": "assert \"capacity\" in __source__, \"Use the capacity name for the limit of 12.\"\nassert __source__.count(\"Group cannot enter.\") == 1, \"Print Group cannot enter. once, when a group would exceed the capacity.\"\n",
+      "answer": "Y2FwYWNpdHkgPSAxMgpvY2N1cGFuY3kgPSAwCgp3aGlsZSBvY2N1cGFuY3kgPCBjYXBhY2l0eToKICAgIGNoYW5nZSA9IGludChpbnB1dCgnR3JvdXAgY2hhbmdlICgwIHRvIGNsb3NlKTogJykpCiAgICBpZiBjaGFuZ2UgPT0gMDoKICAgICAgICBicmVhawogICAgaWYgY2hhbmdlID4gMCBhbmQgb2NjdXBhbmN5ICsgY2hhbmdlID4gY2FwYWNpdHk6CiAgICAgICAgcHJpbnQoJ0dyb3VwIGNhbm5vdCBlbnRlci4nKQogICAgZWxzZToKICAgICAgICBvY2N1cGFuY3kgPSBvY2N1cGFuY3kgKyBjaGFuZ2UKICAgICAgICBwcmludCgnT2NjdXBhbmN5OicsIG9jY3VwYW5jeSkKCnByaW50KCdGaW5hbCBvY2N1cGFuY3k6Jywgb2NjdXBhbmN5KQ==",
+      "answerNote": "For 5, 8, 7, the accepted occupancies are 5 and 12. For 4, -2, 0, they are 4 and 2, and the final occupancy is 2."
+    },
+    "pl": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "f1": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "show": "False",
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "m1": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s1": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "f2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "show": "False",
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "m2": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s2": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "f3": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "show": "False",
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "m3": {
+          "accept": [
+            "-2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s3": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "f4": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "show": "False",
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "m4": {
+          "accept": [
+            "-5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s4": {
+          "accept": [
+            "no",
+            "n"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "f5": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "show": "False",
+          "placeholder": "True / False",
+          "width": "7rem"
+        },
+        "m5": {
+          "accept": [
+            "-5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s5": {
+          "accept": [
+            "yes",
+            "y"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        }
+      }
+    },
+    "pl-why": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SWYgYG1pbmltdW1gIHN0YXJ0ZWQgYXQgemVybywgbm9uZSBvZiB0aGUgcG9zaXRpdmUgZGF0YSB2YWx1ZXMgd291bGQgYmUgc21hbGxlciwgc28gdGhlIHByb2dyYW0gd291bGQgaW5jb3JyZWN0bHkgcHJpbnQgemVybyBldmVuIHRob3VnaCB6ZXJvIGlzIG9ubHkgdGhlIHNlbnRpbmVsLg=="
+    }
+  }
+}
