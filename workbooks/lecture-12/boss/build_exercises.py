@@ -79,8 +79,8 @@ assert __source__.count("print(") == 1, "Keep the single print() after the loop.
     "answer": b64(teams),
     "answerNote": "The loop continues while at least one group has a remainder. A team size of 1 divides every positive group size, so the search always stops."}
 
-# ---------------------------------------------------------------- 3 Binary Room Code
-binary = """bits = input('Binary code: ')
+# ---------------------------------------------------------------- 3 Binary to Decimal
+binary = """bits = input('Binary: ')
 index = 0
 value = 0
 
@@ -88,10 +88,10 @@ while index < len(bits):
     value = value * 2 + int(bits[index])
     index = index + 1
 
-print('Room number:', value)
+print('Decimal:', value)
 """
 E["binary"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 9,
-    "starter": "bits = input('Binary code: ')\nindex = 0\nvalue = 0\n\n# Process one character on each pass.\n\nprint('Room number:', value)\n",
+    "starter": "bits = input('Binary: ')\nindex = 0\nvalue = 0\n\n# Process one character on each pass.\n\nprint('Decimal:', value)\n",
     "cases": input_cases(binary, ("Typed 101101", ["101101"]), ("Typed 0", ["0"]), ("Typed 1", ["1"]),
                          ("Typed 1000", ["1000"]), ("Typed 11111111", ["11111111"])),
     "check": WHILE_ONLY + """

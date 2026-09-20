@@ -93,19 +93,45 @@ Largest shared team size: 24</pre>
 <p class="wb-meta">Keep the lines <code>first = int(input('First group: '))</code> and <code>second = int(input('Second group: '))</code> unchanged. The checker will type the other group sizes.</p>
 <wb-exercise id="teams"></wb-exercise>
 
-<h2 id="binary" data-toc-title="🐉 Binary room code">🐉 Boss 3: Binary Room Code</h2>
-<p>The display outside room EN2043 receives a room code as binary digits. Binary uses only 0 and 1. Read a valid, nonempty binary string and convert it to a decimal room number. Process the digits from left to right with a <code>while</code> loop. For each digit, double the value built so far and add the new digit.</p>
-<pre class="wb-shell"><span class="wb-prompt">Binary code: </span><span class="wb-typed">101101</span>
-Room number: 45</pre>
-<p>The starter sets <code>index</code> and <code>value</code> to 0. Loop while <code>index &lt; len(bits)</code>. On each pass, <code>bits[index]</code> is one character; <code>int(bits[index])</code> turns it into 0 or 1. Replace <code>value</code> with <code>value * 2</code> plus that digit, then add 1 to <code>index</code>. For <code>101101</code> the value goes 1, 2, 5, 11, 22, 45. The one-character input <code>0</code> leaves the value at 0.</p>
+<h2 id="binary" data-toc-title="🐉 Binary to decimal">🐉 Boss 3: Binary to Decimal</h2>
+<p>You are given a string <code>bits</code> made of the characters <code>0</code> and <code>1</code>. It is a number written in binary. Print the same number in decimal.</p>
+<p>Read <code>bits</code> with <code>input()</code>, work through the characters from left to right with a <code>while</code> loop, and print the value once after the loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: bits = "101101"
+Output: 45
+Explanation: 1*32 + 0*16 + 1*8 + 1*4 + 0*2 + 1*1 = 45.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: bits = "1000"
+Output: 8
+Explanation: only the leftmost digit is 1, and it stands for 2*2*2 = 8.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: bits = "0"
+Output: 0</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= len(bits) &lt;= 20</code></li>
+    <li><code>bits</code> contains only the characters <code>0</code> and <code>1</code></li>
+  </ul>
+</div>
+<p>The program reads the string after the prompt <code>Binary: </code> and prints <code>Decimal:</code> followed by the value.</p>
+<pre class="wb-shell"><span class="wb-prompt">Binary: </span><span class="wb-typed">101101</span>
+Decimal: 45</pre>
+<p>The starter sets <code>index</code> and <code>value</code> to 0. Loop while <code>index &lt; len(bits)</code>. On each pass, <code>bits[index]</code> is one character and <code>int(bits[index])</code> turns it into 0 or 1. Replace <code>value</code> with <code>value * 2</code> plus that digit, then add 1 to <code>index</code>. For <code>101101</code> the value goes 1, 2, 5, 11, 22, 45. The one-character input <code>0</code> leaves the value at 0.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
-    <tr><td><code>101101</code></td><td><code>Room number: 45</code></td></tr>
-    <tr><td><code>0</code></td><td><code>Room number: 0</code></td></tr>
-    <tr><td><code>1</code></td><td><code>Room number: 1</code></td></tr>
-    <tr><td><code>1000</code></td><td><code>Room number: 8</code></td></tr>
-    <tr><td><code>11111111</code></td><td><code>Room number: 255</code></td></tr>
+    <tr><td><code>101101</code></td><td><code>Decimal: 45</code></td></tr>
+    <tr><td><code>0</code></td><td><code>Decimal: 0</code></td></tr>
+    <tr><td><code>1</code></td><td><code>Decimal: 1</code></td></tr>
+    <tr><td><code>1000</code></td><td><code>Decimal: 8</code></td></tr>
+    <tr><td><code>11111111</code></td><td><code>Decimal: 255</code></td></tr>
   </tbody>
 </table>
 <div class="wb-block">
@@ -119,7 +145,7 @@ Room number: 45</pre>
     <li>One <code>print()</code>, after the loop.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep the line <code>bits = input('Binary code: ')</code> unchanged. The checker will type the other codes.</p>
+<p class="wb-meta">Keep the line <code>bits = input('Binary: ')</code> unchanged. The checker will type the other strings.</p>
 <wb-exercise id="binary"></wb-exercise>
 
 <h2 id="circle" data-toc-title="💀 Circle estimate">💀 Boss 4: Circle Estimate</h2>

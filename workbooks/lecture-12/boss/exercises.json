@@ -106,46 +106,46 @@
       "xp": 20,
       "boss": "🐉",
       "minLines": 9,
-      "starter": "bits = input('Binary code: ')\nindex = 0\nvalue = 0\n\n# Process one character on each pass.\n\nprint('Room number:', value)",
+      "starter": "bits = input('Binary: ')\nindex = 0\nvalue = 0\n\n# Process one character on each pass.\n\nprint('Decimal:', value)",
       "cases": [
         {
           "name": "Typed 101101",
           "inputs": [
             "101101"
           ],
-          "expected": "Binary code: Room number: 45"
+          "expected": "Binary: Decimal: 45"
         },
         {
           "name": "Typed 0",
           "inputs": [
             "0"
           ],
-          "expected": "Binary code: Room number: 0"
+          "expected": "Binary: Decimal: 0"
         },
         {
           "name": "Typed 1",
           "inputs": [
             "1"
           ],
-          "expected": "Binary code: Room number: 1"
+          "expected": "Binary: Decimal: 1"
         },
         {
           "name": "Typed 1000",
           "inputs": [
             "1000"
           ],
-          "expected": "Binary code: Room number: 8"
+          "expected": "Binary: Decimal: 8"
         },
         {
           "name": "Typed 11111111",
           "inputs": [
             "11111111"
           ],
-          "expected": "Binary code: Room number: 255"
+          "expected": "Binary: Decimal: 255"
         }
       ],
       "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\n\nassert \"len(bits)\" in __source__, \"Test index against len(bits) so every character is processed once.\"\nassert \"bits[index]\" in __source__, \"Pick one character out of bits with bits[index].\"\nassert not re.search(r\"int\\(\\s*bits\\s*,\", __source__), \"Build the value one digit at a time; int(bits, 2) is not part of this course.\"\nassert \"* 2\" in __source__ or \"*2\" in __source__, \"Double the value built so far before adding the new digit.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
-      "answer": "Yml0cyA9IGlucHV0KCdCaW5hcnkgY29kZTogJykKaW5kZXggPSAwCnZhbHVlID0gMAoKd2hpbGUgaW5kZXggPCBsZW4oYml0cyk6CiAgICB2YWx1ZSA9IHZhbHVlICogMiArIGludChiaXRzW2luZGV4XSkKICAgIGluZGV4ID0gaW5kZXggKyAxCgpwcmludCgnUm9vbSBudW1iZXI6JywgdmFsdWUp",
+      "answer": "Yml0cyA9IGlucHV0KCdCaW5hcnk6ICcpCmluZGV4ID0gMAp2YWx1ZSA9IDAKCndoaWxlIGluZGV4IDwgbGVuKGJpdHMpOgogICAgdmFsdWUgPSB2YWx1ZSAqIDIgKyBpbnQoYml0c1tpbmRleF0pCiAgICBpbmRleCA9IGluZGV4ICsgMQoKcHJpbnQoJ0RlY2ltYWw6JywgdmFsdWUp",
       "answerNote": "Multiplying by 2 makes room for the next binary digit. The index starts at 0 and advances once per pass, so every character is processed exactly once."
     },
     "circle": {
