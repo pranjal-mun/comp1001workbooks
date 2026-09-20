@@ -3,7 +3,7 @@
 Interactive workbooks for **COMP 1001: Introduction to Programming**
 (Memorial University). Code listings run in the browser, checkpoints and
 practice problems are checked as you work, and correct answers earn XP that
-can be spent to reveal model answers. Python runs locally in the page
+can be spent on hints and model answers. Python runs locally in the page
 (Pyodide in a Web Worker); there is no server and nothing is uploaded.
 
 **Live site:** <https://pranjal-mun.github.io/comp1001workbooks/>

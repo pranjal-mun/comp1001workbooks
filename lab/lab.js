@@ -12,7 +12,7 @@ import { Console } from "../runtime/console.js";
 import { runner, runInteractive, StoppedError, TimeoutError } from "../runtime/runner.js";
 import { initTheme } from "../runtime/theme.js";
 import { revealPage } from "../runtime/page.js";
-import { decodeBase64, renderOutcome, describeRunFailure, toast } from "../runtime/components.js";
+import { decodeBase64, renderOutcome, describeRunFailure, toast, hintPanel } from "../runtime/components.js";
 import { Progress } from "../runtime/progress.js";
 import { xp } from "../runtime/xp.js";
 import { runCases } from "../runtime/grader.js";
@@ -470,6 +470,8 @@ function setUpBoss() {
   }
   if (statement) els.problemBody.replaceChildren(statement);
   else els.problemBody.replaceChildren(h("p", {}, "Solve the exercise in the editor, then press ✓ Check."));
+  boss.hints = hintPanel({ spec, exerciseId: boss.exerciseId, progress: boss.progress });
+  if (boss.hints) els.problemBody.append(boss.hints);
 
   refreshBossState();
   boss.progress.subscribe(refreshBossState);
@@ -503,6 +505,7 @@ function setProblemHidden(hidden) {
 
 function refreshBossState() {
   const record = boss.progress.get(boss.exerciseId);
+  boss.hints?.refresh();
   els.xp.hidden = false;
   els.xp.textContent = record.passed ? `Defeated · ${xp.balance} XP` : `${xp.balance} XP`;
   els.xp.classList.toggle("is-beaten", Boolean(record.passed));

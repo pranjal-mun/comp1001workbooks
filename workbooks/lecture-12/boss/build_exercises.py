@@ -102,6 +102,11 @@ assert "* 2" in __source__ or "*2" in __source__, "Double the value built so far
 assert __source__.count("print(") == 1, "Keep the single print() after the loop."
 """,
     "answer": b64(binary),
+    "hints": [
+        "The starter sets `index` and `value` to 0. Loop while `index < len(bits)`, look at one character with `bits[index]` on each pass, and add 1 to `index` at the end of the pass.",
+        "`int(bits[index])` turns the character `'1'` into the number 1 and `'0'` into 0.",
+        "Reading left to right, every digit already in `value` is worth twice as much once one more digit arrives. Replace `value` with `value * 2 + int(bits[index])`. For `101101` the value goes 1, 2, 5, 11, 22, 45.",
+    ],
     "answerNote": "Multiplying by 2 makes room for the next binary digit. The index starts at 0 and advances once per pass, so every character is processed exactly once."}
 
 # ---------------------------------------------------------------- 4 Circle Estimate

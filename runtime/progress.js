@@ -39,7 +39,7 @@ export class Progress {
     this.saveTimer = setTimeout(() => this.save(), 300);
   }
 
-  /** Per-exercise record: {work, passed, revealed, earned, cells}. */
+  /** Per-exercise record: {work, passed, revealed, earned, parts, hints}. */
   get(id) {
     return this.state.exercises[id] ?? (this.state.exercises[id] = {});
   }
@@ -104,7 +104,24 @@ export class Progress {
     return true;
   }
 
-  /** Clear saved work and pass state; what was earned or revealed stays. */
+  /** True once hint number `index` (0-based) of this exercise has been opened. */
+  hasHint(id, index) {
+    return Boolean(this.state.exercises[id]?.hints?.includes(index));
+  }
+
+  /** Open one hint, spending `cost` XP (0 when it is free). Returns false if the student cannot afford it. */
+  openHint(id, index, cost) {
+    if (this.hasHint(id, index)) return true;
+    if (cost > 0 && !xp.spend(`${id}#hint${index + 1}`, cost, this.workbookId)) return false;
+    const record = this.get(id);
+    record.hints ??= [];
+    record.hints.push(index);
+    this.save();
+    this.notify();
+    return true;
+  }
+
+  /** Clear saved work and pass state; what was earned, revealed or opened stays. */
   resetExercise(id) {
     const record = this.state.exercises[id];
     if (record) {

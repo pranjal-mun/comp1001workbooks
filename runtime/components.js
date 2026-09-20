@@ -2,7 +2,7 @@
 // exercises.json (handed over by workbook.js through defineComponents).
 //
 //   <wb-example id="…">   editable teaching code with ▶ Run and "Restore original"
-//   <wb-exercise id="…">  coding task: editor, Run, Check, XP, model answer
+//   <wb-exercise id="…">  coding task: editor, Run, Check, XP, hints, model answer
 //   <wb-table id="…">     an HTML table whose [data-blank] cells become inputs
 //   <wb-short id="…">     written answer compared against a model answer
 //
@@ -193,6 +193,65 @@ function confirmReveal(id, cost) {
   if (!progress.reveal(id, cost)) return false;
   if (cost > 0) toast(`−${cost} XP`, "warn");
   return true;
+}
+
+/** What one hint costs: a fifth of the exercise's XP, rounded. */
+export function hintCost(spec) {
+  return Math.round((spec.xp ?? 5) / 5);
+}
+
+/**
+ * The hints of a `code` spec (`spec.hints`, an array of strings) as a panel
+ * of buttons that open one hint each. Opening a hint costs `hintCost(spec)`
+ * XP unless the exercise is already passed or revealed, or instructor mode
+ * is on. Opened hints stay open (they are recorded in the progress record).
+ * Returns null when the spec has no hints; call `.refresh()` after the
+ * exercise's state changes.
+ */
+export function hintPanel({ spec, exerciseId, progress }) {
+  const hints = Array.isArray(spec.hints) ? spec.hints.filter((text) => typeof text === "string" && text.trim()) : [];
+  if (!hints.length) return null;
+  const panel = h("div", { class: "wb-hints" });
+  const rows = hints.map((text, index) => {
+    const toggle = button("", () => open(index), { class: "wb-btn-quiet wb-hint-toggle" });
+    const label = h("div", { class: "wb-hint-label", hidden: true }, `Hint ${index + 1}`);
+    const body = h("div", { class: "wb-hint-text", hidden: true, html: inlineCode(text) });
+    const row = h("div", { class: "wb-hint" }, toggle, label, body);
+    return { toggle, label, body, row };
+  });
+  panel.append(h("div", { class: "wb-hints-title" }, "Hints"), ...rows.map((r) => r.row));
+
+  const record = () => progress.get(exerciseId);
+  const free = () => isInstructor() || Boolean(record().passed) || Boolean(record().revealed);
+
+  function open(index) {
+    if (progress.hasHint(exerciseId, index)) return;
+    const cost = free() ? 0 : hintCost(spec);
+    if (cost > 0) {
+      if (!xp.canAfford(cost)) {
+        toast(`You need ${cost} XP to open this hint (you have ${xp.balance}).`, "warn");
+        return;
+      }
+      if (!window.confirm(`Spend ${cost} XP to open hint ${index + 1}?`)) return;
+    }
+    if (!progress.openHint(exerciseId, index, cost)) return;
+    if (cost > 0) toast(`−${cost} XP`, "warn");
+    panel.refresh();
+  }
+
+  panel.refresh = () => {
+    const cost = free() ? 0 : hintCost(spec);
+    rows.forEach(({ toggle, label, body, row }, index) => {
+      const opened = progress.hasHint(exerciseId, index);
+      row.classList.toggle("is-open", opened);
+      toggle.hidden = opened;
+      label.hidden = !opened;
+      body.hidden = !opened;
+      toggle.textContent = cost > 0 ? `Hint ${index + 1} (−${cost} XP)` : `Hint ${index + 1}`;
+    });
+  };
+  panel.refresh();
+  return panel;
 }
 
 // ------------------------------------------------------------ base class
@@ -462,11 +521,12 @@ class ExerciseElement extends RunnableElement {
     );
     this.addExpandToggle(toolbar);
 
+    this.hintsPanel = hintPanel({ spec, exerciseId: this.exerciseId, progress: this.progress });
     this.append(
       h("div", { class: "wb-widget-head" },
         h("span", { class: "wb-widget-label" }, spec.title ?? "Your code"),
         this.statusPill, this.badge),
-      this.editorHost, toolbar, this.consoleWrap, this.tutorPanel, this.resultPanel, this.answerPanel,
+      this.hintsPanel, this.editorHost, toolbar, this.consoleWrap, this.tutorPanel, this.resultPanel, this.answerPanel,
     );
     this.consoleWrap.hidden = true;
     this.refreshState();
@@ -483,6 +543,7 @@ class ExerciseElement extends RunnableElement {
     const cost = record.revealed ? 0 : this.spec.xp ?? 5;
     this.revealButton.textContent = record.revealed ? "Answer shown" : isInstructor() ? "Show answer" : `Show answer (−${cost} XP)`;
     this.revealButton.disabled = Boolean(record.revealed);
+    this.hintsPanel?.refresh();
   }
 
   async runInteractive() {

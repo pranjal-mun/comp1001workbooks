@@ -91,6 +91,10 @@ def main(argv):
                 failures += 1
                 print(f"FAIL example {eid}: output differs\n--- expected\n{spec['output']}\n--- actual\n{stdout}")
         elif kind == "code" and spec.get("answer"):
+            hints = spec.get("hints")
+            if hints is not None and not (isinstance(hints, list) and hints and all(isinstance(t, str) and t.strip() for t in hints)):
+                failures += 1
+                print(f"FAIL {eid}: hints must be a non-empty list of non-empty strings")
             answer = decode(spec["answer"])
             cases = spec.get("cases") or [{"name": "Program output", "expected": spec.get("expected", "")}]
             for case in cases:

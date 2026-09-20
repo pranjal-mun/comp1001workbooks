@@ -641,6 +641,16 @@ wb-bosses { display: block; }
 .wb-answer-note { color: var(--ink-quiet); font-size: 0.85rem; margin: 0.5rem 0 0; }
 .wb-answer .wb-editor { border: 1px solid var(--rule-soft); border-radius: 6px; overflow: hidden; }
 
+/* Hints: one button per hint; an opened hint stays open. */
+.wb-hints { padding: 0.5rem 0.85rem 0.6rem; border-bottom: 1px solid var(--rule-soft); font-family: var(--font-sans); }
+.wb-hints-title { color: var(--ink-quiet); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.3rem; }
+.wb-hint { margin: 0.2rem 0; }
+.wb-hint-toggle { padding-left: 0; }
+.wb-hint-toggle[hidden] { display: none; }
+.wb-hint-label { color: var(--accent); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 0.4rem; }
+.wb-hint-text { font-family: var(--font-body); font-size: 0.95rem; line-height: 1.5; margin: 0.15rem 0 0.4rem; }
+.lab-problem-body .wb-hints { border: 1px dashed var(--rule); border-radius: 6px; margin-top: 0.8rem; }
+
 /* Tables with blanks. */
 .wb-table { border: 0; overflow: visible; font-family: inherit; font-size: inherit; margin: 0.6rem 0 1.6rem; }
 .wb-table .wb-toolbar { border: 0; padding: 0.3rem 0; font-family: var(--font-sans); font-size: 0.9rem; }
