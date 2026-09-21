@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 14 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-14-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 14 Boss Problems</h1>
+    <div class="wb-subtitle">The <code>for</code> loop and ranges</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the <code>for</code> loop from Lecture 14: counting with <code>range()</code>, visiting the characters of a string, and building a result in a string or a counter. They use only what Lectures 4 to 14 covered: <code>input()</code> with <code>int()</code>, arithmetic including <code>%</code>, string indexing and <code>find()</code>, <code>in</code>, <code>if</code>, <code>elif</code> and <code>else</code>, and <code>for</code> loops. Test the smallest case, such as an empty string, as well as a typical case. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them: <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="forecast" data-toc-title="👹 Forecast conversion table">👹 Boss 1: Forecast Conversion Table</h2>
+<p>Given two Celsius temperatures, <code>start</code> and <code>end</code>, print a conversion table from <code>start</code> through <code>end</code> in steps of 10. Each row contains the Celsius value and its Fahrenheit value, where <code>F = C * 9 / 5 + 32</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+start = -20
+end = 0
+
+Output:
+Celsius Fahrenheit
+-20 -4.0
+-10 14.0
+0 32.0
+
+Explanation:
+The range visits -20, -10, and 0. The ending value is included.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+start = 30
+end = 30
+
+Output:
+Celsius Fahrenheit
+30 86.0
+
+Explanation:
+When start equals end, the table contains one row.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>-100 &lt;= start &lt;= end &lt;= 100</code></li>
+    <li><code>start</code> and <code>end</code> are multiples of 10.</li>
+    <li>Use one <code>for</code> loop with <code>range()</code>.</li>
+  </ul>
+</div>
+<p>The program reads <code>start</code> on the first line and <code>end</code> on the second, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">-20</span>
+<span class="wb-typed">0</span>
+Celsius Fahrenheit
+-20 -4.0
+-10 14.0
+0 32.0</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>-20</code>, <code>0</code></td><td><code>Celsius Fahrenheit</code>, <code>-20 -4.0</code>, <code>-10 14.0</code>, <code>0 32.0</code></td></tr>
+    <tr><td><code>30</code>, <code>30</code></td><td><code>Celsius Fahrenheit</code>, <code>30 86.0</code></td></tr>
+    <tr><td><code>0</code>, <code>50</code></td><td>the heading, then six rows from <code>0 32.0</code> to <code>50 122.0</code></td></tr>
+    <tr><td><code>-100</code>, <code>100</code></td><td>the heading, then 21 rows from <code>-100 -148.0</code> to <code>100 212.0</code></td></tr>
+    <tr><td><code>-30</code>, <code>-10</code></td><td><code>Celsius Fahrenheit</code>, <code>-30 -22.0</code>, <code>-20 -4.0</code>, <code>-10 14.0</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>for</code> loop and no <code>while</code> loop.</li>
+    <li>Give <code>range()</code> a start, a stop and a step of 10.</li>
+    <li>Keep the heading line <code>Celsius Fahrenheit</code> before the loop.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>start = int(input())</code> and <code>end = int(input())</code> unchanged. The checker will type the other pairs.</p>
+<wb-exercise id="forecast"></wb-exercise>
+
+<h2 id="mirror" data-toc-title="👾 Mirror word check">👾 Boss 2: Mirror Word Check</h2>
+<p>Given a string <code>word</code>, print <code>Mirror word</code> if it reads the same from left to right and from right to left. Otherwise, print <code>Not a mirror word</code>. Build the reversed string with a <code>for</code> loop and compare uppercase and lowercase characters exactly.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+word = "level"
+
+Output:
+Mirror word
+
+Explanation:
+Reversing "level" produces "level".</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+word = ""
+
+Output:
+Mirror word
+
+Explanation:
+The reverse of the empty string is the empty string.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= len(word) &lt;= 100</code></li>
+    <li><code>word</code> contains only English letters.</li>
+    <li>Do not use slicing to reverse the string.</li>
+  </ul>
+</div>
+<p>The program reads <code>word</code> on one line, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">level</span>
+Mirror word</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>level</code></td><td><code>Mirror word</code></td></tr>
+    <tr><td>an empty line</td><td><code>Mirror word</code></td></tr>
+    <tr><td><code>Level</code></td><td><code>Not a mirror word</code></td></tr>
+    <tr><td><code>noon</code></td><td><code>Mirror word</code></td></tr>
+    <tr><td><code>python</code></td><td><code>Not a mirror word</code></td></tr>
+    <tr><td><code>a</code></td><td><code>Mirror word</code></td></tr>
+    <tr><td><code>abba</code></td><td><code>Mirror word</code></td></tr>
+    <tr><td><code>abc</code></td><td><code>Not a mirror word</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>for</code> loop and no <code>while</code> loop.</li>
+    <li>Build the reversed string with the loop, not with slicing or <code>reversed()</code>.</li>
+    <li>Compare the characters exactly: no <code>lower()</code> or <code>upper()</code>.</li>
+    <li>Print exactly one line.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>word = input()</code> unchanged. The checker will type the other words.</p>
+<wb-exercise id="mirror"></wb-exercise>
+
+<h2 id="parity" data-toc-title="🐉 Sensor parity bit">🐉 Boss 3: Sensor Parity Bit</h2>
+<p>Given a string <code>bits</code>, print the parity bit that makes the total number of <code>1</code> characters even. If <code>bits</code> does not contain exactly eight characters, or if any character is not <code>0</code> or <code>1</code>, print <code>Invalid data</code>. Count the <code>1</code> characters with a <code>for</code> loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+bits = "10110010"
+
+Output:
+Parity bit: 0
+
+Explanation:
+The data contains four 1 characters, so the total is already even.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+bits = "00000001"
+
+Output:
+Parity bit: 1
+
+Explanation:
+The data contains one 1 character. Adding a parity bit of 1 makes the total two.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+bits = "1011"
+
+Output:
+Invalid data
+
+Explanation:
+The input does not contain eight characters.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= len(bits) &lt;= 20</code></li>
+    <li><code>bits</code> contains no spaces.</li>
+    <li>Use one loop to validate the characters and count the <code>1</code> characters.</li>
+  </ul>
+</div>
+<p>The program reads <code>bits</code> on one line, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">10110010</span>
+Parity bit: 0</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>10110010</code></td><td><code>Parity bit: 0</code></td></tr>
+    <tr><td><code>00000001</code></td><td><code>Parity bit: 1</code></td></tr>
+    <tr><td><code>1011</code></td><td><code>Invalid data</code></td></tr>
+    <tr><td>an empty line</td><td><code>Invalid data</code></td></tr>
+    <tr><td><code>11111111</code></td><td><code>Parity bit: 0</code></td></tr>
+    <tr><td><code>00000000</code></td><td><code>Parity bit: 0</code></td></tr>
+    <tr><td><code>1011001a</code></td><td><code>Invalid data</code></td></tr>
+    <tr><td><code>101100100</code></td><td><code>Invalid data</code></td></tr>
+    <tr><td><code>10110012</code></td><td><code>Invalid data</code></td></tr>
+    <tr><td><code>11100000</code></td><td><code>Parity bit: 1</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one loop, and it is a <code>for</code> loop: it validates the characters and counts the <code>1</code> characters.</li>
+    <li>Count inside the loop, not with <code>.count()</code>.</li>
+    <li>Test whether the count is even with <code>% 2</code>.</li>
+    <li>Print exactly one line.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>bits = input()</code> unchanged. The checker will type the other strings.</p>
+<wb-exercise id="parity"></wb-exercise>
+
+<h2 id="shift" data-toc-title="💀 Shifted course note">💀 Boss 4: Shifted Course Note</h2>
+<p>Given a string <code>message</code> and an integer <code>shift</code>, replace each letter with the letter <code>shift</code> positions later in the alphabet. Wrap past <code>z</code> or <code>Z</code>. Preserve uppercase letters, lowercase letters, spaces, digits, and punctuation. A negative shift moves letters backward.</p>
+<p>For each letter, find its position in the matching alphabet string, add <code>shift</code>, and use remainder after division by 26 to wrap the position. Build the answer in a string accumulator.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+message = "COMP 1001"
+shift = 3
+
+Output:
+FRPS 1001
+
+Explanation:
+C becomes F, O becomes R, M becomes P, and P becomes S. Digits and spaces do not change.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+message = "abc XYZ"
+shift = -3
+
+Output:
+xyz UVW
+
+Explanation:
+The negative shift moves each letter three positions backward and wraps a to x.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+message = ""
+shift = 8
+
+Output:
+(an empty line)
+
+Explanation:
+The empty message produces an empty shifted message.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= len(message) &lt;= 100</code></li>
+    <li><code>-100 &lt;= shift &lt;= 100</code></li>
+    <li><code>message</code> may contain English letters, digits, spaces, and punctuation.</li>
+    <li>Use a <code>for</code> loop and a string accumulator.</li>
+  </ul>
+</div>
+<p>The program reads <code>message</code> on the first line and <code>shift</code> on the second, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">COMP 1001</span>
+<span class="wb-typed">3</span>
+FRPS 1001</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>COMP 1001</code>, <code>3</code></td><td><code>FRPS 1001</code></td></tr>
+    <tr><td><code>abc XYZ</code>, <code>-3</code></td><td><code>xyz UVW</code></td></tr>
+    <tr><td>an empty line, <code>8</code></td><td>an empty line</td></tr>
+    <tr><td><code>Hello, World!</code>, <code>26</code></td><td><code>Hello, World!</code></td></tr>
+    <tr><td><code>xyz</code>, <code>100</code></td><td><code>tuv</code></td></tr>
+    <tr><td><code>Zebra-42</code>, <code>-100</code></td><td><code>Difve-42</code></td></tr>
+    <tr><td><code>attack at dawn</code>, <code>13</code></td><td><code>nggnpx ng qnja</code></td></tr>
+    <tr><td><code>MUN</code>, <code>0</code></td><td><code>MUN</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>for</code> loop and no <code>while</code> loop.</li>
+    <li>Find each letter's position with <code>find()</code> on the alphabet strings; <code>ord()</code> and <code>chr()</code> are not allowed.</li>
+    <li>Wrap the new position with the remainder after division by 26.</li>
+    <li>Build the answer in the string accumulator <code>shifted</code>.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>message = input()</code> and <code>shift = int(input())</code> unchanged. The checker will type the other pairs.</p>
+<wb-exercise id="shift"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 14 Boss Problems.</p>
+</main>
+</body>
+</html>

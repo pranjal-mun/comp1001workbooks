@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 9 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-09-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 9 Boss Problems</h1>
+    <div class="wb-subtitle">Relational operators and comparing values</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 9 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, f-strings, the six relational operators, <code>abs()</code>, one <code>if</code> with an <code>else</code>, and separate <code>if</code> statements one after another. There is no <code>elif</code> and no <code>and</code> or <code>or</code> yet. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with <code>input()</code>. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, typing different answers at the prompts each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 🐉 and are worth 10, 15, and 20 XP.</p>
+</section>
+<hr>
+<h2 id="tuning" data-toc-title="👹 In tune">👹 Boss 1: In Tune</h2>
+<p>Before a concert in the D.F. Cook Recital Hall, the oboe plays the note A4 at 440 Hz and every other player tunes to it. You are given a reading from a tuner, <code>reading</code>, in hertz. A string counts as in tune when it is within 1 Hz of A4, on either side. Print whether the reading is in tune, and if not, how far from A4 it is.</p>
+<p>Read <code>reading</code> with <code>input()</code> as a <code>float</code> and print one line.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: reading = 440.5
+Output: 440.5 Hz is in tune with A4.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: reading = 445
+Output: 445.0 Hz is 5.0 Hz away from A4.
+Explanation: The distance is shown with one decimal place.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: reading = 439
+Output: 439.0 Hz is in tune with A4.
+Explanation: 439 is exactly 1 Hz below A4, which still counts as in tune.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt; reading &lt;= 5000</code></li>
+  </ul>
+</div>
+<p>The program reads the value after the prompt <code>Frequency (Hz): </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Frequency (Hz): </span><span class="wb-typed">440.5</span>
+440.5 Hz is in tune with A4.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>440.5</code></td><td><code>440.5 Hz is in tune with A4.</code></td></tr>
+    <tr><td><code>445</code></td><td><code>445.0 Hz is 5.0 Hz away from A4.</code></td></tr>
+    <tr><td><code>441</code></td><td><code>441.0 Hz is in tune with A4.</code></td></tr>
+    <tr><td><code>438.9</code></td><td><code>438.9 Hz is 1.1 Hz away from A4.</code></td></tr>
+    <tr><td><code>439</code></td><td><code>439.0 Hz is in tune with A4.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>Use <code>abs()</code> so one comparison covers readings above and below 440.</li>
+    <li>A distance of exactly 1 Hz is in tune.</li>
+    <li>Print one line.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>reading = float(input('Frequency (Hz): '))</code> unchanged. The checker will type the other readings.</p>
+<wb-exercise id="tuning"></wb-exercise>
+
+<h2 id="equilateral" data-toc-title="👾 Equilateral">👾 Boss 2: Equilateral or Not</h2>
+<p>A triangle is equilateral when all three of its sides have the same length. You are given the three side lengths, <code>a</code>, <code>b</code>, and <code>c</code>. Print whether the triangle is equilateral.</p>
+<p>Read the three sides with <code>input()</code> as <code>float</code> values and print one line. Lecture 9 has no <code>and</code> yet, so start with <code>kind = 'equilateral'</code> and let separate <code>if</code> statements change it.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: a = 3, b = 3, c = 3
+Output: A triangle with sides 3.0, 3.0 and 3.0 is equilateral.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: a = 5, b = 5, c = 5.5
+Output: A triangle with sides 5.0, 5.0 and 5.5 is not equilateral.
+Explanation: Two equal sides are not enough.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt; a, b, c &lt;= 1000</code></li>
+    <li>The three lengths always form a triangle.</li>
+  </ul>
+</div>
+<p>The program reads the sides after the prompts <code>Side a: </code>, <code>Side b: </code>, and <code>Side c: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Side a: </span><span class="wb-typed">3</span>
+<span class="wb-prompt">Side b: </span><span class="wb-typed">3</span>
+<span class="wb-prompt">Side c: </span><span class="wb-typed">3</span>
+A triangle with sides 3.0, 3.0 and 3.0 is equilateral.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code>, <code>3</code>, <code>3</code></td><td><code>A triangle with sides 3.0, 3.0 and 3.0 is equilateral.</code></td></tr>
+    <tr><td><code>3</code>, <code>4</code>, <code>3</code></td><td><code>A triangle with sides 3.0, 4.0 and 3.0 is not equilateral.</code></td></tr>
+    <tr><td><code>2.5</code>, <code>2.5</code>, <code>2.5</code></td><td><code>A triangle with sides 2.5, 2.5 and 2.5 is equilateral.</code></td></tr>
+    <tr><td><code>5</code>, <code>5</code>, <code>5.5</code></td><td><code>A triangle with sides 5.0, 5.0 and 5.5 is not equilateral.</code></td></tr>
+    <tr><td><code>6</code>, <code>7</code>, <code>8</code></td><td><code>A triangle with sides 6.0, 7.0 and 8.0 is not equilateral.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>At least two separate <code>if</code> statements, each comparing one pair of sides with <code>==</code> or <code>!=</code>.</li>
+    <li>No <code>else</code>, <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>One <code>print()</code>, after the <code>if</code> statements.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the three <code>input()</code> lines unchanged. The checker will type the other sides.</p>
+<wb-exercise id="equilateral"></wb-exercise>
+
+<h2 id="phone" data-toc-title="🐉 Phone bill">🐉 Boss 3: Phone Bill</h2>
+<p>A phone plan gives 50 minutes of calls and 50 text messages for $15.00 a month. Every extra minute costs $0.25 and every extra text costs $0.15. Each bill also carries a 911 fee of $0.44, and the whole bill, fee included, is taxed at 15 percent, the HST rate in Newfoundland and Labrador. You are given the minutes used, <code>minutes</code>, and the texts sent, <code>texts</code>. Print the bill, one charge per line, with two decimal places.</p>
+<p>Read the two counts with <code>input()</code> as <code>int</code> values. Print the base plan, then the extra minutes and the extra texts only when there is a charge for them, then the 911 fee, the tax, and the total.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: minutes = 60, texts = 70
+Output:
+Base plan: $15.00
+Extra minutes: $2.50
+Extra texts: $3.00
+911 fee: $0.44
+Tax: $3.14
+Total: $24.08
+Explanation: 10 extra minutes at $0.25 and 20 extra texts at $0.15. The tax is 15 percent of 20.94.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: minutes = 50, texts = 50
+Output:
+Base plan: $15.00
+911 fee: $0.44
+Tax: $2.32
+Total: $17.76
+Explanation: Exactly 50 of each is still inside the plan, so no extra lines are printed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= minutes &lt;= 10000</code></li>
+    <li><code>0 &lt;= texts &lt;= 10000</code></li>
+  </ul>
+</div>
+<p>The program reads the counts after the prompts <code>Minutes: </code> and <code>Texts: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Minutes: </span><span class="wb-typed">60</span>
+<span class="wb-prompt">Texts: </span><span class="wb-typed">70</span>
+Base plan: $15.00
+Extra minutes: $2.50
+Extra texts: $3.00
+911 fee: $0.44
+Tax: $3.14
+Total: $24.08</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Lines printed</th><th>Tax and total</th></tr></thead>
+  <tbody>
+    <tr><td><code>60</code>, <code>70</code></td><td>Base plan, extra minutes 2.50, extra texts 3.00, 911 fee</td><td><code>Tax: $3.14</code> / <code>Total: $24.08</code></td></tr>
+    <tr><td><code>50</code>, <code>50</code></td><td>Base plan, 911 fee</td><td><code>Tax: $2.32</code> / <code>Total: $17.76</code></td></tr>
+    <tr><td><code>120</code>, <code>10</code></td><td>Base plan, extra minutes 17.50, 911 fee</td><td><code>Tax: $4.94</code> / <code>Total: $37.88</code></td></tr>
+    <tr><td><code>0</code>, <code>51</code></td><td>Base plan, extra texts 0.15, 911 fee</td><td><code>Tax: $2.34</code> / <code>Total: $17.93</code></td></tr>
+    <tr><td><code>51</code>, <code>51</code></td><td>Base plan, extra minutes 0.25, extra texts 0.15, 911 fee</td><td><code>Tax: $2.38</code> / <code>Total: $18.22</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly two <code>if</code> statements: one for the extra minutes, one for the extra texts. No <code>else</code>, <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>Show every amount with <code>.2f</code>, as in <code>${tax:.2f}</code>.</li>
+    <li>Print between four and six lines, starting with the base plan and ending with the total.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the two <code>input()</code> lines unchanged. The checker will type the other counts.</p>
+<wb-exercise id="phone"></wb-exercise>
+
+</main>
+</body>
+</html>

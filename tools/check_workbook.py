@@ -12,6 +12,7 @@ import base64
 import io
 import json
 import pathlib
+import re
 import sys
 import traceback
 
@@ -25,6 +26,31 @@ def normalize(text):
     while lines and lines[-1] == "":
         lines.pop()
     return "\n".join(lines)
+
+
+# Keep in sync with _code_only in runtime/python-worker.js.
+_LITERALS = re.compile(
+    r"(?:[rRbBuUfF]{1,2})?("
+    r'"{3}(?:\\.|[^\\])*?"{3}|'
+    r"'{3}(?:\\.|[^\\])*?'{3}|"
+    r'"(?:\\.|[^"\\\n])*"|'
+    r"'(?:\\.|[^'\\\n])*'"
+    r")|#[^\n]*", re.S)
+
+def _code_only(source):
+    """The source with comments removed and every string literal emptied,
+    so a check can look for keywords without matching prose."""
+    def blank(match):
+        text, literal = match.group(0), match.group(1)
+        if literal is None:
+            return ""
+        prefix, quote = text[:len(text) - len(literal)], literal[0]
+        width = 3 if literal.startswith(quote * 3) and len(literal) >= 6 else 1
+        fields = ""
+        if "f" in prefix.lower():
+            fields = "".join(re.findall(r"\{[^{}]*\}", literal))
+        return prefix + quote * width + fields + quote * width
+    return _LITERALS.sub(blank, source)
 
 
 def run(source, inputs=(), check=None):
@@ -52,6 +78,7 @@ def run(source, inputs=(), check=None):
         if status == "ok" and check:
             env = dict(namespace)
             env["__source__"] = source
+            env["__code__"] = _code_only(source)
             env["__stdout__"] = out.getvalue()
             try:
                 exec(compile(check, "<check>", "exec"), env)

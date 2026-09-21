@@ -4,7 +4,11 @@
 
 const RUN_TIMEOUT_MS = 5_000;
 const LOCAL_ASSETS = new URLSearchParams(location.search).has("localAssets");
-const WORKER_URL = new URL(`./python-worker.js${LOCAL_ASSETS ? "?localAssets=1" : ""}`, import.meta.url);
+// Bump WORKER_VERSION whenever python-worker.js changes. Browsers cache worker
+// scripts and a page reload does not refetch them, so without a new query
+// string a student can keep running an old harness against new exercises.
+const WORKER_VERSION = "2026-09-20";
+const WORKER_URL = new URL(`./python-worker.js?v=${WORKER_VERSION}${LOCAL_ASSETS ? "&localAssets=1" : ""}`, import.meta.url);
 
 export class TimeoutError extends Error {
   constructor(ms) {

@@ -1,0 +1,261 @@
+{
+  "id": "lecture-10-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 10 Boss Problems",
+  "short": "L10 bosses",
+  "subtitle": "Nested branches and elif chains",
+  "exercises": {
+    "shape": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 12,
+      "starter": "sides = int(input('Sides: '))\n# Print the name of the shape.",
+      "cases": [
+        {
+          "name": "Typed 8",
+          "inputs": [
+            "8"
+          ],
+          "expected": "Sides: A shape with 8 sides is an octagon."
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Sides: A shape with 3 sides is a triangle."
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Sides: A shape with 10 sides is a decagon."
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Sides: A shape with 2 sides is not one this program knows."
+        },
+        {
+          "name": "Typed 11",
+          "inputs": [
+            "11"
+          ],
+          "expected": "Sides: A shape with 11 sides is not one this program knows."
+        },
+        {
+          "name": "Typed 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "Sides: A shape with 6 sides is a hexagon."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use an elif chain or a nested if.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"One if/elif/else chain is enough: every case is a different alternative for the same value.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M), \"Use elif for the middle alternatives.\"\nassert re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"End the chain with else for a count outside 3 to 10.\"\nassert __code__.count(\"print(\") == 1, \"Store the name inside the branches, then print once after the chain.\"\nassert __stdout__.strip().endswith(\".\"), \"End the sentence with a full stop.\"\n",
+      "answer": "c2lkZXMgPSBpbnQoaW5wdXQoJ1NpZGVzOiAnKSkKaWYgc2lkZXMgPT0gMzoKICAgIG5hbWUgPSAnYSB0cmlhbmdsZScKZWxpZiBzaWRlcyA9PSA0OgogICAgbmFtZSA9ICdhIHF1YWRyaWxhdGVyYWwnCmVsaWYgc2lkZXMgPT0gNToKICAgIG5hbWUgPSAnYSBwZW50YWdvbicKZWxpZiBzaWRlcyA9PSA2OgogICAgbmFtZSA9ICdhIGhleGFnb24nCmVsaWYgc2lkZXMgPT0gNzoKICAgIG5hbWUgPSAnYSBoZXB0YWdvbicKZWxpZiBzaWRlcyA9PSA4OgogICAgbmFtZSA9ICdhbiBvY3RhZ29uJwplbGlmIHNpZGVzID09IDk6CiAgICBuYW1lID0gJ2Egbm9uYWdvbicKZWxpZiBzaWRlcyA9PSAxMDoKICAgIG5hbWUgPSAnYSBkZWNhZ29uJwplbHNlOgogICAgbmFtZSA9ICdub3Qgb25lIHRoaXMgcHJvZ3JhbSBrbm93cycKcHJpbnQoZidBIHNoYXBlIHdpdGgge3NpZGVzfSBzaWRlcyBpcyB7bmFtZX0uJyk=",
+      "hints": [
+        "Store the name in the branches and print one f-string after the chain. The `else` branch stores the text for a count the chain does not know, so the same print works for every case."
+      ],
+      "answerNote": "The chain compares sides with each count in turn. Whatever branch runs, the single print after it finishes the sentence."
+    },
+    "richter": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 12,
+      "starter": "magnitude = float(input('Magnitude: '))\n# Print the descriptor for the magnitude.",
+      "cases": [
+        {
+          "name": "Typed 7.2",
+          "inputs": [
+            "7.2"
+          ],
+          "expected": "Magnitude: A magnitude 7.2 earthquake is major."
+        },
+        {
+          "name": "Typed 5.5",
+          "inputs": [
+            "5.5"
+          ],
+          "expected": "Magnitude: A magnitude 5.5 earthquake is moderate."
+        },
+        {
+          "name": "Typed 2.0",
+          "inputs": [
+            "2.0"
+          ],
+          "expected": "Magnitude: A magnitude 2.0 earthquake is very minor."
+        },
+        {
+          "name": "Typed 1.9",
+          "inputs": [
+            "1.9"
+          ],
+          "expected": "Magnitude: A magnitude 1.9 earthquake is micro."
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Magnitude: A magnitude 10.0 earthquake is meteoric."
+        },
+        {
+          "name": "Typed 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "Magnitude: A magnitude 6.0 earthquake is strong."
+        },
+        {
+          "name": "Typed 8.0",
+          "inputs": [
+            "8.0"
+          ],
+          "expected": "Magnitude: A magnitude 8.0 earthquake is great."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use an elif chain or a nested if.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"One if/elif/else chain is enough: every case is a different alternative for the same value.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M), \"Use elif for the middle alternatives.\"\nassert re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"End the chain with else for 10.0 or more.\"\nassert __code__.count(\"print(\") == 1, \"Store the descriptor inside the branches, then print once after the chain.\"\nassert __code__.count(\"<\") + __code__.count(\">\") <= 9, \"Order the branches so each one needs a single comparison; the earlier branches have already ruled out the smaller magnitudes.\"\n",
+      "answer": "bWFnbml0dWRlID0gZmxvYXQoaW5wdXQoJ01hZ25pdHVkZTogJykpCmlmIG1hZ25pdHVkZSA8IDIuMDoKICAgIGxhYmVsID0gJ21pY3JvJwplbGlmIG1hZ25pdHVkZSA8IDMuMDoKICAgIGxhYmVsID0gJ3ZlcnkgbWlub3InCmVsaWYgbWFnbml0dWRlIDwgNC4wOgogICAgbGFiZWwgPSAnbWlub3InCmVsaWYgbWFnbml0dWRlIDwgNS4wOgogICAgbGFiZWwgPSAnbGlnaHQnCmVsaWYgbWFnbml0dWRlIDwgNi4wOgogICAgbGFiZWwgPSAnbW9kZXJhdGUnCmVsaWYgbWFnbml0dWRlIDwgNy4wOgogICAgbGFiZWwgPSAnc3Ryb25nJwplbGlmIG1hZ25pdHVkZSA8IDguMDoKICAgIGxhYmVsID0gJ21ham9yJwplbGlmIG1hZ25pdHVkZSA8IDEwLjA6CiAgICBsYWJlbCA9ICdncmVhdCcKZWxzZToKICAgIGxhYmVsID0gJ21ldGVvcmljJwpwcmludChmJ0EgbWFnbml0dWRlIHttYWduaXR1ZGV9IGVhcnRocXVha2UgaXMge2xhYmVsfS4nKQ==",
+      "hints": [
+        "Test the ranges from the smallest up. Once `magnitude < 2.0` has failed, the next `elif magnitude < 3.0` already knows the value is at least 2.0, so one comparison per branch is enough."
+      ],
+      "answerNote": "Each branch of the chain only runs after every earlier test has failed, so `elif magnitude < 3.0` covers exactly 2.0 up to but not including 3.0."
+    },
+    "zodiac": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 16,
+      "starter": "year = int(input('Year: '))\n# Print the animal for the year.",
+      "cases": [
+        {
+          "name": "Typed 2019",
+          "inputs": [
+            "2019"
+          ],
+          "expected": "Year: 2019 is the year of the Pig."
+        },
+        {
+          "name": "Typed 2000",
+          "inputs": [
+            "2000"
+          ],
+          "expected": "Year: 2000 is the year of the Dragon."
+        },
+        {
+          "name": "Typed 2026",
+          "inputs": [
+            "2026"
+          ],
+          "expected": "Year: 2026 is the year of the Horse."
+        },
+        {
+          "name": "Typed 1999",
+          "inputs": [
+            "1999"
+          ],
+          "expected": "Year: 1999 is the year of the Hare."
+        },
+        {
+          "name": "Typed 1925",
+          "inputs": [
+            "1925"
+          ],
+          "expected": "Year: 1925 is the year of the Ox."
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Year: 0 is the year of the Monkey."
+        },
+        {
+          "name": "Typed 2035",
+          "inputs": [
+            "2035"
+          ],
+          "expected": "Year: 2035 is the year of the Hare."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use an elif chain or a nested if.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"One if/elif/else chain is enough: every case is a different alternative for the same value.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M), \"Use elif for the middle alternatives.\"\nassert \"%\" in __code__, \"Use % to find where the year falls in the 12-year cycle.\"\nassert __code__.count(\"print(\") == 1, \"Store the animal inside the branches, then print once after the chain.\"\nassert __code__.count(\"elif\") >= 10, \"The chain needs one branch per animal: eleven tests and an else.\"\n",
+      "answer": "eWVhciA9IGludChpbnB1dCgnWWVhcjogJykpCnBvc2l0aW9uID0geWVhciAlIDEyCmlmIHBvc2l0aW9uID09IDA6CiAgICBhbmltYWwgPSAnTW9ua2V5JwplbGlmIHBvc2l0aW9uID09IDE6CiAgICBhbmltYWwgPSAnUm9vc3RlcicKZWxpZiBwb3NpdGlvbiA9PSAyOgogICAgYW5pbWFsID0gJ0RvZycKZWxpZiBwb3NpdGlvbiA9PSAzOgogICAgYW5pbWFsID0gJ1BpZycKZWxpZiBwb3NpdGlvbiA9PSA0OgogICAgYW5pbWFsID0gJ1JhdCcKZWxpZiBwb3NpdGlvbiA9PSA1OgogICAgYW5pbWFsID0gJ094JwplbGlmIHBvc2l0aW9uID09IDY6CiAgICBhbmltYWwgPSAnVGlnZXInCmVsaWYgcG9zaXRpb24gPT0gNzoKICAgIGFuaW1hbCA9ICdIYXJlJwplbGlmIHBvc2l0aW9uID09IDg6CiAgICBhbmltYWwgPSAnRHJhZ29uJwplbGlmIHBvc2l0aW9uID09IDk6CiAgICBhbmltYWwgPSAnU25ha2UnCmVsaWYgcG9zaXRpb24gPT0gMTA6CiAgICBhbmltYWwgPSAnSG9yc2UnCmVsc2U6CiAgICBhbmltYWwgPSAnU2hlZXAnCnByaW50KGYne3llYXJ9IGlzIHRoZSB5ZWFyIG9mIHRoZSB7YW5pbWFsfS4nKQ==",
+      "hints": [
+        "The cycle repeats every 12 years, so `year % 12` is the same for 2000, 2012 and 1988. Work out what it is for each year in the table, then write one branch per value.",
+        "`2000 % 12` is 8, so a remainder of 8 is the Dragon. `2001 % 12` is 9, the Snake, and so on up to 11, the Sheep. `2004 % 12` wraps round to 0, the Monkey."
+      ],
+      "answerNote": "2000 % 12 is 8, so remainder 8 is the Dragon and the table wraps: 2004 gives 0 (Monkey) through 2011 giving 7 (Hare). Any year from 0 up works because % always lands in 0 to 11."
+    },
+    "note": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 14,
+      "starter": "note = input('Note: ')\n# Print the frequency of the note.",
+      "cases": [
+        {
+          "name": "Typed A4",
+          "inputs": [
+            "A4"
+          ],
+          "expected": "Note: A4 has a frequency of 440.00 Hz."
+        },
+        {
+          "name": "Typed C4",
+          "inputs": [
+            "C4"
+          ],
+          "expected": "Note: C4 has a frequency of 261.63 Hz."
+        },
+        {
+          "name": "Typed C5",
+          "inputs": [
+            "C5"
+          ],
+          "expected": "Note: C5 has a frequency of 523.26 Hz."
+        },
+        {
+          "name": "Typed A3",
+          "inputs": [
+            "A3"
+          ],
+          "expected": "Note: A3 has a frequency of 220.00 Hz."
+        },
+        {
+          "name": "Typed C0",
+          "inputs": [
+            "C0"
+          ],
+          "expected": "Note: C0 has a frequency of 16.35 Hz."
+        },
+        {
+          "name": "Typed B8",
+          "inputs": [
+            "B8"
+          ],
+          "expected": "Note: B8 has a frequency of 7902.08 Hz."
+        },
+        {
+          "name": "Typed G6",
+          "inputs": [
+            "G6"
+          ],
+          "expected": "Note: G6 has a frequency of 1568.00 Hz."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use an elif chain or a nested if.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"One if/elif/else chain is enough: every case is a different alternative for the same value.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M), \"Use elif for the middle alternatives.\"\nassert __code__.count(\"elif\") == 5 and re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"One chain with seven branches, one per letter: an if, five elifs and an else.\"\nassert \"[\" in __code__, \"Pick the letter and the octave digit out of note with indexes.\"\nassert \"**\" in __code__, \"Use ** to double or halve the fourth-octave frequency the right number of times.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Show the frequency with two decimal places.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line.\"\n",
+      "answer": "bm90ZSA9IGlucHV0KCdOb3RlOiAnKQpsZXR0ZXIgPSBub3RlWzBdCm9jdGF2ZSA9IGludChub3RlWzFdKQppZiBsZXR0ZXIgPT0gJ0MnOgogICAgYmFzZSA9IDI2MS42MwplbGlmIGxldHRlciA9PSAnRCc6CiAgICBiYXNlID0gMjkzLjY2CmVsaWYgbGV0dGVyID09ICdFJzoKICAgIGJhc2UgPSAzMjkuNjMKZWxpZiBsZXR0ZXIgPT0gJ0YnOgogICAgYmFzZSA9IDM0OS4yMwplbGlmIGxldHRlciA9PSAnRyc6CiAgICBiYXNlID0gMzkyLjAwCmVsaWYgbGV0dGVyID09ICdBJzoKICAgIGJhc2UgPSA0NDAuMDAKZWxzZToKICAgIGJhc2UgPSA0OTMuODgKZnJlcXVlbmN5ID0gYmFzZSAqIDIgKiogKG9jdGF2ZSAtIDQpCnByaW50KGYne25vdGV9IGhhcyBhIGZyZXF1ZW5jeSBvZiB7ZnJlcXVlbmN5Oi4yZn0gSHouJyk=",
+      "hints": [
+        "`note[0]` is the letter and `int(note[1])` is the octave number. The chain only needs to know the letter: store that letter's fourth-octave frequency from the table in `base`.",
+        "Going up one octave doubles the frequency and going down one halves it. From octave 4 to octave `octave` that is `octave - 4` doublings, so the answer is `base * 2 ** (octave - 4)`. A negative exponent halves.",
+        "`A3`: base is 440.00, `octave - 4` is -1, and `440 * 2 ** -1` is 220.00."
+      ],
+      "answerNote": "2 ** (octave - 4) is 1 for octave 4, 2 for octave 5, and 0.5 for octave 3, so one multiplication moves the base frequency to any octave."
+    }
+  }
+}

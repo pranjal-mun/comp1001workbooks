@@ -106,6 +106,7 @@ import builtins
 import io
 import json
 import os
+import re
 import sys
 import traceback
 from contextlib import redirect_stdout, redirect_stderr
@@ -219,14 +220,39 @@ def __workbook_run(entry, inputs, echo_input, check, module_names, output_limit)
         "check": check_result,
     })
 
+_LITERALS = re.compile(
+    r"(?:[rRbBuUfF]{1,2})?("
+    r'"{3}(?:\\.|[^\\])*?"{3}|'
+    r"'{3}(?:\\.|[^\\])*?'{3}|"
+    r'"(?:\\.|[^"\\\n])*"|'
+    r"'(?:\\.|[^'\\\n])*'"
+    r")|#[^\n]*", re.S)
+
+def _code_only(source):
+    """The source with comments removed and every string literal emptied,
+    so a check can look for keywords without matching prose."""
+    def blank(match):
+        text, literal = match.group(0), match.group(1)
+        if literal is None:
+            return ""
+        prefix, quote = text[:len(text) - len(literal)], literal[0]
+        width = 3 if literal.startswith(quote * 3) and len(literal) >= 6 else 1
+        fields = ""
+        if "f" in prefix.lower():
+            fields = "".join(re.findall(r"\{[^{}]*\}", literal))
+        return prefix + quote * width + fields + quote * width
+    return _LITERALS.sub(blank, source)
+
 def _run_check(check, namespace, source, captured_stdout):
     """Run an instructor check script after the student's code.
 
-    The script sees the student's namespace plus __source__ (the code text)
-    and __stdout__ (what it printed). It reports a failure by raising
+    The script sees the student's namespace plus __source__ (the code text),
+    __code__ (the code text without comments or string contents) and
+    __stdout__ (what it printed). It reports a failure by raising
     AssertionError("message shown to the student")."""
     env = dict(namespace)
     env["__source__"] = source
+    env["__code__"] = _code_only(source)
     env["__stdout__"] = captured_stdout
     try:
         exec(compile(check, "<check>", "exec"), env)

@@ -1,0 +1,323 @@
+{
+  "id": "lecture-11-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 11 Boss Problems",
+  "short": "L11 bosses",
+  "subtitle": "Boolean operators, bool, and input validation",
+  "exercises": {
+    "leap": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 5,
+      "starter": "year = int(input('Year: '))\n# Report whether the year is a leap year.\n",
+      "cases": [
+        {
+          "name": "Typed 2024",
+          "inputs": [
+            "2024"
+          ],
+          "expected": "Year: 2024 is a leap year."
+        },
+        {
+          "name": "Typed 2023",
+          "inputs": [
+            "2023"
+          ],
+          "expected": "Year: 2023 is not a leap year."
+        },
+        {
+          "name": "Typed 1900",
+          "inputs": [
+            "1900"
+          ],
+          "expected": "Year: 1900 is not a leap year."
+        },
+        {
+          "name": "Typed 2000",
+          "inputs": [
+            "2000"
+          ],
+          "expected": "Year: 2000 is a leap year."
+        },
+        {
+          "name": "Typed 2100",
+          "inputs": [
+            "2100"
+          ],
+          "expected": "Year: 2100 is not a leap year."
+        },
+        {
+          "name": "Typed 1600",
+          "inputs": [
+            "1600"
+          ],
+          "expected": "Year: 1600 is a leap year."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*(import|from)\\b\", __code__, re.M), \"No imports. Everything here can be done with if statements and arithmetic.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1 and re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Use exactly one if with an else.\"\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"No elif here. One condition built with and/or covers every case.\"\nassert re.search(r\"\\band\\b\", __code__) and re.search(r\"\\bor\\b\", __code__), \"Combine the three divisibility tests with and and or.\"\nassert \"%\" in __code__, \"Use % to test divisibility.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line.\"\n",
+      "answer": "eWVhciA9IGludChpbnB1dCgnWWVhcjogJykpCmlmIHllYXIgJSA0ID09IDAgYW5kICh5ZWFyICUgMTAwICE9IDAgb3IgeWVhciAlIDQwMCA9PSAwKToKICAgIHByaW50KGYne3llYXJ9IGlzIGEgbGVhcCB5ZWFyLicpCmVsc2U6CiAgICBwcmludChmJ3t5ZWFyfSBpcyBub3QgYSBsZWFwIHllYXIuJyk=",
+      "hints": [
+        "A year is a leap year when it is divisible by 4, except that a year divisible by 100 is not, unless it is also divisible by 400. Turn each 'divisible by' into a `%` test and join them with `and` and `or`. Brackets decide which pair is joined first."
+      ],
+      "answerNote": "The brackets matter: the year must be divisible by 4, and then it must either miss 100 or hit 400. Without them, and binds before or and 1900 comes out as a leap year."
+    },
+    "plate": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 7,
+      "starter": "plate = input('Plate: ')\n# Say whether the plate is old style, new style, or not valid.\n",
+      "cases": [
+        {
+          "name": "Typed ABC123",
+          "inputs": [
+            "ABC123"
+          ],
+          "expected": "Plate: ABC123 is an old style plate."
+        },
+        {
+          "name": "Typed 1234ABC",
+          "inputs": [
+            "1234ABC"
+          ],
+          "expected": "Plate: 1234ABC is a new style plate."
+        },
+        {
+          "name": "Typed abc123",
+          "inputs": [
+            "abc123"
+          ],
+          "expected": "Plate: abc123 is not a valid plate."
+        },
+        {
+          "name": "Typed ABC12",
+          "inputs": [
+            "ABC12"
+          ],
+          "expected": "Plate: ABC12 is not a valid plate."
+        },
+        {
+          "name": "Typed 1234abc",
+          "inputs": [
+            "1234abc"
+          ],
+          "expected": "Plate: 1234abc is not a valid plate."
+        },
+        {
+          "name": "Typed 123ABCD",
+          "inputs": [
+            "123ABCD"
+          ],
+          "expected": "Plate: 123ABCD is not a valid plate."
+        },
+        {
+          "name": "Typed A1B2C3",
+          "inputs": [
+            "A1B2C3"
+          ],
+          "expected": "Plate: A1B2C3 is not a valid plate."
+        },
+        {
+          "name": "Typed 12345AB",
+          "inputs": [
+            "12345AB"
+          ],
+          "expected": "Plate: 12345AB is not a valid plate."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*(import|from)\\b\", __code__, re.M), \"No imports. Everything here can be done with if statements and arithmetic.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M) and re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Use an if/elif/else chain: old style, new style, not valid.\"\nassert \"len(\" in __code__, \"Check the length first with len().\"\nassert \".isalpha()\" in __code__ and \".isupper()\" in __code__ and \".isdigit()\" in __code__, \"Use isalpha(), isupper() and isdigit() on the letter part and the digit part.\"\nassert \"[\" in __code__, \"Use slices to pick out the letter part and the digit part.\"\nassert re.search(r\"\\band\\b\", __code__), \"Join the tests for one style with and.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line.\"\n",
+      "answer": "cGxhdGUgPSBpbnB1dCgnUGxhdGU6ICcpCmlmIGxlbihwbGF0ZSkgPT0gNiBhbmQgcGxhdGVbOjNdLmlzYWxwaGEoKSBhbmQgcGxhdGVbOjNdLmlzdXBwZXIoKSBhbmQgcGxhdGVbMzpdLmlzZGlnaXQoKToKICAgIHByaW50KGYne3BsYXRlfSBpcyBhbiBvbGQgc3R5bGUgcGxhdGUuJykKZWxpZiBsZW4ocGxhdGUpID09IDcgYW5kIHBsYXRlWzo0XS5pc2RpZ2l0KCkgYW5kIHBsYXRlWzQ6XS5pc2FscGhhKCkgYW5kIHBsYXRlWzQ6XS5pc3VwcGVyKCk6CiAgICBwcmludChmJ3twbGF0ZX0gaXMgYSBuZXcgc3R5bGUgcGxhdGUuJykKZWxzZToKICAgIHByaW50KGYne3BsYXRlfSBpcyBub3QgYSB2YWxpZCBwbGF0ZS4nKQ==",
+      "hints": [
+        "A slice like `plate[:3]` is the first three characters and `plate[3:]` is the rest. Test the length first, then each part with the string methods. `isalpha()` alone accepts lowercase letters, so add `isupper()`."
+      ],
+      "answerNote": "Each style is one and-chain: right length, letters where letters belong, digits where digits belong. The length test comes first so the slices line up with the right parts."
+    },
+    "roulette": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 15,
+      "starter": "spin = input('Spin: ')\n# Print every bet that pays for this spin.\n",
+      "cases": [
+        {
+          "name": "Typed 13",
+          "inputs": [
+            "13"
+          ],
+          "expected": "Spin: The spin landed on 13.\nPay 13\nPay Black\nPay Odd\nPay 1 to 18"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Spin: Pay 0"
+        },
+        {
+          "name": "Typed 00",
+          "inputs": [
+            "00"
+          ],
+          "expected": "Spin: Pay 00"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Spin: The spin landed on 1.\nPay 1\nPay Red\nPay Odd\nPay 1 to 18"
+        },
+        {
+          "name": "Typed 12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Spin: The spin landed on 12.\nPay 12\nPay Red\nPay Even\nPay 1 to 18"
+        },
+        {
+          "name": "Typed 36",
+          "inputs": [
+            "36"
+          ],
+          "expected": "Spin: The spin landed on 36.\nPay 36\nPay Red\nPay Even\nPay 19 to 36"
+        },
+        {
+          "name": "Typed 20",
+          "inputs": [
+            "20"
+          ],
+          "expected": "Spin: The spin landed on 20.\nPay 20\nPay Black\nPay Even\nPay 19 to 36"
+        },
+        {
+          "name": "Typed 18",
+          "inputs": [
+            "18"
+          ],
+          "expected": "Spin: The spin landed on 18.\nPay 18\nPay Red\nPay Even\nPay 1 to 18"
+        },
+        {
+          "name": "Typed 29",
+          "inputs": [
+            "29"
+          ],
+          "expected": "Spin: The spin landed on 29.\nPay 29\nPay Black\nPay Odd\nPay 19 to 36"
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*(import|from)\\b\", __code__, re.M), \"No imports. Everything here can be done with if statements and arithmetic.\"\nassert re.search(r\"^spin = input\\('Spin: '\\)\\s*$\", __source__, re.M), \"Keep spin as text, so that 00 stays 00. Convert to int only after ruling out 0 and 00.\"\nassert re.search(r\"\\band\\b\", __code__) and re.search(r\"\\bor\\b\", __code__) and re.search(r\"\\bnot\\b\", __code__), \"Use and, or and not to build the red test.\"\nassert \"%\" in __code__, \"Use % to tell odd from even.\"\n__lines__ = __stdout__.strip().splitlines()\nassert len(__lines__) in (1, 5), \"0 and 00 print one line; every other spin prints five.\"\n",
+      "answer": "c3BpbiA9IGlucHV0KCdTcGluOiAnKQppZiBzcGluID09ICcwJyBvciBzcGluID09ICcwMCc6CiAgICBwcmludChmJ1BheSB7c3Bpbn0nKQplbHNlOgogICAgbnVtYmVyID0gaW50KHNwaW4pCiAgICBwcmludChmJ1RoZSBzcGluIGxhbmRlZCBvbiB7bnVtYmVyfS4nKQogICAgcHJpbnQoZidQYXkge251bWJlcn0nKQogICAgb2RkID0gbnVtYmVyICUgMiA9PSAxCiAgICBmaXJzdF9ncm91cCA9IG51bWJlciA8PSAxMCBvciAobnVtYmVyID49IDE5IGFuZCBudW1iZXIgPD0gMjgpCiAgICByZWQgPSBGYWxzZQogICAgaWYgZmlyc3RfZ3JvdXAgYW5kIG9kZDoKICAgICAgICByZWQgPSBUcnVlCiAgICBpZiBub3QgZmlyc3RfZ3JvdXAgYW5kIG5vdCBvZGQ6CiAgICAgICAgcmVkID0gVHJ1ZQogICAgaWYgcmVkOgogICAgICAgIHByaW50KCdQYXkgUmVkJykKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoJ1BheSBCbGFjaycpCiAgICBpZiBvZGQ6CiAgICAgICAgcHJpbnQoJ1BheSBPZGQnKQogICAgZWxzZToKICAgICAgICBwcmludCgnUGF5IEV2ZW4nKQogICAgaWYgbnVtYmVyIDw9IDE4OgogICAgICAgIHByaW50KCdQYXkgMSB0byAxOCcpCiAgICBlbHNlOgogICAgICAgIHByaW50KCdQYXkgMTkgdG8gMzYnKQ==",
+      "hints": [
+        "Read the spin as text and test `spin == '0' or spin == '00'` before converting. Once you know it is 1 to 36, `int(spin)` gives a number to compare.",
+        "Store `odd` and `first_group` as Boolean variables first. Red is `first_group and odd`, or `not first_group and not odd`. Then each print block is a short if/else on those names."
+      ],
+      "answerNote": "The zeros are handled first, as text, so 00 never turns into 0. Naming odd and first_group turns the red rule into one readable line each, and the last three if/else blocks each print exactly one bet."
+    },
+    "nextday": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 18,
+      "starter": "year = int(input('Year: '))\nmonth = int(input('Month: '))\nday = int(input('Day: '))\n# Print the date of the following day.\n",
+      "cases": [
+        {
+          "name": "Typed 2013 11 18",
+          "inputs": [
+            "2013",
+            "11",
+            "18"
+          ],
+          "expected": "Year: Month: Day: The day after 2013-11-18 is 2013-11-19."
+        },
+        {
+          "name": "Typed 2013 11 30",
+          "inputs": [
+            "2013",
+            "11",
+            "30"
+          ],
+          "expected": "Year: Month: Day: The day after 2013-11-30 is 2013-12-01."
+        },
+        {
+          "name": "Typed 2013 12 31",
+          "inputs": [
+            "2013",
+            "12",
+            "31"
+          ],
+          "expected": "Year: Month: Day: The day after 2013-12-31 is 2014-01-01."
+        },
+        {
+          "name": "Typed 2024 2 28",
+          "inputs": [
+            "2024",
+            "2",
+            "28"
+          ],
+          "expected": "Year: Month: Day: The day after 2024-02-28 is 2024-02-29."
+        },
+        {
+          "name": "Typed 2023 2 28",
+          "inputs": [
+            "2023",
+            "2",
+            "28"
+          ],
+          "expected": "Year: Month: Day: The day after 2023-02-28 is 2023-03-01."
+        },
+        {
+          "name": "Typed 2024 2 29",
+          "inputs": [
+            "2024",
+            "2",
+            "29"
+          ],
+          "expected": "Year: Month: Day: The day after 2024-02-29 is 2024-03-01."
+        },
+        {
+          "name": "Typed 2100 2 28",
+          "inputs": [
+            "2100",
+            "2",
+            "28"
+          ],
+          "expected": "Year: Month: Day: The day after 2100-02-28 is 2100-03-01."
+        },
+        {
+          "name": "Typed 2000 2 28",
+          "inputs": [
+            "2000",
+            "2",
+            "28"
+          ],
+          "expected": "Year: Month: Day: The day after 2000-02-28 is 2000-02-29."
+        },
+        {
+          "name": "Typed 2026 1 9",
+          "inputs": [
+            "2026",
+            "1",
+            "9"
+          ],
+          "expected": "Year: Month: Day: The day after 2026-01-09 is 2026-01-10."
+        },
+        {
+          "name": "Typed 2026 4 30",
+          "inputs": [
+            "2026",
+            "4",
+            "30"
+          ],
+          "expected": "Year: Month: Day: The day after 2026-04-30 is 2026-05-01."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*(import|from)\\b\", __code__, re.M), \"No imports. Everything here can be done with if statements and arithmetic.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M), \"Use an if/elif/else chain for the number of days in the month.\"\nassert re.search(r\"\\band\\b\", __code__) and re.search(r\"\\bor\\b\", __code__), \"Use and and or for the leap year test and the 30 day months.\"\nassert \"%\" in __code__, \"Use % for the leap year test.\"\nassert re.search(r\":[^}]*0>?2d?\\}\", __source__), \"Show month and day with two digits using :02d.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line.\"\n",
+      "answer": "eWVhciA9IGludChpbnB1dCgnWWVhcjogJykpCm1vbnRoID0gaW50KGlucHV0KCdNb250aDogJykpCmRheSA9IGludChpbnB1dCgnRGF5OiAnKSkKaWYgbW9udGggPT0gMjoKICAgIGlmIHllYXIgJSA0ID09IDAgYW5kICh5ZWFyICUgMTAwICE9IDAgb3IgeWVhciAlIDQwMCA9PSAwKToKICAgICAgICBkYXlzID0gMjkKICAgIGVsc2U6CiAgICAgICAgZGF5cyA9IDI4CmVsaWYgbW9udGggPT0gNCBvciBtb250aCA9PSA2IG9yIG1vbnRoID09IDkgb3IgbW9udGggPT0gMTE6CiAgICBkYXlzID0gMzAKZWxzZToKICAgIGRheXMgPSAzMQpuZXh0X3llYXIgPSB5ZWFyCm5leHRfbW9udGggPSBtb250aApuZXh0X2RheSA9IGRheSArIDEKaWYgbmV4dF9kYXkgPiBkYXlzOgogICAgbmV4dF9kYXkgPSAxCiAgICBuZXh0X21vbnRoID0gbW9udGggKyAxCmlmIG5leHRfbW9udGggPiAxMjoKICAgIG5leHRfbW9udGggPSAxCiAgICBuZXh0X3llYXIgPSB5ZWFyICsgMQpwcmludChmJ1RoZSBkYXkgYWZ0ZXIge3llYXJ9LXttb250aDowMmR9LXtkYXk6MDJkfSBpcyB7bmV4dF95ZWFyfS17bmV4dF9tb250aDowMmR9LXtuZXh0X2RheTowMmR9Licp",
+      "hints": [
+        "First work out how many days the month has: February depends on the leap year rule from Boss 1, four months have 30, the rest have 31. An if/elif/else chain that stores `days` does it.",
+        "Add 1 to the day. If that passes `days`, the day becomes 1 and the month goes up by one. If the month passes 12, the month becomes 1 and the year goes up by one. Two separate ifs, in that order.",
+        "Keep the typed date in `year`, `month` and `day` and put the answer in new variables, so the print can show both. `{month:02d}` prints 2 as `02`."
+      ],
+      "answerNote": "The month length is one chain, then two rollover ifs run in order: day into month, then month into year. New variables hold the answer so the original date is still there for the print."
+    }
+  }
+}

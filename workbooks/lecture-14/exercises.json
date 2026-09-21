@@ -1,0 +1,1275 @@
+{
+  "id": "lecture-14",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 14 Workbook",
+  "subtitle": "The for loop and ranges",
+  "exercises": {
+    "ex-for5": {
+      "type": "example",
+      "code": "for number in range(5):\n    print(number)",
+      "output": "0\n1\n2\n3\n4"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "first": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "last": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "count": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "body": {
+          "accept": [
+            "print(number)",
+            "print number",
+            "print"
+          ],
+          "caseSensitive": true,
+          "placeholder": "statement",
+          "width": "10rem",
+          "show": "print(number)"
+        }
+      }
+    },
+    "ex-range4": {
+      "type": "example",
+      "code": "for i in range(4):\n    print(i, end=' ')\nprint()",
+      "output": "0 1 2 3 "
+    },
+    "ex-check3": {
+      "type": "example",
+      "code": "for step in range(3):\n    print('Check the result')",
+      "output": "Check the result\nCheck the result\nCheck the result"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r3": {
+          "accept": [
+            "0, 1, 2",
+            "0,1,2",
+            "0 1 2",
+            "0; 1; 2",
+            "0 and 1 and 2",
+            "0, 1 and 2",
+            "0, 1, and 2"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "0, 1, 2"
+        },
+        "r1": {
+          "accept": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "0"
+        },
+        "r0": {
+          "accept": [
+            "none",
+            "no values",
+            "nothing",
+            "(none)",
+            "no value",
+            "empty",
+            "-",
+            "0 values",
+            "none supplied"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "no values"
+        },
+        "r8": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-range16": {
+      "type": "example",
+      "code": "for number in range(1, 6):\n    print(number, end=' ')\nprint()",
+      "output": "1 2 3 4 5 "
+    },
+    "ex-total": {
+      "type": "example",
+      "code": "total = 0\nfor number in range(1, 6):\n    total = total + number\nprint('Total:', total)",
+      "output": "Total: 15"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r37": {
+          "accept": [
+            "range(3, 8)",
+            "range(3,8)",
+            "range(3, 8, 1)",
+            "range(3,8,1)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(3, 8)",
+          "caseSensitive": true
+        },
+        "r1015": {
+          "accept": [
+            "range(10, 16)",
+            "range(10,16)",
+            "range(10, 16, 1)",
+            "range(10,16,1)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(10, 16)",
+          "caseSensitive": true
+        },
+        "n49": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is the stop value one larger?",
+      "answer": "VGhlIHN0b3AgdmFsdWUgaXMgZXhjbHVkZWQsIHNvIGl0IG11c3QgYmUgb25lIGxhcmdlciB0aGFuIHRoZSBsYXN0IHZhbHVlIHdoZW4gdGhlIHN0ZXAgaXMgMS4="
+    },
+    "ex-step2": {
+      "type": "example",
+      "code": "for number in range(0, 10, 2):\n    print(number, end=' ')\nprint()",
+      "output": "0 2 4 6 8 "
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r182": {
+          "accept": [
+            "1, 3, 5, 7",
+            "1,3,5,7",
+            "1 3 5 7",
+            "1; 3; 5; 7",
+            "1 and 3 and 5 and 7",
+            "1, 3, 5 and 7",
+            "1, 3, 5, and 7"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "1, 3, 5, 7"
+        },
+        "r4134": {
+          "accept": [
+            "4, 8, 12",
+            "4,8,12",
+            "4 8 12",
+            "4; 8; 12",
+            "4 and 8 and 12",
+            "4, 8 and 12",
+            "4, 8, and 12"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "4, 8, 12"
+        },
+        "tens": {
+          "accept": [
+            "range(10, 51, 10)",
+            "range(10,51,10)",
+            "range(10, 52, 10)",
+            "range(10,52,10)",
+            "range(10, 53, 10)",
+            "range(10,53,10)",
+            "range(10, 54, 10)",
+            "range(10,54,10)",
+            "range(10, 55, 10)",
+            "range(10,55,10)",
+            "range(10, 56, 10)",
+            "range(10,56,10)",
+            "range(10, 57, 10)",
+            "range(10,57,10)",
+            "range(10, 58, 10)",
+            "range(10,58,10)",
+            "range(10, 59, 10)",
+            "range(10,59,10)",
+            "range(10, 60, 10)",
+            "range(10,60,10)"
+          ],
+          "placeholder": "range(...)",
+          "width": "12rem",
+          "show": "range(10, 51, 10)",
+          "caseSensitive": true
+        }
+      }
+    },
+    "ex-countdown": {
+      "type": "example",
+      "code": "for number in range(5, 0, -1):\n    print(number)\nprint('Go!')",
+      "output": "5\n4\n3\n2\n1\nGo!"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r40": {
+          "accept": [
+            "4, 3, 2, 1",
+            "4,3,2,1",
+            "4 3 2 1",
+            "4; 3; 2; 1",
+            "4 and 3 and 2 and 1",
+            "4, 3, 2 and 1",
+            "4, 3, 2, and 1"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "4, 3, 2, 1"
+        },
+        "r4m1": {
+          "accept": [
+            "4, 3, 2, 1, 0",
+            "4,3,2,1,0",
+            "4 3 2 1 0",
+            "4; 3; 2; 1; 0",
+            "4 and 3 and 2 and 1 and 0",
+            "4, 3, 2, 1 and 0",
+            "4, 3, 2, 1, and 0"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "4, 3, 2, 1, 0"
+        },
+        "evens": {
+          "accept": [
+            "range(10, 0, -2)",
+            "range(10,0,-2)",
+            "range(10, 1, -2)",
+            "range(10,1,-2)"
+          ],
+          "placeholder": "range(...)",
+          "width": "12rem",
+          "show": "range(10, 0, -2)",
+          "caseSensitive": true
+        }
+      }
+    },
+    "ex-for-count": {
+      "type": "example",
+      "code": "for number in range(1, 6):\n    print(number)",
+      "output": "1\n2\n3\n4\n5"
+    },
+    "ex-while-count": {
+      "type": "example",
+      "code": "number = 1\nwhile number <= 5:\n    print(number)\n    number = number + 1",
+      "output": "1\n2\n3\n4\n5"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "hundred": {
+          "accept": [
+            "for",
+            "for loop",
+            "a for loop",
+            "for loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "for"
+        },
+        "done": {
+          "accept": [
+            "while",
+            "while loop",
+            "a while loop",
+            "while loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "while"
+        },
+        "word": {
+          "accept": [
+            "for",
+            "for loop",
+            "a for loop",
+            "for loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "for"
+        },
+        "balance": {
+          "accept": [
+            "while",
+            "while loop",
+            "a while loop",
+            "while loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "while"
+        }
+      }
+    },
+    "ex-loopvar": {
+      "type": "example",
+      "code": "for i in range(3):\n    print('Start:', i)\n    i = 100\n    print('Changed:', i)",
+      "output": "Start: 0\nChanged: 100\nStart: 1\nChanged: 100\nStart: 2\nChanged: 100"
+    },
+    "cp7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "pass2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "header": {
+          "accept": [
+            "for number in range(1, 6):",
+            "for number in range(1, 6)",
+            "for number in range(1,6):",
+            "for number in range(1,6)",
+            "for value in range(1, 6):",
+            "for value in range(1, 6)",
+            "for value in range(1,6):",
+            "for value in range(1,6)",
+            "for count in range(1, 6):",
+            "for count in range(1, 6)",
+            "for count in range(1,6):",
+            "for count in range(1,6)",
+            "for n in range(1, 6):",
+            "for n in range(1, 6)",
+            "for n in range(1,6):",
+            "for n in range(1,6)",
+            "for step in range(1, 6):",
+            "for step in range(1, 6)",
+            "for step in range(1,6):",
+            "for step in range(1,6)",
+            "for day in range(1, 6):",
+            "for day in range(1, 6)",
+            "for day in range(1,6):",
+            "for day in range(1,6)",
+            "for item in range(1, 6):",
+            "for item in range(1, 6)",
+            "for item in range(1,6):",
+            "for item in range(1,6)",
+            "for integer in range(1, 6):",
+            "for integer in range(1, 6)",
+            "for integer in range(1,6):",
+            "for integer in range(1,6)"
+          ],
+          "caseSensitive": true,
+          "placeholder": "for ... in range(1, 6):",
+          "width": "16rem",
+          "show": "for number in range(1, 6):"
+        }
+      }
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is the assignment ineffective?",
+      "answer": "VGhlIGxvb3AgYXNzaWducyB0aGUgbmV4dCB2YWx1ZSBmcm9tIHRoZSByYW5nZSBhdCB0aGUgc3RhcnQgb2YgZXZlcnkgcGFzcywgc28gdGhlIGFzc2lnbm1lbnQgdG8gMTAwIGlzIG92ZXJ3cml0dGVuLg=="
+    },
+    "ex-chars": {
+      "type": "example",
+      "code": "word = 'Python'\n\nfor character in word:\n    print(character)",
+      "output": "P\ny\nt\nh\no\nn"
+    },
+    "ex-letters": {
+      "type": "example",
+      "code": "text = 'A1 b2'\nletters = 0\n\nfor character in text:\n    if character.isalpha():\n        letters = letters + 1\n\nprint('Letters:', letters)",
+      "output": "Letters: 2"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "chars": {
+          "accept": [
+            "l, o, o, p",
+            "l,o,o,p",
+            "l o o p",
+            "'l', 'o', 'o', 'p'",
+            "'l','o','o','p'",
+            "l o o p ",
+            "loop",
+            "l; o; o; p"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "l, o, o, p"
+        },
+        "empty": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp8-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is direct looping safer?",
+      "answer": "RGlyZWN0IGxvb3BpbmcgdmlzaXRzIG9ubHkgY2hhcmFjdGVycyB0aGF0IGV4aXN0LCBzbyBpdCBjYW5ub3QgdXNlIGFuIGluZGV4IG91dHNpZGUgdGhlIHN0cmluZy4="
+    },
+    "ex-index": {
+      "type": "example",
+      "code": "text = 'code'\n\nfor position in range(len(text)):\n    print(position, text[position])",
+      "output": "0 c\n1 o\n2 d\n3 e"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "idx": {
+          "accept": [
+            "0, 1, 2, 3, 4",
+            "0,1,2,3,4",
+            "0 1 2 3 4",
+            "0; 1; 2; 3; 4",
+            "0 and 1 and 2 and 3 and 4",
+            "0, 1, 2, 3 and 4",
+            "0, 1, 2, 3, and 4"
+          ],
+          "placeholder": "values",
+          "width": "10rem",
+          "show": "0, 1, 2, 3, 4"
+        },
+        "last": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "vowels": {
+          "accept": [
+            "direct",
+            "directly",
+            "direct looping",
+            "direct loop",
+            "by character",
+            "character"
+          ],
+          "placeholder": "direct / by index",
+          "width": "9rem",
+          "show": "direct"
+        },
+        "beside": {
+          "accept": [
+            "by index",
+            "index",
+            "by indexes",
+            "by position",
+            "index looping",
+            "indexes",
+            "range(len(text))"
+          ],
+          "placeholder": "direct / by index",
+          "width": "9rem",
+          "show": "by index"
+        }
+      }
+    },
+    "ex-upper": {
+      "type": "example",
+      "code": "word = 'Python'\nresult = ''\n\nfor character in word:\n    result = result + character.upper()\n\nprint(result)",
+      "output": "PYTHON"
+    },
+    "ex-compact": {
+      "type": "example",
+      "code": "text = 'a b c'\ncompact = ''\n\nfor character in text:\n    if character != ' ':\n        compact = compact + character\n\nprint(compact)",
+      "output": "abc"
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "g_after": {
+          "accept": [
+            "'G'",
+            "\"G\"",
+            "G"
+          ],
+          "caseSensitive": true,
+          "placeholder": "string",
+          "width": "6rem",
+          "show": "'G'"
+        },
+        "o_before": {
+          "accept": [
+            "'G'",
+            "\"G\"",
+            "G"
+          ],
+          "caseSensitive": true,
+          "placeholder": "string",
+          "width": "6rem",
+          "show": "'G'"
+        },
+        "o_after": {
+          "accept": [
+            "'GO'",
+            "\"GO\"",
+            "GO"
+          ],
+          "caseSensitive": true,
+          "placeholder": "string",
+          "width": "6rem",
+          "show": "'GO'"
+        }
+      }
+    },
+    "cp10-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Why must the initialization come first?",
+      "answer": "VGhlIGFjY3VtdWxhdG9yIG11c3QgYmUgaW5pdGlhbGl6ZWQgYmVmb3JlIHRoZSBsb29wIHNvIHRoZSBmaXJzdCBwYXNzIGhhcyBhbiBleGlzdGluZyBzdHJpbmcgdG8gYWRkIHRvIGFuZCBsYXRlciBwYXNzZXMgZG8gbm90IGVyYXNlIGVhcmxpZXIgd29yay4="
+    },
+    "ex-vowels": {
+      "type": "example",
+      "code": "text = 'Programming is useful'.lower()\nvowels = 0\n\nfor character in text:\n    if character in 'aeiou':\n        vowels = vowels + 1\n\nprint(f'Vowels: {vowels}')",
+      "output": "Vowels: 7"
+    },
+    "cp11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i_in": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "i_n": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "d_in": {
+          "accept": [
+            "no",
+            "n",
+            "false"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "d_n": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "e_in": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "e_n": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a_in": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "a_n": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "init": {
+          "accept": [
+            "vowels = 0",
+            "vowels=0"
+          ],
+          "caseSensitive": true,
+          "placeholder": "statement",
+          "width": "8rem",
+          "show": "vowels = 0"
+        }
+      }
+    },
+    "ex-label": {
+      "type": "example",
+      "code": "label = input('Course label: ')\ncompact = ''\ndigits = 0\n\nfor character in label:\n    if character != ' ':\n        compact = compact + character.upper()\n    if character.isdigit():\n        digits = digits + 1\n\nprint('Code:', compact)\nprint('Digits:', digits)"
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSBgZm9yYCBsb29wIHJ1bnMgb25jZSBmb3IgZWFjaCBpdGVtIGluIGEgc2VxdWVuY2Uu"
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YHJhbmdlKDUpYCBzdXBwbGllcyAwLCAxLCAyLCAzLCA0Lg=="
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHN0b3AgaXMgZXhjbHVzaXZlIGJlY2F1c2UgaXQgaXMgbm90IHN1cHBsaWVkLg=="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHRocmVlIGFyZ3VtZW50cyBnaXZlIHRoZSBmaXJzdCB2YWx1ZSwgdGhlIGV4Y2x1ZGVkIGJvdW5kYXJ5LCBhbmQgdGhlIGFtb3VudCBhZGRlZCBlYWNoIHBhc3Mu"
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VXNlIGB3aGlsZWAgd2hlbiB0aGUgbnVtYmVyIG9mIHBhc3NlcyBpcyBub3Qga25vd24gYmVmb3JlIHRoZSBsb29wLg=="
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGxvb3AgdmFyaWFibGUgcmVjZWl2ZXMgZWFjaCBpdGVtIGZyb20gdGhlIHNlcXVlbmNlLg=="
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "TG9vcCBieSBpbmRleCB3aGVuIHRoZSBwb3NpdGlvbiBpcyBuZWVkZWQu"
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "answer": "U3RhcnQgYSBzdHJpbmcgYWNjdW11bGF0b3Igd2l0aCB0aGUgZW1wdHkgc3RyaW5nLg=="
+    },
+    "pa": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "seats": {
+          "accept": [
+            "for",
+            "for loop",
+            "a for loop",
+            "for loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "for"
+        },
+        "names": {
+          "accept": [
+            "while",
+            "while loop",
+            "a while loop",
+            "while loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "while"
+        },
+        "digits": {
+          "accept": [
+            "for",
+            "for loop",
+            "a for loop",
+            "for loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "for"
+        },
+        "interest": {
+          "accept": [
+            "while",
+            "while loop",
+            "a while loop",
+            "while loop"
+          ],
+          "placeholder": "for / while",
+          "width": "7rem",
+          "show": "while"
+        }
+      }
+    },
+    "pa-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 4,
+      "placeholder": "One reason per task…",
+      "answer": "VXNlIGBmb3JgIGZvciB0aGUgc2VhdCBsYWJlbHMgYmVjYXVzZSB0aGUgY291bnQgaXMga25vd24uIFVzZSBgd2hpbGVgIGZvciBuYW1lcyBiZWNhdXNlIHRoZSBzZW50aW5lbCBkZWNpZGVzIHdoZW4gdG8gc3RvcC4gVXNlIGBmb3JgIGZvciB0aGUgc3R1ZGVudCBudW1iZXIgYmVjYXVzZSB0aGUgbG9vcCB2aXNpdHMgZXZlcnkgY2hhcmFjdGVyLiBVc2UgYHdoaWxlYCBmb3IgdGhlIGJhbGFuY2UgYmVjYXVzZSB0aGUgbnVtYmVyIG9mIHBhc3NlcyBkZXBlbmRzIG9uIHdoZW4gdGhlIHRhcmdldCBpcyByZWFjaGVkLg=="
+    },
+    "pb": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r7": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r39": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r2132": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r81m2": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r44": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "pc": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b26": {
+          "accept": [
+            "range(2, 7)",
+            "range(2,7)",
+            "range(2, 7, 1)",
+            "range(2,7,1)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(2, 7)",
+          "caseSensitive": true
+        },
+        "b016": {
+          "accept": [
+            "range(0, 17, 4)",
+            "range(0,17,4)",
+            "range(0, 18, 4)",
+            "range(0,18,4)",
+            "range(0, 19, 4)",
+            "range(0,19,4)",
+            "range(0, 20, 4)",
+            "range(0,20,4)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(0, 17, 4)",
+          "caseSensitive": true
+        },
+        "b91": {
+          "accept": [
+            "range(9, 0, -2)",
+            "range(9,0,-2)",
+            "range(9, -1, -2)",
+            "range(9,-1,-2)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(9, 0, -2)",
+          "caseSensitive": true
+        },
+        "b60": {
+          "accept": [
+            "range(6, -1, -1)",
+            "range(6,-1,-1)"
+          ],
+          "placeholder": "range(...)",
+          "width": "10rem",
+          "show": "range(6, -1, -1)",
+          "caseSensitive": true
+        }
+      }
+    },
+    "pd": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 3,
+      "starter": "# Print Day 1 through Day 7, one per line.",
+      "cases": [
+        {
+          "name": "Day 1 through Day 7",
+          "expected": "Day 1\nDay 2\nDay 3\nDay 4\nDay 5\nDay 6\nDay 7"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert re.search(r\"range\\(\\s*[^,()]+\\s*,\\s*[^,()]+\\s*\\)\", __code__), \"Use a two-argument range, such as range(start, stop).\"\n",
+      "answer": "Zm9yIGRheSBpbiByYW5nZSgxLCA4KToKICAgIHByaW50KCdEYXknLCBkYXkp",
+      "answerNote": "The stop value is 8 because 8 is excluded."
+    },
+    "pe": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "# Print the heading, then one row per Celsius value.",
+      "cases": [
+        {
+          "name": "-10 through 30",
+          "expected": "Celsius Fahrenheit\n-10 14.0\n0 32.0\n10 50.0\n20 68.0\n30 86.0"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert re.search(r\"range\\([^()]*,[^()]*,[^()]*\\)\", __code__), \"Use a three-argument range with a step of 10.\"\nassert __stdout__.startswith(\"Celsius Fahrenheit\"), \"Print the heading Celsius Fahrenheit before the loop.\"\n",
+      "answer": "cHJpbnQoJ0NlbHNpdXMgRmFocmVuaGVpdCcpCmZvciBjZWxzaXVzIGluIHJhbmdlKC0xMCwgMzEsIDEwKToKICAgIGZhaHJlbmhlaXQgPSBjZWxzaXVzICogOSAvIDUgKyAzMgogICAgcHJpbnQoY2Vsc2l1cywgZmFocmVuaGVpdCk=",
+      "answerNote": "The range includes 30 by using an excluded stop of 31."
+    },
+    "pf": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "total = 0\nfor number in range(2, 9, 2):\n    total = total + number\nprint(total)",
+      "cases": [
+        {
+          "name": "total of 2, 4, 6, 8",
+          "expected": "20",
+          "check": "assert number == 10, \"After the loop, number should have reached 10: the first value not below 9.\""
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Rewrite the loop with while.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"Replace the for loop; the while loop does the counting.\"\nassert \"range(\" not in __code__, \"A while loop does not use range(); initialize number yourself and add 2 on each pass.\"\n",
+      "answer": "dG90YWwgPSAwCm51bWJlciA9IDIKd2hpbGUgbnVtYmVyIDwgOToKICAgIHRvdGFsID0gdG90YWwgKyBudW1iZXIKICAgIG51bWJlciA9IG51bWJlciArIDIKcHJpbnQodG90YWwp",
+      "answerNote": "The while version needs explicit initialization, a condition that excludes 9, and an update of 2."
+    },
+    "ex-acc-while": {
+      "type": "example",
+      "code": "total = 0\nnumber = 1\nwhile number < 5:\n    total = total + number\n    number = number + 1"
+    },
+    "ex-acc-for": {
+      "type": "example",
+      "code": "total = 0\nfor number in range(1, 5):\n    total = total + number"
+    },
+    "pg": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "w1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "w2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "w3": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "w4": {
+          "accept": [
+            "10"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f3": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f4": {
+          "accept": [
+            "10"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "same": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        }
+      }
+    },
+    "ex-score": {
+      "type": "example",
+      "code": "score = 2\nfor bonus in range(1, 4):\n    score = score + bonus\n    print(score)"
+    },
+    "ph": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s3": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-product": {
+      "type": "example",
+      "code": "number = 3\nfor factor in range(2, 5):\n    number = number * factor\n    print(number)"
+    },
+    "pi": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "f1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n1": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n2": {
+          "accept": [
+            "18"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "f3": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n3": {
+          "accept": [
+            "72"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "pj": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "room = input('Room code: ')\n# Print each character on its own line.",
+      "cases": [
+        {
+          "name": "Typed EN2043",
+          "inputs": [
+            "EN2043"
+          ],
+          "expected": "Room code: E\nN\n2\n0\n4\n3"
+        },
+        {
+          "name": "Typed an empty string",
+          "inputs": [
+            ""
+          ],
+          "expected": "Room code: "
+        },
+        {
+          "name": "Typed A1",
+          "inputs": [
+            "A1"
+          ],
+          "expected": "Room code: A\n1"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert \"range(\" not in __code__, \"Loop directly over the string: for character in room.\"\nassert \"[\" not in __code__, \"Loop directly over the string; no index is needed.\"\n",
+      "answer": "cm9vbSA9IGlucHV0KCdSb29tIGNvZGU6ICcpCmZvciBjaGFyYWN0ZXIgaW4gcm9vbToKICAgIHByaW50KGNoYXJhY3Rlcik=",
+      "answerNote": "An empty string causes zero loop iterations."
+    },
+    "pk": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "text = input('Word: ')\nreversed_text = ''\n# Add each character to the front of reversed_text.",
+      "cases": [
+        {
+          "name": "Typed loops",
+          "inputs": [
+            "loops"
+          ],
+          "expected": "Word: spool"
+        },
+        {
+          "name": "Typed an empty string",
+          "inputs": [
+            ""
+          ],
+          "expected": "Word: "
+        },
+        {
+          "name": "Typed a",
+          "inputs": [
+            "a"
+          ],
+          "expected": "Word: a"
+        },
+        {
+          "name": "Typed Python",
+          "inputs": [
+            "Python"
+          ],
+          "expected": "Word: nohtyP"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert \"[::\" not in __code__ and \"reversed(\" not in __code__, \"Build the reversed copy with the loop, not with slicing or reversed().\"\n",
+      "answer": "dGV4dCA9IGlucHV0KCdXb3JkOiAnKQpyZXZlcnNlZF90ZXh0ID0gJycKZm9yIGNoYXJhY3RlciBpbiB0ZXh0OgogICAgcmV2ZXJzZWRfdGV4dCA9IGNoYXJhY3RlciArIHJldmVyc2VkX3RleHQKcHJpbnQocmV2ZXJzZWRfdGV4dCk=",
+      "answerNote": "Adding the current character before the old accumulator reverses the order."
+    },
+    "pl": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "word = input('Word: ')\nvowels = 0\n# Count the vowels, then print the total.",
+      "cases": [
+        {
+          "name": "Typed Idea",
+          "inputs": [
+            "Idea"
+          ],
+          "expected": "Word: Vowels: 3"
+        },
+        {
+          "name": "Typed rhythm",
+          "inputs": [
+            "rhythm"
+          ],
+          "expected": "Word: Vowels: 0"
+        },
+        {
+          "name": "Typed AEIOU",
+          "inputs": [
+            "AEIOU"
+          ],
+          "expected": "Word: Vowels: 5"
+        },
+        {
+          "name": "Typed an empty string",
+          "inputs": [
+            ""
+          ],
+          "expected": "Word: Vowels: 0"
+        },
+        {
+          "name": "Typed Memorial",
+          "inputs": [
+            "Memorial"
+          ],
+          "expected": "Word: Vowels: 4"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert \".count(\" not in __code__, \"Count the vowels with the loop and an if, not with .count().\"\n",
+      "answer": "d29yZCA9IGlucHV0KCdXb3JkOiAnKQp2b3dlbHMgPSAwCmZvciBjaGFyYWN0ZXIgaW4gd29yZDoKICAgIGlmIGNoYXJhY3Rlci5sb3dlcigpIGluICdhZWlvdSc6CiAgICAgICAgdm93ZWxzID0gdm93ZWxzICsgMQpwcmludCgnVm93ZWxzOicsIHZvd2Vscyk=",
+      "answerNote": "Convert each character to lowercase for the membership test."
+    },
+    "pm": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "RATE = 1.35\n# Read amounts with input('USD, or 0 to stop: ') until 0.",
+      "cases": [
+        {
+          "name": "Typed 10, 5, 0",
+          "inputs": [
+            "10",
+            "5",
+            "0"
+          ],
+          "expected": "USD, or 0 to stop: CAD: 13.50\nUSD, or 0 to stop: CAD: 6.75\nUSD, or 0 to stop: "
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "USD, or 0 to stop: "
+        },
+        {
+          "name": "Typed 2.5, 0",
+          "inputs": [
+            "2.5",
+            "0"
+          ],
+          "expected": "USD, or 0 to stop: CAD: 3.38\nUSD, or 0 to stop: "
+        },
+        {
+          "name": "Typed 100, 1, 0.5, 0",
+          "inputs": [
+            "100",
+            "1",
+            "0.5",
+            "0"
+          ],
+          "expected": "USD, or 0 to stop: CAD: 135.00\nUSD, or 0 to stop: CAD: 1.35\nUSD, or 0 to stop: CAD: 0.68\nUSD, or 0 to stop: "
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of entries is not known.\"\nassert \"1.35\" in __code__, \"Use the rate 1.35.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print each Canadian value with two decimal places using :.2f.\"\n",
+      "answer": "UkFURSA9IDEuMzUKdXNkID0gZmxvYXQoaW5wdXQoJ1VTRCwgb3IgMCB0byBzdG9wOiAnKSkKd2hpbGUgdXNkICE9IDA6CiAgICBjYWQgPSB1c2QgKiBSQVRFCiAgICBwcmludChmJ0NBRDoge2NhZDouMmZ9JykKICAgIHVzZCA9IGZsb2F0KGlucHV0KCdVU0QsIG9yIDAgdG8gc3RvcDogJykp",
+      "answerNote": "The sentinel 0 stops the loop and is not converted."
+    },
+    "pn": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "years = int(input('Years: '))\nhares = 1000.0\nlynx = 20.0\n# Print year 0, then one row per later year.",
+      "cases": [
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Years: 0 1000.00 20.00"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Years: 0 1000.00 20.00\n1 900.00 20.20\n2 808.20 20.36"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Years: 0 1000.00 20.00\n1 900.00 20.20"
+        },
+        {
+          "name": "Typed 5",
+          "inputs": [
+            "5"
+          ],
+          "expected": "Years: 0 1000.00 20.00\n1 900.00 20.20\n2 808.20 20.36\n3 724.46 20.49\n4 648.48 20.58\n5 579.88 20.64"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use a for loop here, not a while loop.\"\nassert \"range(\" in __code__, \"Count the years with range(1, years + 1).\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Show both populations with two decimal places using :.2f.\"\nassert re.search(r\"0\\.00002\\s*\\*\\s*hares|hares\\s*\\*\\s*0\\.00002\", __code__), \"Compute the lynx with lynx * (1 - 0.01 + 0.00002 * hares).\"\n",
+      "answer": "eWVhcnMgPSBpbnQoaW5wdXQoJ1llYXJzOiAnKSkKaGFyZXMgPSAxMDAwLjAKbHlueCA9IDIwLjAKcHJpbnQoMCwgZid7aGFyZXM6LjJmfScsIGYne2x5bng6LjJmfScpCgpmb3IgeWVhciBpbiByYW5nZSgxLCB5ZWFycyArIDEpOgogICAgbmV3X2hhcmVzID0gaGFyZXMgKiAoMSArIDAuMSAtIDAuMDEgKiBseW54KQogICAgbmV3X2x5bnggPSBseW54ICogKDEgLSAwLjAxICsgMC4wMDAwMiAqIGhhcmVzKQogICAgaGFyZXMgPSBuZXdfaGFyZXMKICAgIGx5bnggPSBuZXdfbHlueAogICAgcHJpbnQoeWVhciwgZid7aGFyZXM6LjJmfScsIGYne2x5bng6LjJmfScp",
+      "answerNote": "The temporary values prevent the new hare population from changing the lynx calculation for the same year."
+    }
+  }
+}

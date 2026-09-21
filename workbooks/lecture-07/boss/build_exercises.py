@@ -36,8 +36,8 @@ def cases(solution, first, *others):
 def input_cases(solution, *runs):
     return [{"name": name, "inputs": list(inputs), "expected": run(solution, inputs)} for name, inputs in runs]
 
-NO_IF = 'assert "if " not in __source__, "No if statements are needed."\n'
-NO_SHORTCUTS = 'assert ".split(" not in __source__ and ".title(" not in __source__ and ".capitalize(" not in __source__, "Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture."\n'
+NO_IF = 'assert "if " not in __code__, "No if statements are needed."\n'
+NO_SHORTCUTS = 'assert ".split(" not in __code__ and ".title(" not in __code__ and ".capitalize(" not in __code__, "Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture."\n'
 
 E = {}
 
@@ -58,13 +58,16 @@ E["digits"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 8,
         ("1000", [["number = 3141", "number = 1000"]]),
         ("2026", [["number = 3141", "number = 2026"]])),
     "check": NO_IF + """assert type(number) is int, "Keep number as an int; make a text copy with str() instead of changing the assignment."
-assert "str(" in __source__, "Use str() to get the digits as characters."
-assert "[" in __source__, "Pick out each digit with an index, as in digits[0]."
-assert "//" not in __source__ and "%" not in __source__, "This time take the digits apart as characters, not with // and %."
+assert "str(" in __code__, "Use str() to get the digits as characters."
+assert "[" in __code__, "Pick out each digit with an index, as in digits[0]."
+assert "//" not in __code__ and "%" not in __code__, "This time take the digits apart as characters, not with // and %."
 assert __stdout__.count("+") == 3 and "=" in __stdout__, "Print the four digits joined by + signs, then = and the sum."
 assert len(__stdout__.strip().splitlines()) == 1, "Print everything on one line with a single print() call."
 """,
     "answer": b64(digits),
+    "hints": [
+        "Each character of `str(number)` is a one-character string. `int(digits[0])` turns it back into a number. Adding the characters without converting joins them into `'3141'` instead.",
+    ],
     "answerNote": "Each digits[i] is a one-character string. int() turns it back into a number before the addition."}
 
 # ---------------------------------------------------------------- 2 Mailing label
@@ -88,7 +91,7 @@ E["label"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 9,
         ("Corner Brook", [["name = 'Pranjal Patra'", "name = 'Oliver Poodle'"], ["street = '230 Elizabeth Avenue'", "street = '1 Bark Lane'"], ["city = \"St. John's\"", "city = 'Corner Brook'"], ["postal = 'a1c 5s7'", "postal = 'a2h 6p9'"]]),
         ("Gander", [["name = 'Pranjal Patra'", "name = 'Sabina'"], ["street = '230 Elizabeth Avenue'", "street = '9 Whisker Way'"], ["city = \"St. John's\"", "city = 'gander'"], ["province = 'nl'", "province = 'Nl'"], ["postal = 'a1c 5s7'", "postal = 'a1v 1w8'"]])),
     "check": NO_IF + """import re
-assert ".upper(" in __source__, "Use .upper() to make the capitals; do not retype the values."
+assert ".upper(" in __code__, "Use .upper() to make the capitals; do not retype the values."
 assert "len(" in __source__ and re.search(r"['\\"]-['\\"]\\s*\\*|\\*\\s*['\\"]-['\\"]", __source__), "Make the dashes with '-' * len(...) so the line is exactly as long as the address line."
 lines = __stdout__.strip().splitlines()
 assert len(lines) == 4, "Print four lines: name, street, address line, dashes."
@@ -114,12 +117,15 @@ E["email"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 8,
         ("grace hopper", [["name = 'Pranjal Patra'", "name = 'grace hopper'"]]),
         ("Oliver Poodle", [["name = 'Pranjal Patra'", "name = 'Oliver Poodle'"]])),
     "check": NO_IF + NO_SHORTCUTS + """import re
-assert ".find(" in __source__, "Find the space with .find(' ') rather than counting characters by hand."
-assert re.search(r"\\[[^\\]]*:[^\\]]*\\]", __source__), "Use slices to cut the first name and the last name out of name."
-assert ".lower(" in __source__ and ".upper(" in __source__, "Use .lower() for the email address and .upper() for the initials."
+assert ".find(" in __code__, "Find the space with .find(' ') rather than counting characters by hand."
+assert re.search(r"\\[[^\\]]*:[^\\]]*\\]", __code__), "Use slices to cut the first name and the last name out of name."
+assert ".lower(" in __code__ and ".upper(" in __code__, "Use .lower() for the email address and .upper() for the initials."
 assert len(__stdout__.strip().splitlines()) == 2, "Print two lines: the initials, then the email address."
 """,
     "answer": b64(email),
+    "hints": [
+        "`name.find(' ')` returns the index of the space. `name[:space]` stops just before it and gives the first name; `name[space + 1:]` starts just after it and gives the last name.",
+    ],
     "answerNote": "name[:space] stops just before the space and name[space + 1:] starts just after it."}
 
 # ---------------------------------------------------------------- 4 Clean up the name
@@ -142,14 +148,18 @@ E["tidy"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 10,
                          ("Typed 'SABINA cat '", ["SABINA cat "])),
     "check": NO_IF + NO_SHORTCUTS + """import re
 assert raw != raw.strip(), "Keep raw exactly as typed. .strip() returns a new string; store it under another name."
-assert ".strip(" in __source__, "Remove the outer spaces with .strip()."
-assert ".find(" in __source__, "Find the space with .find(' ') rather than counting characters by hand."
-assert re.search(r"\\[[^\\]]*:[^\\]]*\\]", __source__), "Use slices to cut the first name and the last name apart."
-assert ".upper(" in __source__ and ".lower(" in __source__, "Fix the capitals with .upper() and .lower()."
-assert "len(" in __source__, "Count the characters with len()."
+assert ".strip(" in __code__, "Remove the outer spaces with .strip()."
+assert ".find(" in __code__, "Find the space with .find(' ') rather than counting characters by hand."
+assert re.search(r"\\[[^\\]]*:[^\\]]*\\]", __code__), "Use slices to cut the first name and the last name apart."
+assert ".upper(" in __code__ and ".lower(" in __code__, "Fix the capitals with .upper() and .lower()."
+assert "len(" in __code__, "Count the characters with len()."
 assert len(__stdout__.strip().splitlines()) == 3, "Print three lines: the greeting, the roster line, and the character counts."
 """,
     "answer": b64(tidy),
+    "hints": [
+        '`.strip()` returns a new string, so store it under a new name and leave `raw` alone. The checker looks at `raw` afterwards.',
+        'Once you have `first`, rebuild it as `first[0].upper() + first[1:].lower()`. Do the same for the last name.',
+    ],
     "answerNote": "A string cannot be changed in place. first[0].upper() + first[1:].lower() builds a new one with one capital."}
 
 for spec in E.values():

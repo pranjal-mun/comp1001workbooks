@@ -25,10 +25,10 @@ def input_cases(solution, *runs):
 # Lecture 8 teaches one two-way decision. Every boss must be exactly one
 # if/else with the shared work (the print) after the branches.
 ONE_IF_ELSE = '''import re
-assert len(re.findall(r"^\\s*if\\b", __source__, re.M)) == 1, "Use exactly one if statement."
-assert re.search(r"^\\s*else\\s*:", __source__, re.M), "Handle the other case with else."
-assert not re.search(r"^\\s*elif\\b", __source__, re.M), "elif is not part of this lecture; one if and one else are enough here."
-assert __source__.count("print(") == 1, "Choose the value inside the branches, then print once after them."
+assert len(re.findall(r"^\\s*if\\b", __code__, re.M)) == 1, "Use exactly one if statement."
+assert re.search(r"^\\s*else\\s*:", __code__, re.M), "Handle the other case with else."
+assert not re.search(r"^\\s*elif\\b", __code__, re.M), "elif is not part of this lecture; one if and one else are enough here."
+assert __code__.count("print(") == 1, "Choose the value inside the branches, then print once after them."
 '''
 
 E = {}
@@ -44,7 +44,7 @@ print(f'{number} is {kind}.')
 E["parity"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 6,
     "starter": "number = int(input('Number: '))\n# Print whether the number is even or odd.\n",
     "cases": input_cases(parity, ("Typed 14", ["14"]), ("Typed 7", ["7"]), ("Typed 0", ["0"]), ("Typed -3", ["-3"])),
-    "check": ONE_IF_ELSE + """assert "%" in __source__, "Test the remainder with % to tell even from odd."
+    "check": ONE_IF_ELSE + """assert "%" in __code__, "Test the remainder with % to tell even from odd."
 assert __stdout__.strip().endswith("."), "End the message with a full stop, as in 14 is even."
 """,
     "answer": b64(parity),
@@ -61,10 +61,13 @@ print(f'{years:.1f} human years is {dog_years:.1f} dog years.')
 E["dog"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 6,
     "starter": "years = float(input('Human years: '))\n# Print the age in dog years to one decimal place.\n",
     "cases": input_cases(dog, ("Typed 7", ["7"]), ("Typed 2", ["2"]), ("Typed 1", ["1"]), ("Typed 15", ["15"]), ("Typed 1.2", ["1.2"])),
-    "check": ONE_IF_ELSE + """assert ":.1f" in __source__, "Show both numbers to one decimal place with :.1f in the f-string."
-assert "10.5" in __source__ and "4" in __source__, "Use 10.5 dog years for each of the first two years and 4 for each year after that."
+    "check": ONE_IF_ELSE + """assert re.search(r":[^}]*\\.1f\\}", __source__), "Show both numbers to one decimal place with :.1f in the f-string."
+assert "10.5" in __code__ and re.search(r"\\b4\\b", __code__), "Use 10.5 dog years for each of the first two years and 4 for each year after that."
 """,
     "answer": b64(dog),
+    "hints": [
+        'The decision is whether `years` is 2 or less. If so, the whole age is at the 10.5 rate. Otherwise it is 21 for the first two years plus 4 for each year beyond them: `21 + (years - 2) * 4`.',
+    ],
     "answerNote": "The first two years are worth 21 dog years. The else branch starts from 21 and adds 4 for each remaining year. Both formulas give 21 at exactly 2 years."}
 
 # ---------------------------------------------------------------- 3 Chess square
@@ -80,12 +83,15 @@ print(f'{position} is a {colour} square.')
 E["square"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 8,
     "starter": "position = input('Square: ')\n# Print whether the square is black or white.\n",
     "cases": input_cases(square, ("Typed a1", ["a1"]), ("Typed d5", ["d5"]), ("Typed h1", ["h1"]), ("Typed g7", ["g7"]), ("Typed c6", ["c6"])),
-    "check": ONE_IF_ELSE + """assert ".find(" in __source__, "Turn the column letter into a number with 'abcdefgh'.find(...) instead of testing each letter."
-assert "%" in __source__, "Use % to decide the colour from the column number and the row."
-assert "ord(" not in __source__, "ord() is not part of this course; use .find() on the string of column letters."
-assert "[" in __source__, "Pick the letter and the digit out of position with indexes."
+    "check": ONE_IF_ELSE + """assert ".find(" in __code__, "Turn the column letter into a number with 'abcdefgh'.find(...) instead of testing each letter."
+assert "%" in __code__, "Use % to decide the colour from the column number and the row."
+assert "ord(" not in __code__, "ord() is not part of this course; use .find() on the string of column letters."
+assert "[" in __code__, "Pick the letter and the digit out of position with indexes."
 """,
     "answer": b64(square),
+    "hints": [
+        'Add the column number to the row number, `int(position[1])`. Moving one square in any direction changes the sum by one, so the sum is odd on every black square and even on every white one. For `a1` it is 0 + 1.',
+    ],
     "answerNote": "'abcdefgh'.find('a') is 0. For a1 the sum is 0 + 1, which is odd, and a1 is black. Each move of one square changes the sum by one and the colour flips."}
 
 for spec in E.values():

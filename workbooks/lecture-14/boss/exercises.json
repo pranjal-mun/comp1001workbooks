@@ -1,0 +1,308 @@
+{
+  "id": "lecture-14-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 14 Boss Problems",
+  "short": "L14 bosses",
+  "subtitle": "The for loop and ranges",
+  "exercises": {
+    "forecast": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 8,
+      "starter": "start = int(input())\nend = int(input())\n\nprint('Celsius Fahrenheit')\n# Write the loop.",
+      "cases": [
+        {
+          "name": "Typed -20, 0",
+          "inputs": [
+            "-20",
+            "0"
+          ],
+          "expected": "Celsius Fahrenheit\n-20 -4.0\n-10 14.0\n0 32.0"
+        },
+        {
+          "name": "Typed 30, 30",
+          "inputs": [
+            "30",
+            "30"
+          ],
+          "expected": "Celsius Fahrenheit\n30 86.0"
+        },
+        {
+          "name": "Typed 0, 50",
+          "inputs": [
+            "0",
+            "50"
+          ],
+          "expected": "Celsius Fahrenheit\n0 32.0\n10 50.0\n20 68.0\n30 86.0\n40 104.0\n50 122.0"
+        },
+        {
+          "name": "Typed -100, 100",
+          "inputs": [
+            "-100",
+            "100"
+          ],
+          "expected": "Celsius Fahrenheit\n-100 -148.0\n-90 -130.0\n-80 -112.0\n-70 -94.0\n-60 -76.0\n-50 -58.0\n-40 -40.0\n-30 -22.0\n-20 -4.0\n-10 14.0\n0 32.0\n10 50.0\n20 68.0\n30 86.0\n40 104.0\n50 122.0\n60 140.0\n70 158.0\n80 176.0\n90 194.0\n100 212.0"
+        },
+        {
+          "name": "Typed -30, -10",
+          "inputs": [
+            "-30",
+            "-10"
+          ],
+          "expected": "Celsius Fahrenheit\n-30 -22.0\n-20 -4.0\n-10 14.0"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"A for loop fits here; no while loop is needed.\"\nassert \"import\" not in __code__, \"Solve it with a for loop and the string tools from this lecture; no import is needed.\"\nassert re.search(r\"range\\([^()]*,[^()]*,[^()]*\\)\", __code__), \"Give range() a start, a stop and a step of 10.\"\nassert __stdout__.startswith(\"Celsius Fahrenheit\"), \"Keep the heading line Celsius Fahrenheit before the loop.\"\n",
+      "answer": "c3RhcnQgPSBpbnQoaW5wdXQoKSkKZW5kID0gaW50KGlucHV0KCkpCgpwcmludCgnQ2Vsc2l1cyBGYWhyZW5oZWl0JykKZm9yIGNlbHNpdXMgaW4gcmFuZ2Uoc3RhcnQsIGVuZCArIDEsIDEwKToKICAgIGZhaHJlbmhlaXQgPSBjZWxzaXVzICogOSAvIDUgKyAzMgogICAgcHJpbnQoY2Vsc2l1cywgZmFocmVuaGVpdCk=",
+      "hints": [
+        "The rows are `start`, `start + 10`, and so on up to `end`, so the loop is `for celsius in range(start, ?, 10):`.",
+        "The stop value of a range is excluded, so `range(start, end, 10)` leaves out `end`. Use an excluded stop of `end + 1`: every value changes by 10, so adding 1 places the stop past `end` without adding a row.",
+        "Inside the loop compute `fahrenheit = celsius * 9 / 5 + 32` and print `celsius` and `fahrenheit` with one `print()`."
+      ],
+      "answerNote": "Use an excluded stop of end + 1. Because every value changes by 10, adding 1 places the excluded stop past end."
+    },
+    "mirror": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 10,
+      "starter": "word = input()\nreversed_word = ''\n\n# Build reversed_word, then compare the strings.",
+      "cases": [
+        {
+          "name": "Typed level",
+          "inputs": [
+            "level"
+          ],
+          "expected": "Mirror word"
+        },
+        {
+          "name": "Typed an empty string",
+          "inputs": [
+            ""
+          ],
+          "expected": "Mirror word"
+        },
+        {
+          "name": "Typed Level",
+          "inputs": [
+            "Level"
+          ],
+          "expected": "Not a mirror word"
+        },
+        {
+          "name": "Typed noon",
+          "inputs": [
+            "noon"
+          ],
+          "expected": "Mirror word"
+        },
+        {
+          "name": "Typed python",
+          "inputs": [
+            "python"
+          ],
+          "expected": "Not a mirror word"
+        },
+        {
+          "name": "Typed a",
+          "inputs": [
+            "a"
+          ],
+          "expected": "Mirror word"
+        },
+        {
+          "name": "Typed abba",
+          "inputs": [
+            "abba"
+          ],
+          "expected": "Mirror word"
+        },
+        {
+          "name": "Typed abc",
+          "inputs": [
+            "abc"
+          ],
+          "expected": "Not a mirror word"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"A for loop fits here; no while loop is needed.\"\nassert \"import\" not in __code__, \"Solve it with a for loop and the string tools from this lecture; no import is needed.\"\nassert \"[::\" not in __code__ and \"reversed(\" not in __code__, \"Build the reversed string with the for loop, not with slicing or reversed().\"\nassert \".lower(\" not in __code__ and \".upper(\" not in __code__ and \".casefold(\" not in __code__, \"Compare uppercase and lowercase characters exactly; do not change the case.\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print exactly one line.\"\n",
+      "answer": "d29yZCA9IGlucHV0KCkKcmV2ZXJzZWRfd29yZCA9ICcnCgpmb3IgY2hhcmFjdGVyIGluIHdvcmQ6CiAgICByZXZlcnNlZF93b3JkID0gY2hhcmFjdGVyICsgcmV2ZXJzZWRfd29yZAoKaWYgd29yZCA9PSByZXZlcnNlZF93b3JkOgogICAgcHJpbnQoJ01pcnJvciB3b3JkJykKZWxzZToKICAgIHByaW50KCdOb3QgYSBtaXJyb3Igd29yZCcp",
+      "hints": [
+        "Visit each character with `for character in word:`. On every pass, put the character in front of what has been built so far: `reversed_word = character + reversed_word`.",
+        "Trace `level`: after each pass `reversed_word` is `l`, `el`, `vel`, `evel`, `level`. Putting the character first is what reverses the order.",
+        "After the loop, one `if word == reversed_word:` with an `else` chooses between `Mirror word` and `Not a mirror word`. An empty word gives an empty reversed word, so it is a mirror word."
+      ],
+      "answerNote": "Add each character to the front of reversed_word. Then one if/else chooses the message."
+    },
+    "parity": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 14,
+      "starter": "bits = input()\nones = 0\nvalid = len(bits) == 8\n\n# Inspect every character, then print one result.",
+      "cases": [
+        {
+          "name": "Typed 10110010",
+          "inputs": [
+            "10110010"
+          ],
+          "expected": "Parity bit: 0"
+        },
+        {
+          "name": "Typed 00000001",
+          "inputs": [
+            "00000001"
+          ],
+          "expected": "Parity bit: 1"
+        },
+        {
+          "name": "Typed 1011",
+          "inputs": [
+            "1011"
+          ],
+          "expected": "Invalid data"
+        },
+        {
+          "name": "Typed an empty string",
+          "inputs": [
+            ""
+          ],
+          "expected": "Invalid data"
+        },
+        {
+          "name": "Typed 11111111",
+          "inputs": [
+            "11111111"
+          ],
+          "expected": "Parity bit: 0"
+        },
+        {
+          "name": "Typed 00000000",
+          "inputs": [
+            "00000000"
+          ],
+          "expected": "Parity bit: 0"
+        },
+        {
+          "name": "Typed 1011001a",
+          "inputs": [
+            "1011001a"
+          ],
+          "expected": "Invalid data"
+        },
+        {
+          "name": "Typed 101100100",
+          "inputs": [
+            "101100100"
+          ],
+          "expected": "Invalid data"
+        },
+        {
+          "name": "Typed 10110012",
+          "inputs": [
+            "10110012"
+          ],
+          "expected": "Invalid data"
+        },
+        {
+          "name": "Typed 11100000",
+          "inputs": [
+            "11100000"
+          ],
+          "expected": "Parity bit: 1"
+        }
+      ],
+      "check": "assert \"import\" not in __code__, \"Solve it with a for loop and the string tools from this lecture; no import is needed.\"\nimport re\nassert len(re.findall(r\"^\\s*(for|while)\\b\", __code__, re.M)) == 1, \"Use one loop to validate the characters and count the 1 characters.\"\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Visit the characters with a for loop.\"\nassert \".count(\" not in __code__, \"Count the 1 characters inside the loop, not with .count().\"\nassert re.search(r\"%\\s*2\\b\", __code__), \"Test whether the count of 1 characters is even with % 2.\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print exactly one line.\"\n",
+      "answer": "Yml0cyA9IGlucHV0KCkKb25lcyA9IDAKdmFsaWQgPSBsZW4oYml0cykgPT0gOAoKZm9yIGJpdCBpbiBiaXRzOgogICAgaWYgYml0IG5vdCBpbiAnMDEnOgogICAgICAgIHZhbGlkID0gRmFsc2UKICAgIGlmIGJpdCA9PSAnMSc6CiAgICAgICAgb25lcyA9IG9uZXMgKyAxCgppZiBub3QgdmFsaWQ6CiAgICBwcmludCgnSW52YWxpZCBkYXRhJykKZWxpZiBvbmVzICUgMiA9PSAwOgogICAgcHJpbnQoJ1Bhcml0eSBiaXQ6IDAnKQplbHNlOgogICAgcHJpbnQoJ1Bhcml0eSBiaXQ6IDEnKQ==",
+      "hints": [
+        "`valid` already records whether the length is 8. In the loop, `if bit not in '01':` sets `valid = False`; a second `if bit == '1':` adds 1 to `ones`.",
+        "The two `if` statements are independent: a `1` must be counted, and a bad character must clear the flag. Do not use `elif` between them.",
+        "After the loop, test `not valid` first and print `Invalid data`. Otherwise `ones % 2 == 0` means the total is already even, so the parity bit is 0; else it is 1."
+      ],
+      "answerNote": "The validity flag starts by checking the length. The loop changes it to False if a character is outside '01' and counts each 1."
+    },
+    "shift": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 18,
+      "starter": "message = input()\nshift = int(input())\nlowercase = 'abcdefghijklmnopqrstuvwxyz'\nuppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'\nshifted = ''\n\n# Visit each character and build shifted.\nprint(shifted)",
+      "cases": [
+        {
+          "name": "Typed COMP 1001, 3",
+          "inputs": [
+            "COMP 1001",
+            "3"
+          ],
+          "expected": "FRPS 1001"
+        },
+        {
+          "name": "Typed abc XYZ, -3",
+          "inputs": [
+            "abc XYZ",
+            "-3"
+          ],
+          "expected": "xyz UVW"
+        },
+        {
+          "name": "Typed an empty string, 8",
+          "inputs": [
+            "",
+            "8"
+          ],
+          "expected": ""
+        },
+        {
+          "name": "Typed Hello, World!, 26",
+          "inputs": [
+            "Hello, World!",
+            "26"
+          ],
+          "expected": "Hello, World!"
+        },
+        {
+          "name": "Typed xyz, 100",
+          "inputs": [
+            "xyz",
+            "100"
+          ],
+          "expected": "tuv"
+        },
+        {
+          "name": "Typed Zebra-42, -100",
+          "inputs": [
+            "Zebra-42",
+            "-100"
+          ],
+          "expected": "Difve-42"
+        },
+        {
+          "name": "Typed attack at dawn, 13",
+          "inputs": [
+            "attack at dawn",
+            "13"
+          ],
+          "expected": "nggnpx ng qnja"
+        },
+        {
+          "name": "Typed MUN, 0",
+          "inputs": [
+            "MUN",
+            "0"
+          ],
+          "expected": "MUN"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"A for loop fits here; no while loop is needed.\"\nassert \"import\" not in __code__, \"Solve it with a for loop and the string tools from this lecture; no import is needed.\"\nassert \"ord(\" not in __code__ and \"chr(\" not in __code__, \"Find each letter in the alphabet strings; ord() and chr() are not needed.\"\nassert \".find(\" in __code__ or \".index(\" in __code__, \"Use find() to get each letter's position in the matching alphabet string.\"\nassert re.search(r\"%\\s*26\\b\", __code__), \"Wrap the new position with the remainder after division by 26.\"\nassert re.search(r\"shifted\\s*(\\+=|=\\s*shifted\\s*\\+)\", __code__), \"Build the answer in the string accumulator shifted.\"\n",
+      "answer": "bWVzc2FnZSA9IGlucHV0KCkKc2hpZnQgPSBpbnQoaW5wdXQoKSkKbG93ZXJjYXNlID0gJ2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6Jwp1cHBlcmNhc2UgPSAnQUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVonCnNoaWZ0ZWQgPSAnJwoKZm9yIGNoYXJhY3RlciBpbiBtZXNzYWdlOgogICAgaWYgY2hhcmFjdGVyIGluIGxvd2VyY2FzZToKICAgICAgICBwb3NpdGlvbiA9IGxvd2VyY2FzZS5maW5kKGNoYXJhY3RlcikKICAgICAgICBuZXdfcG9zaXRpb24gPSAocG9zaXRpb24gKyBzaGlmdCkgJSAyNgogICAgICAgIHNoaWZ0ZWQgPSBzaGlmdGVkICsgbG93ZXJjYXNlW25ld19wb3NpdGlvbl0KICAgIGVsaWYgY2hhcmFjdGVyIGluIHVwcGVyY2FzZToKICAgICAgICBwb3NpdGlvbiA9IHVwcGVyY2FzZS5maW5kKGNoYXJhY3RlcikKICAgICAgICBuZXdfcG9zaXRpb24gPSAocG9zaXRpb24gKyBzaGlmdCkgJSAyNgogICAgICAgIHNoaWZ0ZWQgPSBzaGlmdGVkICsgdXBwZXJjYXNlW25ld19wb3NpdGlvbl0KICAgIGVsc2U6CiAgICAgICAgc2hpZnRlZCA9IHNoaWZ0ZWQgKyBjaGFyYWN0ZXIKCnByaW50KHNoaWZ0ZWQp",
+      "hints": [
+        "For each character decide which of three cases it is: `if character in lowercase:`, `elif character in uppercase:`, `else:`. In the `else` branch add the character to `shifted` unchanged.",
+        "For a lowercase letter, `position = lowercase.find(character)` is 0 for `a` through 25 for `z`. The new position is `(position + shift) % 26`: the remainder wraps past `z` and also handles a negative shift.",
+        "Add `lowercase[new_position]` to `shifted`. The uppercase branch is the same with `uppercase` in place of `lowercase`.",
+        "Trace `abc` with shift `-3`: `a` is at 0, `(0 - 3) % 26` is 23, and `lowercase[23]` is `x`."
+      ],
+      "answerNote": "Use the lowercase alphabet for lowercase letters and the uppercase alphabet for uppercase letters. Add every non-letter without changing it."
+    }
+  }
+}

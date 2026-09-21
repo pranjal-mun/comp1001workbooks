@@ -47,8 +47,11 @@
           "expected": "2 + 0 + 2 + 6 = 10"
         }
       ],
-      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert type(number) is int, \"Keep number as an int; make a text copy with str() instead of changing the assignment.\"\nassert \"str(\" in __source__, \"Use str() to get the digits as characters.\"\nassert \"[\" in __source__, \"Pick out each digit with an index, as in digits[0].\"\nassert \"//\" not in __source__ and \"%\" not in __source__, \"This time take the digits apart as characters, not with // and %.\"\nassert __stdout__.count(\"+\") == 3 and \"=\" in __stdout__, \"Print the four digits joined by + signs, then = and the sum.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print everything on one line with a single print() call.\"\n",
+      "check": "assert \"if \" not in __code__, \"No if statements are needed.\"\nassert type(number) is int, \"Keep number as an int; make a text copy with str() instead of changing the assignment.\"\nassert \"str(\" in __code__, \"Use str() to get the digits as characters.\"\nassert \"[\" in __code__, \"Pick out each digit with an index, as in digits[0].\"\nassert \"//\" not in __code__ and \"%\" not in __code__, \"This time take the digits apart as characters, not with // and %.\"\nassert __stdout__.count(\"+\") == 3 and \"=\" in __stdout__, \"Print the four digits joined by + signs, then = and the sum.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print everything on one line with a single print() call.\"\n",
       "answer": "bnVtYmVyID0gMzE0MQpkaWdpdHMgPSBzdHIobnVtYmVyKQpkMSA9IGludChkaWdpdHNbMF0pCmQyID0gaW50KGRpZ2l0c1sxXSkKZDMgPSBpbnQoZGlnaXRzWzJdKQpkNCA9IGludChkaWdpdHNbM10pCnRvdGFsID0gZDEgKyBkMiArIGQzICsgZDQKcHJpbnQoZid7ZDF9ICsge2QyfSArIHtkM30gKyB7ZDR9ID0ge3RvdGFsfScp",
+      "hints": [
+        "Each character of `str(number)` is a one-character string. `int(digits[0])` turns it back into a number. Adding the characters without converting joins them into `'3141'` instead."
+      ],
       "answerNote": "Each digits[i] is a one-character string. int() turns it back into a number before the addition."
     },
     "label": {
@@ -129,7 +132,7 @@
           "expected": "SABINA\n9 WHISKER WAY\nGANDER NL  A1V 1W8\n------------------"
         }
       ],
-      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nimport re\nassert \".upper(\" in __source__, \"Use .upper() to make the capitals; do not retype the values.\"\nassert \"len(\" in __source__ and re.search(r\"['\\\"]-['\\\"]\\s*\\*|\\*\\s*['\\\"]-['\\\"]\", __source__), \"Make the dashes with '-' * len(...) so the line is exactly as long as the address line.\"\nlines = __stdout__.strip().splitlines()\nassert len(lines) == 4, \"Print four lines: name, street, address line, dashes.\"\nassert lines[2].count(\"  \") == 1, \"Put exactly two spaces between the province and the postal code.\"\n",
+      "check": "assert \"if \" not in __code__, \"No if statements are needed.\"\nimport re\nassert \".upper(\" in __code__, \"Use .upper() to make the capitals; do not retype the values.\"\nassert \"len(\" in __source__ and re.search(r\"['\\\"]-['\\\"]\\s*\\*|\\*\\s*['\\\"]-['\\\"]\", __source__), \"Make the dashes with '-' * len(...) so the line is exactly as long as the address line.\"\nlines = __stdout__.strip().splitlines()\nassert len(lines) == 4, \"Print four lines: name, street, address line, dashes.\"\nassert lines[2].count(\"  \") == 1, \"Put exactly two spaces between the province and the postal code.\"\n",
       "answer": "bmFtZSA9ICdQcmFuamFsIFBhdHJhJwpzdHJlZXQgPSAnMjMwIEVsaXphYmV0aCBBdmVudWUnCmNpdHkgPSAiU3QuIEpvaG4ncyIKcHJvdmluY2UgPSAnbmwnCnBvc3RhbCA9ICdhMWMgNXM3JwpsaW5lXzEgPSBuYW1lLnVwcGVyKCkKbGluZV8yID0gc3RyZWV0LnVwcGVyKCkKbGluZV8zID0gY2l0eS51cHBlcigpICsgJyAnICsgcHJvdmluY2UudXBwZXIoKSArICcgICcgKyBwb3N0YWwudXBwZXIoKQpwcmludChsaW5lXzEpCnByaW50KGxpbmVfMikKcHJpbnQobGluZV8zKQpwcmludCgnLScgKiBsZW4obGluZV8zKSk=",
       "answerNote": "Every .upper() returns a new string; the five variables at the top keep their original text."
     },
@@ -175,8 +178,11 @@
           "expected": "Initials: O.P.\nEmail: opoodle@mun.ca"
         }
       ],
-      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert \".split(\" not in __source__ and \".title(\" not in __source__ and \".capitalize(\" not in __source__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert \".find(\" in __source__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __source__), \"Use slices to cut the first name and the last name out of name.\"\nassert \".lower(\" in __source__ and \".upper(\" in __source__, \"Use .lower() for the email address and .upper() for the initials.\"\nassert len(__stdout__.strip().splitlines()) == 2, \"Print two lines: the initials, then the email address.\"\n",
+      "check": "assert \"if \" not in __code__, \"No if statements are needed.\"\nassert \".split(\" not in __code__ and \".title(\" not in __code__ and \".capitalize(\" not in __code__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert \".find(\" in __code__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __code__), \"Use slices to cut the first name and the last name out of name.\"\nassert \".lower(\" in __code__ and \".upper(\" in __code__, \"Use .lower() for the email address and .upper() for the initials.\"\nassert len(__stdout__.strip().splitlines()) == 2, \"Print two lines: the initials, then the email address.\"\n",
       "answer": "bmFtZSA9ICdQcmFuamFsIFBhdHJhJwpzcGFjZSA9IG5hbWUuZmluZCgnICcpCmZpcnN0ID0gbmFtZVs6c3BhY2VdCmxhc3QgPSBuYW1lW3NwYWNlICsgMTpdCmluaXRpYWxzID0gZmlyc3RbMF0udXBwZXIoKSArICcuJyArIGxhc3RbMF0udXBwZXIoKSArICcuJwplbWFpbCA9IChmaXJzdFswXSArIGxhc3QpLmxvd2VyKCkgKyAnQG11bi5jYScKcHJpbnQoZidJbml0aWFsczoge2luaXRpYWxzfScpCnByaW50KGYnRW1haWw6IHtlbWFpbH0nKQ==",
+      "hints": [
+        "`name.find(' ')` returns the index of the space. `name[:space]` stops just before it and gives the first name; `name[space + 1:]` starts just after it and gives the last name."
+      ],
       "answerNote": "name[:space] stops just before the space and name[space + 1:] starts just after it."
     },
     "tidy": {
@@ -215,8 +221,12 @@
           "expected": "Name: Hello, Sabina Cat!\nRoster: CAT, Sabina\nTyped 11 characters, kept 10."
         }
       ],
-      "check": "assert \"if \" not in __source__, \"No if statements are needed.\"\nassert \".split(\" not in __source__ and \".title(\" not in __source__ and \".capitalize(\" not in __source__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert raw != raw.strip(), \"Keep raw exactly as typed. .strip() returns a new string; store it under another name.\"\nassert \".strip(\" in __source__, \"Remove the outer spaces with .strip().\"\nassert \".find(\" in __source__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __source__), \"Use slices to cut the first name and the last name apart.\"\nassert \".upper(\" in __source__ and \".lower(\" in __source__, \"Fix the capitals with .upper() and .lower().\"\nassert \"len(\" in __source__, \"Count the characters with len().\"\nassert len(__stdout__.strip().splitlines()) == 3, \"Print three lines: the greeting, the roster line, and the character counts.\"\n",
+      "check": "assert \"if \" not in __code__, \"No if statements are needed.\"\nassert \".split(\" not in __code__ and \".title(\" not in __code__ and \".capitalize(\" not in __code__, \"Use .find() and slices to take the name apart; .split(), .title(), and .capitalize() are not part of this lecture.\"\nimport re\nassert raw != raw.strip(), \"Keep raw exactly as typed. .strip() returns a new string; store it under another name.\"\nassert \".strip(\" in __code__, \"Remove the outer spaces with .strip().\"\nassert \".find(\" in __code__, \"Find the space with .find(' ') rather than counting characters by hand.\"\nassert re.search(r\"\\[[^\\]]*:[^\\]]*\\]\", __code__), \"Use slices to cut the first name and the last name apart.\"\nassert \".upper(\" in __code__ and \".lower(\" in __code__, \"Fix the capitals with .upper() and .lower().\"\nassert \"len(\" in __code__, \"Count the characters with len().\"\nassert len(__stdout__.strip().splitlines()) == 3, \"Print three lines: the greeting, the roster line, and the character counts.\"\n",
       "answer": "cmF3ID0gaW5wdXQoJ05hbWU6ICcpCm5hbWUgPSByYXcuc3RyaXAoKQpzcGFjZSA9IG5hbWUuZmluZCgnICcpCmZpcnN0ID0gbmFtZVs6c3BhY2VdCmxhc3QgPSBuYW1lW3NwYWNlICsgMTpdCmZpcnN0ID0gZmlyc3RbMF0udXBwZXIoKSArIGZpcnN0WzE6XS5sb3dlcigpCmxhc3QgPSBsYXN0WzBdLnVwcGVyKCkgKyBsYXN0WzE6XS5sb3dlcigpCnByaW50KGYnSGVsbG8sIHtmaXJzdH0ge2xhc3R9IScpCnByaW50KGYnUm9zdGVyOiB7bGFzdC51cHBlcigpfSwge2ZpcnN0fScpCnByaW50KGYnVHlwZWQge2xlbihyYXcpfSBjaGFyYWN0ZXJzLCBrZXB0IHtsZW4oZmlyc3QpICsgbGVuKGxhc3QpICsgMX0uJyk=",
+      "hints": [
+        "`.strip()` returns a new string, so store it under a new name and leave `raw` alone. The checker looks at `raw` afterwards.",
+        "Once you have `first`, rebuild it as `first[0].upper() + first[1:].lower()`. Do the same for the last name."
+      ],
       "answerNote": "A string cannot be changed in place. first[0].upper() + first[1:].lower() builds a new one with one capital."
     }
   }

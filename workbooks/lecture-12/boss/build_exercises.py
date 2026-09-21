@@ -25,8 +25,8 @@ def input_cases(solution, *runs):
 
 # Lecture 12 teaches the while loop. Every boss repeats with while, not for.
 WHILE_ONLY = '''import re
-assert re.search(r"^\\s*while\\b", __source__, re.M), "Repeat the work with a while loop."
-assert not re.search(r"^\\s*for\\b", __source__, re.M), "Use a while loop; for is not part of this lecture."
+assert re.search(r"^\\s*while\\b", __code__, re.M), "Repeat the work with a while loop."
+assert not re.search(r"^\\s*for\\b", __code__, re.M), "Use a while loop; for is not part of this lecture."
 '''
 
 E = {}
@@ -37,27 +37,27 @@ price = float(input('First price: $'))
 rows = int(input('Rows: '))
 count = 0
 
-print('Original  Discount  Sale')
+print('Original Discount Sale')
 while count < rows:
     discount = price * DISCOUNT_RATE
     sale_price = price - discount
-    print(f'${price:.2f}  ${discount:.2f}  ${sale_price:.2f}')
+    print(f'${price:.2f} ${discount:.2f} ${sale_price:.2f}')
     price = price + 5
     count = count + 1
 """
 E["clearance"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 12,
-    "starter": "DISCOUNT_RATE = 0.25\nprice = float(input('First price: $'))\nrows = int(input('Rows: '))\ncount = 0\n\nprint('Original  Discount  Sale')\n\n# Write the loop here.\n",
+    "starter": "DISCOUNT_RATE = 0.25\nprice = float(input('First price: $'))\nrows = int(input('Rows: '))\ncount = 0\n\nprint('Original Discount Sale')\n\n# Write the loop here.\n",
     "cases": input_cases(clearance, ("Typed 20 and 3", ["20", "3"]), ("Typed 12.5 and 0", ["12.5", "0"]),
                          ("Typed 9.99 and 2", ["9.99", "2"]), ("Typed 4 and 1", ["4", "1"])),
-    "check": WHILE_ONLY + """assert __source__.count("DISCOUNT_RATE") >= 2, "Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again."
-assert ":.2f" in __source__, "Show every amount with :.2f in the f-string."
-assert __source__.count("print(") == 2, "Print one row per pass with a single print() inside the loop, and keep the heading print() outside it."
+    "check": WHILE_ONLY + """assert __code__.count("DISCOUNT_RATE") >= 2, "Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again."
+assert re.search(r":[^}]*\\.2f\\}", __source__), "Show every amount with :.2f in the f-string."
+assert __code__.count("print(") == 2, "Print one row per pass with a single print() inside the loop, and keep the heading print() outside it."
 assert count == rows, "Add 1 to count on every pass so the loop stops after rows passes."
 """,
     "answer": b64(clearance),
     "hints": [
         'Loop while `count < rows`. On each pass, `discount` is `price * DISCOUNT_RATE` and the sale price is `price - discount`.',
-        'Print the three amounts in one f-string with `:.2f` after each and two spaces between them. Then add 5 to `price` and 1 to `count`.',
+        'Print the three amounts in one f-string with `:.2f` after each and one space between them. Then add 5 to `price` and 1 to `count`.',
     ],
     "answerNote": "Both price and count are updated on every pass. When rows is 0, the first test is false, so only the heading is printed."}
 
@@ -75,10 +75,10 @@ E["teams"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 8,
     "starter": "first = int(input('First group: '))\nsecond = int(input('Second group: '))\nteam_size = min(first, second)\n\n# Decrease team_size until it divides both groups.\n\nprint('Largest shared team size:', team_size)\n",
     "cases": input_cases(teams, ("Typed 120 and 48", ["120", "48"]), ("Typed 7 and 5", ["7", "5"]),
                          ("Typed 36 and 36", ["36", "36"]), ("Typed 9 and 27", ["9", "27"]), ("Typed 1 and 40", ["1", "40"])),
-    "check": WHILE_ONLY + """assert "%" in __source__, "Use % to test whether team_size divides a group exactly."
-assert "gcd" not in __source__ and "import" not in __source__, "Search for the answer with the loop; do not import a module."
-assert "team_size - 1" in __source__ or "team_size -= 1" in __source__, "Decrease team_size by 1 on each pass."
-assert __source__.count("print(") == 1, "Keep the single print() after the loop."
+    "check": WHILE_ONLY + """assert "%" in __code__, "Use % to test whether team_size divides a group exactly."
+assert "gcd" not in __code__ and "import" not in __code__, "Search for the answer with the loop; do not import a module."
+assert re.search(r"team_size\\s*-=\\s*1\\b|team_size\\s*=\\s*team_size\\s*-\\s*1\\b", __code__), "Decrease team_size by 1 on each pass."
+assert __code__.count("print(") == 1, "Keep the single print() after the loop."
 """,
     "answer": b64(teams),
     "hints": [
@@ -104,11 +104,11 @@ E["binary"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 9,
     "cases": input_cases(binary, ("Typed 101101", ["101101"]), ("Typed 0", ["0"]), ("Typed 1", ["1"]),
                          ("Typed 1000", ["1000"]), ("Typed 11111111", ["11111111"])),
     "check": WHILE_ONLY + """
-assert "len(bits)" in __source__, "Test index against len(bits) so every character is processed once."
-assert "bits[index]" in __source__, "Pick one character out of bits with bits[index]."
-assert not re.search(r"int\\(\\s*bits\\s*,", __source__), "Build the value one digit at a time; int(bits, 2) is not part of this course."
-assert "* 2" in __source__ or "*2" in __source__, "Double the value built so far before adding the new digit."
-assert __source__.count("print(") == 1, "Keep the single print() after the loop."
+assert "len(bits)" in __code__, "Test index against len(bits) so every character is processed once."
+assert "bits[index]" in __code__, "Pick one character out of bits with bits[index]."
+assert not re.search(r"int\\(\\s*bits\\s*,", __code__), "Build the value one digit at a time; int(bits, 2) is not part of this course."
+assert re.search(r"\\*\\s*2\\b|\\b2\\s*\\*", __code__), "Double the value built so far before adding the new digit."
+assert __code__.count("print(") == 1, "Keep the single print() after the loop."
 """,
     "answer": b64(binary),
     "hints": [
@@ -135,9 +135,9 @@ while step <= terms:
 E["circle"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 12,
     "starter": "terms = int(input('Terms: '))\nstep = 1\ndenominator = 1\nsign = 1\nestimate = 0.0\n\n# Add one term and print one estimate on each pass.\n",
     "cases": input_cases(circle, ("Typed 1", ["1"]), ("Typed 4", ["4"]), ("Typed 2", ["2"]), ("Typed 10", ["10"])),
-    "check": WHILE_ONLY + """assert "math" not in __source__ and "import" not in __source__, "Build the estimate with the loop; do not import a module."
-assert ":.6f" in __source__, "Show the estimate with :.6f in the f-string."
-assert __source__.count("print(") == 1, "Print one estimate per pass with a single print() inside the loop."
+    "check": WHILE_ONLY + """assert "math" not in __code__ and "import" not in __code__, "Build the estimate with the loop; do not import a module."
+assert re.search(r":[^}]*\\.6f\\}", __source__), "Show the estimate with :.6f in the f-string."
+assert __code__.count("print(") == 1, "Print one estimate per pass with a single print() inside the loop."
 assert denominator == 2 * terms + 1, "Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on."
 assert sign == (1 if terms % 2 == 0 else -1), "Flip sign on every pass so the terms alternate between adding and subtracting."
 assert step == terms + 1, "Add 1 to step on every pass and stop after terms passes."

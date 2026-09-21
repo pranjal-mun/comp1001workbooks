@@ -27,17 +27,34 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 6 covered: <code>input()</code>, <code>int()</code> and <code>float()</code>, arithmetic with <code>//</code> and <code>%</code>, constants, and f-strings with format specifiers. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 6 covered: <code>input()</code>, <code>int()</code> and <code>float()</code>, arithmetic with <code>//</code> and <code>%</code>, constants, and f-strings with format specifiers. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
   <p>Each problem starts with its <code>input()</code> lines already written. Keep the prompt text exactly as it is, because the prompt is part of the output that <strong>Check</strong> compares. <code>input()</code> returns text, so wrap each call in <code>int()</code> or <code>float()</code> before doing arithmetic. Check runs your program several times, typing different answers each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with your own typed values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
 </section>
 <hr>
 <h2 id="treats" data-toc-title="👹 Treat plan">👹 Boss 1: Treat Plan</h2>
-<p>Oliver is on a treat plan. He gets one treat on day 1, two treats on day 2, three on day 3, and so on. By day 7 he has eaten 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28 treats.</p>
-<p>Read the day number from the keyboard and print the total number of treats up to and including that day, in this format:</p>
+<p>Oliver is on a treat plan: one treat on day 1, two on day 2, three on day 3, and so on. You are given a day number, <code>days</code>. Print the total number of treats he has eaten up to and including that day.</p>
+<p>Read <code>days</code> with <code>input()</code> and print one line. The total of 1 + 2 + ... + <i>n</i> is <i>n</i>(<i>n</i> + 1) / 2, and one of the two factors is always even, so <code>//</code> leaves no remainder.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: days = 7
+Output: Oliver has eaten 28 treats by day 7.
+Explanation: 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: days = 2
+Output: Oliver has eaten 3 treats by day 2.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= days &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program reads the day after the prompt <code>Days: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Days: </span><span class="wb-typed">7</span>
 Oliver has eaten 28 treats by day 7.</pre>
-<p>There is a formula for this sum. The total of 1 + 2 + ... + <i>n</i> is <i>n</i>(<i>n</i> + 1) / 2. Since one of <i>n</i> and <i>n</i> + 1 is always even, the division has no remainder, so use <code>//</code> and the result stays a whole number. A total of <code>28.0</code> is wrong.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -60,12 +77,30 @@ Oliver has eaten 28 treats by day 7.</pre>
 <wb-exercise id="treats"></wb-exercise>
 
 <h2 id="deposits" data-toc-title="👾 Bottle deposits">👾 Boss 2: Bottle Deposits</h2>
-<p>After the end-of-term party in EN2043, the 120 students of COMP 1001 leave behind a pile of drink containers. Ever Green Recycling pays a refund for each container: $0.10 for a container that holds 1 litre or less, and $0.25 for a container that holds more than 1 litre.</p>
-<p>Read the number of small containers and the number of large containers from the keyboard, then print the total refund as money, with a dollar sign and exactly two decimal places:</p>
+<p>After the end-of-term party in EN2043, the 120 students of COMP 1001 leave behind a pile of drink containers. Ever Green Recycling pays $0.10 for a container that holds 1 litre or less and $0.25 for one that holds more. You are given the number of small containers, <code>small</code>, and large containers, <code>large</code>. Print the total refund with a dollar sign and two decimal places.</p>
+<p>Read the two counts with <code>input()</code> and print one line.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: small = 11, large = 3
+Output: Refund: $1.85
+Explanation: 11 * 0.10 + 3 * 0.25 = 1.85.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: small = 0, large = 0
+Output: Refund: $0.00</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= small &lt;= 1000</code></li>
+    <li><code>0 &lt;= large &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program reads the counts after the prompts <code>Small containers: </code> and <code>Large containers: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Small containers: </span><span class="wb-typed">11</span>
 <span class="wb-prompt">Large containers: </span><span class="wb-typed">3</span>
 Refund: $1.85</pre>
-<p>The two refund amounts do not change, so store them in constants at the top of the program. The dollar sign is ordinary text in front of the braces, and the <code>.2f</code> specifier inside the braces takes care of the two decimals. Do not round the value: formatting changes the display, not the number.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
@@ -89,13 +124,36 @@ Refund: $1.85</pre>
 <wb-exercise id="deposits"></wb-exercise>
 
 <h2 id="bread" data-toc-title="🐉 Day-old bread">🐉 Boss 3: Day-Old Bread</h2>
-<p>Manna Bakery in St. John's sells a loaf of bread for $3.49. Bread baked the day before is sold at a 60 percent discount.</p>
-<p>Read the number of day-old loaves being bought from the keyboard. Then print the regular price of that many loaves, the discount, and the total to pay. Show every amount as money with two decimal places, and line the amounts up so that the dollar signs are in one column and the decimal points are in another:</p>
+<p>Manna Bakery in St. John's sells a loaf of bread for $3.49. Bread baked the day before is 60 percent off. You are given the number of day-old loaves, <code>loaves</code>. Print the regular price of that many loaves, the discount, and the total to pay, each as money with two decimal places followed by its label. Line the amounts up so the decimal points are in one column.</p>
+<p>Read <code>loaves</code> with <code>input()</code> and print three lines. A width in the specifier does the lining up: <code>{total:7.2f}</code> shows two decimals, right aligned in seven characters, so smaller amounts get spaces on the left.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: loaves = 3
+Output:
+$  10.47 regular price
+$   6.28 discount
+$   4.19 total
+Explanation: 3 * 3.49 = 10.47. The discount is 60 percent of that. Each amount takes seven characters, so 10.47 gets two spaces in front and 6.28 gets three.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: loaves = 100
+Output:
+$ 349.00 regular price
+$ 209.40 discount
+$ 139.60 total</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= loaves &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program reads the count after the prompt <code>Loaves: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Loaves: </span><span class="wb-typed">3</span>
-Regular price: $  10.47
-Discount:      $   6.28
-Total:         $   4.19</pre>
-<p>A width in the specifier does the lining up. <code>{total:7.2f}</code> displays the value with two decimals, right aligned in a field seven characters wide. Use the same width for all three amounts, and make the three labels the same length, so the dollar signs and the decimal points land in the same columns on every line.</p>
+$  10.47 regular price
+$   6.28 discount
+$   4.19 total</pre>
 <table>
   <thead><tr><th>Typed</th><th>Regular price</th><th>Discount</th><th>Total</th></tr></thead>
   <tbody>
@@ -109,8 +167,8 @@ Total:         $   4.19</pre>
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Convert the typed text with <code>int()</code>.</li>
-    <li>Give each of the three amounts a width and two decimals, as in <code>{total:7.2f}</code>. No <code>round()</code>.</li>
-    <li>Print exactly three lines, with the dollar signs in one column and the decimal points in one column.</li>
+    <li>Give each of the three amounts a width of 7 and two decimals, as in <code>{total:7.2f}</code>. No <code>round()</code>.</li>
+    <li>Print exactly three lines, amount first and label after, with the decimal points in one column.</li>
     <li>No <code>if</code> statements.</li>
     <li>Build the lines with f-strings.</li>
   </ul>
@@ -119,11 +177,28 @@ Total:         $   4.19</pre>
 <wb-exercise id="bread"></wb-exercise>
 
 <h2 id="countdown" data-toc-title="💀 Countdown">💀 Boss 4: Countdown to the Last Lecture</h2>
-<p>The screen at the front of EN2043 shows how long is left until the last COMP 1001 lecture, but it shows the time as one big number of seconds. Nobody can read 93784 seconds at a glance.</p>
-<p>Read the number of seconds from the keyboard and print it as days, hours, minutes, and seconds in the form <code>D:HH:MM:SS</code>. The hours, minutes, and seconds always take exactly two digits, with a leading zero when needed. The days take as many digits as they need.</p>
+<p>The screen at the front of EN2043 shows the time left until the last COMP 1001 lecture as one big number of seconds. You are given that number, <code>seconds</code>. Print it as days, hours, minutes, and seconds in the form <code>D:HH:MM:SS</code>. Hours, minutes, and seconds always take two digits, with a leading zero when needed. Days take as many digits as they need.</p>
+<p>Read <code>seconds</code> with <code>input()</code> and print one line.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: seconds = 93784
+Output: 1:02:03:04
+Explanation: 93784 = 86400 + 2 * 3600 + 3 * 60 + 4.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: seconds = 59
+Output: 0:00:00:59</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= seconds &lt;= 10000000</code></li>
+  </ul>
+</div>
+<p>The program reads the number after the prompt <code>Seconds: </code>.</p>
 <pre class="wb-shell"><span class="wb-prompt">Seconds: </span><span class="wb-typed">93784</span>
 1:02:03:04</pre>
-<p>Work from the largest unit down. There are 86400 seconds in a day, so <code>seconds // 86400</code> is the number of whole days and <code>seconds % 86400</code> is what is left for the hours. Do the same with 3600 for the hours and 60 for the minutes. The <code>02d</code> specifier pads a whole number to two digits with zeros, so <code>{hours:02d}</code> displays 2 as <code>02</code>.</p>
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>

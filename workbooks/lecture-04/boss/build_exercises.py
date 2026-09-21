@@ -32,7 +32,7 @@ def cases(solution, first, *others):
         out.append({"name": name, "rewrite": pairs, "expected": run(rewritten(solution, *pairs))})
     return out
 
-NO_AUGMENTED = 'assert "+=" not in __source__, "Write the update in full, as in count = count + 1; the += shortcut comes later."\n'
+NO_AUGMENTED = 'assert "+=" not in __code__, "Write the update in full, as in count = count + 1; the += shortcut comes later."\n'
 
 E = {}
 
@@ -51,12 +51,15 @@ E["swap"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 6,
         ("porch and kitchen", [["oliver = 'sofa'", "oliver = 'porch'"], ["sabina = 'basket'", "sabina = 'kitchen'"]]),
         ("rug and rug", [["oliver = 'sofa'", "oliver = 'rug'"], ["sabina = 'basket'", "sabina = 'rug'"]])),
     "check": NO_AUGMENTED + """import re
-assert not re.search(r"^\\s*\\w+\\s*,\\s*\\w+\\s*=", __source__, re.M), "Swap with a third variable, one assignment at a time; the a, b = b, a form comes later."
+assert not re.search(r"^\\s*\\w+\\s*,\\s*\\w+\\s*=", __code__, re.M), "Swap with a third variable, one assignment at a time; the a, b = b, a form comes later."
 names = [k for k in globals() if not k.startswith("__") and k != "re"]
 assert len(names) >= 3, "Use a third variable to hold one of the values while you swap."
 assert len(__stdout__.strip().splitlines()) == 1, "Print both values with one print() call so they land on one line."
 """,
     "answer": b64(swap),
+    "hints": [
+        "Copy one spot into a third name first: `holder = oliver`. Then `oliver = sabina`, and finally `sabina = holder`.",
+    ],
     "answerNote": "The moment oliver is overwritten its old value is gone, so a third name keeps a copy first."}
 
 # ---------------------------------------------------------------- 2 Seats
@@ -78,12 +81,15 @@ E["seats"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 10,
         ("50, -10, 80", [["group_1 = 40", "group_1 = 50"], ["group_2 = 25", "group_2 = -10"], ["group_3 = 55", "group_3 = 80"]]),
         ("120, 0, 0", [["group_1 = 40", "group_1 = 120"], ["group_2 = 25", "group_2 = 0"], ["group_3 = 55", "group_3 = 0"]])),
     "check": NO_AUGMENTED + """import re
-updates = re.findall(r"^\\s*seated\\s*=\\s*seated\\s*\\+", __source__, re.M)
+updates = re.findall(r"^\\s*seated\\s*=\\s*seated\\s*\\+", __code__, re.M)
 assert len(updates) == 3, "Update the running count three times, once per group, in the form seated = seated + ..."
 assert len(__stdout__.strip().splitlines()) == 3, "Print exactly three lines, one after each group."
 assert type(seated) is int, "seated should still be a whole number (an int) at the end."
 """,
     "answer": b64(seats),
+    "hints": [
+        "The three updates all look the same: `seated = seated + group_1`, then the same with `group_2` and `group_3`. Print `seated` right after each one with a label such as `'After group 1:'`.",
+    ],
     "answerNote": "Each update reads the old count, adds one group, and stores the result back under the same name."}
 
 # ---------------------------------------------------------------- 3 Vet record
@@ -103,11 +109,14 @@ E["vet"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 8,
         ("half years, text flag", [["age = 7", "age = 7.5"], ["vaccinated = True", "vaccinated = 'yes'"]]),
         ("tag number, quoted weight", [["pet = 'Oliver'", "pet = 1001"], ["weight = 3.5", "weight = '3.5'"]])),
     "check": """import re
-assert "type(" in __source__, "Ask Python for each type with type(); do not type the answer in yourself."
-assert "class" not in __source__ and not re.search(r"\\b(int|float|str|bool)\\b", __source__), "The type names must come from type() at run time, not from text you typed."
+assert "type(" in __code__, "Ask Python for each type with type(); do not type the answer in yourself."
+assert "class" not in __code__ and not re.search(r"\\b(int|float|str|bool)\\b", __code__), "The type names must come from type() at run time, not from text you typed."
 assert len(__stdout__.strip().splitlines()) == 4, "Print four lines, one per field, in the order given."
 """,
     "answer": b64(vet),
+    "hints": [
+        "`print(pet, type(pet))` prints the value, a space, and its type. Four lines like that, one per variable, are the whole program.",
+    ],
     "answerNote": "The type belongs to the value, not the name, so the same four lines report whatever is assigned that run."}
 
 # ---------------------------------------------------------------- 4 Repair
@@ -140,10 +149,13 @@ for k in user:
 constants = {k: v for k, v in user.items() if k == k.upper()}
 assert constants, "The room does not change all term, so store it under an ALL_CAPS name (for example ROOM)."
 assert any(v == "EN2043" for v in constants.values()), "Keep the room EN2043 in the constant."
-assert re.search(r"^\\s*students\\s*=\\s*students\\s*\\+\\s*1", __source__, re.M), "Keep the update students = students + 1; fix the spelling rather than typing in the new count."
+assert re.search(r"^\\s*students\\s*=\\s*students\\s*\\+\\s*1", __code__, re.M), "Keep the update students = students + 1; fix the spelling rather than typing in the new count."
 assert any(line.strip().startswith("#") for line in __source__.splitlines()), "Keep one comment that explains a choice (a line starting with #)."
 """,
     "answer": b64(repair),
+    "hints": [
+        "Run it and read the first error. A variable name cannot contain a space or a hyphen, and `class` is a reserved word. Rename those three, make the room an `ALL_CAPS` constant, and match the spelling of `students` in both places.",
+    ],
     "answerNote": "Five repairs: the space, the keyword class, the hyphen, the ALL_CAPS constant, and the capital S in Students."}
 
 for spec in E.values():

@@ -37,9 +37,9 @@ def run_with_prompts(code, inputs):
 def input_cases(solution, *runs):
     return [{"name": name, "inputs": list(inputs), "expected": run_with_prompts(solution, inputs)} for name, inputs in runs]
 
-NO_IMPORT = 'assert "import" not in __source__, "Solve it with a while loop and arithmetic; no import is needed."\n'
-ONE_BREAK = '''assert "while True" in __source__, "Keep the while True loop and leave it with one break."
-assert __source__.count("break") == 1, "Use exactly one break to leave the loop."
+NO_IMPORT = 'assert "import" not in __code__, "Solve it with a while loop and arithmetic; no import is needed."\n'
+ONE_BREAK = '''assert "while True" in __code__, "Keep the while True loop and leave it with one break."
+assert __code__.count("break") == 1, "Use exactly one break to leave the loop."
 '''
 
 E = {}
@@ -65,11 +65,11 @@ E["treats"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 12,
     "cases": input_cases(treats, ("Typed 2, 4, 6, -1", ["2", "4", "6", "-1"]), ("Typed -1", ["-1"]),
                          ("Typed 5, -1", ["5", "-1"]), ("Typed 0, 0, 3, -1", ["0", "0", "3", "-1"]), ("Typed 1, 2, -1", ["1", "2", "-1"])),
     "check": ONE_BREAK + NO_IMPORT + '''import re
-update = re.search(r"total\\s*(\\+=|=\\s*total\\s*\\+)", __source__)
+update = re.search(r"total\\s*\\+=|total\\s*=\\s*total\\s*\\+|total\\s*=\\s*\\w+\\s*\\+\\s*total", __code__)
 assert update, "Add each count to total inside the loop with total = total + treats."
-assert __source__.index("break") < update.start(), "Test the sentinel and break before total and count are updated."
-assert re.search(r"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:", __source__), "Test count > 0 before dividing by it."
-assert ":.2f" in __source__, "Print the average with two digits after the decimal point using :.2f."
+assert __code__.index("break") < update.start(), "Test the sentinel and break before total and count are updated."
+assert re.search(r"if\\s+count\\s*(>\\s*0|!=\\s*0|>=\\s*1)\\s*:|if\\s+count\\s*:|if\\s+0\\s*<\\s*count\\s*:|if\\s+1\\s*<=\\s*count\\s*:", __code__), "Test count > 0 before dividing by it."
+assert re.search(r":[^}]*\\.2f\\}", __source__), "Print the average with two digits after the decimal point using :.2f."
 ''',
     "answer": b64(treats),
     "hints": [
@@ -104,11 +104,11 @@ E["cash"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 14,
     "cases": input_cases(cash, ("Typed 1.02, 2.01, blank", ["1.02", "2.01", ""]), ("Blank first", [""]),
                          ("Typed 0.99, blank", ["0.99", ""]), ("Typed 1.01, blank", ["1.01", ""]), ("Typed 1.03, blank", ["1.03", ""]),
                          ("Typed 2.50, 2.50, blank", ["2.50", "2.50", ""]), ("Typed 4.99, 0.08, blank", ["4.99", "0.08", ""])),
-    "check": ONE_BREAK + NO_IMPORT + '''assert "float(" in __source__, "Convert each price with float() after the blank-line test."
-assert __source__.index("break") < __source__.index("float("), "Test text for the blank line before calling float() on it."
-assert "round(" in __source__, "Convert the total to whole cents with round(total * 100)."
-assert "% 5" in __source__ or "%5" in __source__, "Use the remainder cents % 5 to round the cash total."
-assert __source__.count("print(") == 2, "Print exactly two lines: the card total and the cash total."
+    "check": ONE_BREAK + NO_IMPORT + '''assert "float(" in __code__, "Convert each price with float() after the blank-line test."
+assert __code__.index("break") < __code__.index("float("), "Test text for the blank line before calling float() on it."
+assert "round(" in __code__, "Convert the total to whole cents with round(total * 100)."
+assert "% 5" in __code__ or "%5" in __code__, "Use the remainder cents % 5 to round the cash total."
+assert __code__.count("print(") == 2, "Print exactly two lines: the card total and the cash total."
 ''',
     "answer": b64(cash),
     "hints": [
@@ -138,11 +138,11 @@ print('Updates:', updates)
 E["sqrt"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 9,
     "starter": "number = float(input('Number: '))\nguess = number / 2\nupdates = 0\n\n# Improve guess until it is accurate enough.\n\nprint(f'Square root: {guess:.6f}')\nprint('Updates:', updates)\n",
     "cases": input_cases(sqrt, ("Typed 4", ["4"]), ("Typed 25", ["25"]), ("Typed 2", ["2"]), ("Typed 100", ["100"]), ("Typed 0.25", ["0.25"]), ("Typed 1", ["1"])),
-    "check": NO_IMPORT + '''assert "while" in __source__, "Repeat the improvement with a while loop whose condition tests the error."
-assert "abs(" in __source__, "Measure the error with abs(guess * guess - number)."
-assert "0.000001" in __source__ or "1e-6" in __source__ or "1e-06" in __source__, "Stop when the error is no longer greater than 0.000001."
-assert "break" not in __source__, "Put the stopping test in the while header; no break is needed."
-assert "** 0.5" not in __source__ and "**0.5" not in __source__ and "sqrt" not in __source__, "Estimate the root with the averaging step, not with ** 0.5 or a square-root function."
+    "check": NO_IMPORT + '''assert "while" in __code__, "Repeat the improvement with a while loop whose condition tests the error."
+assert "abs(" in __code__, "Measure the error with abs(guess * guess - number)."
+assert "0.000001" in __code__ or "1e-6" in __code__ or "1e-06" in __code__, "Stop when the error is no longer greater than 0.000001."
+assert "break" not in __code__, "Put the stopping test in the while header; no break is needed."
+assert "** 0.5" not in __code__ and "**0.5" not in __code__ and "sqrt" not in __code__, "Estimate the root with the averaging step, not with ** 0.5 or a square-root function."
 ''',
     "answer": b64(sqrt),
     "hints": [
@@ -170,10 +170,10 @@ E["factors"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 10,
     "starter": "number = int(input('Number: '))\nremaining = number\nfactor = 2\n\nprint('Prime factors:')\n\n# Reduce remaining until every factor has been printed.\n",
     "cases": input_cases(factors, ("Typed 84", ["84"]), ("Typed 13", ["13"]), ("Typed 2", ["2"]), ("Typed 360", ["360"]), ("Typed 97", ["97"]), ("Typed 1000", ["1000"])),
     "check": NO_IMPORT + '''import re
-assert len(re.findall(r"^\\s*while\\b", __source__, re.M)) == 1, "Use one while loop that runs until remaining has been reduced to 1."
-assert "%" in __source__, "Test whether factor divides remaining exactly with %."
-assert "//" in __source__, "Divide remaining by the factor with // so that it stays an int."
-assert "break" not in __source__, "Let the while condition end the loop; no break is needed."
+assert len(re.findall(r"^\\s*while\\b", __code__, re.M)) == 1, "Use one while loop that runs until remaining has been reduced to 1."
+assert "%" in __code__, "Test whether factor divides remaining exactly with %."
+assert "//" in __code__, "Divide remaining by the factor with // so that it stays an int."
+assert "break" not in __code__, "Let the while condition end the loop; no break is needed."
 assert __stdout__.count("\\n") >= 1, "Print each prime factor on its own line."
 ''',
     "answer": b64(factors),

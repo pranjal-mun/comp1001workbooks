@@ -33,7 +33,7 @@ def cases(solution, first, *others):
     return out
 
 QUALIFIED_MATH = '''import re
-lines = [l.strip() for l in __source__.split("\\n")]
+lines = [l.strip() for l in __code__.split("\\n")]
 assert "import math" in lines, "Use the preferred course form: a line `import math` on its own."
 assert not any(l.startswith("from math import") for l in lines), "Use `import math`, not `from math import ...`, so the module name stays visible."
 '''
@@ -55,11 +55,14 @@ E["digits"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 7,
         ("9075", [["number = 3141", "number = 9075"]]),
         ("1000", [["number = 3141", "number = 1000"]]),
         ("2026", [["number = 3141", "number = 2026"]])),
-    "check": '''assert "//" in __source__ and "%" in __source__, "Peel the digits off with // and %; do not turn the number into text."
-assert "str(" not in __source__, "Peel the digits off with // and %; do not turn the number into text."
-assert "if" not in __source__.split(), "No if statements are needed: // and % do all the work."
+    "check": '''assert "//" in __code__ and "%" in __code__, "Peel the digits off with // and %; do not turn the number into text."
+assert "str(" not in __code__, "Peel the digits off with // and %; do not turn the number into text."
+assert "if" not in __code__.split(), "No if statements are needed: // and % do all the work."
 assert len(__stdout__.strip().splitlines()) == 1, "Print the whole sum on one line with one print() call."''',
     "answer": b64(digits),
+    "hints": [
+        "`number % 10` is the last digit and `number // 10` drops it. `number // 100 % 10` is the tens digit: drop two digits, then keep the last one that remains.",
+    ],
     "answerNote": "number // 100 % 10 reads: drop the last two digits, then keep only the last one that remains."}
 
 # ---------------------------------------------------------------- 2 Change
@@ -87,10 +90,13 @@ E["change"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 14,
         ("999 cents", [["cents = 1234", "cents = 999"]]),
         ("5 cents", [["cents = 1234", "cents = 5"]]),
         ("388 cents", [["cents = 1234", "cents = 388"]])),
-    "check": '''assert "//" in __source__ and "%" in __source__, "Use // for how many coins fit and % for what is left over."
-assert "if" not in __source__.split(), "No if statements are needed: // and % do all the work."
+    "check": '''assert "//" in __code__ and "%" in __code__, "Use // for how many coins fit and % for what is left over."
+assert "if" not in __code__.split(), "No if statements are needed: // and % do all the work."
 assert len(__stdout__.strip().splitlines()) == 6, "Print exactly six lines, one per coin, largest coin first."''',
     "answer": b64(change),
+    "hints": [
+        "`cents // 200` is the number of toonies and `cents % 200` is what is still owed. Store that remainder back into `cents` and repeat with 100, 25, 10, and 5.",
+    ],
     "answerNote": "Each coin takes what it can with //, and % leaves the rest for the next smaller coin."}
 
 # ---------------------------------------------------------------- 3 Sort
@@ -108,11 +114,14 @@ E["sort3"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 7,
         ("3, 8, 3", [["a = 17", "a = 3"], ["b = 4", "b = 8"], ["c = 9", "c = 3"]]),
         ("-2, 10, 0", [["a = 17", "a = -2"], ["b = 4", "b = 10"], ["c = 9", "c = 0"]]),
         ("5, 5, 5", [["a = 17", "a = 5"], ["b = 4", "b = 5"], ["c = 9", "c = 5"]])),
-    "check": '''assert "min(" in __source__ and "max(" in __source__, "Use min() for the smallest value and max() for the largest."
-assert "sort" not in __source__, "No sorting: min, max, and a subtraction are enough."
-assert "if" not in __source__.split(), "No if statements: min, max, and a subtraction are enough."
+    "check": '''assert "min(" in __code__ and "max(" in __code__, "Use min() for the smallest value and max() for the largest."
+assert "sort" not in __code__, "No sorting: min, max, and a subtraction are enough."
+assert "if" not in __code__.split(), "No if statements: min, max, and a subtraction are enough."
 assert len(__stdout__.strip().splitlines()) == 1, "Print all three values with one print() call so they land on one line."''',
     "answer": b64(sort3),
+    "hints": [
+        "`smallest = min(a, b, c)` and `largest = max(a, b, c)`. The middle one is `a + b + c - smallest - largest`.",
+    ],
     "answerNote": "The three values add up to smallest + middle + largest, so taking away the two you already know leaves the middle."}
 
 # ---------------------------------------------------------------- 4 Earth
@@ -137,10 +146,13 @@ E["earth"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 10,
         ("St. John's to Vancouver", vancouver),
         ("St. John's to London", london),
         ("St. John's to Sydney", sydney)),
-    "check": QUALIFIED_MATH + '''assert "math.acos" in __source__, "The formula needs the inverse cosine: math.acos."
-assert "math.radians" in __source__, "Convert each angle from degrees to radians with math.radians before using sin and cos."
-assert "round(" in __source__, "Round the distance to one decimal place with round(..., 1)."''',
+    "check": QUALIFIED_MATH + '''assert "math.acos" in __code__, "The formula needs the inverse cosine: math.acos."
+assert "math.radians" in __code__, "Convert each angle from degrees to radians with math.radians before using sin and cos."
+assert "round(" in __code__, "Round the distance to one decimal place with round(..., 1)."''',
     "answer": b64(earth),
+    "hints": [
+        "Convert all four angles with `math.radians()` into new names first, then type the formula on one line using those names. The rounding goes around the whole result: `round(distance, 1)`.",
+    ],
     "answerNote": "Forgetting math.radians is the classic mistake: sin and cos expect radians, and the distances come out wildly wrong."}
 
 for spec in E.values():

@@ -1,0 +1,176 @@
+{
+  "id": "lecture-09-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 9 Boss Problems",
+  "short": "L09 bosses",
+  "subtitle": "Relational operators and comparing values",
+  "exercises": {
+    "tuning": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 6,
+      "starter": "reading = float(input('Frequency (Hz): '))\n# Report whether the reading is within 1 Hz of A4.",
+      "cases": [
+        {
+          "name": "Typed 440.5",
+          "inputs": [
+            "440.5"
+          ],
+          "expected": "Frequency (Hz): 440.5 Hz is in tune with A4."
+        },
+        {
+          "name": "Typed 445",
+          "inputs": [
+            "445"
+          ],
+          "expected": "Frequency (Hz): 445.0 Hz is 5.0 Hz away from A4."
+        },
+        {
+          "name": "Typed 441",
+          "inputs": [
+            "441"
+          ],
+          "expected": "Frequency (Hz): 441.0 Hz is in tune with A4."
+        },
+        {
+          "name": "Typed 438.9",
+          "inputs": [
+            "438.9"
+          ],
+          "expected": "Frequency (Hz): 438.9 Hz is 1.1 Hz away from A4."
+        },
+        {
+          "name": "Typed 439",
+          "inputs": [
+            "439"
+          ],
+          "expected": "Frequency (Hz): 439.0 Hz is in tune with A4."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture yet.\"\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use separate if statements.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1 and re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Use exactly one if with an else.\"\nassert \"abs(\" in __code__, \"Use abs() so that a reading below 440 and a reading above 440 are handled by the same comparison.\"\nassert \"<=\" in __code__ or \">\" in __code__, \"A difference of exactly 1 Hz counts as in tune; check the boundary.\"\nassert len(__stdout__.strip().splitlines()) == 1, \"Print one line.\"\n",
+      "answer": "cmVhZGluZyA9IGZsb2F0KGlucHV0KCdGcmVxdWVuY3kgKEh6KTogJykpCmRpZmZlcmVuY2UgPSBhYnMocmVhZGluZyAtIDQ0MCkKaWYgZGlmZmVyZW5jZSA8PSAxOgogICAgcHJpbnQoZid7cmVhZGluZ30gSHogaXMgaW4gdHVuZSB3aXRoIEE0LicpCmVsc2U6CiAgICBwcmludChmJ3tyZWFkaW5nfSBIeiBpcyB7ZGlmZmVyZW5jZTouMWZ9IEh6IGF3YXkgZnJvbSBBNC4nKQ==",
+      "hints": [
+        "`abs(reading - 440)` is the distance from A4 whether the reading is sharp or flat. Compare that one number with 1."
+      ],
+      "answerNote": "abs() folds the two sides of 440 into one distance, so one comparison covers sharp and flat readings. The boundary 441 is in tune because the test is <=."
+    },
+    "equilateral": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 8,
+      "starter": "a = float(input('Side a: '))\nb = float(input('Side b: '))\nc = float(input('Side c: '))\n# Report whether the triangle is equilateral.",
+      "cases": [
+        {
+          "name": "Typed 3 3 3",
+          "inputs": [
+            "3",
+            "3",
+            "3"
+          ],
+          "expected": "Side a: Side b: Side c: A triangle with sides 3.0, 3.0 and 3.0 is equilateral."
+        },
+        {
+          "name": "Typed 3 4 3",
+          "inputs": [
+            "3",
+            "4",
+            "3"
+          ],
+          "expected": "Side a: Side b: Side c: A triangle with sides 3.0, 4.0 and 3.0 is not equilateral."
+        },
+        {
+          "name": "Typed 2.5 2.5 2.5",
+          "inputs": [
+            "2.5",
+            "2.5",
+            "2.5"
+          ],
+          "expected": "Side a: Side b: Side c: A triangle with sides 2.5, 2.5 and 2.5 is equilateral."
+        },
+        {
+          "name": "Typed 5 5 5.5",
+          "inputs": [
+            "5",
+            "5",
+            "5.5"
+          ],
+          "expected": "Side a: Side b: Side c: A triangle with sides 5.0, 5.0 and 5.5 is not equilateral."
+        },
+        {
+          "name": "Typed 6 7 8",
+          "inputs": [
+            "6",
+            "7",
+            "8"
+          ],
+          "expected": "Side a: Side b: Side c: A triangle with sides 6.0, 7.0 and 8.0 is not equilateral."
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture yet.\"\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use separate if statements.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) >= 2, \"Compare the sides with separate if statements, one pair per if.\"\nassert not re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Start with kind = 'equilateral' and let the if statements change it; no else is needed.\"\nassert __code__.count(\"print(\") == 1, \"Print once, after the if statements.\"\nassert \"==\" in __code__ or \"!=\" in __code__, \"Compare the sides with == or !=.\"\n",
+      "answer": "YSA9IGZsb2F0KGlucHV0KCdTaWRlIGE6ICcpKQpiID0gZmxvYXQoaW5wdXQoJ1NpZGUgYjogJykpCmMgPSBmbG9hdChpbnB1dCgnU2lkZSBjOiAnKSkKa2luZCA9ICdlcXVpbGF0ZXJhbCcKaWYgYSAhPSBiOgogICAga2luZCA9ICdub3QgZXF1aWxhdGVyYWwnCmlmIGIgIT0gYzoKICAgIGtpbmQgPSAnbm90IGVxdWlsYXRlcmFsJwpwcmludChmJ0EgdHJpYW5nbGUgd2l0aCBzaWRlcyB7YX0sIHtifSBhbmQge2N9IGlzIHtraW5kfS4nKQ==",
+      "hints": [
+        "Store `kind = 'equilateral'` first. Then an `if` that compares `a` with `b` and another that compares `b` with `c` can each change it to `'not equilateral'`. If `a` equals `b` and `b` equals `c`, then `a` equals `c` as well, so two comparisons are enough."
+      ],
+      "answerNote": "Two comparisons cover all three pairs: when a == b and b == c, a == c follows. Each if overrides the default on its own, so no and is needed."
+    },
+    "phone": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 12,
+      "starter": "minutes = int(input('Minutes: '))\ntexts = int(input('Texts: '))\n# Print the bill, one charge per line.",
+      "cases": [
+        {
+          "name": "Typed 60 and 70",
+          "inputs": [
+            "60",
+            "70"
+          ],
+          "expected": "Minutes: Texts: Base plan: $15.00\nExtra minutes: $2.50\nExtra texts: $3.00\n911 fee: $0.44\nTax: $3.14\nTotal: $24.08"
+        },
+        {
+          "name": "Typed 50 and 50",
+          "inputs": [
+            "50",
+            "50"
+          ],
+          "expected": "Minutes: Texts: Base plan: $15.00\n911 fee: $0.44\nTax: $2.32\nTotal: $17.76"
+        },
+        {
+          "name": "Typed 120 and 10",
+          "inputs": [
+            "120",
+            "10"
+          ],
+          "expected": "Minutes: Texts: Base plan: $15.00\nExtra minutes: $17.50\n911 fee: $0.44\nTax: $4.94\nTotal: $37.88"
+        },
+        {
+          "name": "Typed 0 and 51",
+          "inputs": [
+            "0",
+            "51"
+          ],
+          "expected": "Minutes: Texts: Base plan: $15.00\nExtra texts: $0.15\n911 fee: $0.44\nTax: $2.34\nTotal: $17.93"
+        },
+        {
+          "name": "Typed 51 and 51",
+          "inputs": [
+            "51",
+            "51"
+          ],
+          "expected": "Minutes: Texts: Base plan: $15.00\nExtra minutes: $0.25\nExtra texts: $0.15\n911 fee: $0.44\nTax: $2.38\nTotal: $18.22"
+        }
+      ],
+      "check": "import re\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture yet.\"\nassert not re.search(r\"\\b(and|or|not)\\b\", __code__), \"and, or and not are not part of this lecture yet; use separate if statements.\"\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 2, \"Use two separate if statements: one for the extra minutes and one for the extra texts.\"\nassert not re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"No else is needed: when there is no extra charge, nothing is printed for it.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Show every amount with two decimal places.\"\nlines = __stdout__.strip().splitlines()\nassert 4 <= len(lines) <= 6, \"Print the base plan, any extra charges, the 911 fee, the tax and the total, one per line.\"\nassert \"Base plan:\" in lines[0] and lines[-1].startswith(\"Total:\"), \"Start with the base plan and end with the total.\"\n",
+      "answer": "bWludXRlcyA9IGludChpbnB1dCgnTWludXRlczogJykpCnRleHRzID0gaW50KGlucHV0KCdUZXh0czogJykpCmJhc2UgPSAxNS4wMApmZWUgPSAwLjQ0CnN1YnRvdGFsID0gYmFzZSArIGZlZQpwcmludChmJ0Jhc2UgcGxhbjogJHtiYXNlOi4yZn0nKQppZiBtaW51dGVzID4gNTA6CiAgICBleHRyYV9taW51dGVzID0gKG1pbnV0ZXMgLSA1MCkgKiAwLjI1CiAgICBzdWJ0b3RhbCA9IHN1YnRvdGFsICsgZXh0cmFfbWludXRlcwogICAgcHJpbnQoZidFeHRyYSBtaW51dGVzOiAke2V4dHJhX21pbnV0ZXM6LjJmfScpCmlmIHRleHRzID4gNTA6CiAgICBleHRyYV90ZXh0cyA9ICh0ZXh0cyAtIDUwKSAqIDAuMTUKICAgIHN1YnRvdGFsID0gc3VidG90YWwgKyBleHRyYV90ZXh0cwogICAgcHJpbnQoZidFeHRyYSB0ZXh0czogJHtleHRyYV90ZXh0czouMmZ9JykKdGF4ID0gc3VidG90YWwgKiAwLjE1CnByaW50KGYnOTExIGZlZTogJHtmZWU6LjJmfScpCnByaW50KGYnVGF4OiAke3RheDouMmZ9JykKcHJpbnQoZidUb3RhbDogJHtzdWJ0b3RhbCArIHRheDouMmZ9Jyk=",
+      "hints": [
+        "Keep a running `subtotal` that starts at 15.00 + 0.44. Each `if` adds its extra charge to it and prints its own line. The tax is 15 percent of the subtotal, and the total is the subtotal plus the tax.",
+        "The extra minutes cost `(minutes - 50) * 0.25`, but only when `minutes > 50`. A plan with exactly 50 minutes has no extra charge, so 50 must not print a line.",
+        "`${extra_minutes:.2f}` prints the amount with two decimals. Only print an extra line when there is an extra charge, so put the print inside the if."
+      ],
+      "answerNote": "Each if adds its charge to the subtotal and prints its own line, so the tax and total come out right whether zero, one or both extras apply."
+    }
+  }
+}

@@ -27,15 +27,33 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lecture 4 covered: assignment and reassignment, adding with <code>+</code>, the four types and <code>type()</code>, <code>print()</code> with several values, readable names, constants, and comments. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lecture 4 covered: assignment and reassignment, adding with <code>+</code>, the four types and <code>type()</code>, <code>print()</code> with several values, readable names, constants, and comments. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
   <p>Each problem starts with its values already assigned at the top of the program. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, swapping in different values each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with the given values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
 </section>
 <hr>
 <h2 id="swap" data-toc-title="👹 Trade places">👹 Boss 1: Trade Places</h2>
-<p>Oliver is a seven-year-old black toy poodle, and Sabina is a cat. Their favourite spots are stored as text in <code>oliver</code> and <code>sabina</code>.</p>
-<p>Today they want to switch spots. Swap the values so that <code>oliver</code> gets Sabina's original spot and <code>sabina</code> gets Oliver's original spot. Then print both spots on one line, with Oliver's first.</p>
-<p>Be careful: once you do <code>oliver = sabina</code>, Oliver's old value is lost. You will need a third variable to save it first. Three assignments do the whole job.</p>
+<p>Oliver is a seven-year-old black toy poodle and Sabina is a cat. You are given their favourite spots as text in <code>oliver</code> and <code>sabina</code>. Swap the two values so that <code>oliver</code> holds Sabina's original spot and <code>sabina</code> holds Oliver's, then print both spots on one line, Oliver's first.</p>
+<p>Once you do <code>oliver = sabina</code>, Oliver's old value is gone. Save it in a third variable first. Three assignments do the whole job.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: oliver = 'sofa', sabina = 'basket'
+Output: basket sofa
+Explanation: Oliver moves to the basket and Sabina to the sofa.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: oliver = 'rug', sabina = 'rug'
+Output: rug rug
+Explanation: both spots are the same, so the swap changes nothing you can see.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each spot is a word with no spaces.</li>
+  </ul>
+</div>
+<p>The program starts with the two assignments already written.</p>
 <table>
   <thead><tr><th><code>oliver</code>, <code>sabina</code></th><th>Output</th></tr></thead>
   <tbody>
@@ -49,23 +67,43 @@
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Use a third variable during the swap. Do not type the spot values again.</li>
-    <li>Use one assignment per statement. Do not use <code>a, b = b, a</code> (that form comes later in the course).</li>
+    <li>One assignment per statement. No <code>a, b = b, a</code> (that form comes later in the course).</li>
     <li>No <code>+=</code>.</li>
-    <li>Print both spots on one line using one <code>print()</code>.</li>
+    <li>Print both spots on one line with one <code>print()</code>.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep <code>oliver = 'sofa'</code> and <code>sabina = 'basket'</code> unchanged. The checker will replace them with the other test values.</p>
+<p class="wb-meta">Keep <code>oliver = 'sofa'</code> and <code>sabina = 'basket'</code> unchanged. The checker will replace them with the other values.</p>
 <wb-exercise id="swap"></wb-exercise>
 
 <h2 id="seats" data-toc-title="👾 Filling EN2043">👾 Boss 2: Filling EN2043</h2>
-<p>COMP 1001 meets in EN2043. The 120 students arrive in three groups.</p>
-<p>The program starts with <code>seated = 0</code>, and the three group sizes are stored in <code>group_1</code>, <code>group_2</code>, and <code>group_3</code>.</p>
-<p>After each group arrives, add that group to <code>seated</code> and print the new total in exactly this format:</p>
-<pre class="wb-output">After group 1: 40
+<p>COMP 1001 meets in EN2043 and the 120 students arrive in three groups. You are given the three group sizes, <code>group_1</code>, <code>group_2</code>, and <code>group_3</code>, and a count <code>seated</code> that starts at 0. Seat each group in turn: add it to <code>seated</code> and print the new total after each group. A negative group means some students left.</p>
+<p>Keep using the same variable. Each time, take the current value of <code>seated</code>, add the next group, and store the result back into <code>seated</code>. Each <code>print()</code> shows a text label followed by the current total.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: group_1 = 40, group_2 = 25, group_3 = 55
+Output:
+After group 1: 40
 After group 2: 65
-After group 3: 120</pre>
-<p>Keep using the same variable, <code>seated</code>. Each time, take its current value, add the next group, and store the result back into <code>seated</code>. Each <code>print()</code> shows a text label followed by the current total.</p>
-<p>A negative group means some students left.</p>
+After group 3: 120
+Explanation: 0 + 40 is 40, then 40 + 25 is 65, then 65 + 55 is 120.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: group_1 = 50, group_2 = -10, group_3 = 80
+Output:
+After group 1: 50
+After group 2: 40
+After group 3: 120
+Explanation: ten students left after the first group, so the count goes down before the last group arrives.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>-120 &lt;= group_1, group_2, group_3 &lt;= 120</code></li>
+    <li><code>seated</code> starts at 0.</li>
+  </ul>
+</div>
+<p>The program starts with the four assignments already written.</p>
 <table>
   <thead><tr><th><code>group_1</code>, <code>group_2</code>, <code>group_3</code></th><th>Output</th></tr></thead>
   <tbody>
@@ -78,7 +116,7 @@ After group 3: 120</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Update <code>seated</code> three times using <code>seated = seated + ...</code>.</li>
+    <li>Update <code>seated</code> three times in the form <code>seated = seated + ...</code>.</li>
     <li>No <code>+=</code>.</li>
     <li>Print exactly three lines in the format shown.</li>
     <li><code>seated</code> must still be an <code>int</code> at the end.</li>
@@ -88,14 +126,35 @@ After group 3: 120</pre>
 <wb-exercise id="seats"></wb-exercise>
 
 <h2 id="vet" data-toc-title="🐉 Vet record">🐉 Boss 3: Vet Record</h2>
-<p>Oliver's vet record stores four values: <code>pet</code>, <code>age</code>, <code>weight</code> (in kilograms), and <code>vaccinated</code>.</p>
-<p>Print each value followed by its type, one per line, in this order:</p>
-<pre class="wb-output">Oliver &lt;class 'str'&gt;
+<p>You are given four values from Oliver's vet record: <code>pet</code>, <code>age</code>, <code>weight</code> in kilograms, and <code>vaccinated</code>. Print each value followed by its type, one per line, in that order.</p>
+<p>The checker changes both the values and their types between runs, so your program must ask Python with <code>type()</code> each time it runs. The type belongs to the value, not the name.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: pet = 'Oliver', age = 7, weight = 3.5, vaccinated = True
+Output:
+Oliver &lt;class 'str'&gt;
 7 &lt;class 'int'&gt;
 3.5 &lt;class 'float'&gt;
-True &lt;class 'bool'&gt;</pre>
-<p>Do not assume the types will always stay the same. The checker will change both the values and their types. For example, in one run the record is Sabina's, <code>age</code> becomes the text <code>'unknown'</code>, and <code>weight</code> becomes the whole number <code>4</code>.</p>
-<p>The type belongs to the value, not the name, so your program must use <code>type()</code> to find the type each time it runs.</p>
+True &lt;class 'bool'&gt;
+Explanation: each line is the value, a space, and what type() reports for it.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: pet = 'Sabina', age = 'unknown', weight = 4, vaccinated = True
+Output:
+Sabina &lt;class 'str'&gt;
+unknown &lt;class 'str'&gt;
+4 &lt;class 'int'&gt;
+True &lt;class 'bool'&gt;
+Explanation: this time age is text and weight is a whole number, so the types change with the values.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each value is an <code>int</code>, a <code>float</code>, a <code>str</code>, or a <code>bool</code>.</li>
+  </ul>
+</div>
+<p>The program starts with the four assignments already written.</p>
 <table>
   <thead><tr><th>Run</th><th><code>pet</code></th><th><code>age</code></th><th><code>weight</code></th><th><code>vaccinated</code></th></tr></thead>
   <tbody>
@@ -109,8 +168,8 @@ True &lt;class 'bool'&gt;</pre>
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Use <code>type()</code> to get each type while the program runs.</li>
-    <li>Do not write <code>class</code>, <code>int</code>, <code>float</code>, <code>str</code>, or <code>bool</code> directly in your code.</li>
-    <li>Print the variables, not copied literal values. A run that changes a value must change the output.</li>
+    <li>Do not write <code>class</code>, <code>int</code>, <code>float</code>, <code>str</code>, or <code>bool</code> in your code (comments are fine).</li>
+    <li>Print the variables, not copied values. A run that changes a value must change the output.</li>
     <li>Print exactly four lines in the order given.</li>
   </ul>
 </div>
@@ -118,12 +177,26 @@ True &lt;class 'bool'&gt;</pre>
 <wb-exercise id="vet"></wb-exercise>
 
 <h2 id="repair" data-toc-title="💀 Repair the course record">💀 Boss 4: Repair the Course Record</h2>
-<p>This boss already has some code, but the code is broken.</p>
-<p>It is supposed to print the lecture room, the course, the instructor, and the number of students after one more registers:</p>
-<pre class="wb-output">EN2043 COMP 1001 Pranjal Patra 120</pre>
-<p>There are five problems in the starter code. They are all based on Lecture 4 topics: invalid variable names, a reserved word being used as a variable name, a value that stays fixed all term but is not written as a constant, and inconsistent spelling of a variable name.</p>
-<p>Run the program, read the error, fix one thing at a time, and keep going until it prints the line above.</p>
-<p>You can rename variables, but keep the same meaning: the room, the course code, the instructor, and the number of students should each have their own variable.</p>
+<p>You are given a broken program. It is meant to print the lecture room, the course, the instructor, and the number of students after one more registers, all on one line. There are five problems in it, all from Lecture 4: invalid variable names, a reserved word used as a variable name, a value that stays fixed all term but is not written as a constant, and inconsistent spelling of a variable name.</p>
+<p>Run the program, read the error, fix one thing at a time, and keep going until it prints the right line. You can rename variables, but keep the same meaning: the room, the course code, the instructor, and the number of students each get their own variable.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: students = 119
+Output: EN2043 COMP 1001 Pranjal Patra 120
+Explanation: one more student registers, so 119 becomes 120.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: students = 0
+Output: EN2043 COMP 1001 Pranjal Patra 1</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= students &lt;= 500</code></li>
+    <li>The room, course code, and instructor never change.</li>
+  </ul>
+</div>
 <table>
   <thead><tr><th><code>students</code></th><th>Output</th></tr></thead>
   <tbody>

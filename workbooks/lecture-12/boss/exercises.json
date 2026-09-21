@@ -10,7 +10,7 @@
       "xp": 10,
       "boss": "👹",
       "minLines": 12,
-      "starter": "DISCOUNT_RATE = 0.25\nprice = float(input('First price: $'))\nrows = int(input('Rows: '))\ncount = 0\n\nprint('Original  Discount  Sale')\n\n# Write the loop here.",
+      "starter": "DISCOUNT_RATE = 0.25\nprice = float(input('First price: $'))\nrows = int(input('Rows: '))\ncount = 0\n\nprint('Original Discount Sale')\n\n# Write the loop here.",
       "cases": [
         {
           "name": "Typed 20 and 3",
@@ -18,7 +18,7 @@
             "20",
             "3"
           ],
-          "expected": "First price: $Rows: Original  Discount  Sale\n$20.00  $5.00  $15.00\n$25.00  $6.25  $18.75\n$30.00  $7.50  $22.50"
+          "expected": "First price: $Rows: Original Discount Sale\n$20.00 $5.00 $15.00\n$25.00 $6.25 $18.75\n$30.00 $7.50 $22.50"
         },
         {
           "name": "Typed 12.5 and 0",
@@ -26,7 +26,7 @@
             "12.5",
             "0"
           ],
-          "expected": "First price: $Rows: Original  Discount  Sale"
+          "expected": "First price: $Rows: Original Discount Sale"
         },
         {
           "name": "Typed 9.99 and 2",
@@ -34,7 +34,7 @@
             "9.99",
             "2"
           ],
-          "expected": "First price: $Rows: Original  Discount  Sale\n$9.99  $2.50  $7.49\n$14.99  $3.75  $11.24"
+          "expected": "First price: $Rows: Original Discount Sale\n$9.99 $2.50 $7.49\n$14.99 $3.75 $11.24"
         },
         {
           "name": "Typed 4 and 1",
@@ -42,14 +42,14 @@
             "4",
             "1"
           ],
-          "expected": "First price: $Rows: Original  Discount  Sale\n$4.00  $1.00  $3.00"
+          "expected": "First price: $Rows: Original Discount Sale\n$4.00 $1.00 $3.00"
         }
       ],
-      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert __source__.count(\"DISCOUNT_RATE\") >= 2, \"Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again.\"\nassert \":.2f\" in __source__, \"Show every amount with :.2f in the f-string.\"\nassert __source__.count(\"print(\") == 2, \"Print one row per pass with a single print() inside the loop, and keep the heading print() outside it.\"\nassert count == rows, \"Add 1 to count on every pass so the loop stops after rows passes.\"\n",
-      "answer": "RElTQ09VTlRfUkFURSA9IDAuMjUKcHJpY2UgPSBmbG9hdChpbnB1dCgnRmlyc3QgcHJpY2U6ICQnKSkKcm93cyA9IGludChpbnB1dCgnUm93czogJykpCmNvdW50ID0gMAoKcHJpbnQoJ09yaWdpbmFsICBEaXNjb3VudCAgU2FsZScpCndoaWxlIGNvdW50IDwgcm93czoKICAgIGRpc2NvdW50ID0gcHJpY2UgKiBESVNDT1VOVF9SQVRFCiAgICBzYWxlX3ByaWNlID0gcHJpY2UgLSBkaXNjb3VudAogICAgcHJpbnQoZicke3ByaWNlOi4yZn0gICR7ZGlzY291bnQ6LjJmfSAgJHtzYWxlX3ByaWNlOi4yZn0nKQogICAgcHJpY2UgPSBwcmljZSArIDUKICAgIGNvdW50ID0gY291bnQgKyAx",
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert __code__.count(\"DISCOUNT_RATE\") >= 2, \"Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Show every amount with :.2f in the f-string.\"\nassert __code__.count(\"print(\") == 2, \"Print one row per pass with a single print() inside the loop, and keep the heading print() outside it.\"\nassert count == rows, \"Add 1 to count on every pass so the loop stops after rows passes.\"\n",
+      "answer": "RElTQ09VTlRfUkFURSA9IDAuMjUKcHJpY2UgPSBmbG9hdChpbnB1dCgnRmlyc3QgcHJpY2U6ICQnKSkKcm93cyA9IGludChpbnB1dCgnUm93czogJykpCmNvdW50ID0gMAoKcHJpbnQoJ09yaWdpbmFsIERpc2NvdW50IFNhbGUnKQp3aGlsZSBjb3VudCA8IHJvd3M6CiAgICBkaXNjb3VudCA9IHByaWNlICogRElTQ09VTlRfUkFURQogICAgc2FsZV9wcmljZSA9IHByaWNlIC0gZGlzY291bnQKICAgIHByaW50KGYnJHtwcmljZTouMmZ9ICR7ZGlzY291bnQ6LjJmfSAke3NhbGVfcHJpY2U6LjJmfScpCiAgICBwcmljZSA9IHByaWNlICsgNQogICAgY291bnQgPSBjb3VudCArIDE=",
       "hints": [
         "Loop while `count < rows`. On each pass, `discount` is `price * DISCOUNT_RATE` and the sale price is `price - discount`.",
-        "Print the three amounts in one f-string with `:.2f` after each and two spaces between them. Then add 5 to `price` and 1 to `count`."
+        "Print the three amounts in one f-string with `:.2f` after each and one space between them. Then add 5 to `price` and 1 to `count`."
       ],
       "answerNote": "Both price and count are updated on every pass. When rows is 0, the first test is false, so only the heading is printed."
     },
@@ -101,7 +101,7 @@
           "expected": "First group: Second group: Largest shared team size: 1"
         }
       ],
-      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"%\" in __source__, \"Use % to test whether team_size divides a group exactly.\"\nassert \"gcd\" not in __source__ and \"import\" not in __source__, \"Search for the answer with the loop; do not import a module.\"\nassert \"team_size - 1\" in __source__ or \"team_size -= 1\" in __source__, \"Decrease team_size by 1 on each pass.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"%\" in __code__, \"Use % to test whether team_size divides a group exactly.\"\nassert \"gcd\" not in __code__ and \"import\" not in __code__, \"Search for the answer with the loop; do not import a module.\"\nassert re.search(r\"team_size\\s*-=\\s*1\\b|team_size\\s*=\\s*team_size\\s*-\\s*1\\b\", __code__), \"Decrease team_size by 1 on each pass.\"\nassert __code__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
       "answer": "Zmlyc3QgPSBpbnQoaW5wdXQoJ0ZpcnN0IGdyb3VwOiAnKSkKc2Vjb25kID0gaW50KGlucHV0KCdTZWNvbmQgZ3JvdXA6ICcpKQp0ZWFtX3NpemUgPSBtaW4oZmlyc3QsIHNlY29uZCkKCndoaWxlIGZpcnN0ICUgdGVhbV9zaXplICE9IDAgb3Igc2Vjb25kICUgdGVhbV9zaXplICE9IDA6CiAgICB0ZWFtX3NpemUgPSB0ZWFtX3NpemUgLSAxCgpwcmludCgnTGFyZ2VzdCBzaGFyZWQgdGVhbSBzaXplOicsIHRlYW1fc2l6ZSk=",
       "hints": [
         "The starter sets `team_size` to the largest size that could work. Try smaller sizes one at a time by subtracting 1 from `team_size` on each pass.",
@@ -153,7 +153,7 @@
           "expected": "Binary: Decimal: 255"
         }
       ],
-      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\n\nassert \"len(bits)\" in __source__, \"Test index against len(bits) so every character is processed once.\"\nassert \"bits[index]\" in __source__, \"Pick one character out of bits with bits[index].\"\nassert not re.search(r\"int\\(\\s*bits\\s*,\", __source__), \"Build the value one digit at a time; int(bits, 2) is not part of this course.\"\nassert \"* 2\" in __source__ or \"*2\" in __source__, \"Double the value built so far before adding the new digit.\"\nassert __source__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a while loop; for is not part of this lecture.\"\n\nassert \"len(bits)\" in __code__, \"Test index against len(bits) so every character is processed once.\"\nassert \"bits[index]\" in __code__, \"Pick one character out of bits with bits[index].\"\nassert not re.search(r\"int\\(\\s*bits\\s*,\", __code__), \"Build the value one digit at a time; int(bits, 2) is not part of this course.\"\nassert re.search(r\"\\*\\s*2\\b|\\b2\\s*\\*\", __code__), \"Double the value built so far before adding the new digit.\"\nassert __code__.count(\"print(\") == 1, \"Keep the single print() after the loop.\"\n",
       "answer": "Yml0cyA9IGlucHV0KCdCaW5hcnk6ICcpCmluZGV4ID0gMAp2YWx1ZSA9IDAKCndoaWxlIGluZGV4IDwgbGVuKGJpdHMpOgogICAgdmFsdWUgPSB2YWx1ZSAqIDIgKyBpbnQoYml0c1tpbmRleF0pCiAgICBpbmRleCA9IGluZGV4ICsgMQoKcHJpbnQoJ0RlY2ltYWw6JywgdmFsdWUp",
       "hints": [
         "The starter sets `index` and `value` to 0. Loop while `index < len(bits)`, look at one character with `bits[index]` on each pass, and add 1 to `index` at the end of the pass.",
@@ -198,7 +198,7 @@
           "expected": "Terms: After 1: 4.000000\nAfter 2: 2.666667\nAfter 3: 3.466667\nAfter 4: 2.895238\nAfter 5: 3.339683\nAfter 6: 2.976046\nAfter 7: 3.283738\nAfter 8: 3.017072\nAfter 9: 3.252366\nAfter 10: 3.041840"
         }
       ],
-      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __source__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __source__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"math\" not in __source__ and \"import\" not in __source__, \"Build the estimate with the loop; do not import a module.\"\nassert \":.6f\" in __source__, \"Show the estimate with :.6f in the f-string.\"\nassert __source__.count(\"print(\") == 1, \"Print one estimate per pass with a single print() inside the loop.\"\nassert denominator == 2 * terms + 1, \"Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on.\"\nassert sign == (1 if terms % 2 == 0 else -1), \"Flip sign on every pass so the terms alternate between adding and subtracting.\"\nassert step == terms + 1, \"Add 1 to step on every pass and stop after terms passes.\"\n",
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Repeat the work with a while loop.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a while loop; for is not part of this lecture.\"\nassert \"math\" not in __code__ and \"import\" not in __code__, \"Build the estimate with the loop; do not import a module.\"\nassert re.search(r\":[^}]*\\.6f\\}\", __source__), \"Show the estimate with :.6f in the f-string.\"\nassert __code__.count(\"print(\") == 1, \"Print one estimate per pass with a single print() inside the loop.\"\nassert denominator == 2 * terms + 1, \"Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on.\"\nassert sign == (1 if terms % 2 == 0 else -1), \"Flip sign on every pass so the terms alternate between adding and subtracting.\"\nassert step == terms + 1, \"Add 1 to step on every pass and stop after terms passes.\"\n",
       "answer": "dGVybXMgPSBpbnQoaW5wdXQoJ1Rlcm1zOiAnKSkKc3RlcCA9IDEKZGVub21pbmF0b3IgPSAxCnNpZ24gPSAxCmVzdGltYXRlID0gMC4wCgp3aGlsZSBzdGVwIDw9IHRlcm1zOgogICAgZXN0aW1hdGUgPSBlc3RpbWF0ZSArIHNpZ24gKiA0IC8gZGVub21pbmF0b3IKICAgIHByaW50KGYnQWZ0ZXIge3N0ZXB9OiB7ZXN0aW1hdGU6LjZmfScpCiAgICBkZW5vbWluYXRvciA9IGRlbm9taW5hdG9yICsgMgogICAgc2lnbiA9IC1zaWduCiAgICBzdGVwID0gc3RlcCArIDE=",
       "hints": [
         "Loop while `step <= terms`. On each pass add one term to `estimate`, print, then update `denominator`, `sign` and `step`.",

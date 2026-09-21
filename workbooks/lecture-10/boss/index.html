@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 10 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-10-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 10 Boss Problems</h1>
+    <div class="wb-subtitle">Nested branches and elif chains</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 10 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>%</code> and <code>**</code>, string indexes, f-strings, comparisons, and decisions with <code>if</code>, <code>elif</code>, and <code>else</code>, including one decision nested inside another. There is no <code>and</code> or <code>or</code> yet. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its value with <code>input()</code>. Keep that line exactly as it is: <strong>Check</strong> runs your program several times, typing a different answer at the prompt each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="shape" data-toc-title="👹 Name that shape">👹 Boss 1: Name That Shape</h2>
+<p>The stop signs along Prince Philip Drive have eight sides. You are given a number of sides, <code>sides</code>. Print the name of the shape for 3 to 10 sides: triangle, quadrilateral, pentagon, hexagon, heptagon, octagon, nonagon, decagon. For any other count, say the program does not know it.</p>
+<p>Read <code>sides</code> with <code>input()</code> and print one sentence.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: sides = 8
+Output: A shape with 8 sides is an octagon.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: sides = 2
+Output: A shape with 2 sides is not one this program knows.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= sides &lt;= 100</code></li>
+    <li>Store the name with its article (<code>a triangle</code>, <code>an octagon</code>) so one print works for every branch.</li>
+  </ul>
+</div>
+<p>The program reads the count after the prompt <code>Sides: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Sides: </span><span class="wb-typed">8</span>
+A shape with 8 sides is an octagon.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>8</code></td><td><code>A shape with 8 sides is an octagon.</code></td></tr>
+    <tr><td><code>3</code></td><td><code>A shape with 3 sides is a triangle.</code></td></tr>
+    <tr><td><code>10</code></td><td><code>A shape with 10 sides is a decagon.</code></td></tr>
+    <tr><td><code>2</code></td><td><code>A shape with 2 sides is not one this program knows.</code></td></tr>
+    <tr><td><code>11</code></td><td><code>A shape with 11 sides is not one this program knows.</code></td></tr>
+    <tr><td><code>6</code></td><td><code>A shape with 6 sides is a hexagon.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>One <code>if</code>/<code>elif</code>/<code>else</code> chain, ending with <code>else</code>.</li>
+    <li>No <code>and</code>, <code>or</code>, or <code>not</code>.</li>
+    <li>One <code>print()</code>, after the chain.</li>
+    <li>End the sentence with a full stop.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>sides = int(input('Sides: '))</code> unchanged. The checker will type the other counts.</p>
+<wb-exercise id="shape"></wb-exercise>
+
+<h2 id="richter" data-toc-title="👾 Richter scale">👾 Boss 2: Richter Scale</h2>
+<p>Newfoundland rarely shakes, but the 1929 Grand Banks earthquake measured 7.2 and sent a tsunami into the Burin Peninsula. You are given a magnitude on the Richter scale, <code>magnitude</code>. Print its descriptor from this table.</p>
+<table>
+  <thead><tr><th>Magnitude</th><th>Descriptor</th></tr></thead>
+  <tbody>
+    <tr><td>less than 2.0</td><td>micro</td></tr>
+    <tr><td>2.0 to less than 3.0</td><td>very minor</td></tr>
+    <tr><td>3.0 to less than 4.0</td><td>minor</td></tr>
+    <tr><td>4.0 to less than 5.0</td><td>light</td></tr>
+    <tr><td>5.0 to less than 6.0</td><td>moderate</td></tr>
+    <tr><td>6.0 to less than 7.0</td><td>strong</td></tr>
+    <tr><td>7.0 to less than 8.0</td><td>major</td></tr>
+    <tr><td>8.0 to less than 10.0</td><td>great</td></tr>
+    <tr><td>10.0 or more</td><td>meteoric</td></tr>
+  </tbody>
+</table>
+<p>Read <code>magnitude</code> with <code>input()</code> as a <code>float</code> and print one sentence.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: magnitude = 7.2
+Output: A magnitude 7.2 earthquake is major.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: magnitude = 2.0
+Output: A magnitude 2.0 earthquake is very minor.
+Explanation: Each range includes its lower bound and not its upper bound.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= magnitude &lt;= 12</code></li>
+  </ul>
+</div>
+<p>The program reads the value after the prompt <code>Magnitude: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Magnitude: </span><span class="wb-typed">7.2</span>
+A magnitude 7.2 earthquake is major.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>7.2</code></td><td><code>A magnitude 7.2 earthquake is major.</code></td></tr>
+    <tr><td><code>5.5</code></td><td><code>A magnitude 5.5 earthquake is moderate.</code></td></tr>
+    <tr><td><code>2.0</code></td><td><code>A magnitude 2.0 earthquake is very minor.</code></td></tr>
+    <tr><td><code>1.9</code></td><td><code>A magnitude 1.9 earthquake is micro.</code></td></tr>
+    <tr><td><code>10</code></td><td><code>A magnitude 10.0 earthquake is meteoric.</code></td></tr>
+    <tr><td><code>6</code></td><td><code>A magnitude 6.0 earthquake is strong.</code></td></tr>
+    <tr><td><code>8.0</code></td><td><code>A magnitude 8.0 earthquake is great.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>One <code>if</code>/<code>elif</code>/<code>else</code> chain, ending with <code>else</code>.</li>
+    <li>One comparison per branch. No <code>and</code>, <code>or</code>, or <code>not</code>.</li>
+    <li>One <code>print()</code>, after the chain.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>magnitude = float(input('Magnitude: '))</code> unchanged. The checker will type the other magnitudes.</p>
+<wb-exercise id="richter"></wb-exercise>
+
+<h2 id="zodiac" data-toc-title="🐉 Chinese zodiac">🐉 Boss 3: Chinese Zodiac</h2>
+<p>The Chinese zodiac gives each year an animal in a cycle of twelve. One cycle is below, and the pattern repeats in both directions: 2012 is another year of the Dragon and 1999 another year of the Hare. Oliver was born in 2019, which makes him a Pig. You are given a year, <code>year</code>. Print its animal.</p>
+<table>
+  <thead><tr><th>Year</th><th>Animal</th><th>Year</th><th>Animal</th></tr></thead>
+  <tbody>
+    <tr><td>2000</td><td>Dragon</td><td>2006</td><td>Dog</td></tr>
+    <tr><td>2001</td><td>Snake</td><td>2007</td><td>Pig</td></tr>
+    <tr><td>2002</td><td>Horse</td><td>2008</td><td>Rat</td></tr>
+    <tr><td>2003</td><td>Sheep</td><td>2009</td><td>Ox</td></tr>
+    <tr><td>2004</td><td>Monkey</td><td>2010</td><td>Tiger</td></tr>
+    <tr><td>2005</td><td>Rooster</td><td>2011</td><td>Hare</td></tr>
+  </tbody>
+</table>
+<p>Read <code>year</code> with <code>input()</code> and print one sentence. The program must work for any year from 0 up, not only the twelve in the table.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: year = 2019
+Output: 2019 is the year of the Pig.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: year = 1925
+Output: 1925 is the year of the Ox.
+Explanation: 1925 is 84 years before 2009, and 84 is 7 whole cycles.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= year &lt;= 9999</code></li>
+  </ul>
+</div>
+<p>The program reads the year after the prompt <code>Year: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Year: </span><span class="wb-typed">2019</span>
+2019 is the year of the Pig.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2019</code></td><td><code>2019 is the year of the Pig.</code></td></tr>
+    <tr><td><code>2000</code></td><td><code>2000 is the year of the Dragon.</code></td></tr>
+    <tr><td><code>2026</code></td><td><code>2026 is the year of the Horse.</code></td></tr>
+    <tr><td><code>1999</code></td><td><code>1999 is the year of the Hare.</code></td></tr>
+    <tr><td><code>1925</code></td><td><code>1925 is the year of the Ox.</code></td></tr>
+    <tr><td><code>0</code></td><td><code>0 is the year of the Monkey.</code></td></tr>
+    <tr><td><code>2035</code></td><td><code>2035 is the year of the Hare.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>%</code> to find the year's place in the cycle.</li>
+    <li>One <code>if</code>/<code>elif</code>/<code>else</code> chain with one branch per animal.</li>
+    <li>No <code>and</code>, <code>or</code>, or <code>not</code>.</li>
+    <li>One <code>print()</code>, after the chain.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>year = int(input('Year: '))</code> unchanged. The checker will type the other years.</p>
+<wb-exercise id="zodiac"></wb-exercise>
+
+<h2 id="note" data-toc-title="💀 Note to frequency">💀 Boss 4: Note to Frequency</h2>
+<p>A note name is a letter and an octave number, like <code>A4</code>. The table gives the seven notes of the fourth octave, starting at middle C. A note one octave higher has twice the frequency and a note one octave lower has half of it, so <code>A5</code> is 880.00 Hz and <code>A3</code> is 220.00 Hz. You are given a note name, <code>note</code>, from <code>C0</code> to <code>B8</code>. Print its frequency with two decimal places.</p>
+<table>
+  <thead><tr><th>Note</th><th>Frequency (Hz)</th></tr></thead>
+  <tbody>
+    <tr><td><code>C4</code></td><td>261.63</td></tr>
+    <tr><td><code>D4</code></td><td>293.66</td></tr>
+    <tr><td><code>E4</code></td><td>329.63</td></tr>
+    <tr><td><code>F4</code></td><td>349.23</td></tr>
+    <tr><td><code>G4</code></td><td>392.00</td></tr>
+    <tr><td><code>A4</code></td><td>440.00</td></tr>
+    <tr><td><code>B4</code></td><td>493.88</td></tr>
+  </tbody>
+</table>
+<p>Read <code>note</code> with <code>input()</code> and print one line. A chain with one branch per octave would need 63 cases. Use one chain for the letter only and arithmetic for the octave.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: note = A4
+Output: A4 has a frequency of 440.00 Hz.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: note = C5
+Output: C5 has a frequency of 523.26 Hz.
+Explanation: One octave above C4, so 2 * 261.63.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: note = C0
+Output: C0 has a frequency of 16.35 Hz.
+Explanation: Four octaves below C4, so 261.63 halved four times.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>note</code> is two characters: a capital letter from <code>A</code> to <code>G</code>, then a digit from <code>0</code> to <code>8</code>.</li>
+    <li>The note is always valid.</li>
+  </ul>
+</div>
+<p>The program reads the note after the prompt <code>Note: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Note: </span><span class="wb-typed">A4</span>
+A4 has a frequency of 440.00 Hz.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>A4</code></td><td><code>A4 has a frequency of 440.00 Hz.</code></td></tr>
+    <tr><td><code>C4</code></td><td><code>C4 has a frequency of 261.63 Hz.</code></td></tr>
+    <tr><td><code>C5</code></td><td><code>C5 has a frequency of 523.26 Hz.</code></td></tr>
+    <tr><td><code>A3</code></td><td><code>A3 has a frequency of 220.00 Hz.</code></td></tr>
+    <tr><td><code>C0</code></td><td><code>C0 has a frequency of 16.35 Hz.</code></td></tr>
+    <tr><td><code>B8</code></td><td><code>B8 has a frequency of 7902.08 Hz.</code></td></tr>
+    <tr><td><code>G6</code></td><td><code>G6 has a frequency of 1568.00 Hz.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Pick the letter and the digit out of <code>note</code> with indexes.</li>
+    <li>One chain of seven branches for the letter: an <code>if</code>, five <code>elif</code>, and an <code>else</code>.</li>
+    <li>Use <code>**</code> to move to the right octave.</li>
+    <li>No <code>and</code>, <code>or</code>, or <code>not</code>.</li>
+    <li>Show the frequency with <code>.2f</code> and print one line.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>note = input('Note: ')</code> unchanged. The checker will type the other notes.</p>
+<wb-exercise id="note"></wb-exercise>
+
+</main>
+</body>
+</html>

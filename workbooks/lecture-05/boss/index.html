@@ -27,15 +27,32 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 and 5 covered: variables, assignment, the arithmetic operators, <code>round()</code>, and the <code>math</code> module. There are no hints in the code box. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 and 5 covered: variables, assignment, the arithmetic operators, <code>round()</code>, and the <code>math</code> module. Plan the steps on paper first, then write the program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
   <p>Each problem starts with its values already assigned at the top of the program. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, swapping in different values each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program with the given values and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
 </section>
 <hr>
 <h2 id="digits" data-toc-title="👹 Sum of the digits">👹 Boss 1: Sum of the Digits</h2>
-<p>The program starts with a four-digit integer in <code>number</code>. Print the four digits added together, and their sum, on one line, like this for 3141:</p>
-<pre class="wb-output">3 + 1 + 4 + 1 = 9</pre>
-<p>Take the number apart with <code>//</code> and <code>%</code>: <code>3141 % 10</code> is the last digit, and <code>3141 // 10</code> is the number with the last digit removed. Do not turn the number into text. The <code>+</code> and <code>=</code> signs are text that <code>print()</code> displays between the values.</p>
+<p>You are given a four-digit integer, <code>number</code>. Print its four digits added together, and their sum, on one line.</p>
+<p>Take the number apart with <code>//</code> and <code>%</code>: <code>number % 10</code> is the last digit and <code>number // 10</code> is the number with the last digit removed. Do not turn the number into text. The <code>+</code> and <code>=</code> signs are text that <code>print()</code> displays between the values.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: number = 3141
+Output: 3 + 1 + 4 + 1 = 9
+Explanation: 3141 % 10 is 1, the last digit. 3141 // 10 is 314, and 314 % 10 is 4, the next digit.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: number = 1000
+Output: 1 + 0 + 0 + 0 = 1</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1000 &lt;= number &lt;= 9999</code></li>
+  </ul>
+</div>
+<p>The program starts with the assignment already written.</p>
 <table>
   <thead><tr><th><code>number</code></th><th>Output</th></tr></thead>
   <tbody>
@@ -54,19 +71,43 @@
     <li>Print everything on one line with a single <code>print()</code> call.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep the line <code>number = 3141</code> as given: the checker swaps in the other numbers.</p>
+<p class="wb-meta">Keep the line <code>number = 3141</code> as given. The checker swaps in the other numbers.</p>
 <wb-exercise id="digits"></wb-exercise>
 
 <h2 id="change" data-toc-title="👾 Making change">👾 Boss 2: Making Change</h2>
-<p>A self-checkout machine has to hand back change using as few coins as possible. It is loaded with toonies (200 cents), loonies (100), quarters (25), dimes (10), nickels (5), and pennies (1).</p>
-<p>The program starts with the change owed, in cents, in <code>cents</code>. Print how many of each coin the machine should give, one coin per line, largest coin first, in exactly this layout:</p>
-<pre class="wb-output">Toonies: 6
+<p>A self-checkout machine hands back change using as few coins as possible. It is loaded with toonies (200 cents), loonies (100), quarters (25), dimes (10), nickels (5), and pennies (1). You are given the change owed in cents, <code>cents</code>. Print how many of each coin the machine gives, one coin per line, largest coin first.</p>
+<p>Work from the largest coin down. For each coin, <code>//</code> tells you how many of that coin fit, and <code>%</code> tells you how much is still owed for the smaller coins.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: cents = 1234
+Output:
+Toonies: 6
 Loonies: 0
 Quarters: 1
 Dimes: 0
 Nickels: 1
-Pennies: 4</pre>
-<p>Work from the largest coin down. For each coin, <code>//</code> tells you how many of that coin fit, and <code>%</code> tells you how much is still owed for the smaller coins.</p>
+Pennies: 4
+Explanation: 1234 // 200 is 6 toonies, and 1234 % 200 leaves 34 cents: one quarter, one nickel, and four pennies.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: cents = 5
+Output:
+Toonies: 0
+Loonies: 0
+Quarters: 0
+Dimes: 0
+Nickels: 1
+Pennies: 0
+Explanation: every line is printed, even when the count is 0.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= cents &lt;= 10000</code></li>
+  </ul>
+</div>
+<p>The program starts with the assignment already written.</p>
 <table>
   <thead><tr><th><code>cents</code></th><th>Toonies</th><th>Loonies</th><th>Quarters</th><th>Dimes</th><th>Nickels</th><th>Pennies</th></tr></thead>
   <tbody>
@@ -84,12 +125,31 @@ Pennies: 4</pre>
     <li>Print exactly six lines, largest coin first, in the layout shown.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep the line <code>cents = 1234</code> as given: the checker swaps in the other amounts.</p>
+<p class="wb-meta">Keep the line <code>cents = 1234</code> as given. The checker swaps in the other amounts.</p>
 <wb-exercise id="change"></wb-exercise>
 
 <h2 id="sort3" data-toc-title="🐉 Sort three integers">🐉 Boss 3: Sort Three Integers</h2>
-<p>The program starts with three integers in <code>a</code>, <code>b</code>, and <code>c</code>. Print them on one line from smallest to largest, separated by spaces.</p>
-<p>Python has two built-in functions for this kind of job: <code>min(a, b, c)</code> returns the smallest of the values and <code>max(a, b, c)</code> the largest. Call them the way you call <code>round()</code>. That leaves the middle value, and there is a trick: the three values add up to smallest + middle + largest, so subtracting the two you already know from the total leaves the middle one. No sorting and no <code>if</code> statements are needed.</p>
+<p>You are given three integers, <code>a</code>, <code>b</code>, and <code>c</code>. Print them on one line from smallest to largest, separated by spaces.</p>
+<p>Python has two built-in functions for this job: <code>min(a, b, c)</code> returns the smallest of the values and <code>max(a, b, c)</code> the largest. Call them the way you call <code>round()</code>. That leaves the middle value, and there is a trick: the three values add up to smallest + middle + largest, so subtracting the two you already know from the total leaves the middle one. No sorting and no <code>if</code> statements are needed.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: a = 17, b = 4, c = 9
+Output: 4 9 17
+Explanation: the smallest is 4 and the largest is 17. The total is 30, and 30 - 4 - 17 is 9, the middle value.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: a = 3, b = 8, c = 3
+Output: 3 3 8
+Explanation: two values are equal. The subtraction still works: 14 - 3 - 8 is 3.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>-1000 &lt;= a, b, c &lt;= 1000</code></li>
+  </ul>
+</div>
+<p>The program starts with the three assignments already written.</p>
 <table>
   <thead><tr><th><code>a</code>, <code>b</code>, <code>c</code></th><th>Output</th></tr></thead>
   <tbody>
@@ -107,18 +167,39 @@ Pennies: 4</pre>
     <li>Print all three values on one line with a single <code>print()</code> call.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep the three assignment lines as given: the checker swaps in the other values.</p>
+<p class="wb-meta">Keep the three assignment lines as given. The checker swaps in the other values.</p>
 <wb-exercise id="sort3"></wb-exercise>
 
 <h2 id="earth" data-toc-title="💀 Distance on the Earth">💀 Boss 4: Distance Between Two Points on Earth</h2>
 <p>The Earth is curved, so the distance between two places is not a straight line. If one place is at latitude <i>t</i><sub>1</sub> and longitude <i>g</i><sub>1</sub>, and the other at <i>t</i><sub>2</sub> and <i>g</i><sub>2</sub>, the distance along the surface, in kilometres, is</p>
 <p style="text-align: center"><i>d</i> = 6371.01 × arccos(sin <i>t</i><sub>1</sub> × sin <i>t</i><sub>2</sub> + cos <i>t</i><sub>1</sub> × cos <i>t</i><sub>2</sub> × cos(<i>g</i><sub>1</sub> − <i>g</i><sub>2</sub>))</p>
 <p>where 6371.01 is the average radius of the Earth in kilometres.</p>
-<p>The program starts with the two places in degrees: <code>lat1</code> and <code>lon1</code> are St. John's, <code>lat2</code> and <code>lon2</code> the other city. Print the distance rounded to one decimal place.</p>
+<p>You are given the two places in degrees: <code>lat1</code> and <code>lon1</code> are St. John's, <code>lat2</code> and <code>lon2</code> the other city. Print the distance rounded to one decimal place.</p>
 <div class="wb-callout is-warn">
   <div class="wb-callout-title">Degrees in, radians expected</div>
   <p>The trigonometric functions in the <code>math</code> module work in radians, not degrees. Convert every angle with <code>math.radians()</code> first. The inverse cosine is <code>math.acos()</code>.</p>
 </div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: lat2 = 45.4215, lon2 = -75.6972
+Output: 1768.9
+Explanation: the other city is Ottawa. All four angles are converted to radians, the formula gives 1768.93..., and round(..., 1) keeps one decimal.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: lat2 = -33.8688, lon2 = 151.2093
+Output: 17506.1
+Explanation: Sydney. A negative latitude is south of the equator and a positive longitude is east of Greenwich; the formula handles both.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>-90 &lt;= lat1, lat2 &lt;= 90</code></li>
+    <li><code>-180 &lt;= lon1, lon2 &lt;= 180</code></li>
+    <li><code>lat1</code> and <code>lon1</code> are always St. John's.</li>
+  </ul>
+</div>
+<p>The program starts with the four assignments already written.</p>
 <table>
   <thead><tr><th>From St. John's to</th><th><code>lat2</code></th><th><code>lon2</code></th><th>Output</th></tr></thead>
   <tbody>
@@ -136,7 +217,7 @@ Pennies: 4</pre>
     <li>Round with <code>round(..., 1)</code> and print only the distance.</li>
   </ul>
 </div>
-<p class="wb-meta">Keep the four assignment lines as given: the checker swaps in the other cities.</p>
+<p class="wb-meta">Keep the four assignment lines as given. The checker swaps in the other cities.</p>
 <wb-exercise id="earth"></wb-exercise>
 
 </main>

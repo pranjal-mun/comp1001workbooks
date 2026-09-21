@@ -23,9 +23,9 @@ def cases(solution, *runs):
     """One case per set of typed answers: (name, [answers...])."""
     return [{"name": name, "inputs": list(inputs), "expected": run(solution, inputs)} for name, inputs in runs]
 
-FSTRING = 'assert "f\'" in __source__ or \'f"\' in __source__, "Build the output with an f-string (f before the opening quote)."\n'
-NO_IF = 'assert "if " not in __source__, "No if statements: arithmetic alone does the job."\n'
-NO_LOOP = 'assert "for " not in __source__ and "while " not in __source__, "No loops: use the formula."\n'
+FSTRING = 'assert "f\'" in __code__ or \'f"\' in __code__, "Build the output with an f-string (f before the opening quote)."\n'
+NO_IF = 'assert "if " not in __code__, "No if statements: arithmetic alone does the job."\n'
+NO_LOOP = 'assert "for " not in __code__ and "while " not in __code__, "No loops: use the formula."\n'
 
 E = {}
 
@@ -75,9 +75,9 @@ loaves = int(input('Loaves: '))
 regular = loaves * PRICE
 discount = regular * DISCOUNT_RATE
 total = regular - discount
-print(f'Regular price: ${regular:7.2f}')
-print(f'Discount:      ${discount:7.2f}')
-print(f'Total:         ${total:7.2f}')
+print(f'${regular:7.2f} regular price')
+print(f'${discount:7.2f} discount')
+print(f'${total:7.2f} total')
 """
 E["bread"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 9,
     "starter": "loaves = input('Loaves: ')\n# Print the regular price, the discount, and the total.\n",
@@ -87,11 +87,11 @@ assert type(loaves) is int, "Convert the typed text with int(): loaves is a whol
 assert "round(" not in __source__, "Do not round the values; let the .2f specifier format the display."
 assert len(re.findall(r":\\s*[<>^]?\\d+\\.2f", __source__)) >= 3, "Give each amount a width and two decimals, as in {total:7.2f}, so the decimal points line up."
 lines = __stdout__.split("Loaves: ", 1)[-1].strip().splitlines()
-assert len(lines) == 3, "Print exactly three lines: regular price, discount, and total."
+assert len(lines) == 3, "Print exactly three lines: the regular price, the discount, and the total."
 assert len({line.find("$") for line in lines}) == 1 and len({line.rfind(".") for line in lines}) == 1, "The dollar signs and the decimal points must line up in one column."
 """,
     "answer": b64(bread),
-    "answerNote": "A width of 7 leaves room for amounts up to 9999.99. The dollar sign is ordinary text before the braces."}
+    "answerNote": "A width of 7 leaves room for amounts up to 9999.99 and pads smaller ones with spaces on the left, so the amounts line up on their own. The dollar sign and the label are ordinary text around the braces."}
 
 # ---------------------------------------------------------------- 4 Countdown
 countdown = """seconds = int(input('Seconds: '))
@@ -108,12 +108,15 @@ E["countdown"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 8,
     "cases": cases(countdown, ("Typed 93784", ["93784"]), ("Typed 59", ["59"]), ("Typed 86400", ["86400"]), ("Typed 1000000", ["1000000"])),
     "check": FSTRING + NO_IF + """import re
 assert type(seconds) is int, "Convert the typed text with int(): seconds is a whole number."
-assert "//" in __source__ and "%" in __source__, "Split the seconds with // (how many whole units fit) and % (what is left over)."
+assert "//" in __code__ and "%" in __code__, "Split the seconds with // (how many whole units fit) and % (what is left over)."
 assert re.search(r":0?2d?\\}", __source__), "Pad the hours, minutes, and seconds with the 02d specifier so each has two digits."
-assert "str(" not in __source__ and "zfill" not in __source__, "Do the padding with a format specifier, not by building text with str()."
+assert "str(" not in __code__ and "zfill" not in __code__, "Do the padding with a format specifier, not by building text with str()."
 assert len(__stdout__.strip().splitlines()) == 1, "Print one line with a single print() call."
 """,
     "answer": b64(countdown),
+    "hints": [
+        "There are 86400 seconds in a day, so `seconds // 86400` is the whole days and `seconds % 86400` is what is left for the hours. Do the same with 3600 for the hours and 60 for the minutes. `{hours:02d}` displays 2 as `02`.",
+    ],
     "answerNote": "Each // takes out the biggest unit that fits, and the matching % leaves the rest for the smaller units."}
 
 for spec in E.values():

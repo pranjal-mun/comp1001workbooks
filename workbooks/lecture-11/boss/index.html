@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 11 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-11-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 11 Boss Problems</h1>
+    <div class="wb-subtitle">Boolean operators, <code>bool</code>, and input validation</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 11 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>%</code>, string indexes and slices, f-strings, <code>if</code>/<code>elif</code>/<code>else</code> with nesting, the Boolean operators <code>and</code>, <code>or</code> and <code>not</code>, and string tests such as <code>isdigit()</code> and <code>isupper()</code>. No loops, no functions, and no <code>import</code>. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with <code>input()</code>. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, typing different answers at the prompts each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="leap" data-toc-title="👹 Leap year">👹 Boss 1: Leap Year</h2>
+<p>Most years have 365 days. A leap year has 366, and the rule for spotting one has three parts. A year divisible by 4 is a leap year, except that a year divisible by 100 is not, unless it is also divisible by 400. So 2024 is a leap year, 1900 is not, and 2000 is. You are given a year, <code>year</code>. Say whether it is a leap year.</p>
+<p>Read <code>year</code> with <code>input()</code> and print one sentence.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: year = 2024
+Output: 2024 is a leap year.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: year = 1900
+Output: 1900 is not a leap year.
+Explanation: 1900 is divisible by 4 and by 100, but not by 400.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= year &lt;= 9999</code></li>
+  </ul>
+</div>
+<p>The program reads the year after the prompt <code>Year: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Year: </span><span class="wb-typed">2024</span>
+2024 is a leap year.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2024</code></td><td><code>2024 is a leap year.</code></td></tr>
+    <tr><td><code>2023</code></td><td><code>2023 is not a leap year.</code></td></tr>
+    <tr><td><code>1900</code></td><td><code>1900 is not a leap year.</code></td></tr>
+    <tr><td><code>2000</code></td><td><code>2000 is a leap year.</code></td></tr>
+    <tr><td><code>2100</code></td><td><code>2100 is not a leap year.</code></td></tr>
+    <tr><td><code>1600</code></td><td><code>1600 is a leap year.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>.</li>
+    <li>One condition that joins the three <code>%</code> tests with <code>and</code> and <code>or</code>.</li>
+    <li>Print one line.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>year = int(input('Year: '))</code> unchanged. The checker will type the other years.</p>
+<wb-exercise id="leap"></wb-exercise>
+
+<h2 id="plate" data-toc-title="👾 Licence plate">👾 Boss 2: Licence Plate</h2>
+<p>A province is changing the shape of its licence plates. An old style plate is three capital letters followed by three digits, like <code>ABC123</code>. A new style plate is four digits followed by three capital letters, like <code>1234ABC</code>. You are given a plate, <code>plate</code>. Say whether it is old style, new style, or not a valid plate.</p>
+<p>Read <code>plate</code> with <code>input()</code> and print one sentence.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: plate = 1234ABC
+Output: 1234ABC is a new style plate.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: plate = abc123
+Output: abc123 is not a valid plate.
+Explanation: The letters must be capitals.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= len(plate) &lt;= 10</code></li>
+    <li><code>plate</code> has no spaces.</li>
+  </ul>
+</div>
+<p>The program reads the plate after the prompt <code>Plate: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Plate: </span><span class="wb-typed">ABC123</span>
+ABC123 is an old style plate.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>ABC123</code></td><td><code>ABC123 is an old style plate.</code></td></tr>
+    <tr><td><code>1234ABC</code></td><td><code>1234ABC is a new style plate.</code></td></tr>
+    <tr><td><code>abc123</code></td><td><code>abc123 is not a valid plate.</code></td></tr>
+    <tr><td><code>ABC12</code></td><td><code>ABC12 is not a valid plate.</code></td></tr>
+    <tr><td><code>1234abc</code></td><td><code>1234abc is not a valid plate.</code></td></tr>
+    <tr><td><code>123ABCD</code></td><td><code>123ABCD is not a valid plate.</code></td></tr>
+    <tr><td><code>A1B2C3</code></td><td><code>A1B2C3 is not a valid plate.</code></td></tr>
+    <tr><td><code>12345AB</code></td><td><code>12345AB is not a valid plate.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>One <code>if</code>/<code>elif</code>/<code>else</code> chain: old style, new style, not valid.</li>
+    <li>Test the length with <code>len()</code>, then the parts with slices and <code>isalpha()</code>, <code>isupper()</code> and <code>isdigit()</code>, joined with <code>and</code>.</li>
+    <li>Print one line.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>plate = input('Plate: ')</code> unchanged. The checker will type the other plates.</p>
+<wb-exercise id="plate"></wb-exercise>
+
+<h2 id="roulette" data-toc-title="🐉 Roulette payout">🐉 Boss 3: Roulette Payout</h2>
+<p>An American roulette wheel has 38 pockets: 1 to 36, 0 and 00. Players bet on a single number, on a colour, on odd or even, or on a half of the wheel. The colours follow a pattern: from 1 to 10 and 19 to 28 the odd numbers are red and the even numbers black, and from 11 to 18 and 29 to 36 it is the other way round. 0 and 00 are green and pay nothing except the number itself. You are given the pocket the ball landed in, <code>spin</code>. Print every bet that pays.</p>
+<p>Read <code>spin</code> with <code>input()</code> as text, so that <code>00</code> stays <code>00</code>. For 0 or 00, print only <code>Pay 0</code> or <code>Pay 00</code>. For any other spin print five lines in this order: the sentence <code>The spin landed on 13.</code>, then <code>Pay 13</code>, then <code>Pay Red</code> or <code>Pay Black</code>, then <code>Pay Odd</code> or <code>Pay Even</code>, then <code>Pay 1 to 18</code> or <code>Pay 19 to 36</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: spin = 13
+Output: The spin landed on 13.
+Pay 13
+Pay Black
+Pay Odd
+Pay 1 to 18
+Explanation: 13 is in the 11 to 18 group, where odd numbers are black.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: spin = 00
+Output: Pay 00</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>spin</code> is <code>0</code>, <code>00</code>, or a whole number from <code>1</code> to <code>36</code>.</li>
+  </ul>
+</div>
+<p>The program reads the spin after the prompt <code>Spin: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Spin: </span><span class="wb-typed">13</span>
+The spin landed on 13.
+Pay 13
+Pay Black
+Pay Odd
+Pay 1 to 18</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>13</code></td><td><code>The spin landed on 13.</code><br><code>Pay 13</code><br><code>Pay Black</code><br><code>Pay Odd</code><br><code>Pay 1 to 18</code></td></tr>
+    <tr><td><code>0</code></td><td><code>Pay 0</code></td></tr>
+    <tr><td><code>00</code></td><td><code>Pay 00</code></td></tr>
+    <tr><td><code>1</code></td><td><code>The spin landed on 1.</code><br><code>Pay 1</code><br><code>Pay Red</code><br><code>Pay Odd</code><br><code>Pay 1 to 18</code></td></tr>
+    <tr><td><code>12</code></td><td><code>The spin landed on 12.</code><br><code>Pay 12</code><br><code>Pay Red</code><br><code>Pay Even</code><br><code>Pay 1 to 18</code></td></tr>
+    <tr><td><code>36</code></td><td><code>The spin landed on 36.</code><br><code>Pay 36</code><br><code>Pay Red</code><br><code>Pay Even</code><br><code>Pay 19 to 36</code></td></tr>
+    <tr><td><code>20</code></td><td><code>The spin landed on 20.</code><br><code>Pay 20</code><br><code>Pay Black</code><br><code>Pay Even</code><br><code>Pay 19 to 36</code></td></tr>
+    <tr><td><code>18</code></td><td><code>The spin landed on 18.</code><br><code>Pay 18</code><br><code>Pay Red</code><br><code>Pay Even</code><br><code>Pay 1 to 18</code></td></tr>
+    <tr><td><code>29</code></td><td><code>The spin landed on 29.</code><br><code>Pay 29</code><br><code>Pay Black</code><br><code>Pay Odd</code><br><code>Pay 19 to 36</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep <code>spin</code> as text. Convert with <code>int()</code> only after ruling out <code>0</code> and <code>00</code>.</li>
+    <li>Use <code>and</code>, <code>or</code> and <code>not</code> to build the red test, and <code>%</code> to tell odd from even.</li>
+    <li>0 and 00 print one line. Every other spin prints five.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>spin = input('Spin: ')</code> unchanged. The checker will type the other spins.</p>
+<wb-exercise id="roulette"></wb-exercise>
+
+<h2 id="nextday" data-toc-title="💀 Next day">💀 Boss 4: Next Day</h2>
+<p>You are given a date as three whole numbers: <code>year</code>, <code>month</code> and <code>day</code>. Print the date of the following day. Most of the time only the day changes, but the last day of a month rolls into the next month, and December 31 rolls into the next year. February has 28 days, or 29 in a leap year, using the rule from Boss 1. April, June, September and November have 30 days. The rest have 31.</p>
+<p>Read the three values with <code>input()</code> and print one sentence with both dates in the form <code>YYYY-MM-DD</code>, so month and day always have two digits.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: year = 2013, month = 11, day = 18
+Output: The day after 2013-11-18 is 2013-11-19.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: year = 2013, month = 12, day = 31
+Output: The day after 2013-12-31 is 2014-01-01.
+Explanation: The day rolls into a new month, and the month rolls into a new year.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input: year = 2100, month = 2, day = 28
+Output: The day after 2100-02-28 is 2100-03-01.
+Explanation: 2100 is divisible by 100 but not by 400, so February has 28 days.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= year &lt;= 9998</code>, <code>1 &lt;= month &lt;= 12</code></li>
+    <li>The date is always valid.</li>
+  </ul>
+</div>
+<p>The program reads the year, month and day after the prompts <code>Year: </code>, <code>Month: </code> and <code>Day: </code>.</p>
+<pre class="wb-shell"><span class="wb-prompt">Year: </span><span class="wb-typed">2013</span>
+<span class="wb-prompt">Month: </span><span class="wb-typed">11</span>
+<span class="wb-prompt">Day: </span><span class="wb-typed">18</span>
+The day after 2013-11-18 is 2013-11-19.</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2013</code>, <code>11</code>, <code>18</code></td><td><code>The day after 2013-11-18 is 2013-11-19.</code></td></tr>
+    <tr><td><code>2013</code>, <code>11</code>, <code>30</code></td><td><code>The day after 2013-11-30 is 2013-12-01.</code></td></tr>
+    <tr><td><code>2013</code>, <code>12</code>, <code>31</code></td><td><code>The day after 2013-12-31 is 2014-01-01.</code></td></tr>
+    <tr><td><code>2024</code>, <code>2</code>, <code>28</code></td><td><code>The day after 2024-02-28 is 2024-02-29.</code></td></tr>
+    <tr><td><code>2023</code>, <code>2</code>, <code>28</code></td><td><code>The day after 2023-02-28 is 2023-03-01.</code></td></tr>
+    <tr><td><code>2024</code>, <code>2</code>, <code>29</code></td><td><code>The day after 2024-02-29 is 2024-03-01.</code></td></tr>
+    <tr><td><code>2100</code>, <code>2</code>, <code>28</code></td><td><code>The day after 2100-02-28 is 2100-03-01.</code></td></tr>
+    <tr><td><code>2000</code>, <code>2</code>, <code>28</code></td><td><code>The day after 2000-02-28 is 2000-02-29.</code></td></tr>
+    <tr><td><code>2026</code>, <code>1</code>, <code>9</code></td><td><code>The day after 2026-01-09 is 2026-01-10.</code></td></tr>
+    <tr><td><code>2026</code>, <code>4</code>, <code>30</code></td><td><code>The day after 2026-04-30 is 2026-05-01.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>An <code>if</code>/<code>elif</code>/<code>else</code> chain for the days in the month, with <code>and</code>, <code>or</code> and <code>%</code> for the leap year test and the 30 day months.</li>
+    <li>Show month and day with <code>:02d</code>.</li>
+    <li>No <code>import</code>. Print one line.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the three <code>input()</code> lines unchanged. The checker will type the other dates.</p>
+<wb-exercise id="nextday"></wb-exercise>
+
+</main>
+</body>
+</html>

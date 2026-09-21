@@ -526,7 +526,9 @@ class ExerciseElement extends RunnableElement {
       h("div", { class: "wb-widget-head" },
         h("span", { class: "wb-widget-label" }, spec.title ?? "Your code"),
         this.statusPill, this.badge),
-      this.hintsPanel, this.editorHost, toolbar, this.consoleWrap, this.tutorPanel, this.resultPanel, this.answerPanel,
+      // hintsPanel is null when the spec has no hints; Element.append would
+      // render that null as the text "null", so drop it.
+      ...[this.hintsPanel, this.editorHost, toolbar, this.consoleWrap, this.tutorPanel, this.resultPanel, this.answerPanel].filter(Boolean),
     );
     this.consoleWrap.hidden = true;
     this.refreshState();

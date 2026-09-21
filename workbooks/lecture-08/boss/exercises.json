@@ -41,7 +41,7 @@
           "expected": "Number: -3 is odd."
         }
       ],
-      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \"%\" in __source__, \"Test the remainder with % to tell even from odd.\"\nassert __stdout__.strip().endswith(\".\"), \"End the message with a full stop, as in 14 is even.\"\n",
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __code__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \"%\" in __code__, \"Test the remainder with % to tell even from odd.\"\nassert __stdout__.strip().endswith(\".\"), \"End the message with a full stop, as in 14 is even.\"\n",
       "answer": "bnVtYmVyID0gaW50KGlucHV0KCdOdW1iZXI6ICcpKQppZiBudW1iZXIgJSAyID09IDA6CiAgICBraW5kID0gJ2V2ZW4nCmVsc2U6CiAgICBraW5kID0gJ29kZCcKcHJpbnQoZid7bnVtYmVyfSBpcyB7a2luZH0uJyk=",
       "answerNote": "number % 2 is 0 for every even number, including 0 and negative numbers."
     },
@@ -88,8 +88,11 @@
           "expected": "Human years: 1.2 human years is 12.6 dog years."
         }
       ],
-      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \":.1f\" in __source__, \"Show both numbers to one decimal place with :.1f in the f-string.\"\nassert \"10.5\" in __source__ and \"4\" in __source__, \"Use 10.5 dog years for each of the first two years and 4 for each year after that.\"\n",
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __code__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert re.search(r\":[^}]*\\.1f\\}\", __source__), \"Show both numbers to one decimal place with :.1f in the f-string.\"\nassert \"10.5\" in __code__ and re.search(r\"\\b4\\b\", __code__), \"Use 10.5 dog years for each of the first two years and 4 for each year after that.\"\n",
       "answer": "eWVhcnMgPSBmbG9hdChpbnB1dCgnSHVtYW4geWVhcnM6ICcpKQppZiB5ZWFycyA8PSAyOgogICAgZG9nX3llYXJzID0geWVhcnMgKiAxMC41CmVsc2U6CiAgICBkb2dfeWVhcnMgPSAyMSArICh5ZWFycyAtIDIpICogNApwcmludChmJ3t5ZWFyczouMWZ9IGh1bWFuIHllYXJzIGlzIHtkb2dfeWVhcnM6LjFmfSBkb2cgeWVhcnMuJyk=",
+      "hints": [
+        "The decision is whether `years` is 2 or less. If so, the whole age is at the 10.5 rate. Otherwise it is 21 for the first two years plus 4 for each year beyond them: `21 + (years - 2) * 4`."
+      ],
       "answerNote": "The first two years are worth 21 dog years. The else branch starts from 21 and adds 4 for each remaining year. Both formulas give 21 at exactly 2 years."
     },
     "square": {
@@ -135,8 +138,11 @@
           "expected": "Square: c6 is a white square."
         }
       ],
-      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __source__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __source__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __source__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __source__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \".find(\" in __source__, \"Turn the column letter into a number with 'abcdefgh'.find(...) instead of testing each letter.\"\nassert \"%\" in __source__, \"Use % to decide the colour from the column number and the row.\"\nassert \"ord(\" not in __source__, \"ord() is not part of this course; use .find() on the string of column letters.\"\nassert \"[\" in __source__, \"Pick the letter and the digit out of position with indexes.\"\n",
+      "check": "import re\nassert len(re.findall(r\"^\\s*if\\b\", __code__, re.M)) == 1, \"Use exactly one if statement.\"\nassert re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Handle the other case with else.\"\nassert not re.search(r\"^\\s*elif\\b\", __code__, re.M), \"elif is not part of this lecture; one if and one else are enough here.\"\nassert __code__.count(\"print(\") == 1, \"Choose the value inside the branches, then print once after them.\"\nassert \".find(\" in __code__, \"Turn the column letter into a number with 'abcdefgh'.find(...) instead of testing each letter.\"\nassert \"%\" in __code__, \"Use % to decide the colour from the column number and the row.\"\nassert \"ord(\" not in __code__, \"ord() is not part of this course; use .find() on the string of column letters.\"\nassert \"[\" in __code__, \"Pick the letter and the digit out of position with indexes.\"\n",
       "answer": "cG9zaXRpb24gPSBpbnB1dCgnU3F1YXJlOiAnKQpjb2x1bW4gPSAnYWJjZGVmZ2gnLmZpbmQocG9zaXRpb25bMF0pCnJvdyA9IGludChwb3NpdGlvblsxXSkKaWYgKGNvbHVtbiArIHJvdykgJSAyID09IDA6CiAgICBjb2xvdXIgPSAnd2hpdGUnCmVsc2U6CiAgICBjb2xvdXIgPSAnYmxhY2snCnByaW50KGYne3Bvc2l0aW9ufSBpcyBhIHtjb2xvdXJ9IHNxdWFyZS4nKQ==",
+      "hints": [
+        "Add the column number to the row number, `int(position[1])`. Moving one square in any direction changes the sum by one, so the sum is odd on every black square and even on every white one. For `a1` it is 0 + 1."
+      ],
       "answerNote": "'abcdefgh'.find('a') is 0. For a1 the sum is 0 + 1, which is odd, and a1 is black. Each move of one square changes the sum by one and the colour flips."
     }
   }
