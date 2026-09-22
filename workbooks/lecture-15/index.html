@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 15 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-15", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 15 Workbook</h1>
+    <div class="wb-subtitle">Nested loops, <code>break</code> and <code>continue</code></div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Reading: §4.7 (p. 152), Special Topic 2 (p. 138). By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>trace nested loops and calculate how often the inner body executes;</li>
+    <li>use nested loops to produce row-and-column patterns;</li>
+    <li>use <code>break</code> and <code>continue</code> deliberately; and</li>
+    <li>identify which loop a <code>break</code> statement exits.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box. Write predictions before running code, and use the tables on this page to trace both loop variables.</p>
+</section>
+<hr>
+
+<h2 id="s1" data-toc-title="A loop inside a loop">1. A nested loop is a loop inside a loop</h2>
+<p>A <strong>nested loop</strong> is a loop in the body of another loop. The loop on the outside is the <strong>outer loop</strong>. The loop inside it is the <strong>inner loop</strong>.</p>
+<wb-example id="ex-nested"></wb-example>
+<p>For <code>row = 0</code>, the inner loop runs completely through columns 0 to 3. Then <code>row</code> becomes 1 and the inner loop starts again from column 0.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>In the program above:</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>How many values does the outer loop supply?</td><td data-blank="outer"></td></tr>
+        <tr><td>How many values does the inner loop supply for each row?</td><td data-blank="inner"></td></tr>
+        <tr><td>What pair prints immediately after <code>0 3</code>?</td><td data-blank="after03"></td></tr>
+        <tr><td>What is the final pair?</td><td data-blank="final"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2" data-toc-title="Trace the inner loop completely">2. Trace the inner loop completely for each outer pass</h2>
+<p>When tracing nested loops, keep both loop variables. The inner loop starts over for every new outer value.</p>
+<wb-example id="ex-rowcol"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Inner-body execution</th><th><code>row</code></th><th><code>column</code></th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>1</td><td>1</td></tr>
+    <tr><td>2</td><td>1</td><td>2</td></tr>
+    <tr><td>3</td><td>1</td><td>3</td></tr>
+    <tr><td>4</td><td>2</td><td>1</td></tr>
+    <tr><td>5</td><td>2</td><td>2</td></tr>
+    <tr><td>6</td><td>2</td><td>3</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Do not advance the outer variable until the inner loop has finished.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Trace the variable pairs.</p>
+<pre><code><span class="wb-kw">for</span> outer <span class="wb-kw">in</span> <span class="wb-fn">range</span>(<span class="wb-num">2</span>):
+    <span class="wb-kw">for</span> inner <span class="wb-kw">in</span> <span class="wb-fn">range</span>(<span class="wb-num">3</span>):
+        <span class="wb-fn">print</span>(outer, inner)</code></pre>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Execution</th><th><code>outer</code></th><th><code>inner</code></th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="o1"></td><td data-blank="i1"></td></tr>
+        <tr><td>2</td><td data-blank="o2"></td><td data-blank="i2"></td></tr>
+        <tr><td>3</td><td data-blank="o3"></td><td data-blank="i3"></td></tr>
+        <tr><td>4</td><td data-blank="o4"></td><td data-blank="i4"></td></tr>
+        <tr><td>5</td><td data-blank="o5"></td><td data-blank="i5"></td></tr>
+        <tr><td>6</td><td data-blank="o6"></td><td data-blank="i6"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3" data-toc-title="Multiply the iteration counts">3. Multiply the iteration counts</h2>
+<p>If the outer loop makes 3 passes and the inner loop makes 4 passes each time, the inner body runs:</p>
+<pre class="wb-output">3 outer passes x 4 inner passes = 12 executions</pre>
+<p>For fixed ranges, multiply rather than add.</p>
+<wb-example id="ex-count"></wb-example>
+<p>Nested loops can grow quickly. Two loops that each make 100 passes execute the inner body 10,000 times.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Calculate the number of inner-body executions.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Loops</th><th>Inner-body executions</th></tr></thead>
+      <tbody>
+        <tr><td>Outer loop: <code>range(5)</code>; inner loop: <code>range(3)</code></td><td data-blank="c53"></td></tr>
+        <tr><td>Outer loop: <code>range(2, 7)</code>; inner loop: <code>range(4)</code></td><td data-blank="c274"></td></tr>
+        <tr><td>Two loops that each make 20 passes</td><td data-blank="c2020"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain why the counts are multiplied.</p>
+  <wb-short id="cp3-why"></wb-short>
+</div>
+
+<h2 id="s4" data-toc-title="Rows and columns">4. Think of the loops as rows and columns</h2>
+<p>The outer loop often selects a row. The inner loop moves across the columns in that row.</p>
+<wb-example id="ex-rect"></wb-example>
+<p><code>end=""</code> prevents each star from starting a new line. The empty <code>print()</code> is after the inner loop but inside the outer loop. It moves to the next line once the row is complete.</p>
+<p>Indentation gives the two print statements different jobs:</p>
+<ul>
+  <li><code>print("*", end="")</code> runs once per column.</li>
+  <li><code>print()</code> runs once per row.</li>
+</ul>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>For a grid with 2 rows and 5 columns:</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>How many stars print?</td><td data-blank="stars"></td></tr>
+        <tr><td>How many times does the empty <code>print()</code> run?</td><td data-blank="prints"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Where must the empty <code>print()</code> be indented?</p>
+  <wb-short id="cp4-where"></wb-short>
+</div>
+
+<h2 id="s5" data-toc-title="Building a table">5. Nested loops can build a table</h2>
+<p>The outer variable can choose a row value while the inner variable chooses a column value.</p>
+<wb-example id="ex-table"></wb-example>
+<p>The field width <code>:4</code> gives each number four character positions. Equal widths make the columns line up.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Complete the products for <code>row = 4</code> and columns 1 through 5.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th><code>column</code></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+      <tbody>
+        <tr><td><code>row * column</code></td><td data-blank="p1"></td><td data-blank="p2"></td><td data-blank="p3"></td><td data-blank="p4"></td><td data-blank="p5"></td></tr>
+        <tr><td colspan="5">Which loop variable stays fixed while one row is printed?</td><td data-blank="fixed"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s6" data-toc-title="Inner range depends on outer value">6. The inner range can depend on the outer value</h2>
+<p>The inner loop does not have to make the same number of passes for every row. Its range can use the current outer value.</p>
+<wb-example id="ex-triangle"></wb-example>
+<p>On row 1, <code>range(row)</code> supplies one value. On row 5, it supplies five. The number of inner passes is 1 + 2 + 3 + 4 + 5, not 5 × 5.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>Complete the inner-loop counts.</p>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th><code>row</code></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+      <tbody>
+        <tr><td>values in <code>range(row)</code></td><td data-blank="r1"></td><td data-blank="r2"></td><td data-blank="r3"></td><td data-blank="r4"></td><td data-blank="r5"></td></tr>
+        <tr><td colspan="5">Total number of stars</td><td data-blank="total"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why does the multiplication rule for two fixed ranges not apply directly?</p>
+  <wb-short id="cp6-why"></wb-short>
+</div>
+
+<h2 id="s7" data-toc-title="Visiting every pair">7. Nested loops can visit every pair</h2>
+<p>To produce every pair without pairing an item with itself, start the inner loop just after the outer position.</p>
+<wb-example id="ex-pairs"></wb-example>
+<p>When <code>first</code> is 0, the inner loop uses positions 1 and 2. When <code>first</code> is 1, it uses position 2. When <code>first</code> is 2, the inner range is empty.</p>
+<p>Starting at <code>first + 1</code> prevents <code>A A</code> and avoids printing both <code>A B</code> and <code>B A</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>List every pair produced from the string <code>"WXYZ"</code> by the same pattern, in the order they print.</p>
+  <wb-table id="cp7">
+    <table>
+      <thead><tr><th>Pair 1</th><th>Pair 2</th><th>Pair 3</th><th>Pair 4</th><th>Pair 5</th><th>Pair 6</th></tr></thead>
+      <tbody>
+        <tr><td data-blank="pair1"></td><td data-blank="pair2"></td><td data-blank="pair3"></td><td data-blank="pair4"></td><td data-blank="pair5"></td><td data-blank="pair6"></td></tr>
+        <tr><td colspan="5">How many pairs are produced?</td><td data-blank="count"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why does the final outer pass have zero inner iterations?</p>
+  <wb-short id="cp7-why"></wb-short>
+</div>
+
+<h2 id="s8" data-toc-title="break leaves a loop">8. <code>break</code> leaves a loop immediately</h2>
+<p><code>break</code> ends the nearest loop and continues with the first statement after that loop.</p>
+<wb-example id="ex-break"></wb-example>
+<p>When <code>number</code> is 6, its square is greater than 30, so <code>break</code> runs before 6 is printed.</p>
+<p>A useful <code>break</code> has one clear meaning, such as ending a sentinel loop or stopping a search after a match. Several exits hidden inside branches make a loop difficult to trace.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>For the example above:</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>What is the first value that satisfies the <code>if</code> condition?</td><td data-blank="first"></td></tr>
+        <tr><td>Is that value printed?</td><td data-blank="printed"></td></tr>
+        <tr><td>Which statement runs after the loop ends?</td><td data-blank="after"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9" data-toc-title="break and the innermost loop">9. <code>break</code> affects only the innermost loop</h2>
+<p>Inside nested loops, <code>break</code> leaves the loop that directly contains it. The outer loop continues with its next pass.</p>
+<wb-example id="ex-nested-break"></wb-example>
+<p>The inner loop stops at column 3 on every row. The outer loop still reaches all three row values.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9</div>
+  <p>In the example above:</p>
+  <wb-table id="cp9">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>Which loop directly contains <code>break</code>?</td><td data-blank="which"></td></tr>
+        <tr><td>How many times does <code>break</code> run?</td><td data-blank="breaks"></td></tr>
+        <tr><td>How many times does <code>End of row</code> print?</td><td data-blank="endrows"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>What would have to be true for the outer loop to stop early?</p>
+  <wb-short id="cp9-why"></wb-short>
+</div>
+
+<h2 id="s10" data-toc-title="continue skips one pass">10. <code>continue</code> skips the rest of one pass</h2>
+<p><code>continue</code> skips the remaining statements in the current iteration and begins the next iteration of the nearest loop. It does not end the loop.</p>
+<wb-example id="ex-continue"></wb-example>
+<p>The values 3, 6, and 9 reach <code>continue</code>, so the print statement is skipped for those passes.</p>
+<p>Use <code>continue</code> when a simple condition near the top can discard a case and leave the main work less deeply indented.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10</div>
+  <p>For each value, state whether the print is reached.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th><code>number</code></th><th>2</th><th>3</th><th>4</th><th>6</th></tr></thead>
+      <tbody>
+        <tr><td>Print reached?</td><td data-blank="n2"></td><td data-blank="n3"></td><td data-blank="n4"></td><td data-blank="n6"></td></tr>
+        <tr><td colspan="4">Does <code>continue</code> end the loop?</td><td data-blank="ends"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Where does execution go after <code>continue</code>?</p>
+  <wb-short id="cp10-where"></wb-short>
+</div>
+
+<h2 id="s11" data-toc-title="continue can hide an update">11. <code>continue</code> can hide a <code>while</code>-loop update</h2>
+<p>In a <code>for</code> loop, Python automatically gets the next value. In a <code>while</code> loop, the programmer normally writes the update. A <code>continue</code> can skip an update that appears later in the body.</p>
+<p>This program becomes infinite when <code>number</code> reaches 5:</p>
+<pre><code>number = <span class="wb-num">0</span>
+<span class="wb-kw">while</span> number &lt; <span class="wb-num">10</span>:
+    <span class="wb-kw">if</span> number == <span class="wb-num">5</span>:
+        <span class="wb-kw">continue</span>
+    <span class="wb-fn">print</span>(number)
+    number = number + <span class="wb-num">1</span></code></pre>
+<p class="wb-meta">This listing has no Run button. A code box on this page stops a program that is still running after a few seconds and reports a timeout, which is how an infinite loop shows up here.</p>
+<p>At 5, <code>continue</code> returns to the condition. The update is skipped, so <code>number</code> remains 5 forever. A safer repair moves the update before the possible <code>continue</code> or rewrites the condition so <code>continue</code> is unnecessary.</p>
+<div class="wb-callout">
+  <div class="wb-callout-title">Before using <code>break</code> or <code>continue</code>, ask:</div>
+  <ul>
+    <li>Is the jump easy to see and explain?</li>
+    <li>Can the loop still be hand-traced?</li>
+    <li>In a <code>while</code> loop, does every continuing path still update the control value?</li>
+    <li>In nested loops, am I clear about which loop is affected?</li>
+  </ul>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 11</div>
+  <p>Explain why the faulty loop stops making progress at 5.</p>
+  <wb-short id="cp11-a"></wb-short>
+  <p>Where could the update move so every pass changes <code>number</code>?</p>
+  <wb-short id="cp11-b"></wb-short>
+  <p>Which statement would you prefer to remove if a simple condition can express the same logic?</p>
+  <wb-short id="cp11-c"></wb-short>
+</div>
+
+<h2 id="final-review">Final review</h2>
+<ol>
+  <li>Define outer loop and inner loop.
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>In what order do nested loops change their variables?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>How many times does the inner body run for fixed loop counts?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>What is the purpose of <code>end=""</code> when printing a row?
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Why must the empty <code>print()</code> appear after the inner loop?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>What does <code>break</code> do?
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>What does <code>continue</code> do?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>Which loop is affected by a <code>break</code> inside the inner loop?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h2 id="together" data-toc-title="Putting It All Together">Putting It All Together</h2>
+<p>Suppose EN2043 has three rows with five seats in each row. Seat 3 is reserved in every row, so the program should skip it. In row 2, a maintenance barrier before seat 5 means that row ends early.</p>
+<p>First, use the outer loop to choose a row and the inner loop to visit its seats:</p>
+<wb-example id="ex-seats1"></wb-example>
+<p>Next, place a <code>continue</code> before the main work to skip reserved seat 3:</p>
+<wb-example id="ex-seats2"></wb-example>
+<p>Finally, check the maintenance barrier first. The <code>break</code> ends only the inner seat loop, so the next row still begins.</p>
+<wb-example id="ex-seats3"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Synthesis check</div>
+  <p>Why is the barrier test before the reserved-seat test?</p>
+  <wb-short id="syn-a"></wb-short>
+  <p>Why does row 3 still print after the <code>break</code> in row 2?</p>
+  <wb-short id="syn-b"></wb-short>
+  <wb-table id="syn">
+    <table>
+      <tbody>
+        <tr><td>How many seat numbers print altogether?</td><td data-blank="total"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>The exercises below use only ideas introduced by this point in the course. Programs that read input use plain <code>input()</code> with no prompt, and the console under each box supplies the values.</p>
+
+<h3>1. Nested-loop vocabulary</h3>
+<p>Define a nested loop. Give one task for which rows and columns are a useful way to think about the loops.</p>
+<wb-short id="p1"></wb-short>
+
+<h3>2. One loop for repeated rows</h3>
+<p>The following nested loops print three identical rows of five stars.</p>
+<wb-example id="ex-rows"></wb-example>
+<p>Write one <code>for</code> loop that prints the same rectangle. You may use string repetition.</p>
+<wb-exercise id="p2"></wb-exercise>
+
+<h3>3. Clock-reading practice</h3>
+<p>Write nested loops that print the times at 20-minute intervals from <code>1:00</code> through <code>2:40</code>, one per line. Use a two-digit field for the minutes.</p>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Destination tickets</h3>
+<p>A travel club has 10 friends in destination 1, 3 friends in destination 2, and 2 friends in destination 3. Write nested loops that print one ticket line for each friend. Number the tickets from 1 to 15. Each line has the ticket number, a space, and the destination number.</p>
+<p><strong>Sample ending</strong></p>
+<pre class="wb-output">13 2
+14 3
+15 3</pre>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Addition table</h3>
+<p>Write nested loops that print this 4-by-4 addition table. Use a field width of four for every value.</p>
+<pre class="wb-output">   2   3   4   5
+   3   4   5   6
+   4   5   6   7
+   5   6   7   8</pre>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Course and student averages</h3>
+<p>Read three grades for each of two students. Print each student's average to one decimal place, followed by the average of all six grades. Use nested loops.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>80, 70, 90, 60, 75, 75</td><td><code>Student 1: 80.0</code>, then <code>Student 2: 70.0</code>, then <code>Overall: 75.0</code></td></tr>
+  </tbody>
+</table>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Validated repeat choice</h3>
+<p>Repeatedly read a choice. Print <code>Again</code> for <code>Y</code>, print <code>Finished</code> and end for <code>N</code>, and print <code>Invalid</code> for any other input. Accept lowercase input. Use <code>while True</code>, <code>continue</code>, and <code>break</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>maybe</code>, <code>y</code>, <code>n</code></td><td><code>Invalid</code>, then <code>Again</code>, then <code>Finished</code></td></tr>
+  </tbody>
+</table>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Hollow notice frame</h3>
+<p>Read an integer <code>side</code> from 2 through 8. Print a hollow square of that side length using <code>#</code>. Use nested loops.</p>
+<p>For a typed value of 4, the expected output is:</p>
+<pre class="wb-output">####
+#  #
+#  #
+####</pre>
+<wb-exercise id="p8"></wb-exercise>
+
+<h3>9. Number diamond</h3>
+<p>Read an integer <code>size</code> from 1 through 5. Print a diamond in which each row contains repeated copies of its row number. For <code>size = 3</code>, print:</p>
+<pre class="wb-output">  1
+ 222
+33333
+ 222
+  1</pre>
+<p>Use loops for the growing and shrinking halves.</p>
+<wb-exercise id="p9"></wb-exercise>
+
+<h3>10. Lab-seat sale</h3>
+<p>There are 12 seats for a lab review. Repeatedly read a requested number of seats from 1 through 4. If the request is larger than the number remaining, print <code>Not enough seats</code> and ask again. Otherwise, sell the requested seats. When all seats are sold, print the number of buyers.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>4, 3, 4, 2, 1</td><td><code>Not enough seats</code>, then <code>Buyers: 4</code></td></tr>
+  </tbody>
+</table>
+</div>
+<wb-exercise id="p10"></wb-exercise>
+
+<h3>11. EN2043 occupancy</h3>
+<p>EN2043 has a capacity of 8 for this small exercise. Start with an occupancy of 0. Read changes until the room reaches 8 people. A positive value is an arriving group and a negative value is a departing group. Reject a change that would make the occupancy less than 0 or greater than 8 by printing <code>Rejected</code>. After every accepted change, print the new occupancy. When the room reaches 8, print <code>Full</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>5, 4, -2, 5</td><td><code>5</code>, <code>Rejected</code>, <code>3</code>, <code>8</code>, <code>Full</code>, each on its own line</td></tr>
+  </tbody>
+</table>
+</div>
+<wb-exercise id="p11"></wb-exercise>
+
+<h3>12. Channel-width table</h3>
+<p>A simple model says that a channel is 8.0 metres wide at the surface and narrows evenly to 0.0 metres at a depth of 4 metres. At depth <code>d</code>, use this formula:</p>
+<pre class="wb-output">width = 8.0 * (1 - d / 4)</pre>
+<p>Print the width at each whole-metre depth from 0 through 4. Show one digit after the decimal point.</p>
+<pre class="wb-output">Depth 0 m: 8.0 m
+Depth 1 m: 6.0 m
+Depth 2 m: 4.0 m
+Depth 3 m: 2.0 m
+Depth 4 m: 0.0 m</pre>
+<wb-exercise id="p12"></wb-exercise>
+
+<h3>13. Terminal checkerboard</h3>
+<p>Print an 8-by-8 checkerboard in the terminal. Use <code>#</code> and a period, and start the first row with <code>#</code>. Use nested loops.</p>
+<pre class="wb-output">#.#.#.#.
+.#.#.#.#
+#.#.#.#.
+.#.#.#.#
+#.#.#.#.
+.#.#.#.#
+#.#.#.#.
+.#.#.#.#</pre>
+<wb-exercise id="p13"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 15 Workbook.</p>
+</main>
+</body>
+</html>

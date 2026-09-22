@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 16 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-16", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 16 Workbook</h1>
+    <div class="wb-subtitle">Common loop algorithms and random numbers</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Reading: §4.5 (p. 141), §4.9 (p. 164), §4.11 (p. 175). By the end of this workbook, you should be able to:</p>
+  <ul>
+    <li>implement common loop algorithms for totals, counts, extremes, and searches;</li>
+    <li>find first, last, and adjacent-value patterns in a sequence;</li>
+    <li>use the <code>random</code> module to build a simple simulation; and</li>
+    <li>explain when and why a random seed is useful.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<h2 id="s1" data-toc-title="Recognize the algorithm">1. Recognize the Algorithm Before Writing the Loop</h2>
+<p>Many loop problems use a small set of standard patterns. Recognizing the pattern makes the design easier.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Problem wording</th><th>Useful loop pattern</th></tr></thead>
+  <tbody>
+    <tr><td>total, sum, average</td><td>accumulator and count</td></tr>
+    <tr><td>how many satisfy a condition</td><td>counter</td></tr>
+    <tr><td>largest or smallest</td><td>running best</td></tr>
+    <tr><td>whether or where something occurs</td><td>search</td></tr>
+    <tr><td>first or last match</td><td>record a position</td></tr>
+    <tr><td>compare neighbours</td><td>remember the previous item</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The loop supplies the repetition. The variables inside it remember the part of the answer found so far.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Name the most suitable pattern for each task.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Task</th><th>Pattern</th></tr></thead>
+      <tbody>
+        <tr><td>How many characters are digits?</td><td data-blank="digits"></td></tr>
+        <tr><td>What is the largest number entered?</td><td data-blank="largest"></td></tr>
+        <tr><td>Where does the first space occur?</td><td data-blank="space"></td></tr>
+        <tr><td>What is the average of all entered values?</td><td data-blank="average"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2" data-toc-title="Sum and average">2. Sum and Average</h2>
+<p>To compute a sum, initialize an accumulator to 0 and add each value. An average also needs a count.</p>
+<wb-example id="ex-sum"></wb-example>
+<p>The accumulator stores how much. The counter stores how many. If the sequence might be empty, test <code>count &gt; 0</code> before dividing.</p>
+<wb-example id="ex-empty-avg"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Trace the first three values of <code>'38157'</code>.</p>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Value</th><th><code>total</code> after addition</th><th><code>count</code> after pass</th></tr></thead>
+      <tbody>
+        <tr><td>3</td><td data-blank="t3"></td><td data-blank="c3"></td></tr>
+        <tr><td>8</td><td data-blank="t8"></td><td data-blank="c8"></td></tr>
+        <tr><td>1</td><td data-blank="t1"></td><td data-blank="c1"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why must <code>count &gt; 0</code> be tested before division?</p>
+  <wb-short id="cp2-why"></wb-short>
+</div>
+
+<h2 id="s3" data-toc-title="Counting matches">3. Counting Matches</h2>
+<p>A counting-matches loop increases a counter only when an item satisfies a condition.</p>
+<wb-example id="ex-digits"></wb-example>
+<p>Use <code>digits = digits + 1</code>, not <code>digits = digits + int(character)</code>. The question asks how many digit characters occur, not what their values sum to.</p>
+<wb-example id="ex-matches"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>For the word <code>'banana'</code>, trace a counter for the letter <code>'a'</code>. Write the counter value after each character.</p>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Character</th><th><code>b</code></th><th><code>a</code></th><th><code>n</code></th><th><code>a</code></th><th><code>n</code></th><th><code>a</code></th></tr></thead>
+      <tbody>
+        <tr><td>Counter after</td><td data-blank="b"></td><td data-blank="a1"></td><td data-blank="n1"></td><td data-blank="a2"></td><td data-blank="n2"></td><td data-blank="a3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s4" data-toc-title="Maximum and minimum">4. Maximum and Minimum</h2>
+<p>To find an extreme, store the best value seen so far. Update it only when a better value appears. For nonempty data, initialize from the first real item rather than from 0.</p>
+<wb-example id="ex-extremes"></wb-example>
+<p>Starting <code>largest = 0</code> is unsafe when all values could be negative. Zero might not be part of the data, yet it would incorrectly remain the largest. The first real value is a valid starting answer. Before using <code>digits[0]</code>, check that the sequence is not empty.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4</div>
+  <p>Trace the running extremes for the values 3, 8, 1, 5, 7. The first row is <code>largest = 3</code> and <code>smallest = 3</code>.</p>
+  <wb-table id="cp4">
+    <table>
+      <thead><tr><th>After value</th><th><code>largest</code></th><th><code>smallest</code></th></tr></thead>
+      <tbody>
+        <tr><td>3</td><td>3</td><td>3</td></tr>
+        <tr><td>8</td><td data-blank="l8"></td><td data-blank="s8"></td></tr>
+        <tr><td>1</td><td data-blank="l1"></td><td data-blank="s1"></td></tr>
+        <tr><td>5</td><td data-blank="l5"></td><td data-blank="s5"></td></tr>
+        <tr><td>7</td><td data-blank="l7"></td><td data-blank="s7"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is the first real value a safer initialization than 0?</p>
+  <wb-short id="cp4-why"></wb-short>
+</div>
+
+<h2 id="s5" data-toc-title="Search for the first match">5. Search for the First Match</h2>
+<p>A search can use a position initialized to <code>-1</code>. The value <code>-1</code> means "not found" because it is outside the valid index range.</p>
+<wb-example id="ex-first"></wb-example>
+<p>The loop stops at the first match. If no character matches, the assignment inside the <code>if</code> never runs and the result remains <code>-1</code>.</p>
+<wb-example id="ex-first-absent"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5</div>
+  <p>Search <code>'mississippi'</code> for the first <code>'s'</code>.</p>
+  <wb-table id="cp5">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>Which positions are tested before the loop stops?</td><td data-blank="tested"></td></tr>
+        <tr><td>What first position is stored?</td><td data-blank="stored"></td></tr>
+        <tr><td>What result remains if the target is absent?</td><td data-blank="absent"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why is <code>break</code> useful?</p>
+  <wb-short id="cp5-why"></wb-short>
+</div>
+
+<h2 id="s6" data-toc-title="Last match and a special first pass">6. Last Match and a Special First Pass</h2>
+<p>To find the last match, do not stop at the first one. Scan every position and replace the recorded position whenever another match appears.</p>
+<wb-example id="ex-last"></wb-example>
+<p>The same sentinel result <code>-1</code> handles an absent target. A <code>break</code> would be wrong here because a later match may replace the current answer.</p>
+<p>Sometimes one pass needs special handling. Printing separators is a common example: a separator belongs between items, not before the first one.</p>
+<wb-example id="ex-first-pass"></wb-example>
+<p>The Boolean variable starts as <code>True</code> and changes permanently after the first pass. Later passes use the <code>else</code> branch.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 6</div>
+  <p>For <code>'banana'</code>, what values replace <code>last_position</code> while finding the last <code>'a'</code>?</p>
+  <wb-table id="cp6">
+    <table>
+      <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+      <tbody>
+        <tr><td>The values stored in <code>last_position</code>, in order</td><td data-blank="values"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Why must the loop continue after the first match?</p>
+  <wb-short id="cp6-why"></wb-short>
+</div>
+
+<h2 id="s7" data-toc-title="Comparing adjacent items">7. Comparing Adjacent Items</h2>
+<p>Two items are adjacent when they are next to each other. To compare the current item with the preceding one, remember the previous item.</p>
+<wb-example id="ex-adjacent"></wb-example>
+<p>The first item initializes <code>previous</code>. The loop starts at position 1 because position 0 has no item before it. The final assignment prepares for the next comparison. For empty data, check the length before reading index 0.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 7</div>
+  <p>Trace the adjacent comparisons for <code>'book'</code>. Which pair is equal, and at which positions is it found?</p>
+  <wb-table id="cp7">
+    <table>
+      <thead><tr><th>Positions compared</th><th>Characters</th><th>Equal?</th></tr></thead>
+      <tbody>
+        <tr><td>0 and 1</td><td><code>b</code> / <code>o</code></td><td data-blank="p01"></td></tr>
+        <tr><td>1 and 2</td><td><code>o</code> / <code>o</code></td><td data-blank="p12"></td></tr>
+        <tr><td>2 and 3</td><td><code>o</code> / <code>k</code></td><td data-blank="p23"></td></tr>
+        <tr><td>The equal pair</td><td data-blank="pair"></td><td>at positions <span data-blank="where"></span></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s8" data-toc-title="The random module">8. The Random Module</h2>
+<p>A simulation uses a program to imitate a process. Many simulations need unpredictable choices. Python's <code>random</code> module provides pseudorandom values: they behave unpredictably, but they are produced by a repeatable calculation.</p>
+<wb-example id="ex-random"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>random.randint(a, b)</code></td><td>a whole number from <code>a</code> through <code>b</code>, inclusive</td></tr>
+    <tr><td><code>random.random()</code></td><td>a decimal from 0.0 up to, but not including, 1.0</td></tr>
+    <tr><td><code>random.choice(sequence)</code></td><td>one item from a nonempty sequence</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Unlike <code>range</code>, <code>randint</code> includes its upper endpoint. A simulated six-sided die therefore uses <code>random.randint(1, 6)</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 8</div>
+  <p>Choose the most suitable call for each task. Write the call as it would appear in a program, such as <code>random.randint(a, b)</code> with real arguments.</p>
+  <wb-table id="cp8">
+    <table>
+      <thead><tr><th>Task</th><th>Call</th></tr></thead>
+      <tbody>
+        <tr><td>Simulate one six-sided die.</td><td data-blank="die"></td></tr>
+        <tr><td>Choose one character from <code>'RGB'</code>.</td><td data-blank="rgb"></td></tr>
+        <tr><td>Generate a decimal from 0.0 up to 1.0.</td><td data-blank="decimal"></td></tr>
+        <tr><td>Can <code>random.randint(1, 6)</code> produce 6?</td><td data-blank="six"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9" data-toc-title="Random seeds">9. Random Seeds</h2>
+<p>The random generator has an internal state. <code>random.seed(value)</code> puts it into a known starting state. The same seed followed by the same calls produces the same sequence.</p>
+<wb-example id="ex-seed"></wb-example>
+<p>Seeding is useful while debugging because a failure can be reproduced. Change or remove the fixed seed when the finished program should behave differently on each run. A seed does not make one outcome more or less likely. It only chooses a repeatable starting point in the pseudorandom sequence.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 9</div>
+  <p>What two things must stay the same to reproduce a random sequence? Why is repeatability useful during debugging? Should a finished dice game always use the same fixed seed?</p>
+  <wb-short id="cp9"></wb-short>
+</div>
+
+<h2 id="s10" data-toc-title="Simulation">10. Simulation</h2>
+<p>Suppose two dice are rolled. One trial is easy: generate two integers from 1 through 6 and test whether their sum is 7. A loop repeats that trial many times.</p>
+<wb-example id="ex-simulation"></wb-example>
+<p>The exact probability is 6 out of 36, or about 0.1667. A simulation does not have to match it exactly. With many trials, the estimate will usually be close. Different unseeded runs produce slightly different estimates.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 10</div>
+  <p>If 38 of 200 trials are hits, calculate the estimate.</p>
+  <wb-table id="cp10">
+    <table>
+      <thead><tr><th>Hits</th><th>Trials</th><th>Estimate</th></tr></thead>
+      <tbody>
+        <tr><td>38</td><td>200</td><td data-blank="estimate"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>What does one iteration of a simulation represent? What change usually makes an estimate more stable?</p>
+  <wb-short id="cp10-why"></wb-short>
+</div>
+
+<h2 id="s11" data-toc-title="Solve a simpler problem first">11. Solve a Simpler Problem First</h2>
+<p>When a loop problem feels too large, solve a smaller version that preserves the important idea. For the dice simulation, a useful sequence is:</p>
+<ol>
+  <li>Generate and print one die value.</li>
+  <li>Generate and print two die values.</li>
+  <li>Test whether one pair sums to 7.</li>
+  <li>Repeat that test a small number of times.</li>
+  <li>Count the hits.</li>
+  <li>Increase the number of trials and calculate the estimate.</li>
+</ol>
+<p>Each step is a small extension of working code. The solution to the simpler problem often becomes the body of the final loop.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 11</div>
+  <p>A program must simulate 1,000 coin tosses and count heads. Put these tasks in a useful order: generate one result, increase a counter for heads, repeat 1,000 times, print the final count. Why is generating one toss a useful first problem?</p>
+  <wb-short id="cp11"></wb-short>
+</div>
+
+<h2 id="together" data-toc-title="Putting it all together">12. Putting It All Together</h2>
+<p>We will build a short simulation in stages. The goal is to estimate how often a random digit is greater than the digit before it.</p>
+<p>First, generate one digit. Then generate a second digit and compare the pair.</p>
+<wb-example id="ex-pair"></wb-example>
+<p>Next, keep the first digit as <code>previous</code>. Each loop pass generates one new digit, tests one adjacent pair, and updates <code>previous</code>.</p>
+<wb-example id="ex-pairs"></wb-example>
+<p>This program combines a counter, adjacent-value state, random integers, a fixed seed, and a safe nonzero trial count.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 12</div>
+  <p>Why is <code>previous</code> initialized before the loop? Why is it updated at the end of every pass? What makes the displayed output reproducible?</p>
+  <wb-short id="cp12"></wb-short>
+</div>
+
+<h2 id="review">Review</h2>
+<ol>
+  <li>Match each purpose to a pattern: total, count, largest, first match.
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>Why should an extreme usually be initialized from real data?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>Why can a first-match search use <code>break</code> but a last-match search cannot?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>What value can represent "no matching index"?
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Why does an adjacent-value loop often start at index 1?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>State the possible results of <code>random.randint(1, 6)</code>.
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>What does a fixed random seed provide?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>What does one iteration represent in a simulation?
+    <wb-short id="fr8"></wb-short>
+  </li>
+  <li>How can solving a simpler problem help design a loop?
+    <wb-short id="fr9"></wb-short>
+  </li>
+</ol>
+
+<h2 id="coding-practice">Coding Practice</h2>
+<p>The exercises appear in the same order as the skills selected for this lecture. Every program below reads its values with plain <code>input()</code> and no prompt, one value per line, in the order the statement gives. Press <strong>Check</strong> to run the listed cases; the checker types the inputs for you.</p>
+
+<h3>1. Safe Extreme Initialization</h3>
+<p>Explain why <code>largest = 0</code> and <code>smallest = 0</code> are unsafe general starting values. Give one failing data set for each. Then state a safe approach for nonempty input.</p>
+<wb-short id="p1"></wb-short>
+
+<h3>2. Sensor Summary</h3>
+<p>Read floating-point sensor values until the user enters a blank line. Print the count, average, and sample standard deviation. Maintain <code>total</code> and <code>square_total</code>, the sum of each value squared. When fewer than two values are entered, print <code>Need at least two values.</code> Use</p>
+<pre class="wb-output">s = sqrt((square_total - total ** 2 / count) / (count - 1))</pre>
+<p>Print three lines: <code>Count:</code> followed by the count, <code>Average:</code> and <code>Standard deviation:</code> each followed by the value with two decimal places.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>2, 4, 6, blank line</td><td><code>Count: 3</code>, <code>Average: 4.00</code>, <code>Standard deviation: 2.00</code></td></tr>
+    <tr><td>5, blank line</td><td><code>Need at least two values.</code></td></tr>
+    <tr><td>blank line</td><td><code>Need at least two values.</code></td></tr>
+  </tbody>
+</table>
+</div>
+<pre class="wb-shell"><span class="wb-typed">2</span>
+<span class="wb-typed">4</span>
+<span class="wb-typed">6</span>
+<span class="wb-typed"></span>
+Count: 3
+Average: 4.00
+Standard deviation: 2.00</pre>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of values is not known in advance.</li>
+    <li>Take the square root with <code>math.sqrt()</code>.</li>
+    <li>Test <code>count &lt; 2</code> before dividing.</li>
+    <li>Print the values with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p2"></wb-exercise>
+
+<h3>3. Two-Step Sequence</h3>
+<p>The sequence starts with 2 and 3. Every later value is the sum of the previous two values. Read an integer <code>n</code> with <code>n &gt;= 1</code> and print term <code>n</code>. Terms 1 through 6 are 2, 3, 5, 8, 13, 21.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>6</td><td><code>21</code></td></tr>
+    <tr><td>1</td><td><code>2</code></td></tr>
+    <tr><td>2</td><td><code>3</code></td></tr>
+    <tr><td>10</td><td><code>144</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a loop.</li>
+    <li>Keep only the previous two terms in <code>older</code> and <code>newer</code>; no list is needed.</li>
+    <li>Print only term <code>n</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Exact Divisors</h3>
+<p>Read a positive integer and print every positive divisor from 2 through the number itself, one per line.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>12</td><td><code>2</code>, <code>3</code>, <code>4</code>, <code>6</code>, <code>12</code> on separate lines</td></tr>
+    <tr><td>7</td><td><code>7</code></td></tr>
+    <tr><td>1</td><td>nothing</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Test each candidate with the remainder operator <code>%</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Prime Report</h3>
+<p>Read an integer <code>limit</code> with <code>limit &gt;= 2</code>. Print every prime from 2 through <code>limit</code>, one per line. A prime has exactly two positive divisors: 1 and itself. Use nested loops and a Boolean variable.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>10</td><td><code>2</code>, <code>3</code>, <code>5</code>, <code>7</code> on separate lines</td></tr>
+    <tr><td>2</td><td><code>2</code></td></tr>
+    <tr><td>20</td><td><code>2</code>, <code>3</code>, <code>5</code>, <code>7</code>, <code>11</code>, <code>13</code>, <code>17</code>, <code>19</code> on separate lines</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use nested loops: an outer loop over the candidates and an inner loop over the divisors.</li>
+    <li>Use a Boolean variable that records whether a divisor was found.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Last Token Game</h3>
+<p>A pile starts with 10 to 30 tokens. The player and computer alternate removing 1 or 2 tokens, but never more than remain. The player who removes the last token wins. Read a seed and the starting size. The computer uses <code>random.randint(1, 2)</code> and reduces an oversized move to the number of tokens left. Read each player move. Print the winner: <code>Player wins</code> or <code>Computer wins</code>.</p>
+<p>The player moves first. Call <code>random.seed(seed)</code> once, before the loop, so the computer's moves are reproducible. Each checker case types the seed, the pile size, and then one player move per player turn.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>1, 10, then 2 on every player turn</td><td><code>Computer wins</code></td></tr>
+    <tr><td>3, 15, then 1 on every player turn</td><td><code>Player wins</code></td></tr>
+  </tbody>
+</table>
+</div>
+<pre class="wb-shell"><span class="wb-typed">1</span>
+<span class="wb-typed">10</span>
+<span class="wb-typed">2</span>
+<span class="wb-typed">2</span>
+<span class="wb-typed">2</span>
+Computer wins</pre>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of turns is not known in advance.</li>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Choose the computer's move with <code>random.randint(1, 2)</code>.</li>
+    <li>Print one line: the winner.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Four-Direction Walk</h3>
+<p>Start at <code>(0, 0)</code>. Read a seed and a positive number of steps. For each step, choose <code>N</code>, <code>S</code>, <code>E</code>, or <code>W</code> with <code>random.choice('NSEW')</code> and update the coordinates: <code>N</code> adds 1 to <code>y</code>, <code>S</code> subtracts 1 from <code>y</code>, <code>E</code> adds 1 to <code>x</code>, and <code>W</code> subtracts 1 from <code>x</code>. Print the final coordinates as <code>x y</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>1, 5</td><td><code>0 1</code></td></tr>
+    <tr><td>3, 1</td><td><code>0 -1</code></td></tr>
+    <tr><td>7, 10</td><td><code>1 3</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Choose each direction with <code>random.choice('NSEW')</code>.</li>
+    <li>Print one line: <code>x</code> and <code>y</code> separated by a space.</li>
+  </ul>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Three-Envelope Simulation</h3>
+<p>Three envelopes are labelled 1, 2, and 3. One contains a prize. In each trial, place the prize randomly, choose an envelope randomly, and count a stay win if the choice has the prize. Count a switch win otherwise, because after one empty unchosen envelope is revealed, switching selects the only other possible envelope. Read a seed and number of trials. Print both win counts as <code>Stay wins:</code> and <code>Switch wins:</code> followed by the count.</p>
+<p>In each trial, call <code>random.randint(1, 3)</code> for the prize first and for the choice second.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>1, 10</td><td><code>Stay wins: 3</code>, <code>Switch wins: 7</code></td></tr>
+    <tr><td>5, 1</td><td><code>Stay wins: 0</code>, <code>Switch wins: 1</code></td></tr>
+    <tr><td>42, 100</td><td><code>Stay wins: 24</code>, <code>Switch wins: 76</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Call <code>random.randint(1, 3)</code> twice per trial: first for the prize, then for the choice.</li>
+  </ul>
+</div>
+<wb-exercise id="p8"></wb-exercise>
+
+<h3>9. Line-Crossing Estimate</h3>
+<p>Read a seed and number of trials. In each trial, generate <code>start = 2 * random.random()</code> and <code>angle = math.pi * random.random()</code>. Count a hit when <code>start + math.sin(angle) &gt;= 2</code>. Print <code>trials / hits</code> to four decimal places. You may assume at least one hit.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>1, 100</td><td><code>3.2258</code></td></tr>
+    <tr><td>2, 1000</td><td><code>3.0395</code></td></tr>
+    <tr><td>7, 50</td><td><code>3.3333</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Call <code>random.random()</code> twice per trial: first for <code>start</code>, then for <code>angle</code>.</li>
+    <li>Use <code>math.pi</code> for the angle and <code>math.sin()</code> for the test.</li>
+    <li>Print the value with four decimal places using <code>:.4f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p9"></wb-exercise>
+
+<h3>10. Tiny Number Generator</h3>
+<p>Read an initial integer <code>state</code>. Repeat 12 times: compute <code>state = (17 * state + 5) % 64</code> and print the new state. The initial value is a seed for this small deterministic generator.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>22</code>, <code>59</code>, <code>48</code>, <code>53</code>, <code>10</code>, <code>47</code>, <code>36</code>, <code>41</code>, <code>62</code>, <code>35</code>, <code>24</code>, <code>29</code> on separate lines</td></tr>
+    <tr><td>0</td><td><code>5</code>, <code>26</code>, <code>63</code>, <code>52</code>, <code>57</code>, <code>14</code>, <code>51</code>, <code>40</code>, <code>45</code>, <code>2</code>, <code>39</code>, <code>28</code> on separate lines</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Repeat exactly 12 times with <code>range(12)</code>.</li>
+    <li>Compute the new state with <code>(17 * state + 5) % 64</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p10"></wb-exercise>
+
+<h3>11. Target Reading</h3>
+<p>Read a target price, then read prices until one is at least the target. Print the first price that reaches the target as <code>Reached:</code> with two decimal places, and how many prices were read as <code>Readings:</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>10, then 5, 9, 10</td><td><code>Reached: 10.00</code>, <code>Readings: 3</code></td></tr>
+    <tr><td>3.5, then 4</td><td><code>Reached: 4.00</code>, <code>Readings: 1</code></td></tr>
+  </tbody>
+</table>
+</div>
+<pre class="wb-shell"><span class="wb-typed">10</span>
+<span class="wb-typed">5</span>
+<span class="wb-typed">9</span>
+<span class="wb-typed">10</span>
+Reached: 10.00
+Readings: 3</pre>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of values is not known in advance.</li>
+    <li>Keep reading while <code>price &lt; target</code>.</li>
+    <li>Print the value with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p11"></wb-exercise>
+
+<h3>12. Eight-Digit Check</h3>
+<p>Read a string containing exactly eight digits. Starting from the rightmost digit, add every second digit. Double each remaining digit and add both decimal digits of the result. Add the two sums. Print <code>Valid</code> if the total ends in zero. Otherwise print <code>Invalid</code> and, on a second line, <code>Required check digit:</code> followed by the digit from 0 through 9 that would make the first seven digits valid.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>12345674</td><td><code>Valid</code></td></tr>
+    <tr><td>12345678</td><td><code>Invalid</code>, <code>Required check digit: 4</code></td></tr>
+    <tr><td>00000000</td><td><code>Valid</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Visit alternating positions with <code>range()</code> and a step of <code>-2</code>.</li>
+    <li>Split each doubled value into its decimal digits with <code>// 10</code> and <code>% 10</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p12"></wb-exercise>
+
+<h3>13. Two Populations</h3>
+<p>Read decimal rates <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code>; initial populations <code>prey</code> and <code>predators</code>; and a positive number of periods. For each period, first compute both new populations from the old ones:</p>
+<pre class="wb-output">new_prey = prey * (1 + a - b * predators)
+new_predators = predators * (1 - c + d * prey)</pre>
+<p>Then update both variables and print the period number and populations to two decimal places, separated by spaces.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>0, 0, 0, 0, 10, 5, 2</td><td><code>1 10.00 5.00</code>, <code>2 10.00 5.00</code></td></tr>
+    <tr><td>0.1, 0.01, 0.01, 0.00002, 1000, 20, 3</td><td><code>1 900.00 20.20</code>, <code>2 808.20 20.36</code>, <code>3 724.46 20.49</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Compute <code>new_prey</code> and <code>new_predators</code> from the old populations before updating either variable.</li>
+    <li>Print the values with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p13"></wb-exercise>
+
+<h3>14. Vertical Motion Table</h3>
+<p>Read a nonnegative starting velocity in metres per second. Use <code>INTERVAL = 0.01</code> and <code>GRAVITY = 9.81</code>. Start at height 0. Repeat until the height becomes negative. On each pass, update height with <code>height = height + velocity * INTERVAL</code>, then update velocity with <code>velocity = velocity - GRAVITY * INTERVAL</code>. Print time and height once per complete second, including time 0 before the loop: the whole number of seconds, a space, and the height with two decimal places.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td><code>0 0.00</code></td></tr>
+    <tr><td>20</td><td><code>0 0.00</code>, <code>1 15.14</code>, <code>2 20.48</code>, <code>3 16.00</code>, <code>4 1.72</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of passes is not known in advance.</li>
+    <li>Use the constants <code>INTERVAL</code> and <code>GRAVITY</code> in the updates.</li>
+    <li>Count the steps and print when <code>step % 100 == 0</code>.</li>
+    <li>Print the height with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p14"></wb-exercise>
+
+<h3>15. Decay Table</h3>
+<p>Read an initial amount and a positive half-life in hours. For each whole hour from 0 through 24, print the hour and relative amount <code>2 ** (-hour / half_life)</code> to four decimal places. Also print the remaining amount, <code>initial * relative</code>, to four decimal places on the same line.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output rows</th></tr></thead>
+  <tbody>
+    <tr><td>100, 6</td><td><code>0 1.0000 100.0000</code>, <code>1 0.8909 89.0899</code>, …, <code>24 0.0625 6.2500</code></td></tr>
+    <tr><td>1, 1</td><td><code>0 1.0000 1.0000</code>, <code>1 0.5000 0.5000</code>, …, <code>24 0.0000 0.0000</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Visit hours 0 through 24 with <code>range(25)</code>.</li>
+    <li>Compute the relative amount with <code>2 ** (-hour / half_life)</code>.</li>
+    <li>Print the values with four decimal places using <code>:.4f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p15"></wb-exercise>
+
+<h3>16. Curve Point Table</h3>
+<p>For <code>x</code> values 0.0, 0.1, 0.2, through 1.0, print <code>x</code> and <code>f(x) = 0.00005 * x ** 3 - 0.03 * x ** 2 + 4 * x + 200</code>. Use an integer loop counter to create the <code>x</code> values and print both numbers to four decimal places, separated by a space. This program reads no input.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Output rows</th></tr></thead>
+  <tbody>
+    <tr><td><code>0.0000 200.0000</code>, <code>0.1000 200.3997</code>, <code>0.2000 200.7988</code>, …, <code>1.0000 203.9700</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>for</code> loop.</li>
+    <li>Count the rows with an integer counter: <code>range(11)</code>.</li>
+    <li>Turn the counter into <code>x</code> by dividing by 10.</li>
+    <li>Print the values with four decimal places using <code>:.4f</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p16"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+<hr>
+<p class="wb-meta">End of Lecture 16 Workbook.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,1174 @@
+{
+  "id": "lecture-15",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 15 Workbook",
+  "subtitle": "Nested loops, break and continue",
+  "exercises": {
+    "ex-nested": {
+      "type": "example",
+      "code": "for row in range(3):\n    for column in range(4):\n        print(row, column)",
+      "output": "0 0\n0 1\n0 2\n0 3\n1 0\n1 1\n1 2\n1 3\n2 0\n2 1\n2 2\n2 3"
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "outer": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "inner": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "after03": {
+          "accept": [
+            "1 0",
+            "1, 0",
+            "1,0",
+            "(1, 0)",
+            "(1,0)",
+            "1; 0"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "1 0"
+        },
+        "final": {
+          "accept": [
+            "2 3",
+            "2, 3",
+            "2,3",
+            "(2, 3)",
+            "(2,3)",
+            "2; 3"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "2 3"
+        }
+      }
+    },
+    "ex-rowcol": {
+      "type": "example",
+      "code": "for row in range(1, 3):\n    for column in range(1, 4):\n        print(f\"row={row}, column={column}\")",
+      "output": "row=1, column=1\nrow=1, column=2\nrow=1, column=3\nrow=2, column=1\nrow=2, column=2\nrow=2, column=3"
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i1": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "o2": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "o3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i3": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "o4": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i4": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "o5": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i5": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "o6": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "i6": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-count": {
+      "type": "example",
+      "code": "executions = 0\n\nfor row in range(3):\n    for column in range(4):\n        executions = executions + 1\n\nprint(executions)",
+      "output": "12"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c53": {
+          "accept": [
+            "15"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c274": {
+          "accept": [
+            "20"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c2020": {
+          "accept": [
+            "400"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why multiply?",
+      "answer": "RWFjaCBvdXRlciBwYXNzIHJ1bnMgZXZlcnkgaW5uZXIgcGFzcywgc28gdGhlIGlubmVyIGNvdW50IGlzIHJlcGVhdGVkIG9uY2UgZm9yIGV2ZXJ5IG91dGVyIHZhbHVlLg=="
+    },
+    "ex-rect": {
+      "type": "example",
+      "code": "for row in range(3):\n    for column in range(4):\n        print(\"*\", end=\"\")\n    print()",
+      "output": "****\n****\n****"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "stars": {
+          "accept": [
+            "10"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "prints": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp4-where": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Where is the empty print() indented?",
+      "answer": "SXQgbXVzdCBiZSBvdXRzaWRlIHRoZSBpbm5lciBsb29wIGJ1dCBpbnNpZGUgdGhlIG91dGVyIGxvb3AsIGFsaWduZWQgd2l0aCB0aGUgaW5uZXIgYGZvcmAgc3RhdGVtZW50Lg=="
+    },
+    "ex-table": {
+      "type": "example",
+      "code": "for row in range(1, 4):\n    for column in range(1, 5):\n        product = row * column\n        print(f\"{product:4}\", end=\"\")\n    print()",
+      "output": "   1   2   3   4\n   2   4   6   8\n   3   6   9  12"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "p1": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p2": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p3": {
+          "accept": [
+            "12"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p4": {
+          "accept": [
+            "16"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "p5": {
+          "accept": [
+            "20"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "fixed": {
+          "accept": [
+            "row",
+            "the row variable",
+            "row variable",
+            "the outer variable",
+            "outer variable",
+            "the outer loop variable",
+            "outer loop variable",
+            "outer",
+            "the outer loop",
+            "outer loop"
+          ],
+          "placeholder": "variable",
+          "width": "8rem",
+          "show": "row"
+        }
+      }
+    },
+    "ex-triangle": {
+      "type": "example",
+      "code": "for row in range(1, 6):\n    for column in range(row):\n        print(\"*\", end=\"\")\n    print()",
+      "output": "*\n**\n***\n****\n*****"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r4": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "r5": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "total": {
+          "accept": [
+            "15"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why not multiply?",
+      "answer": "VGhlIGlubmVyIHJhbmdlIGNoYW5nZXMgd2l0aCBgcm93YCwgc28gdGhlcmUgaXMgbm8gc2luZ2xlIGZpeGVkIGlubmVyIGNvdW50IHRvIG11bHRpcGx5IGJ5IHRoZSBudW1iZXIgb2Ygb3V0ZXIgcGFzc2VzLg=="
+    },
+    "ex-pairs": {
+      "type": "example",
+      "code": "text = \"ABC\"\n\nfor first in range(len(text)):\n    for second in range(first + 1, len(text)):\n        print(text[first], text[second])",
+      "output": "A B\nA C\nB C"
+    },
+    "cp7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "pair1": {
+          "accept": [
+            "W X",
+            "W, X",
+            "W,X",
+            "(W, X)",
+            "(W,X)",
+            "W; X"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "W X"
+        },
+        "pair2": {
+          "accept": [
+            "W Y",
+            "W, Y",
+            "W,Y",
+            "(W, Y)",
+            "(W,Y)",
+            "W; Y"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "W Y"
+        },
+        "pair3": {
+          "accept": [
+            "W Z",
+            "W, Z",
+            "W,Z",
+            "(W, Z)",
+            "(W,Z)",
+            "W; Z"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "W Z"
+        },
+        "pair4": {
+          "accept": [
+            "X Y",
+            "X, Y",
+            "X,Y",
+            "(X, Y)",
+            "(X,Y)",
+            "X; Y"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "X Y"
+        },
+        "pair5": {
+          "accept": [
+            "X Z",
+            "X, Z",
+            "X,Z",
+            "(X, Z)",
+            "(X,Z)",
+            "X; Z"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "X Z"
+        },
+        "pair6": {
+          "accept": [
+            "Y Z",
+            "Y, Z",
+            "Y,Z",
+            "(Y, Z)",
+            "(Y,Z)",
+            "Y; Z"
+          ],
+          "placeholder": "pair",
+          "width": "5rem",
+          "show": "Y Z"
+        },
+        "count": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp7-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why zero inner iterations?",
+      "answer": "T24gdGhlIGZpbmFsIG91dGVyIHBhc3MsIGBmaXJzdCArIDFgIGVxdWFscyB0aGUgbGVuZ3RoIG9mIHRoZSBzdHJpbmcsIHNvIHRoZSBpbm5lciByYW5nZSBpcyBlbXB0eS4="
+    },
+    "ex-break": {
+      "type": "example",
+      "code": "for number in range(2, 10):\n    if number * number > 30:\n        break\n    print(number)\n\nprint(\"Finished\")",
+      "output": "2\n3\n4\n5\nFinished"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "first": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "printed": {
+          "accept": [
+            "no",
+            "n",
+            "false",
+            "not reached",
+            "skipped"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "after": {
+          "accept": [
+            "print(\"Finished\")",
+            "print('Finished')",
+            "print(Finished)",
+            "print Finished",
+            "print(“Finished”)",
+            "the print statement",
+            "print statement",
+            "the print",
+            "print",
+            "the print(\"Finished\") statement",
+            "print(\"Finished\") statement"
+          ],
+          "placeholder": "statement",
+          "width": "10rem",
+          "show": "print(\"Finished\")"
+        }
+      }
+    },
+    "ex-nested-break": {
+      "type": "example",
+      "code": "for row in range(1, 4):\n    for column in range(1, 5):\n        if column == 3:\n            break\n        print(row, column)\n    print(f\"End of row {row}\")",
+      "output": "1 1\n1 2\nEnd of row 1\n2 1\n2 2\nEnd of row 2\n3 1\n3 2\nEnd of row 3"
+    },
+    "cp9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "which": {
+          "accept": [
+            "the inner loop",
+            "inner",
+            "inner loop",
+            "the inner for loop",
+            "inner for loop",
+            "for column",
+            "the for column loop",
+            "for column loop",
+            "column",
+            "the column loop",
+            "column loop",
+            "the inner for column loop",
+            "for column in range(1, 5)",
+            "for column in range(1, 5):",
+            "for column in range(1,5)",
+            "for column in range(1,5):"
+          ],
+          "placeholder": "which loop",
+          "width": "10rem",
+          "show": "the inner loop"
+        },
+        "breaks": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "endrows": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp9-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "What would the outer loop need?",
+      "answer": "VGhlIG91dGVyIGxvb3Agd291bGQgbmVlZCBpdHMgb3duIHN0b3BwaW5nIGNvbmRpdGlvbiBhbmQgaXRzIG93biBgYnJlYWtgLg=="
+    },
+    "ex-continue": {
+      "type": "example",
+      "code": "for number in range(1, 11):\n    if number % 3 == 0:\n        continue\n    print(number, end=\" \")\nprint()",
+      "output": "1 2 4 5 7 8 10 "
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "n2": {
+          "accept": [
+            "yes",
+            "y",
+            "true",
+            "reached"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "n3": {
+          "accept": [
+            "no",
+            "n",
+            "false",
+            "not reached",
+            "skipped"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "n4": {
+          "accept": [
+            "yes",
+            "y",
+            "true",
+            "reached"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "n6": {
+          "accept": [
+            "no",
+            "n",
+            "false",
+            "not reached",
+            "skipped"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "ends": {
+          "accept": [
+            "no",
+            "n",
+            "false",
+            "not reached",
+            "skipped"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        }
+      }
+    },
+    "cp10-where": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Where does execution go?",
+      "answer": "RXhlY3V0aW9uIGJlZ2lucyB0aGUgbmV4dCBpdGVyYXRpb24gb2YgdGhlIG5lYXJlc3QgbG9vcC4="
+    },
+    "cp11-a": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "placeholder": "Why does the loop stop making progress?",
+      "answer": "QXQgNSwgYGNvbnRpbnVlYCBza2lwcyB0aGUgdXBkYXRlLCBzbyB0aGUgY29uZGl0aW9uIGlzIGNoZWNrZWQgYWdhaW4gd2l0aCB0aGUgc2FtZSB2YWx1ZS4="
+    },
+    "cp11-b": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Where could the update move?",
+      "answer": "TW92ZSB0aGUgdXBkYXRlIGFib3ZlIHRoZSBgaWZgLg=="
+    },
+    "cp11-c": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Which statement would you remove?",
+      "answer": "SWYgYSBzaW1wbGUgY29uZGl0aW9uIGNhbiBleHByZXNzIHRoZSBzYW1lIGxvZ2ljIGNsZWFybHksIHByZWZlciByZW1vdmluZyBgY29udGludWVgLg=="
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIG91dGVyIGxvb3AgY29udGFpbnMgYW5vdGhlciBsb29wLiBUaGUgaW5uZXIgbG9vcCBpcyB0aGUgbG9vcCBpbnNpZGUgdGhlIG91dGVyIGxvb3AncyBib2R5Lg=="
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "Rm9yIG9uZSBvdXRlciB2YWx1ZSwgdGhlIGlubmVyIGxvb3AgZ29lcyB0aHJvdWdoIGFsbCBvZiBpdHMgdmFsdWVzLiBUaGVuIHRoZSBvdXRlciBsb29wIGFkdmFuY2VzIGFuZCB0aGUgaW5uZXIgbG9vcCBzdGFydHMgYWdhaW4u"
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "TXVsdGlwbHkgdGhlIG51bWJlciBvZiBvdXRlciBwYXNzZXMgYnkgdGhlIG51bWJlciBvZiBpbm5lciBwYXNzZXMu"
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SXQgcHJldmVudHMgYHByaW50YCBmcm9tIG1vdmluZyB0byBhIG5ldyBsaW5lLCBzbyBzZXZlcmFsIHZhbHVlcyBjYW4gYmUgcHJpbnRlZCBvbiB0aGUgc2FtZSByb3cu"
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SXQgc2hvdWxkIHN0YXJ0IGEgbmV3IGxpbmUgb25seSBhZnRlciBldmVyeSBjb2x1bW4gaW4gdGhlIGN1cnJlbnQgcm93IGhhcyBiZWVuIHByaW50ZWQu"
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SXQgZW5kcyB0aGUgbmVhcmVzdCBsb29wIGltbWVkaWF0ZWx5IGFuZCBjb250aW51ZXMgd2l0aCB0aGUgZmlyc3Qgc3RhdGVtZW50IGFmdGVyIHRoYXQgbG9vcC4="
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SXQgc2tpcHMgdGhlIHJlc3Qgb2YgdGhlIGN1cnJlbnQgaXRlcmF0aW9uIGFuZCBiZWdpbnMgdGhlIG5leHQgaXRlcmF0aW9uIG9mIHRoZSBuZWFyZXN0IGxvb3Au"
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "answer": "T25seSB0aGUgaW5uZXIgbG9vcCBpcyBhZmZlY3RlZC4="
+    },
+    "ex-seats1": {
+      "type": "example",
+      "code": "for row in range(1, 4):\n    for seat in range(1, 6):\n        print(row, seat)",
+      "output": "1 1\n1 2\n1 3\n1 4\n1 5\n2 1\n2 2\n2 3\n2 4\n2 5\n3 1\n3 2\n3 3\n3 4\n3 5"
+    },
+    "ex-seats2": {
+      "type": "example",
+      "code": "for row in range(1, 4):\n    for seat in range(1, 6):\n        if seat == 3:\n            continue\n        print(row, seat)",
+      "output": "1 1\n1 2\n1 4\n1 5\n2 1\n2 2\n2 4\n2 5\n3 1\n3 2\n3 4\n3 5"
+    },
+    "ex-seats3": {
+      "type": "example",
+      "code": "for row in range(1, 4):\n    print(f\"Row {row}:\", end=\"\")\n    for seat in range(1, 6):\n        if row == 2 and seat == 5:\n            break\n        if seat == 3:\n            continue\n        print(f\" {seat}\", end=\"\")\n    print()",
+      "output": "Row 1: 1 2 4 5\nRow 2: 1 2 4\nRow 3: 1 2 4 5"
+    },
+    "syn-a": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "placeholder": "Why is the barrier test first?",
+      "answer": "VGhlIGJhcnJpZXIgdGVzdCBjb21lcyBmaXJzdCBiZWNhdXNlIHJlYWNoaW5nIHRoZSBiYXJyaWVyIHNob3VsZCBlbmQgdGhlIHJvdywgbm90IG1lcmVseSBza2lwIG9uZSBzZWF0Lg=="
+    },
+    "syn-b": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "placeholder": "Why does row 3 still print?",
+      "answer": "Um93IDMgc3RpbGwgcHJpbnRzIGJlY2F1c2UgdGhlIGBicmVha2AgYWZmZWN0cyBvbmx5IHRoZSBpbm5lciBzZWF0IGxvb3Au"
+    },
+    "syn": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "total": {
+          "accept": [
+            "11"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "p1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 3,
+      "placeholder": "Define a nested loop and give one row-and-column task…",
+      "answer": "QSBuZXN0ZWQgbG9vcCBpcyBhIGxvb3AgaW5zaWRlIHRoZSBib2R5IG9mIGFub3RoZXIgbG9vcC4gRm9yIGV4YW1wbGUsIGEgcHJvZ3JhbSBjYW4gdXNlIHRoZSBvdXRlciBsb29wIGZvciByb3dzIG9mIHNlYXRzIGFuZCB0aGUgaW5uZXIgbG9vcCBmb3IgdGhlIHNlYXQgbnVtYmVycyBhY3Jvc3MgZWFjaCByb3cu"
+    },
+    "ex-rows": {
+      "type": "example",
+      "code": "for row in range(3):\n    for column in range(5):\n        print(\"*\", end=\"\")\n    print()",
+      "output": "*****\n*****\n*****"
+    },
+    "p2": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 3,
+      "starter": "# Print three rows of five stars with one for loop.",
+      "cases": [
+        {
+          "name": "Three rows of five stars",
+          "expected": "*****\n*****\n*****"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\n",
+      "answer": "Zm9yIHJvdyBpbiByYW5nZSgzKToKICAgIHByaW50KCIqIiAqIDUp",
+      "answerNote": "The inner loop is unnecessary when every row is exactly the same."
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "# Print the times from 1:00 through 2:40 at 20-minute intervals.",
+      "cases": [
+        {
+          "name": "1:00 through 2:40",
+          "expected": "1:00\n1:20\n1:40\n2:00\n2:20\n2:40"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\":[^}]*02[^}]*\\}\", __source__), \"Show the minutes in a two-digit field with :02.\"\n",
+      "answer": "Zm9yIGhvdXIgaW4gcmFuZ2UoMSwgMyk6CiAgICBmb3IgbWludXRlIGluIHJhbmdlKDAsIDYwLCAyMCk6CiAgICAgICAgcHJpbnQoZiJ7aG91cn06e21pbnV0ZTowMn0iKQ==",
+      "answerNote": "The outer loop supplies the hour and the inner loop supplies 0, 20, and 40 minutes."
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "ticket = 0\n\n# For each destination, print one ticket line per friend.",
+      "cases": [
+        {
+          "name": "Tickets 1 through 15",
+          "expected": "1 1\n2 1\n3 1\n4 1\n5 1\n6 1\n7 1\n8 1\n9 1\n10 1\n11 2\n12 2\n13 2\n14 3\n15 3"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\n",
+      "answer": "dGlja2V0ID0gMAoKZm9yIGRlc3RpbmF0aW9uIGluIHJhbmdlKDEsIDQpOgogICAgaWYgZGVzdGluYXRpb24gPT0gMToKICAgICAgICBmcmllbmRzID0gMTAKICAgIGVsaWYgZGVzdGluYXRpb24gPT0gMjoKICAgICAgICBmcmllbmRzID0gMwogICAgZWxzZToKICAgICAgICBmcmllbmRzID0gMgoKICAgIGZvciBmcmllbmQgaW4gcmFuZ2UoZnJpZW5kcyk6CiAgICAgICAgdGlja2V0ID0gdGlja2V0ICsgMQogICAgICAgIHByaW50KHRpY2tldCwgZGVzdGluYXRpb24p",
+      "answerNote": "The outer loop chooses a destination. The inner count is selected from the number of friends in that destination."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "# Print the 4-by-4 addition table with a field width of four.",
+      "cases": [
+        {
+          "name": "4-by-4 addition table",
+          "expected": "   2   3   4   5\n   3   4   5   6\n   4   5   6   7\n   5   6   7   8"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\":[^}]*4\\}\", __source__), \"Give every value a field width of four with :4.\"\n",
+      "answer": "Zm9yIHJvdyBpbiByYW5nZSgxLCA1KToKICAgIGZvciBjb2x1bW4gaW4gcmFuZ2UoMSwgNSk6CiAgICAgICAgcHJpbnQoZiJ7cm93ICsgY29sdW1uOjR9IiwgZW5kPSIiKQogICAgcHJpbnQoKQ==",
+      "answerNote": "Add the current row and column labels for each cell."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 9,
+      "starter": "overall_total = 0\n\n# Read three grades for each of two students.",
+      "cases": [
+        {
+          "name": "Typed 80, 70, 90, 60, 75, 75",
+          "inputs": [
+            "80",
+            "70",
+            "90",
+            "60",
+            "75",
+            "75"
+          ],
+          "expected": "Student 1: 80.0\nStudent 2: 70.0\nOverall: 75.0"
+        },
+        {
+          "name": "Typed 100, 100, 100, 0, 0, 0",
+          "inputs": [
+            "100",
+            "100",
+            "100",
+            "0",
+            "0",
+            "0"
+          ],
+          "expected": "Student 1: 100.0\nStudent 2: 0.0\nOverall: 50.0"
+        },
+        {
+          "name": "Typed 50, 60, 70, 80, 90, 100",
+          "inputs": [
+            "50",
+            "60",
+            "70",
+            "80",
+            "90",
+            "100"
+          ],
+          "expected": "Student 1: 60.0\nStudent 2: 90.0\nOverall: 75.0"
+        },
+        {
+          "name": "Typed 71, 72, 74, 65, 66, 68",
+          "inputs": [
+            "71",
+            "72",
+            "74",
+            "65",
+            "66",
+            "68"
+          ],
+          "expected": "Student 1: 72.3\nStudent 2: 66.3\nOverall: 69.3"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\":[^}]*\\.1f\\}\", __source__), \"Show each average with one decimal place using :.1f.\"\n",
+      "answer": "b3ZlcmFsbF90b3RhbCA9IDAKCmZvciBzdHVkZW50IGluIHJhbmdlKDEsIDMpOgogICAgc3R1ZGVudF90b3RhbCA9IDAKICAgIGZvciBncmFkZV9udW1iZXIgaW4gcmFuZ2UoMyk6CiAgICAgICAgZ3JhZGUgPSBpbnQoaW5wdXQoKSkKICAgICAgICBzdHVkZW50X3RvdGFsID0gc3R1ZGVudF90b3RhbCArIGdyYWRlCiAgICAgICAgb3ZlcmFsbF90b3RhbCA9IG92ZXJhbGxfdG90YWwgKyBncmFkZQogICAgcHJpbnQoZiJTdHVkZW50IHtzdHVkZW50fToge3N0dWRlbnRfdG90YWwgLyAzOi4xZn0iKQoKcHJpbnQoZiJPdmVyYWxsOiB7b3ZlcmFsbF90b3RhbCAvIDY6LjFmfSIp",
+      "answerNote": "Reset the student total on each outer pass and keep a separate overall total."
+    },
+    "p7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "# Read choices until N is entered.",
+      "cases": [
+        {
+          "name": "Typed maybe, y, n",
+          "inputs": [
+            "maybe",
+            "y",
+            "n"
+          ],
+          "expected": "Invalid\nAgain\nFinished"
+        },
+        {
+          "name": "Typed N",
+          "inputs": [
+            "N"
+          ],
+          "expected": "Finished"
+        },
+        {
+          "name": "Typed Y, Y, n",
+          "inputs": [
+            "Y",
+            "Y",
+            "n"
+          ],
+          "expected": "Again\nAgain\nFinished"
+        },
+        {
+          "name": "Typed x, an empty line, yes, N",
+          "inputs": [
+            "x",
+            "",
+            "yes",
+            "N"
+          ],
+          "expected": "Invalid\nInvalid\nInvalid\nFinished"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\s+True\\b\", __code__, re.M), \"Use while True for the loop.\"\nassert \"continue\" in __code__, \"Discard an invalid choice with continue.\"\nassert \"break\" in __code__, \"Leave the loop with break when the choice is N.\"\n",
+      "answer": "d2hpbGUgVHJ1ZToKICAgIGNob2ljZSA9IGlucHV0KCkudXBwZXIoKQogICAgaWYgY2hvaWNlICE9ICJZIiBhbmQgY2hvaWNlICE9ICJOIjoKICAgICAgICBwcmludCgiSW52YWxpZCIpCiAgICAgICAgY29udGludWUKICAgIGlmIGNob2ljZSA9PSAiTiI6CiAgICAgICAgcHJpbnQoIkZpbmlzaGVkIikKICAgICAgICBicmVhawogICAgcHJpbnQoIkFnYWluIik=",
+      "answerNote": "Invalid input is discarded with `continue`; `N` reaches the one loop exit."
+    },
+    "p8": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 8,
+      "starter": "side = int(input())\n\n# Print a hollow square with side characters on each edge.",
+      "cases": [
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "####\n#  #\n#  #\n####"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "##\n##"
+        },
+        {
+          "name": "Typed 8",
+          "inputs": [
+            "8"
+          ],
+          "expected": "########\n#      #\n#      #\n#      #\n#      #\n#      #\n#      #\n########"
+        },
+        {
+          "name": "Typed 5",
+          "inputs": [
+            "5"
+          ],
+          "expected": "#####\n#   #\n#   #\n#   #\n#####"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "###\n# #\n###"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\n",
+      "answer": "c2lkZSA9IGludChpbnB1dCgpKQoKZm9yIHJvdyBpbiByYW5nZShzaWRlKToKICAgIGZvciBjb2x1bW4gaW4gcmFuZ2Uoc2lkZSk6CiAgICAgICAgaWYgcm93ID09IDAgb3Igcm93ID09IHNpZGUgLSAxIG9yIGNvbHVtbiA9PSAwIG9yIGNvbHVtbiA9PSBzaWRlIC0gMToKICAgICAgICAgICAgcHJpbnQoIiMiLCBlbmQ9IiIpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcHJpbnQoIiAiLCBlbmQ9IiIpCiAgICBwcmludCgp",
+      "answerNote": "A position is on the border when its row or column is the first or last one."
+    },
+    "p9": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 7,
+      "starter": "size = int(input())\n\n# Print the growing half, then the shrinking half.",
+      "cases": [
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "  1\n 222\n33333\n 222\n  1"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "1"
+        },
+        {
+          "name": "Typed 5",
+          "inputs": [
+            "5"
+          ],
+          "expected": "    1\n   222\n  33333\n 4444444\n555555555\n 4444444\n  33333\n   222\n    1"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": " 1\n222\n 1"
+        },
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "   1\n  222\n 33333\n4444444\n 33333\n  222\n   1"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) >= 2, \"Use two for loops.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\n",
+      "answer": "c2l6ZSA9IGludChpbnB1dCgpKQoKZm9yIHJvdyBpbiByYW5nZSgxLCBzaXplICsgMSk6CiAgICBwcmludCgiICIgKiAoc2l6ZSAtIHJvdyksIGVuZD0iIikKICAgIHByaW50KHN0cihyb3cpICogKDIgKiByb3cgLSAxKSkKCmZvciByb3cgaW4gcmFuZ2Uoc2l6ZSAtIDEsIDAsIC0xKToKICAgIHByaW50KCIgIiAqIChzaXplIC0gcm93KSwgZW5kPSIiKQogICAgcHJpbnQoc3RyKHJvdykgKiAoMiAqIHJvdyAtIDEpKQ==",
+      "answerNote": "For row `r`, print `size - r` spaces and `2 * r - 1` copies of the row number. The lower half starts at `size - 1` so the widest row is not repeated."
+    },
+    "p10": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 8,
+      "starter": "remaining = 12\nbuyers = 0\n\n# Sell seats until none remain, then print the number of buyers.",
+      "cases": [
+        {
+          "name": "Typed 4, 3, 4, 2, 1",
+          "inputs": [
+            "4",
+            "3",
+            "4",
+            "2",
+            "1"
+          ],
+          "expected": "Not enough seats\nBuyers: 4"
+        },
+        {
+          "name": "Typed 4, 4, 4",
+          "inputs": [
+            "4",
+            "4",
+            "4"
+          ],
+          "expected": "Buyers: 3"
+        },
+        {
+          "name": "Typed 1 twelve times",
+          "inputs": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1"
+          ],
+          "expected": "Buyers: 12"
+        },
+        {
+          "name": "Typed 3, 3, 3, 4, 3",
+          "inputs": [
+            "3",
+            "3",
+            "3",
+            "4",
+            "3"
+          ],
+          "expected": "Not enough seats\nBuyers: 4"
+        },
+        {
+          "name": "Typed 2, 4, 4, 3, 1, 1",
+          "inputs": [
+            "2",
+            "4",
+            "4",
+            "3",
+            "1",
+            "1"
+          ],
+          "expected": "Not enough seats\nBuyers: 5"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of passes is not known in advance.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"A while loop fits here; the number of requests is not known.\"\n",
+      "answer": "cmVtYWluaW5nID0gMTIKYnV5ZXJzID0gMAoKd2hpbGUgcmVtYWluaW5nID4gMDoKICAgIHJlcXVlc3RlZCA9IGludChpbnB1dCgpKQogICAgaWYgcmVxdWVzdGVkID4gcmVtYWluaW5nOgogICAgICAgIHByaW50KCJOb3QgZW5vdWdoIHNlYXRzIikKICAgICAgICBjb250aW51ZQogICAgcmVtYWluaW5nID0gcmVtYWluaW5nIC0gcmVxdWVzdGVkCiAgICBidXllcnMgPSBidXllcnMgKyAxCgpwcmludChmIkJ1eWVyczoge2J1eWVyc30iKQ==",
+      "answerNote": "Only accepted requests change the remaining-seat count or buyer count."
+    },
+    "p11": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 8,
+      "starter": "occupancy = 0\n\n# Read changes until the room reaches 8 people.",
+      "cases": [
+        {
+          "name": "Typed 5, 4, -2, 5",
+          "inputs": [
+            "5",
+            "4",
+            "-2",
+            "5"
+          ],
+          "expected": "5\nRejected\n3\n8\nFull"
+        },
+        {
+          "name": "Typed 8",
+          "inputs": [
+            "8"
+          ],
+          "expected": "8\nFull"
+        },
+        {
+          "name": "Typed 9, -1, 8",
+          "inputs": [
+            "9",
+            "-1",
+            "8"
+          ],
+          "expected": "Rejected\nRejected\n8\nFull"
+        },
+        {
+          "name": "Typed 3, 3, 3, -9, 2",
+          "inputs": [
+            "3",
+            "3",
+            "3",
+            "-9",
+            "2"
+          ],
+          "expected": "3\n6\nRejected\nRejected\n8\nFull"
+        },
+        {
+          "name": "Typed 2, -2, 0, 8",
+          "inputs": [
+            "2",
+            "-2",
+            "0",
+            "8"
+          ],
+          "expected": "2\n0\n0\n8\nFull"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of passes is not known in advance.\"\nassert not re.search(r\"^\\s*for\\b\", __code__, re.M), \"A while loop fits here; the number of changes is not known.\"\n",
+      "answer": "b2NjdXBhbmN5ID0gMAoKd2hpbGUgb2NjdXBhbmN5IDwgODoKICAgIGNoYW5nZSA9IGludChpbnB1dCgpKQogICAgcHJvcG9zZWQgPSBvY2N1cGFuY3kgKyBjaGFuZ2UKICAgIGlmIHByb3Bvc2VkIDwgMCBvciBwcm9wb3NlZCA+IDg6CiAgICAgICAgcHJpbnQoIlJlamVjdGVkIikKICAgICAgICBjb250aW51ZQogICAgb2NjdXBhbmN5ID0gcHJvcG9zZWQKICAgIHByaW50KG9jY3VwYW5jeSkKCnByaW50KCJGdWxsIik=",
+      "answerNote": "Test the proposed occupancy before changing the stored value, so a rejected group does not change the room count."
+    },
+    "p12": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 3,
+      "starter": "# Print the width at each whole-metre depth from 0 through 4.",
+      "cases": [
+        {
+          "name": "Depths 0 through 4",
+          "expected": "Depth 0 m: 8.0 m\nDepth 1 m: 6.0 m\nDepth 2 m: 4.0 m\nDepth 3 m: 2.0 m\nDepth 4 m: 0.0 m"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) == 1, \"Use exactly one for loop.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\":[^}]*\\.1f\\}\", __source__), \"Show the width with one decimal place using :.1f.\"\n",
+      "answer": "Zm9yIGRlcHRoIGluIHJhbmdlKDUpOgogICAgd2lkdGggPSA4LjAgKiAoMSAtIGRlcHRoIC8gNCkKICAgIHByaW50KGYiRGVwdGgge2RlcHRofSBtOiB7d2lkdGg6LjFmfSBtIik=",
+      "answerNote": "The formula supplies the width for each depth."
+    },
+    "p13": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "# Print the 8-by-8 checkerboard.",
+      "cases": [
+        {
+          "name": "8-by-8 checkerboard",
+          "expected": "#.#.#.#.\n.#.#.#.#\n#.#.#.#.\n.#.#.#.#\n#.#.#.#.\n.#.#.#.#\n#.#.#.#.\n.#.#.#.#"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\"%\\s*2\\b\", __code__), \"Decide each character from the remainder of row + column after division by 2.\"\n",
+      "answer": "Zm9yIHJvdyBpbiByYW5nZSg4KToKICAgIGZvciBjb2x1bW4gaW4gcmFuZ2UoOCk6CiAgICAgICAgaWYgKHJvdyArIGNvbHVtbikgJSAyID09IDA6CiAgICAgICAgICAgIHByaW50KCIjIiwgZW5kPSIiKQogICAgICAgIGVsc2U6CiAgICAgICAgICAgIHByaW50KCIuIiwgZW5kPSIiKQogICAgcHJpbnQoKQ==",
+      "answerNote": "The sum `row + column` changes parity at every neighbouring position."
+    }
+  }
+}

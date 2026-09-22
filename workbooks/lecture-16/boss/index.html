@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 16 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-16-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 16 Boss Problems</h1>
+    <div class="wb-subtitle">Common loop algorithms and random numbers</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the loop algorithms from Lecture 16: an accumulator with a count, a running best, a sentinel loop that ends at a blank line, the previous-item pattern, and seeded random numbers from the <code>random</code> module. They use only what Lectures 4 to 16 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, <code>math.sqrt()</code>, string concatenation, <code>if</code>, <code>elif</code> and <code>else</code>, <code>while</code> and <code>for</code> loops, and <code>random.seed()</code>, <code>random.randint()</code> and <code>random.choice()</code>. Test the smallest case, such as an empty list of grades or a single value, as well as a typical case. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them: <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. The two random problems seed the generator with the typed seed, so the same seed always gives the same numbers. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="grades" data-toc-title="👹 Term grade average">👹 Boss 1: Term Grade Average</h2>
+<p>Given zero or more valid letter grades, produce their grade point average. Read one grade per line. A blank line ends the input. Use this table:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Grade</th><th>A+</th><th>A</th><th>A-</th><th>B+</th><th>B</th><th>B-</th><th>C+</th><th>C</th><th>C-</th><th>D+</th><th>D</th><th>F</th></tr></thead>
+  <tbody>
+    <tr><td>Points</td><td>4.0</td><td>4.0</td><td>3.7</td><td>3.3</td><td>3.0</td><td>2.7</td><td>2.3</td><td>2.0</td><td>1.7</td><td>1.3</td><td>1.0</td><td>0.0</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Print the average to two decimal places as <code>Grade point average:</code> followed by the value. If no grades are entered, print <code>No grades entered.</code></p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+A
+C+
+B
+(blank line)
+
+Output:
+Grade point average: 3.10
+
+Explanation:
+The three grade points are 4.0, 2.3, and 3.0. Their average is 3.10.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+
+Output:
+No grades entered.
+
+Explanation:
+The first line is blank, so there is no value to average.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each nonblank line is one of the grades in the table, using the shown capital letters.</li>
+    <li>The first blank line ends the input.</li>
+    <li>Use a sentinel loop, an accumulator, a counter, and a safe empty-input check.</li>
+  </ul>
+</div>
+<p>The program reads one grade per line with no prompt. The starter reads the first grade before the loop; read each later grade at the end of the loop body.</p>
+<pre class="wb-shell"><span class="wb-typed">A</span>
+<span class="wb-typed">C+</span>
+<span class="wb-typed">B</span>
+<span class="wb-typed"></span>
+Grade point average: 3.10</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>A</code>, <code>C+</code>, <code>B</code>, blank</td><td><code>Grade point average: 3.10</code></td></tr>
+    <tr><td>blank</td><td><code>No grades entered.</code></td></tr>
+    <tr><td><code>F</code>, blank</td><td><code>Grade point average: 0.00</code></td></tr>
+    <tr><td><code>A+</code>, <code>A-</code>, <code>B+</code>, <code>B-</code>, <code>C-</code>, <code>D+</code>, <code>D</code>, blank</td><td><code>Grade point average: 2.53</code></td></tr>
+    <tr><td><code>C</code>, <code>C</code>, <code>C</code>, blank</td><td><code>Grade point average: 2.00</code></td></tr>
+    <tr><td><code>A+</code>, <code>F</code>, blank</td><td><code>Grade point average: 2.00</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of lines is not known in advance.</li>
+    <li>Stop the loop at the blank line: <code>while grade != ''</code>.</li>
+    <li>Convert each grade with an <code>if</code>, <code>elif</code>, <code>else</code> chain.</li>
+    <li>Test whether <code>count</code> is 0 before dividing.</li>
+    <li>Print the result with two decimal places using <code>:.2f</code>.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>grade = input()</code> unchanged. The checker will type the other grade lists.</p>
+<wb-exercise id="grades"></wb-exercise>
+
+<h2 id="perimeter" data-toc-title="👾 Campus route perimeter">👾 Boss 2: Campus Route Perimeter</h2>
+<p>Given the coordinates of at least two points on a closed walking route, produce its perimeter. Read the first <code>x</code> and <code>y</code>. Then read each later <code>x</code>; a blank <code>x</code> ends the input. For every nonblank <code>x</code>, read its <code>y</code>. The distance between <code>(x1, y1)</code> and <code>(x2, y2)</code> is <code>math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)</code>. Include the final segment back to the first point. Print the perimeter to two decimal places as <code>Route perimeter:</code> followed by the value.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+0
+0
+3
+0
+3
+4
+(blank line)
+
+Output:
+Route perimeter: 12.00
+
+Explanation:
+The three segment lengths are 3, 4, and 5.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1
+1
+4
+1
+(blank line)
+
+Output:
+Route perimeter: 6.00
+
+Explanation:
+The route goes 3 units to the second point and 3 units back to the first.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Every coordinate is a valid floating-point number.</li>
+    <li>At least two points are supplied.</li>
+    <li>Use variables for the first point and the previous point.</li>
+  </ul>
+</div>
+<p>The program reads one coordinate per line with no prompt: the first <code>x</code>, the first <code>y</code>, then <code>x</code> and <code>y</code> for each later point, and finally a blank line in place of an <code>x</code>. Read each later <code>x</code> as text so the blank line can be tested before converting.</p>
+<pre class="wb-shell"><span class="wb-typed">0</span>
+<span class="wb-typed">0</span>
+<span class="wb-typed">3</span>
+<span class="wb-typed">0</span>
+<span class="wb-typed">3</span>
+<span class="wb-typed">4</span>
+<span class="wb-typed"></span>
+Route perimeter: 12.00</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>0</code>, <code>0</code>, <code>3</code>, <code>0</code>, <code>3</code>, <code>4</code>, blank</td><td><code>Route perimeter: 12.00</code></td></tr>
+    <tr><td><code>1</code>, <code>1</code>, <code>4</code>, <code>1</code>, blank</td><td><code>Route perimeter: 6.00</code></td></tr>
+    <tr><td><code>0</code>, <code>0</code>, <code>1</code>, <code>0</code>, <code>1</code>, <code>1</code>, <code>0</code>, <code>1</code>, blank</td><td><code>Route perimeter: 4.00</code></td></tr>
+    <tr><td><code>2.5</code>, <code>-1</code>, <code>-0.5</code>, <code>3</code>, blank</td><td><code>Route perimeter: 10.00</code></td></tr>
+    <tr><td><code>0</code>, <code>0</code>, <code>0</code>, <code>5</code>, <code>12</code>, <code>5</code>, <code>12</code>, <code>0</code>, <code>6</code>, <code>-8</code>, blank</td><td><code>Route perimeter: 42.00</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop; the number of lines is not known in advance.</li>
+    <li>Compute each segment length with <code>math.sqrt()</code>.</li>
+    <li>Keep the previous point in <code>previous_x</code> and <code>previous_y</code>.</li>
+    <li>After the loop, add the segment from the last point back to <code>first_x</code>, <code>first_y</code>.</li>
+    <li>Print the result with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>import math</code>, <code>first_x = float(input())</code> and <code>first_y = float(input())</code> unchanged. The checker will type the other routes.</p>
+<wb-exercise id="perimeter"></wb-exercise>
+
+<h2 id="records" data-toc-title="🐉 Running record board">🐉 Boss 3: Running Record Board</h2>
+<p>Given a seed and a positive count <code>n</code>, generate <code>n</code> random integers from 1 through 100. Produce each number on its own line. Add <code> new record</code> after a number that is larger than every earlier number. The first number is the initial record and does not count as an update. After the numbers, print the maximum as <code>Maximum:</code> and the number of updates as <code>Updates:</code>, each followed by the value.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+5
+6
+
+Output:
+80
+33
+95 new record
+46
+89
+95
+Maximum: 95
+Updates: 1
+
+Explanation:
+Only 95 replaces the initial record of 80.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+2
+1
+
+Output:
+8
+Maximum: 8
+Updates: 0
+
+Explanation:
+One generated value becomes the initial record, so no later update occurs.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>n &gt;= 1</code>.</li>
+    <li>Use <code>random.randint(1, 100)</code> and seed the generator with the input seed.</li>
+    <li>Initialize the running maximum from the first generated value.</li>
+  </ul>
+</div>
+<p>The program reads the seed on the first line and <code>n</code> on the second, with no prompt. The starter seeds the generator; every later call to <code>random.randint(1, 100)</code> then follows the same sequence, so the sixth number equal to 95 in Example 1 is expected.</p>
+<pre class="wb-shell"><span class="wb-typed">5</span>
+<span class="wb-typed">6</span>
+80
+33
+95 new record
+46
+89
+95
+Maximum: 95
+Updates: 1</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>5</code>, <code>6</code></td><td><code>80</code>, <code>33</code>, <code>95 new record</code>, <code>46</code>, <code>89</code>, <code>95</code>, <code>Maximum: 95</code>, <code>Updates: 1</code></td></tr>
+    <tr><td><code>2</code>, <code>1</code></td><td><code>8</code>, <code>Maximum: 8</code>, <code>Updates: 0</code></td></tr>
+    <tr><td><code>1</code>, <code>10</code></td><td><code>18</code>, <code>73 new record</code>, <code>98 new record</code>, then seven more lines, <code>Maximum: 98</code>, <code>Updates: 2</code></td></tr>
+    <tr><td><code>42</code>, <code>3</code></td><td><code>82</code>, <code>15</code>, <code>4</code>, <code>Maximum: 82</code>, <code>Updates: 0</code></td></tr>
+    <tr><td><code>7</code>, <code>20</code></td><td>20 numbers, <code>Maximum: 84</code>, <code>Updates: 2</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Use a <code>for</code> loop for the remaining <code>n - 1</code> values.</li>
+    <li>Call <code>random.randint(1, 100)</code> in exactly two places: once for the first value and once inside the loop.</li>
+    <li>Initialize the running maximum from the first generated value, not from 0.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>seed = int(input())</code>, <code>n = int(input())</code> and <code>random.seed(seed)</code> unchanged. The checker will type the other pairs.</p>
+<wb-exercise id="records"></wb-exercise>
+
+<h2 id="streaks" data-toc-title="💀 Three-in-a-row trials">💀 Boss 4: Three-in-a-Row Trials</h2>
+<p>Given a seed and positive number of trials, simulate fair coin flips until three identical outcomes occur in a row in each trial. Produce the flips on one line, followed by a colon, a space, and the number of flips. After all trials, print the average number of flips to two decimal places as <code>Average flips:</code> followed by the value. Use <code>random.choice('HT')</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+4
+2
+
+Output:
+HTHTTHHH: 8
+HTTHHTTHHTHHTTHHTTT: 19
+Average flips: 13.50
+
+Explanation:
+Each line stops as soon as HHH or TTT appears. The average is (8 + 19) / 2.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1
+1
+
+Output:
+HHTHTTT: 7
+Average flips: 7.00
+
+Explanation:
+The only trial ends with three tails in a row.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>trials &gt;= 1</code>.</li>
+    <li>Seed the random generator with the input seed.</li>
+    <li>Use an outer loop for trials and an inner loop for flips.</li>
+    <li>Track the previous outcome, current run length, flip count, and total flips.</li>
+  </ul>
+</div>
+<p>The program reads the seed on the first line and the number of trials on the second, with no prompt. Print each trial's line with <code>print(outcomes + ':', flips)</code> so the colon touches the last flip and one space separates it from the count.</p>
+<pre class="wb-shell"><span class="wb-typed">4</span>
+<span class="wb-typed">2</span>
+HTHTTHHH: 8
+HTTHHTTHHTHHTTHHTTT: 19
+Average flips: 13.50</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4</code>, <code>2</code></td><td><code>HTHTTHHH: 8</code>, <code>HTTHHTTHHTHHTTHHTTT: 19</code>, <code>Average flips: 13.50</code></td></tr>
+    <tr><td><code>1</code>, <code>1</code></td><td><code>HHTHTTT: 7</code>, <code>Average flips: 7.00</code></td></tr>
+    <tr><td><code>9</code>, <code>5</code></td><td><code>TTT: 3</code>, <code>HHH: 3</code>, <code>TTHTHTHTTHHH: 12</code>, <code>HHH: 3</code>, <code>HTHTHHTHTHTTT: 13</code>, <code>Average flips: 6.80</code></td></tr>
+    <tr><td><code>12</code>, <code>3</code></td><td><code>TTT: 3</code>, <code>HTHTTT: 6</code>, <code>THHH: 4</code>, <code>Average flips: 4.33</code></td></tr>
+    <tr><td><code>3</code>, <code>10</code></td><td>ten trial lines, <code>Average flips: 6.90</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Seed the generator with <code>random.seed(seed)</code> before the first random call.</li>
+    <li>Use an outer <code>for</code> loop over the trials.</li>
+    <li>Use an inner <code>while</code> loop that flips until the run length reaches 3.</li>
+    <li>Flip the coin with <code>random.choice('HT')</code>.</li>
+    <li>Print the result with two decimal places using <code>:.2f</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>seed = int(input())</code>, <code>trials = int(input())</code> and <code>random.seed(seed)</code> unchanged. The checker will type the other pairs.</p>
+<wb-exercise id="streaks"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 16 Boss Problems.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 15 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-15-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 15 Boss Problems</h1>
+    <div class="wb-subtitle">Nested loops, <code>break</code> and <code>continue</code></div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the ideas from Lecture 15: nested loops for rows and columns, <code>break</code> to leave the nearest loop, and <code>continue</code> to skip the rest of one pass. They use only what Lectures 4 to 15 covered: <code>input()</code> with <code>int()</code>, arithmetic including <code>%</code> and <code>//</code>, f-strings with a field width, string indexing and <code>lower()</code>, <code>if</code>, <code>elif</code> and <code>else</code>, <code>while</code> loops, and <code>for</code> loops with <code>range()</code>. Test the smallest case, such as a size of 1 or an empty line, as well as a typical case. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its value with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input line exactly as the starter shows it: <strong>Check</strong> runs your program several times, typing a different value each time, and every run must print exactly what the examples show. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+<h2 id="grid" data-toc-title="👹 Course product grid">👹 Boss 1: Course Product Grid</h2>
+<p>Given an integer <code>size</code>, produce a multiplication grid with row and column labels from 1 through <code>size</code>. A multiplication grid places the product of its row label and column label in each cell. Give every label and product a field width of four characters.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+size = 3
+
+Output:
+       1   2   3
+   1   1   2   3
+   2   2   4   6
+   3   3   6   9
+
+Explanation:
+The row labelled 2 contains 2 times 1, 2 times 2, and 2 times 3.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+size = 1
+
+Output:
+       1
+   1   1
+
+Explanation:
+A size of 1 produces one labelled row and one labelled column.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= size &lt;= 9</code></li>
+    <li>Print the top labels before the body of the grid.</li>
+    <li>Use nested loops for the products.</li>
+  </ul>
+</div>
+<p>The program reads <code>size</code> on one line, with no prompt. The top-left corner of the grid is four spaces.</p>
+<pre class="wb-shell"><span class="wb-typed">3</span>
+       1   2   3
+   1   1   2   3
+   2   2   4   6
+   3   3   6   9</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code></td><td>the label line and three rows, as in Example 1</td></tr>
+    <tr><td><code>1</code></td><td>the two lines in Example 2</td></tr>
+    <tr><td><code>9</code></td><td>the label line, then nine rows; the last row holds the label 9 and the products 9 through 81</td></tr>
+    <tr><td><code>5</code></td><td>the label line, then five rows; the last row holds the label 5 and the products 5 through 25</td></tr>
+    <tr><td><code>2</code></td><td>the label line with 1 and 2, then the rows 1, 1, 2 and 2, 2, 4, every value in a field four characters wide</td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Nested <code>for</code> loops: an inner <code>for</code> loop inside the body of an outer one.</li>
+    <li>No <code>while</code> loop.</li>
+    <li>Give every label and product a field width of four with <code>:4</code>.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>size = int(input())</code> unchanged. The checker will type the other sizes.</p>
+<wb-exercise id="grid"></wb-exercise>
+
+<h2 id="binary" data-toc-title="👾 Lab station binary label">👾 Boss 2: Lab Station Binary Label</h2>
+<p>Given a non-negative decimal integer <code>number</code>, produce its binary representation. Decimal is the usual base-10 notation. Binary is base 2 and uses only the digits 0 and 1. Repeatedly take the remainder after division by 2 and add that digit to the beginning of the result. Use <code>while True</code> and one <code>break</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+number = 13
+
+Output:
+1101
+
+Explanation:
+The remainders are found from right to left, so each new digit is added to the
+beginning of the result.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+number = 0
+
+Output:
+0
+
+Explanation:
+The loop runs once before it checks whether the quotient has reached zero.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= number &lt;= 1023</code></li>
+    <li>Use integer division and remainder.</li>
+    <li>Use <code>while True</code> with one clear <code>break</code>.</li>
+  </ul>
+</div>
+<p>The program reads <code>number</code> on one line, with no prompt. The starter holds a placeholder <code>break</code> so that it runs; replace the comment and the placeholder with your loop body, keeping one <code>break</code>.</p>
+<pre class="wb-shell"><span class="wb-typed">13</span>
+1101</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>13</code></td><td><code>1101</code></td></tr>
+    <tr><td><code>0</code></td><td><code>0</code></td></tr>
+    <tr><td><code>1023</code></td><td><code>1111111111</code></td></tr>
+    <tr><td><code>1</code></td><td><code>1</code></td></tr>
+    <tr><td><code>2</code></td><td><code>10</code></td></tr>
+    <tr><td><code>8</code></td><td><code>1000</code></td></tr>
+    <tr><td><code>255</code></td><td><code>11111111</code></td></tr>
+    <tr><td><code>512</code></td><td><code>1000000000</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use <code>while True</code> for the loop.</li>
+    <li>Leave the loop with exactly one <code>break</code>.</li>
+    <li>Find each digit with <code>% 2</code> and move on with <code>// 2</code>.</li>
+    <li>Build the digits with the loop; <code>bin()</code> and format codes are not allowed.</li>
+    <li>Print exactly one line.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>number = int(input())</code> unchanged. The checker will type the other numbers.</p>
+<wb-exercise id="binary"></wb-exercise>
+
+<h2 id="mirror" data-toc-title="🐉 Phrase mirror check">🐉 Boss 3: Phrase Mirror Check</h2>
+<p>Given a phrase, produce <code>Palindrome</code> when its letters read the same from left to right and right to left after spaces, commas, periods, exclamation marks, and question marks are ignored. Uppercase and lowercase letters count as equal. Otherwise, produce <code>Not a palindrome</code>. A palindrome is text that reads the same in both directions under these rules.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+phrase = "Never odd or even!"
+
+Output:
+Palindrome
+
+Explanation:
+Ignoring spaces, the exclamation mark, and letter case gives neveroddoreven.
+That text reads the same in both directions.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+phrase = "Hello, MUN!"
+
+Output:
+Not a palindrome
+
+Explanation:
+The cleaned text hellomun does not read the same in both directions.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+phrase = ""
+
+Output:
+Palindrome
+
+Explanation:
+The empty phrase has no mismatched pair of letters.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>0 &lt;= len(phrase) &lt;= 80</code></li>
+    <li>The phrase contains letters, spaces, commas, periods, exclamation marks, or question marks.</li>
+    <li>Use <code>continue</code> while cleaning the phrase.</li>
+    <li>Use <code>break</code> when a mismatched pair is found.</li>
+  </ul>
+</div>
+<p>The program reads <code>phrase</code> on one line, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">Never odd or even!</span>
+Palindrome</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Never odd or even!</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>Hello, MUN!</code></td><td><code>Not a palindrome</code></td></tr>
+    <tr><td>an empty line</td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>A man, a plan, a canal. Panama!</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>Was it a car or a cat I saw?</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>No lemon, no melon</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>MUN</code></td><td><code>Not a palindrome</code></td></tr>
+    <tr><td><code>a</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>ab</code></td><td><code>Not a palindrome</code></td></tr>
+    <tr><td><code>Racecar</code></td><td><code>Palindrome</code></td></tr>
+    <tr><td><code>Step on no pets.</code></td><td><code>Palindrome</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Skip each ignored character with <code>continue</code> while cleaning the phrase.</li>
+    <li>Leave the comparison loop with <code>break</code> when a mismatched pair is found.</li>
+    <li>Compare the two ends with a loop, not with slicing or <code>reversed()</code>.</li>
+    <li>Make uppercase and lowercase letters equal with <code>lower()</code> or <code>upper()</code>.</li>
+    <li>Print exactly one line.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>phrase = input()</code> unchanged. The checker will type the other phrases.</p>
+<wb-exercise id="mirror"></wb-exercise>
+
+<h2 id="primes" data-toc-title="💀 Prime roll call">💀 Boss 4: Prime Roll Call</h2>
+<p>Given an integer <code>limit</code>, produce every prime number from 2 through <code>limit</code>, one per line. A prime number is an integer greater than 1 that has no divisor other than 1 and itself. If the range contains no primes, produce <code>No primes</code>. For each candidate, use an inner loop to test possible divisors. A divisor leaves a remainder of zero.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+limit = 10
+
+Output:
+2
+3
+5
+7
+
+Explanation:
+Each printed number has no divisor from 2 up to one less than itself.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+limit = 1
+
+Output:
+No primes
+
+Explanation:
+There is no integer from 2 through 1, so no prime is printed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>1 &lt;= limit &lt;= 200</code></li>
+    <li>Use an outer loop for candidate numbers.</li>
+    <li>Use an inner loop and <code>break</code> when a divisor is found.</li>
+    <li>The inner <code>break</code> must not stop the outer loop.</li>
+  </ul>
+</div>
+<p>The program reads <code>limit</code> on one line, with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">10</span>
+2
+3
+5
+7</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>10</code></td><td><code>2</code>, <code>3</code>, <code>5</code>, <code>7</code>, each on its own line</td></tr>
+    <tr><td><code>1</code></td><td><code>No primes</code></td></tr>
+    <tr><td><code>2</code></td><td><code>2</code></td></tr>
+    <tr><td><code>30</code></td><td>the ten primes from <code>2</code> to <code>29</code>, one per line</td></tr>
+    <tr><td><code>4</code></td><td><code>2</code>, then <code>3</code></td></tr>
+    <tr><td><code>100</code></td><td>the 25 primes from <code>2</code> to <code>97</code>, one per line</td></tr>
+    <tr><td><code>200</code></td><td>the 46 primes from <code>2</code> to <code>199</code>, one per line</td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Nested <code>for</code> loops: an inner <code>for</code> loop inside the body of an outer one.</li>
+    <li>Leave the divisor loop with <code>break</code> as soon as a divisor is found.</li>
+    <li>Recognise a divisor by a remainder of zero with <code>%</code>.</li>
+    <li>No <code>while</code> loop.</li>
+    <li>No <code>import</code>.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>limit = int(input())</code> unchanged. The checker will type the other limits.</p>
+<wb-exercise id="primes"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 15 Boss Problems.</p>
+</main>
+</body>
+</html>

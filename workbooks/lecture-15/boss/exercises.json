@@ -1,0 +1,295 @@
+{
+  "id": "lecture-15-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 15 Boss Problems",
+  "short": "L15 bosses",
+  "subtitle": "Nested loops, break and continue",
+  "exercises": {
+    "grid": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 10,
+      "starter": "size = int(input())\n# Print the column labels, then the labelled rows.",
+      "cases": [
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "       1   2   3\n   1   1   2   3\n   2   2   4   6\n   3   3   6   9"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "       1\n   1   1"
+        },
+        {
+          "name": "Typed 9",
+          "inputs": [
+            "9"
+          ],
+          "expected": "       1   2   3   4   5   6   7   8   9\n   1   1   2   3   4   5   6   7   8   9\n   2   2   4   6   8  10  12  14  16  18\n   3   3   6   9  12  15  18  21  24  27\n   4   4   8  12  16  20  24  28  32  36\n   5   5  10  15  20  25  30  35  40  45\n   6   6  12  18  24  30  36  42  48  54\n   7   7  14  21  28  35  42  49  56  63\n   8   8  16  24  32  40  48  56  64  72\n   9   9  18  27  36  45  54  63  72  81"
+        },
+        {
+          "name": "Typed 5",
+          "inputs": [
+            "5"
+          ],
+          "expected": "       1   2   3   4   5\n   1   1   2   3   4   5\n   2   2   4   6   8  10\n   3   3   6   9  12  15\n   4   4   8  12  16  20\n   5   5  10  15  20  25"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "       1   2\n   1   1   2\n   2   2   4"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"import\" not in __code__, \"Solve it with loops and the tools from this lecture; no import is needed.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\nassert re.search(r\":[^}]*4\\}\", __source__), \"Give every label and product a field width of four with :4.\"\n",
+      "answer": "c2l6ZSA9IGludChpbnB1dCgpKQoKcHJpbnQoIiAgICAiLCBlbmQ9IiIpCmZvciBjb2x1bW4gaW4gcmFuZ2UoMSwgc2l6ZSArIDEpOgogICAgcHJpbnQoZiJ7Y29sdW1uOjR9IiwgZW5kPSIiKQpwcmludCgpCgpmb3Igcm93IGluIHJhbmdlKDEsIHNpemUgKyAxKToKICAgIHByaW50KGYie3Jvdzo0fSIsIGVuZD0iIikKICAgIGZvciBjb2x1bW4gaW4gcmFuZ2UoMSwgc2l6ZSArIDEpOgogICAgICAgIHByaW50KGYie3JvdyAqIGNvbHVtbjo0fSIsIGVuZD0iIikKICAgIHByaW50KCk=",
+      "hints": [
+        "The first line is the empty top-left corner followed by the column labels. Start it with `print(\"    \", end=\"\")` (four spaces), then `for column in range(1, size + 1):` prints `f\"{column:4}\"` with `end=\"\"`, and an empty `print()` ends the line.",
+        "Each later row starts with its label, `print(f\"{row:4}\", end=\"\")`, and then an inner loop over the same columns prints `f\"{row * column:4}\"` with `end=\"\"`.",
+        "The empty `print()` that ends a row belongs after the inner loop but inside the outer loop. For a size of 1, the first line is the four-space corner followed by the label 1 in a four-character field, and the second line is the label 1 followed by the product 1, each in a four-character field."
+      ],
+      "answerNote": "Print four spaces for the empty top-left corner. Then use one loop for the column labels and nested loops for the labelled rows and products."
+    },
+    "binary": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 10,
+      "starter": "number = int(input())\nresult = \"\"\nquotient = number\n\nwhile True:\n    # Add one binary digit and decide whether to stop.\n    break\n\nprint(result)",
+      "cases": [
+        {
+          "name": "Typed 13",
+          "inputs": [
+            "13"
+          ],
+          "expected": "1101"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "0"
+        },
+        {
+          "name": "Typed 1023",
+          "inputs": [
+            "1023"
+          ],
+          "expected": "1111111111"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "1"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "10"
+        },
+        {
+          "name": "Typed 8",
+          "inputs": [
+            "8"
+          ],
+          "expected": "1000"
+        },
+        {
+          "name": "Typed 255",
+          "inputs": [
+            "255"
+          ],
+          "expected": "11111111"
+        },
+        {
+          "name": "Typed 512",
+          "inputs": [
+            "512"
+          ],
+          "expected": "1000000000"
+        }
+      ],
+      "check": "assert \"import\" not in __code__, \"Solve it with loops and the tools from this lecture; no import is needed.\"\nimport re\nassert re.search(r\"^\\s*while\\s+True\\b\", __code__, re.M), \"Use while True for the loop.\"\nassert len(re.findall(r\"^\\s*break\\b\", __code__, re.M)) == 1, \"Leave the loop with exactly one break.\"\nassert re.search(r\"%\\s*2\\b\", __code__), \"Find each binary digit with the remainder after division by 2.\"\nassert re.search(r\"//\\s*2\\b\", __code__), \"Move to the next digit with integer division by 2.\"\nassert \"bin(\" not in __code__ and \"format(\" not in __code__ and \":b\" not in __code__, \"Build the digits with the loop; bin() and format codes are not needed.\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print exactly one line.\"\n",
+      "answer": "bnVtYmVyID0gaW50KGlucHV0KCkpCnJlc3VsdCA9ICIiCnF1b3RpZW50ID0gbnVtYmVyCgp3aGlsZSBUcnVlOgogICAgcmVtYWluZGVyID0gcXVvdGllbnQgJSAyCiAgICByZXN1bHQgPSBzdHIocmVtYWluZGVyKSArIHJlc3VsdAogICAgcXVvdGllbnQgPSBxdW90aWVudCAvLyAyCiAgICBpZiBxdW90aWVudCA9PSAwOgogICAgICAgIGJyZWFrCgpwcmludChyZXN1bHQp",
+      "hints": [
+        "Each pass takes one digit: `remainder = quotient % 2` is 0 or 1, and `result = str(remainder) + result` puts it at the front of the result.",
+        "After adding the digit, move on with `quotient = quotient // 2`. When the quotient has reached 0 there are no digits left, so `if quotient == 0:` is where the one `break` belongs.",
+        "Trace 13: the remainders are 1, 0, 1, 1 and the quotients are 6, 3, 1, 0, so the result grows as `1`, `01`, `101`, `1101`. Because the digit is added before the test, a number of 0 still produces the digit `0`."
+      ],
+      "answerNote": "Each remainder is the next binary digit from the right. Adding it to the front keeps the final digits in reading order. The loop also handles zero because it computes one remainder before the break."
+    },
+    "mirror": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 14,
+      "starter": "phrase = input()\ncleaned = \"\"\n# Build cleaned, then compare matching positions from the two ends.",
+      "cases": [
+        {
+          "name": "Typed Never odd or even!",
+          "inputs": [
+            "Never odd or even!"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed Hello, MUN!",
+          "inputs": [
+            "Hello, MUN!"
+          ],
+          "expected": "Not a palindrome"
+        },
+        {
+          "name": "Typed an empty line",
+          "inputs": [
+            ""
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed A man, a plan, a canal. Panama!",
+          "inputs": [
+            "A man, a plan, a canal. Panama!"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed Was it a car or a cat I saw?",
+          "inputs": [
+            "Was it a car or a cat I saw?"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed No lemon, no melon",
+          "inputs": [
+            "No lemon, no melon"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed MUN",
+          "inputs": [
+            "MUN"
+          ],
+          "expected": "Not a palindrome"
+        },
+        {
+          "name": "Typed a",
+          "inputs": [
+            "a"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed ab",
+          "inputs": [
+            "ab"
+          ],
+          "expected": "Not a palindrome"
+        },
+        {
+          "name": "Typed Racecar",
+          "inputs": [
+            "Racecar"
+          ],
+          "expected": "Palindrome"
+        },
+        {
+          "name": "Typed Step on no pets.",
+          "inputs": [
+            "Step on no pets."
+          ],
+          "expected": "Palindrome"
+        }
+      ],
+      "check": "assert \"import\" not in __code__, \"Solve it with loops and the tools from this lecture; no import is needed.\"\nassert \"continue\" in __code__, \"Skip each ignored character with continue while cleaning the phrase.\"\nassert \"break\" in __code__, \"Leave the comparison loop with break when a mismatched pair is found.\"\nassert \"[::\" not in __code__ and \"reversed(\" not in __code__, \"Compare the two ends with a loop, not with slicing or reversed().\"\nassert \".lower(\" in __code__ or \".upper(\" in __code__ or \".casefold(\" in __code__, \"Make uppercase and lowercase letters equal with lower() or upper().\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print exactly one line.\"\n",
+      "answer": "cGhyYXNlID0gaW5wdXQoKQpjbGVhbmVkID0gIiIKCmZvciBjaGFyYWN0ZXIgaW4gcGhyYXNlLmxvd2VyKCk6CiAgICBpZiBjaGFyYWN0ZXIgPT0gIiAiIG9yIGNoYXJhY3RlciA9PSAiLCIgb3IgY2hhcmFjdGVyID09ICIuIiBcCiAgICAgICAgICAgIG9yIGNoYXJhY3RlciA9PSAiISIgb3IgY2hhcmFjdGVyID09ICI/IjoKICAgICAgICBjb250aW51ZQogICAgY2xlYW5lZCA9IGNsZWFuZWQgKyBjaGFyYWN0ZXIKCmlzX3BhbGluZHJvbWUgPSBUcnVlCmZvciBwb3NpdGlvbiBpbiByYW5nZShsZW4oY2xlYW5lZCkgLy8gMik6CiAgICBvcHBvc2l0ZSA9IGxlbihjbGVhbmVkKSAtIDEgLSBwb3NpdGlvbgogICAgaWYgY2xlYW5lZFtwb3NpdGlvbl0gIT0gY2xlYW5lZFtvcHBvc2l0ZV06CiAgICAgICAgaXNfcGFsaW5kcm9tZSA9IEZhbHNlCiAgICAgICAgYnJlYWsKCmlmIGlzX3BhbGluZHJvbWU6CiAgICBwcmludCgiUGFsaW5kcm9tZSIpCmVsc2U6CiAgICBwcmludCgiTm90IGEgcGFsaW5kcm9tZSIp",
+      "hints": [
+        "Clean first: `for character in phrase.lower():` visits every character in one case. If the character is a space, comma, period, exclamation mark or question mark, `continue`; otherwise add it to `cleaned`. For `Hello, MUN!` this gives `hellomun`.",
+        "Compare from the two ends. Position `position` from the left pairs with `len(cleaned) - 1 - position` from the right, and `range(len(cleaned) // 2)` visits every pair once.",
+        "Start with `is_palindrome = True`. When a pair differs, set it to `False` and `break`. After the loop, one `if`/`else` prints `Palindrome` or `Not a palindrome`.",
+        "An empty phrase gives an empty `cleaned`, so the comparison loop makes zero passes and the flag stays `True`."
+      ],
+      "answerNote": "Build a lowercase string containing only the letters. Compare the first letter with the last, the second with the second-last, and so on. Stop at the first mismatch."
+    },
+    "primes": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 12,
+      "starter": "limit = int(input())\nprinted_prime = False\n\nfor candidate in range(2, limit + 1):\n    is_prime = True\n    # Test possible divisors here.\n\nif not printed_prime:\n    print(\"No primes\")",
+      "cases": [
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "2\n3\n5\n7"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "No primes"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "2"
+        },
+        {
+          "name": "Typed 30",
+          "inputs": [
+            "30"
+          ],
+          "expected": "2\n3\n5\n7\n11\n13\n17\n19\n23\n29"
+        },
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "2\n3"
+        },
+        {
+          "name": "Typed 100",
+          "inputs": [
+            "100"
+          ],
+          "expected": "2\n3\n5\n7\n11\n13\n17\n19\n23\n29\n31\n37\n41\n43\n47\n53\n59\n61\n67\n71\n73\n79\n83\n89\n97"
+        },
+        {
+          "name": "Typed 200",
+          "inputs": [
+            "200"
+          ],
+          "expected": "2\n3\n5\n7\n11\n13\n17\n19\n23\n29\n31\n37\n41\n43\n47\n53\n59\n61\n67\n71\n73\n79\n83\n89\n97\n101\n103\n107\n109\n113\n127\n131\n137\n139\n149\n151\n157\n163\n167\n173\n179\n181\n191\n193\n197\n199"
+        }
+      ],
+      "check": "import re\n_fors = [len(m.group(1).expandtabs(4)) for m in re.finditer(r\"^([ \\t]*)for\\b\", __code__, re.M)]\nassert len(_fors) >= 2 and max(_fors) > min(_fors), \"Use nested for loops: an inner for loop inside the body of an outer one.\"\nassert \"import\" not in __code__, \"Solve it with loops and the tools from this lecture; no import is needed.\"\nassert \"break\" in __code__, \"Leave the divisor loop with break as soon as a divisor is found.\"\nassert \"%\" in __code__, \"Recognise a divisor by a remainder of zero with %.\"\nassert \"while\" not in __code__, \"Use for loops here, not a while loop.\"\n",
+      "answer": "bGltaXQgPSBpbnQoaW5wdXQoKSkKcHJpbnRlZF9wcmltZSA9IEZhbHNlCgpmb3IgY2FuZGlkYXRlIGluIHJhbmdlKDIsIGxpbWl0ICsgMSk6CiAgICBpc19wcmltZSA9IFRydWUKICAgIGZvciBkaXZpc29yIGluIHJhbmdlKDIsIGNhbmRpZGF0ZSk6CiAgICAgICAgaWYgY2FuZGlkYXRlICUgZGl2aXNvciA9PSAwOgogICAgICAgICAgICBpc19wcmltZSA9IEZhbHNlCiAgICAgICAgICAgIGJyZWFrCiAgICBpZiBpc19wcmltZToKICAgICAgICBwcmludChjYW5kaWRhdGUpCiAgICAgICAgcHJpbnRlZF9wcmltZSA9IFRydWUKCmlmIG5vdCBwcmludGVkX3ByaW1lOgogICAgcHJpbnQoIk5vIHByaW1lcyIp",
+      "hints": [
+        "Inside the outer loop, test the divisors with `for divisor in range(2, candidate):`. For a candidate of 2 that range is empty, so 2 stays prime.",
+        "A divisor leaves no remainder: `if candidate % divisor == 0:` sets `is_prime = False` and then `break`. The `break` ends only the divisor loop; the outer loop moves to the next candidate.",
+        "After the inner loop, `if is_prime:` prints the candidate and sets `printed_prime = True`, so the final `No primes` line appears only when nothing was printed."
+      ],
+      "answerNote": "Assume each candidate is prime, then look for evidence that it is not. Finding one divisor sets the Boolean variable to false and ends only the inner loop. The outer loop then tests the next candidate."
+    }
+  }
+}

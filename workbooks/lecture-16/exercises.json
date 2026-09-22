@@ -1,0 +1,1386 @@
+{
+  "id": "lecture-16",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 16 Workbook",
+  "subtitle": "Common loop algorithms and random numbers",
+  "exercises": {
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "digits": {
+          "accept": [
+            "counter",
+            "a counter",
+            "count",
+            "counting matches",
+            "counting-matches",
+            "counter pattern"
+          ],
+          "placeholder": "pattern",
+          "width": "10rem",
+          "show": "counter"
+        },
+        "largest": {
+          "accept": [
+            "running best",
+            "a running best",
+            "running maximum",
+            "a running maximum",
+            "maximum",
+            "running max",
+            "best",
+            "extreme",
+            "running extreme",
+            "largest"
+          ],
+          "placeholder": "pattern",
+          "width": "10rem",
+          "show": "running best"
+        },
+        "space": {
+          "accept": [
+            "first-match search",
+            "search",
+            "a search",
+            "first match search",
+            "first match",
+            "a first-match search",
+            "search that records a position",
+            "first-match search that records a position",
+            "record a position",
+            "first-match",
+            "search for the first match",
+            "position"
+          ],
+          "placeholder": "pattern",
+          "width": "10rem",
+          "show": "first-match search"
+        },
+        "average": {
+          "accept": [
+            "accumulator and count",
+            "accumulator",
+            "an accumulator",
+            "accumulator with a count",
+            "an accumulator with a count",
+            "accumulator and counter",
+            "accumulator with count",
+            "sum and count",
+            "accumulator, count",
+            "total and count",
+            "accumulator + count"
+          ],
+          "placeholder": "pattern",
+          "width": "10rem",
+          "show": "accumulator and count"
+        }
+      }
+    },
+    "ex-sum": {
+      "type": "example",
+      "code": "digits = '38157'\ntotal = 0\ncount = 0\nfor character in digits:\n    value = int(character)\n    total = total + value\n    count = count + 1\naverage = total / count\nprint('Total:', total)\nprint(f'Average: {average:.2f}')",
+      "output": "Total: 24\nAverage: 4.80"
+    },
+    "ex-empty-avg": {
+      "type": "example",
+      "code": "text = ''\ntotal = 0\ncount = 0\nfor character in text:\n    total = total + int(character)\n    count = count + 1\nif count > 0:\n    print(f'Average: {total / count:.2f}')\nelse:\n    print('No values to average.')",
+      "output": "No values to average."
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c3": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t8": {
+          "accept": [
+            "11"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c8": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "t1": {
+          "accept": [
+            "12"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "c1": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp2-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why test count > 0 first?",
+      "answer": "VGhlIHRlc3QgcHJldmVudHMgZGl2aXNpb24gYnkgemVybyB3aGVuIG5vIHZhbHVlIHdhcyBwcm9jZXNzZWQu"
+    },
+    "ex-digits": {
+      "type": "example",
+      "code": "text = 'Room 201 opens at 9'.lower()\ndigits = 0\nfor character in text:\n    if character.isdigit():\n        digits = digits + 1\nprint('Digit characters:', digits)",
+      "output": "Digit characters: 4"
+    },
+    "ex-matches": {
+      "type": "example",
+      "code": "word = 'mississippi'\nmatches = 0\nfor character in word:\n    if character == 's':\n        matches = matches + 1\nprint(matches)",
+      "output": "4"
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "n2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "a3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-extremes": {
+      "type": "example",
+      "code": "digits = '38157'\nlargest = int(digits[0])\nsmallest = int(digits[0])\nfor character in digits[1:]:\n    value = int(character)\n    if value > largest:\n        largest = value\n    if value < smallest:\n        smallest = value\nprint('Largest:', largest)\nprint('Smallest:', smallest)",
+      "output": "Largest: 8\nSmallest: 1"
+    },
+    "cp4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l8": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s8": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "l1": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "l5": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s5": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "l7": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "s7": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp4-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 2,
+      "placeholder": "Why is the first real value safer than 0?",
+      "answer": "QSByZWFsIGl0ZW0gaXMgYWx3YXlzIGEgdmFsaWQgY2FuZGlkYXRlLiBaZXJvIG1heSBub3Qgb2NjdXIgaW4gdGhlIGRhdGEgYW5kIGZhaWxzIGZvciBhbiBhbGwtbmVnYXRpdmUgbWF4aW11bS4="
+    },
+    "ex-first": {
+      "type": "example",
+      "code": "text = 'abracadabra'\ntarget = 'c'\nfirst_position = -1\nfor position in range(len(text)):\n    if text[position] == target:\n        first_position = position\n        break\nprint('First position:', first_position)",
+      "output": "First position: 4"
+    },
+    "ex-first-absent": {
+      "type": "example",
+      "code": "text = 'abracadabra'\ntarget = 'z'\nfirst_position = -1\nfor position in range(len(text)):\n    if text[position] == target:\n        first_position = position\n        break\nprint('First position:', first_position)",
+      "output": "First position: -1"
+    },
+    "cp5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "tested": {
+          "accept": [
+            "0, 1, 2",
+            "0,1,2",
+            "0 1 2",
+            "0; 1; 2",
+            "0 and 1 and 2",
+            "0, 1 and 2",
+            "0, 1, and 2"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "0, 1, 2"
+        },
+        "stored": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "absent": {
+          "accept": [
+            "-1"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "cp5-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why is break useful?",
+      "answer": "VGhlIGBicmVha2Agc3RvcHMgd29yayBvbmNlIHRoZSBlYXJsaWVzdCBtYXRjaCBpcyBrbm93bi4="
+    },
+    "ex-last": {
+      "type": "example",
+      "code": "text = 'abracadabra'\ntarget = 'a'\nlast_position = -1\nfor position in range(len(text)):\n    if text[position] == target:\n        last_position = position\nprint('Last position:', last_position)",
+      "output": "Last position: 10"
+    },
+    "ex-first-pass": {
+      "type": "example",
+      "code": "word = 'LOOP'\nfirst = True\nfor character in word:\n    if first:\n        print(character, end='')\n        first = False\n    else:\n        print(', ', character, sep='', end='')\nprint()",
+      "output": "L, O, O, P"
+    },
+    "cp6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "values": {
+          "accept": [
+            "1, 3, 5",
+            "1,3,5",
+            "1 3 5",
+            "1; 3; 5",
+            "1 and 3 and 5",
+            "1, 3 and 5",
+            "1, 3, and 5"
+          ],
+          "placeholder": "values",
+          "width": "9rem",
+          "show": "1, 3, 5"
+        }
+      }
+    },
+    "cp6-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 2,
+      "placeholder": "Why must the loop continue?",
+      "answer": "VGhlIGxvb3AgbXVzdCBjb250aW51ZSBiZWNhdXNlIGEgbGF0ZXIgbWF0Y2ggY2FuIHJlcGxhY2UgdGhlIGN1cnJlbnQgbGFzdCBwb3NpdGlvbi4="
+    },
+    "ex-adjacent": {
+      "type": "example",
+      "code": "digits = '112358813'\nprevious = digits[0]\nfor position in range(1, len(digits)):\n    current = digits[position]\n    if current == previous:\n        print(f'Duplicate {current} at positions {position - 1} and {position}')\n    previous = current",
+      "output": "Duplicate 1 at positions 0 and 1\nDuplicate 8 at positions 5 and 6"
+    },
+    "cp7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "p01": {
+          "accept": [
+            "no",
+            "n",
+            "false"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "p12": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        },
+        "p23": {
+          "accept": [
+            "no",
+            "n",
+            "false"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "no"
+        },
+        "pair": {
+          "accept": [
+            "o/o",
+            "o, o",
+            "o and o",
+            "o o",
+            "oo",
+            "'o'/'o'",
+            "'o', 'o'",
+            "'o' and 'o'",
+            "o / o",
+            "o,o",
+            "o"
+          ],
+          "placeholder": "pair",
+          "width": "6rem",
+          "show": "o/o"
+        },
+        "where": {
+          "accept": [
+            "1, 2",
+            "1,2",
+            "1 2",
+            "1; 2",
+            "1 and 2",
+            "1 and 2",
+            "1, and 2"
+          ],
+          "placeholder": "values",
+          "width": "7rem",
+          "show": "1, 2"
+        }
+      }
+    },
+    "ex-random": {
+      "type": "example",
+      "code": "import random\nrandom.seed(7)\nprint(random.randint(1, 6))\nprint(f'{random.random():.4f}')\nprint(random.choice('abcdef'))",
+      "output": "3\n0.9479\nd"
+    },
+    "cp8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "die": {
+          "accept": [
+            "random.randint(1, 6)",
+            "random.randint(1,6)",
+            "randint(1, 6)",
+            "randint(1,6)"
+          ],
+          "placeholder": "random....",
+          "width": "12rem",
+          "show": "random.randint(1, 6)",
+          "caseSensitive": true
+        },
+        "rgb": {
+          "accept": [
+            "random.choice('RGB')",
+            "random.choice('RGB')",
+            "choice('RGB')",
+            "choice('RGB')",
+            "random.choice(\"RGB\")",
+            "random.choice(\"RGB\")",
+            "choice(\"RGB\")",
+            "choice(\"RGB\")"
+          ],
+          "placeholder": "random....",
+          "width": "12rem",
+          "show": "random.choice('RGB')",
+          "caseSensitive": true
+        },
+        "decimal": {
+          "accept": [
+            "random.random()",
+            "random.random()",
+            "random()",
+            "random()"
+          ],
+          "placeholder": "random....",
+          "width": "12rem",
+          "show": "random.random()",
+          "caseSensitive": true
+        },
+        "six": {
+          "accept": [
+            "yes",
+            "y",
+            "true"
+          ],
+          "placeholder": "yes / no",
+          "width": "6rem",
+          "show": "yes"
+        }
+      }
+    },
+    "ex-seed": {
+      "type": "example",
+      "code": "import random\nrandom.seed(3)\nfor trial in range(5):\n    die_1 = random.randint(1, 6)\n    die_2 = random.randint(1, 6)\n    print(die_1, die_2)",
+      "output": "2 5\n5 2\n3 5\n4 6\n5 1"
+    },
+    "cp9": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 4,
+      "placeholder": "Same seed and ..., useful because ..., a finished game should ...",
+      "answer": "VXNlIHRoZSBzYW1lIHNlZWQgYW5kIG1ha2UgdGhlIHNhbWUgcmFuZG9tIGNhbGxzIGluIHRoZSBzYW1lIG9yZGVyLiBSZXBlYXRhYmlsaXR5IGxldHMgYSBwcm9ncmFtbWVyIHJlcHJvZHVjZSBhbmQgaW52ZXN0aWdhdGUgYSBmYWlsdXJlLiBBIGZpbmlzaGVkIGdhbWUgdXN1YWxseSBvbWl0cyB0aGUgZml4ZWQgc2VlZCBzbyBwbGF5IHZhcmllcywgYWx0aG91Z2ggYSBzZWVkIGNhbiByZW1haW4gYW4gb3B0aW9uYWwgdGVzdGluZyBzZXR0aW5nLg=="
+    },
+    "ex-simulation": {
+      "type": "example",
+      "code": "import random\nrandom.seed(42)\nTRIALS = 10000\nhits = 0\nfor trial in range(TRIALS):\n    die_1 = random.randint(1, 6)\n    die_2 = random.randint(1, 6)\n    if die_1 + die_2 == 7:\n        hits = hits + 1\nestimate = hits / TRIALS\nprint('Trials:', TRIALS)\nprint('Sums of 7:', hits)\nprint(f'Estimated probability: {estimate:.4f}')",
+      "output": "Trials: 10000\nSums of 7: 1704\nEstimated probability: 0.1704"
+    },
+    "cp10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "estimate": {
+          "accept": [
+            "0.19",
+            ".19",
+            "19%",
+            "38 / 200 = 0.19",
+            "38/200 = 0.19",
+            "38/200",
+            "38 / 200"
+          ],
+          "placeholder": "value",
+          "width": "8rem"
+        }
+      }
+    },
+    "cp10-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 3,
+      "placeholder": "One iteration represents ... A more stable estimate comes from ...",
+      "answer": "T25lIGl0ZXJhdGlvbiByZXByZXNlbnRzIG9uZSB0cmlhbCBvZiB0aGUgcHJvY2Vzcy4gSW5jcmVhc2luZyB0aGUgbnVtYmVyIG9mIHRyaWFscyB1c3VhbGx5IG1ha2VzIHRoZSBlc3RpbWF0ZSBtb3JlIHN0YWJsZS4="
+    },
+    "cp11": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 4,
+      "placeholder": "The order of the tasks, then why one toss comes first…",
+      "answer": "R2VuZXJhdGUgb25lIHJlc3VsdCwgaW5jcmVhc2UgYSBjb3VudGVyIHdoZW4gaXQgaXMgaGVhZHMsIHBsYWNlIHRob3NlIHN0ZXBzIGluIGEgMSwwMDAtcGFzcyBsb29wLCB0aGVuIHByaW50IHRoZSBmaW5hbCBjb3VudC4gVGhlIGZpcnN0IHRhc2sgdmVyaWZpZXMgdGhlIHJhbmRvbSBjYWxsIHRoYXQgYmVjb21lcyB0aGUgbG9vcCBib2R5Lg=="
+    },
+    "ex-pair": {
+      "type": "example",
+      "code": "import random\nrandom.seed(12)\nprevious = random.randint(0, 9)\ncurrent = random.randint(0, 9)\nprint(previous, current)\nprint(current > previous)",
+      "output": "7 4\nFalse"
+    },
+    "ex-pairs": {
+      "type": "example",
+      "code": "import random\nrandom.seed(12)\nPAIRS = 8\nincreases = 0\nprevious = random.randint(0, 9)\nfor pair in range(PAIRS):\n    current = random.randint(0, 9)\n    if current > previous:\n        increases = increases + 1\n    previous = current\nprint('Pairs:', PAIRS)\nprint('Increases:', increases)\nprint(f'Estimated fraction: {increases / PAIRS:.3f}')",
+      "output": "Pairs: 8\nIncreases: 4\nEstimated fraction: 0.500"
+    },
+    "cp12": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 4,
+      "placeholder": "Why initialize previous first, why update it last, what makes the output repeat…",
+      "answer": "VGhlIGZpcnN0IGNvbXBhcmlzb24gbmVlZHMgYSByZWFsIGVhcmxpZXIgZGlnaXQuIFRoZSB1cGRhdGUgbWFrZXMgdGhlIGN1cnJlbnQgZGlnaXQgdGhlIGVhcmxpZXIgZGlnaXQgZm9yIHRoZSBuZXh0IHBhaXIuIFRoZSBmaXhlZCBzZWVkIGFuZCB1bmNoYW5nZWQgc2VxdWVuY2Ugb2YgcmFuZG9tIGNhbGxzIG1ha2UgdGhlIG91dHB1dCByZXByb2R1Y2libGUu"
+    },
+    "fr1": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QWNjdW11bGF0b3IsIGNvdW50ZXIsIHJ1bm5pbmcgYmVzdCwgYW5kIGZpcnN0LW1hdGNoIHNlYXJjaC4="
+    },
+    "fr2": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSByZWFsIGl0ZW0gaXMgYSB2YWxpZCBjYW5kaWRhdGUsIHdoaWxlIGFuIGludmVudGVkIHN0YXJ0aW5nIHZhbHVlIG1heSB3aW4gaW5jb3JyZWN0bHku"
+    },
+    "fr3": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGVhcmxpZXN0IG1hdGNoIGlzIGZpbmFsLCBidXQgdGhlIGxhc3QgbWF0Y2ggY2FuIGJlIHJlcGxhY2VkLg=="
+    },
+    "fr4": {
+      "type": "short",
+      "xp": 2,
+      "answer": "YC0xYC4="
+    },
+    "fr5": {
+      "type": "short",
+      "xp": 2,
+      "answer": "SW5kZXggMCBoYXMgbm8gcHJldmlvdXMgaXRlbS4="
+    },
+    "fr6": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIGludGVnZXJzIDEgdGhyb3VnaCA2LCBpbmNsdXNpdmUu"
+    },
+    "fr7": {
+      "type": "short",
+      "xp": 2,
+      "answer": "QSByZXBlYXRhYmxlIHBzZXVkb3JhbmRvbSBzZXF1ZW5jZS4="
+    },
+    "fr8": {
+      "type": "short",
+      "xp": 2,
+      "answer": "T25lIHRyaWFsIG9mIHRoZSBwcm9jZXNzLg=="
+    },
+    "fr9": {
+      "type": "short",
+      "xp": 2,
+      "answer": "VGhlIHNtYWxsZXIgc29sdXRpb24gdXN1YWxseSBiZWNvbWVzIHRoZSBib2R5IG9yIGluaXRpYWxpemF0aW9uIG9mIHRoZSBmdWxsIGxvb3Au"
+    },
+    "p1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 60,
+      "rows": 5,
+      "placeholder": "Why 0 is unsafe, one failing data set for each, and the safe approach…",
+      "answer": "Rm9yIGBsYXJnZXN0ID0gMGAsIHRoZSBkYXRhIGAtOCwgLTMsIC01YCBpbmNvcnJlY3RseSBsZWF2ZXMgMCBhcyB0aGUgbGFyZ2VzdC4gRm9yIGBzbWFsbGVzdCA9IDBgLCB0aGUgZGF0YSBgNCwgOSwgMmAgaW5jb3JyZWN0bHkgbGVhdmVzIDAgYXMgdGhlIHNtYWxsZXN0LiBJbml0aWFsaXplIGJvdGggZnJvbSB0aGUgZmlyc3QgcmVhbCBpdGVtLCB0aGVuIHByb2Nlc3MgdGhlIHJlbWFpbmluZyBpdGVtcy4="
+    },
+    "p2": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "import math\ncount = 0\ntotal = 0.0\nsquare_total = 0.0\ntext = input()\n# Read values until the blank line, then print the summary.",
+      "cases": [
+        {
+          "name": "Typed 2, 4, 6, blank",
+          "inputs": [
+            "2",
+            "4",
+            "6",
+            ""
+          ],
+          "expected": "Count: 3\nAverage: 4.00\nStandard deviation: 2.00"
+        },
+        {
+          "name": "Typed 5, blank",
+          "inputs": [
+            "5",
+            ""
+          ],
+          "expected": "Need at least two values."
+        },
+        {
+          "name": "Typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "Need at least two values."
+        },
+        {
+          "name": "Typed 1.5, 2.5, blank",
+          "inputs": [
+            "1.5",
+            "2.5",
+            ""
+          ],
+          "expected": "Count: 2\nAverage: 2.00\nStandard deviation: 0.71"
+        },
+        {
+          "name": "Typed 10, 10, 10, 10, blank",
+          "inputs": [
+            "10",
+            "10",
+            "10",
+            "10",
+            ""
+          ],
+          "expected": "Count: 4\nAverage: 10.00\nStandard deviation: 0.00"
+        },
+        {
+          "name": "Typed 3, 7, 8, 12, blank",
+          "inputs": [
+            "3",
+            "7",
+            "8",
+            "12",
+            ""
+          ],
+          "expected": "Count: 4\nAverage: 7.50\nStandard deviation: 3.70"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of values is not known in advance.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the value with two decimal places using :.2f.\"\nassert \"math.sqrt(\" in __code__, \"Take the square root with math.sqrt().\"\nassert re.search(r\"count\\s*<\\s*2|count\\s*<=\\s*1|count\\s*>=\\s*2|count\\s*>\\s*1\", __code__), \"Test count < 2 before dividing.\"\n",
+      "answer": "aW1wb3J0IG1hdGgKY291bnQgPSAwCnRvdGFsID0gMC4wCnNxdWFyZV90b3RhbCA9IDAuMAp0ZXh0ID0gaW5wdXQoKQp3aGlsZSB0ZXh0ICE9ICcnOgogICAgdmFsdWUgPSBmbG9hdCh0ZXh0KQogICAgY291bnQgPSBjb3VudCArIDEKICAgIHRvdGFsID0gdG90YWwgKyB2YWx1ZQogICAgc3F1YXJlX3RvdGFsID0gc3F1YXJlX3RvdGFsICsgdmFsdWUgKiB2YWx1ZQogICAgdGV4dCA9IGlucHV0KCkKaWYgY291bnQgPCAyOgogICAgcHJpbnQoJ05lZWQgYXQgbGVhc3QgdHdvIHZhbHVlcy4nKQplbHNlOgogICAgYXZlcmFnZSA9IHRvdGFsIC8gY291bnQKICAgIGRldmlhdGlvbiA9IG1hdGguc3FydCgoc3F1YXJlX3RvdGFsIC0gdG90YWwgKiB0b3RhbCAvIGNvdW50KSAvIChjb3VudCAtIDEpKQogICAgcHJpbnQoJ0NvdW50OicsIGNvdW50KQogICAgcHJpbnQoZidBdmVyYWdlOiB7YXZlcmFnZTouMmZ9JykKICAgIHByaW50KGYnU3RhbmRhcmQgZGV2aWF0aW9uOiB7ZGV2aWF0aW9uOi4yZn0nKQ==",
+      "answerNote": "The loop needs only the count, sum, and sum of squares. The size check protects both the average and the denominator."
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "n = int(input())\nolder = 2\nnewer = 3\n# Keep only the previous two terms.",
+      "cases": [
+        {
+          "name": "Typed 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "21"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "2"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "3"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "5"
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "144"
+        },
+        {
+          "name": "Typed 20",
+          "inputs": [
+            "20"
+          ],
+          "expected": "17711"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*(for|while)\\b\", __code__, re.M), \"Use a loop.\"\nassert \"[\" not in __code__, \"Keep only the previous two terms in older and newer; no list is needed.\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print only term n.\"\n",
+      "answer": "biA9IGludChpbnB1dCgpKQpvbGRlciA9IDIKbmV3ZXIgPSAzCmZvciBwb3NpdGlvbiBpbiByYW5nZSgzLCBuICsgMSk6CiAgICBuZXh0X3ZhbHVlID0gb2xkZXIgKyBuZXdlcgogICAgb2xkZXIgPSBuZXdlcgogICAgbmV3ZXIgPSBuZXh0X3ZhbHVlCmlmIG4gPT0gMToKICAgIHByaW50KG9sZGVyKQplbHNlOgogICAgcHJpbnQobmV3ZXIp",
+      "answerNote": "Term 1 is `older`; every later term is `newer` after the loop, which makes zero passes for n = 2."
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "number = int(input())\n# Print every divisor from 2 through number, one per line.",
+      "cases": [
+        {
+          "name": "Typed 12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "2\n3\n4\n6\n12"
+        },
+        {
+          "name": "Typed 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "7"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": ""
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "2"
+        },
+        {
+          "name": "Typed 36",
+          "inputs": [
+            "36"
+          ],
+          "expected": "2\n3\n4\n6\n9\n12\n18\n36"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"%\\s*candidate|%\\s*\\w+\\s*==\\s*0\", __code__), \"Test each candidate with the remainder operator %.\"\n",
+      "answer": "bnVtYmVyID0gaW50KGlucHV0KCkpCmZvciBjYW5kaWRhdGUgaW4gcmFuZ2UoMiwgbnVtYmVyICsgMSk6CiAgICBpZiBudW1iZXIgJSBjYW5kaWRhdGUgPT0gMDoKICAgICAgICBwcmludChjYW5kaWRhdGUp",
+      "answerNote": "A divisor leaves remainder 0. The range stops at number + 1 so the number itself is tested."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 8,
+      "starter": "limit = int(input())\n# Test every candidate from 2 through limit.",
+      "cases": [
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "2\n3\n5\n7"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "2"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "2\n3"
+        },
+        {
+          "name": "Typed 20",
+          "inputs": [
+            "20"
+          ],
+          "expected": "2\n3\n5\n7\n11\n13\n17\n19"
+        },
+        {
+          "name": "Typed 50",
+          "inputs": [
+            "50"
+          ],
+          "expected": "2\n3\n5\n7\n11\n13\n17\n19\n23\n29\n31\n37\n41\n43\n47"
+        }
+      ],
+      "check": "import re\nassert len(re.findall(r\"^\\s*for\\b\", __code__, re.M)) >= 2, \"Use nested loops: an outer loop over the candidates and an inner loop over the divisors.\"\nassert \"True\" in __code__ and \"False\" in __code__, \"Use a Boolean variable that records whether a divisor was found.\"\n",
+      "answer": "bGltaXQgPSBpbnQoaW5wdXQoKSkKZm9yIGNhbmRpZGF0ZSBpbiByYW5nZSgyLCBsaW1pdCArIDEpOgogICAgcHJpbWUgPSBUcnVlCiAgICBmb3IgZGl2aXNvciBpbiByYW5nZSgyLCBjYW5kaWRhdGUpOgogICAgICAgIGlmIGNhbmRpZGF0ZSAlIGRpdmlzb3IgPT0gMDoKICAgICAgICAgICAgcHJpbWUgPSBGYWxzZQogICAgICAgICAgICBicmVhawogICAgaWYgcHJpbWU6CiAgICAgICAgcHJpbnQoY2FuZGlkYXRlKQ==",
+      "answerNote": "The inner loop stops at the first divisor. The flag `prime` survives the inner loop only when no divisor was found."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "import random\nseed = int(input())\ntokens = int(input())\nrandom.seed(seed)\nplayer_turn = True\n# Alternate turns until the pile is empty, then print the winner.",
+      "cases": [
+        {
+          "name": "Seed 1, 10 tokens, player takes 2",
+          "inputs": [
+            "1",
+            "10",
+            "2",
+            "2",
+            "2"
+          ],
+          "expected": "Computer wins"
+        },
+        {
+          "name": "Seed 3, 15 tokens, player takes 1",
+          "inputs": [
+            "3",
+            "15",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1"
+          ],
+          "expected": "Player wins"
+        },
+        {
+          "name": "Seed 7, 12 tokens, player alternates 1, 2",
+          "inputs": [
+            "7",
+            "12",
+            "1",
+            "2",
+            "1",
+            "2"
+          ],
+          "expected": "Computer wins"
+        },
+        {
+          "name": "Seed 2, 30 tokens, player takes 2",
+          "inputs": [
+            "2",
+            "30",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+          ],
+          "expected": "Computer wins"
+        },
+        {
+          "name": "Seed 5, 11 tokens, player takes 2",
+          "inputs": [
+            "5",
+            "11",
+            "2",
+            "2",
+            "2"
+          ],
+          "expected": "Computer wins"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of values is not known in advance.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\"random\\.randint\\(\\s*1\\s*,\\s*2\\s*\\)\", __code__), \"Choose the computer's move with random.randint(1, 2).\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print one line: the winner.\"\n",
+      "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnRva2VucyA9IGludChpbnB1dCgpKQpyYW5kb20uc2VlZChzZWVkKQpwbGF5ZXJfdHVybiA9IFRydWUKd2hpbGUgdG9rZW5zID4gMDoKICAgIGlmIHBsYXllcl90dXJuOgogICAgICAgIG1vdmUgPSBpbnQoaW5wdXQoKSkKICAgIGVsc2U6CiAgICAgICAgbW92ZSA9IHJhbmRvbS5yYW5kaW50KDEsIDIpCiAgICBpZiBtb3ZlID4gdG9rZW5zOgogICAgICAgIG1vdmUgPSB0b2tlbnMKICAgIHRva2VucyA9IHRva2VucyAtIG1vdmUKICAgIGlmIHRva2VucyA9PSAwOgogICAgICAgIGlmIHBsYXllcl90dXJuOgogICAgICAgICAgICBwcmludCgnUGxheWVyIHdpbnMnKQogICAgICAgIGVsc2U6CiAgICAgICAgICAgIHByaW50KCdDb21wdXRlciB3aW5zJykKICAgIHBsYXllcl90dXJuID0gbm90IHBsYXllcl90dXJu",
+      "answerNote": "`player_turn = not player_turn` switches the turn at the end of every pass. Reducing an oversized move keeps the pile from going negative."
+    },
+    "p7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "import random\nseed = int(input())\nsteps = int(input())\nrandom.seed(seed)\nx = 0\ny = 0\n# Take the steps, then print x and y.",
+      "cases": [
+        {
+          "name": "Typed 1, 5",
+          "inputs": [
+            "1",
+            "5"
+          ],
+          "expected": "0 1"
+        },
+        {
+          "name": "Typed 3, 1",
+          "inputs": [
+            "3",
+            "1"
+          ],
+          "expected": "0 -1"
+        },
+        {
+          "name": "Typed 7, 10",
+          "inputs": [
+            "7",
+            "10"
+          ],
+          "expected": "1 3"
+        },
+        {
+          "name": "Typed 2, 25",
+          "inputs": [
+            "2",
+            "25"
+          ],
+          "expected": "1 0"
+        },
+        {
+          "name": "Typed 10, 100",
+          "inputs": [
+            "10",
+            "100"
+          ],
+          "expected": "-6 -10"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\"random\\.choice\\(\\s*['\\\"]NSEW['\\\"]\\s*\\)\", __source__), \"Choose each direction with random.choice('NSEW').\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print one line: x and y separated by a space.\"\n",
+      "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnN0ZXBzID0gaW50KGlucHV0KCkpCnJhbmRvbS5zZWVkKHNlZWQpCnggPSAwCnkgPSAwCmZvciBzdGVwIGluIHJhbmdlKHN0ZXBzKToKICAgIGRpcmVjdGlvbiA9IHJhbmRvbS5jaG9pY2UoJ05TRVcnKQogICAgaWYgZGlyZWN0aW9uID09ICdOJzoKICAgICAgICB5ID0geSArIDEKICAgIGVsaWYgZGlyZWN0aW9uID09ICdTJzoKICAgICAgICB5ID0geSAtIDEKICAgIGVsaWYgZGlyZWN0aW9uID09ICdFJzoKICAgICAgICB4ID0geCArIDEKICAgIGVsc2U6CiAgICAgICAgeCA9IHggLSAxCnByaW50KHgsIHkp",
+      "answerNote": "Each loop pass changes exactly one coordinate by 1."
+    },
+    "p8": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "import random\nseed = int(input())\ntrials = int(input())\nrandom.seed(seed)\nstay_wins = 0\nswitch_wins = 0\n# Run the trials, then print both counts.",
+      "cases": [
+        {
+          "name": "Typed 1, 10",
+          "inputs": [
+            "1",
+            "10"
+          ],
+          "expected": "Stay wins: 3\nSwitch wins: 7"
+        },
+        {
+          "name": "Typed 5, 1",
+          "inputs": [
+            "5",
+            "1"
+          ],
+          "expected": "Stay wins: 0\nSwitch wins: 1"
+        },
+        {
+          "name": "Typed 42, 100",
+          "inputs": [
+            "42",
+            "100"
+          ],
+          "expected": "Stay wins: 24\nSwitch wins: 76"
+        },
+        {
+          "name": "Typed 2, 30",
+          "inputs": [
+            "2",
+            "30"
+          ],
+          "expected": "Stay wins: 10\nSwitch wins: 20"
+        },
+        {
+          "name": "Typed 9, 1000",
+          "inputs": [
+            "9",
+            "1000"
+          ],
+          "expected": "Stay wins: 316\nSwitch wins: 684"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert len(re.findall(r\"random\\.randint\\(\\s*1\\s*,\\s*3\\s*\\)\", __code__)) >= 2, \"Call random.randint(1, 3) twice per trial: first for the prize, then for the choice.\"\n",
+      "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnRyaWFscyA9IGludChpbnB1dCgpKQpyYW5kb20uc2VlZChzZWVkKQpzdGF5X3dpbnMgPSAwCnN3aXRjaF93aW5zID0gMApmb3IgdHJpYWwgaW4gcmFuZ2UodHJpYWxzKToKICAgIHByaXplID0gcmFuZG9tLnJhbmRpbnQoMSwgMykKICAgIGNob2ljZSA9IHJhbmRvbS5yYW5kaW50KDEsIDMpCiAgICBpZiBjaG9pY2UgPT0gcHJpemU6CiAgICAgICAgc3RheV93aW5zID0gc3RheV93aW5zICsgMQogICAgZWxzZToKICAgICAgICBzd2l0Y2hfd2lucyA9IHN3aXRjaF93aW5zICsgMQpwcmludCgnU3RheSB3aW5zOicsIHN0YXlfd2lucykKcHJpbnQoJ1N3aXRjaCB3aW5zOicsIHN3aXRjaF93aW5zKQ==",
+      "answerNote": "Every trial adds 1 to exactly one counter, so the two counts always sum to the number of trials."
+    },
+    "p9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "import math\nimport random\nseed = int(input())\ntrials = int(input())\nrandom.seed(seed)\nhits = 0\n# Count the hits, then print trials / hits.",
+      "cases": [
+        {
+          "name": "Typed 1, 100",
+          "inputs": [
+            "1",
+            "100"
+          ],
+          "expected": "3.2258"
+        },
+        {
+          "name": "Typed 2, 1000",
+          "inputs": [
+            "2",
+            "1000"
+          ],
+          "expected": "3.0395"
+        },
+        {
+          "name": "Typed 7, 50",
+          "inputs": [
+            "7",
+            "50"
+          ],
+          "expected": "3.3333"
+        },
+        {
+          "name": "Typed 3, 10",
+          "inputs": [
+            "3",
+            "10"
+          ],
+          "expected": "5.0000"
+        },
+        {
+          "name": "Typed 11, 5000",
+          "inputs": [
+            "11",
+            "5000"
+          ],
+          "expected": "3.1546"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\":[^}]*\\.4f\\}\", __source__), \"Print the value with four decimal places using :.4f.\"\nassert len(re.findall(r\"random\\.random\\(\\s*\\)\", __code__)) >= 2, \"Call random.random() twice per trial: first for start, then for angle.\"\nassert \"math.sin(\" in __code__ and \"math.pi\" in __code__, \"Use math.pi for the angle and math.sin() for the test.\"\n",
+      "answer": "aW1wb3J0IG1hdGgKaW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnRyaWFscyA9IGludChpbnB1dCgpKQpyYW5kb20uc2VlZChzZWVkKQpoaXRzID0gMApmb3IgdHJpYWwgaW4gcmFuZ2UodHJpYWxzKToKICAgIHN0YXJ0ID0gMiAqIHJhbmRvbS5yYW5kb20oKQogICAgYW5nbGUgPSBtYXRoLnBpICogcmFuZG9tLnJhbmRvbSgpCiAgICBpZiBzdGFydCArIG1hdGguc2luKGFuZ2xlKSA+PSAyOgogICAgICAgIGhpdHMgPSBoaXRzICsgMQpwcmludChmJ3t0cmlhbHMgLyBoaXRzOi40Zn0nKQ==",
+      "answerNote": "The two random values describe one trial. The ratio estimates a constant."
+    },
+    "p10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "state = int(input())\n# Repeat 12 times: compute the new state and print it.",
+      "cases": [
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "22\n59\n48\n53\n10\n47\n36\n41\n62\n35\n24\n29"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "5\n26\n63\n52\n57\n14\n51\n40\n45\n2\n39\n28"
+        },
+        {
+          "name": "Typed 63",
+          "inputs": [
+            "63"
+          ],
+          "expected": "52\n57\n14\n51\n40\n45\n2\n39\n28\n33\n54\n27"
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "47\n36\n41\n62\n35\n24\n29\n50\n23\n12\n17\n38"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"range\\(\\s*12\\s*\\)\", __code__), \"Repeat exactly 12 times with range(12).\"\nassert re.search(r\"%\\s*64\\b\", __code__), \"Compute the new state with (17 * state + 5) % 64.\"\n",
+      "answer": "c3RhdGUgPSBpbnQoaW5wdXQoKSkKZm9yIGNvdW50IGluIHJhbmdlKDEyKToKICAgIHN0YXRlID0gKDE3ICogc3RhdGUgKyA1KSAlIDY0CiAgICBwcmludChzdGF0ZSk=",
+      "answerNote": "Each output becomes the state used by the next pass."
+    },
+    "p11": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "target = float(input())\ncount = 0\n# Read prices until one is at least the target.",
+      "cases": [
+        {
+          "name": "Typed 10, then 5, 9, 10",
+          "inputs": [
+            "10",
+            "5",
+            "9",
+            "10"
+          ],
+          "expected": "Reached: 10.00\nReadings: 3"
+        },
+        {
+          "name": "Typed 3.5, then 4",
+          "inputs": [
+            "3.5",
+            "4"
+          ],
+          "expected": "Reached: 4.00\nReadings: 1"
+        },
+        {
+          "name": "Typed 100, then 50, 150",
+          "inputs": [
+            "100",
+            "50",
+            "150"
+          ],
+          "expected": "Reached: 150.00\nReadings: 2"
+        },
+        {
+          "name": "Typed 20, then 20",
+          "inputs": [
+            "20",
+            "20"
+          ],
+          "expected": "Reached: 20.00\nReadings: 1"
+        },
+        {
+          "name": "Typed 2, then 1.99, 1.5, 0.75, 2.25",
+          "inputs": [
+            "2",
+            "1.99",
+            "1.5",
+            "0.75",
+            "2.25"
+          ],
+          "expected": "Reached: 2.25\nReadings: 4"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of values is not known in advance.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the value with two decimal places using :.2f.\"\nassert re.search(r\"price\\s*<\\s*target|target\\s*>\\s*price\", __code__), \"Keep reading while price < target.\"\n",
+      "answer": "dGFyZ2V0ID0gZmxvYXQoaW5wdXQoKSkKY291bnQgPSAwCnByaWNlID0gZmxvYXQoaW5wdXQoKSkKY291bnQgPSBjb3VudCArIDEKd2hpbGUgcHJpY2UgPCB0YXJnZXQ6CiAgICBwcmljZSA9IGZsb2F0KGlucHV0KCkpCiAgICBjb3VudCA9IGNvdW50ICsgMQpwcmludChmJ1JlYWNoZWQ6IHtwcmljZTouMmZ9JykKcHJpbnQoJ1JlYWRpbmdzOicsIGNvdW50KQ==",
+      "answerNote": "The target condition ends the loop; a counter records how many readings were needed."
+    },
+    "p12": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "number = input()\ntotal = 0\n# Add the two sums, then decide.",
+      "cases": [
+        {
+          "name": "Typed 12345674",
+          "inputs": [
+            "12345674"
+          ],
+          "expected": "Valid"
+        },
+        {
+          "name": "Typed 12345678",
+          "inputs": [
+            "12345678"
+          ],
+          "expected": "Invalid\nRequired check digit: 4"
+        },
+        {
+          "name": "Typed 00000000",
+          "inputs": [
+            "00000000"
+          ],
+          "expected": "Valid"
+        },
+        {
+          "name": "Typed 79927398",
+          "inputs": [
+            "79927398"
+          ],
+          "expected": "Valid"
+        },
+        {
+          "name": "Typed 49927398",
+          "inputs": [
+            "49927398"
+          ],
+          "expected": "Invalid\nRequired check digit: 5"
+        },
+        {
+          "name": "Typed 99999999",
+          "inputs": [
+            "99999999"
+          ],
+          "expected": "Invalid\nRequired check digit: 7"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert \"range(\" in __code__, \"Visit alternating positions with range() and a step of -2.\"\nassert re.search(r\"//\\s*10\\b\", __code__) and re.search(r\"%\\s*10\\b\", __code__), \"Split each doubled value into its decimal digits with // 10 and % 10.\"\n",
+      "answer": "bnVtYmVyID0gaW5wdXQoKQp0b3RhbCA9IDAKZm9yIHBvc2l0aW9uIGluIHJhbmdlKDcsIC0xLCAtMik6CiAgICB0b3RhbCA9IHRvdGFsICsgaW50KG51bWJlcltwb3NpdGlvbl0pCmZvciBwb3NpdGlvbiBpbiByYW5nZSg2LCAtMSwgLTIpOgogICAgZG91YmxlZCA9IDIgKiBpbnQobnVtYmVyW3Bvc2l0aW9uXSkKICAgIHRvdGFsID0gdG90YWwgKyBkb3VibGVkIC8vIDEwICsgZG91YmxlZCAlIDEwCmlmIHRvdGFsICUgMTAgPT0gMDoKICAgIHByaW50KCdWYWxpZCcpCmVsc2U6CiAgICBwYXJ0aWFsID0gdG90YWwgLSBpbnQobnVtYmVyWzddKQogICAgY2hlY2sgPSAoMTAgLSBwYXJ0aWFsICUgMTApICUgMTAKICAgIHByaW50KCdJbnZhbGlkJykKICAgIHByaW50KCdSZXF1aXJlZCBjaGVjayBkaWdpdDonLCBjaGVjayk=",
+      "answerNote": "Index loops separate alternating positions. The needed check digit is the amount required to reach the next multiple of 10."
+    },
+    "p13": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "a = float(input())\nb = float(input())\nc = float(input())\nd = float(input())\nprey = float(input())\npredators = float(input())\nperiods = int(input())\n# Print one line per period.",
+      "cases": [
+        {
+          "name": "Zero rates, 10 and 5, 2 periods",
+          "inputs": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "10",
+            "5",
+            "2"
+          ],
+          "expected": "1 10.00 5.00\n2 10.00 5.00"
+        },
+        {
+          "name": "0.1, 0.01, 0.01, 0.00002, 1000 and 20, 3 periods",
+          "inputs": [
+            "0.1",
+            "0.01",
+            "0.01",
+            "0.00002",
+            "1000",
+            "20",
+            "3"
+          ],
+          "expected": "1 900.00 20.20\n2 808.20 20.36\n3 724.46 20.49"
+        },
+        {
+          "name": "0.5, 0.1, 0.2, 0.05, 8 and 2, 1 period",
+          "inputs": [
+            "0.5",
+            "0.1",
+            "0.2",
+            "0.05",
+            "8",
+            "2",
+            "1"
+          ],
+          "expected": "1 10.40 2.40"
+        },
+        {
+          "name": "0.2, 0.02, 0.1, 0.001, 500 and 30, 5 periods",
+          "inputs": [
+            "0.2",
+            "0.02",
+            "0.1",
+            "0.001",
+            "500",
+            "30",
+            "5"
+          ],
+          "expected": "1 300.00 42.00\n2 108.00 50.40\n3 20.74 50.80\n4 3.81 46.78\n5 1.01 42.28"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the value with two decimal places using :.2f.\"\nassert \"new_prey\" in globals() and \"new_predators\" in globals(), \"Compute new_prey and new_predators from the old populations before updating either variable.\"\n",
+      "answer": "YSA9IGZsb2F0KGlucHV0KCkpCmIgPSBmbG9hdChpbnB1dCgpKQpjID0gZmxvYXQoaW5wdXQoKSkKZCA9IGZsb2F0KGlucHV0KCkpCnByZXkgPSBmbG9hdChpbnB1dCgpKQpwcmVkYXRvcnMgPSBmbG9hdChpbnB1dCgpKQpwZXJpb2RzID0gaW50KGlucHV0KCkpCmZvciBwZXJpb2QgaW4gcmFuZ2UoMSwgcGVyaW9kcyArIDEpOgogICAgbmV3X3ByZXkgPSBwcmV5ICogKDEgKyBhIC0gYiAqIHByZWRhdG9ycykKICAgIG5ld19wcmVkYXRvcnMgPSBwcmVkYXRvcnMgKiAoMSAtIGMgKyBkICogcHJleSkKICAgIHByZXkgPSBuZXdfcHJleQogICAgcHJlZGF0b3JzID0gbmV3X3ByZWRhdG9ycwogICAgcHJpbnQocGVyaW9kLCBmJ3twcmV5Oi4yZn0nLCBmJ3twcmVkYXRvcnM6LjJmfScp",
+      "answerNote": "Both new values must use the old populations, so compute them before either update."
+    },
+    "p14": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 10,
+      "starter": "INTERVAL = 0.01\nGRAVITY = 9.81\nvelocity = float(input())\nheight = 0.0\nstep = 0\nprint('0 0.00')\n# Repeat until the height becomes negative.",
+      "cases": [
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "0 0.00"
+        },
+        {
+          "name": "Typed 20",
+          "inputs": [
+            "20"
+          ],
+          "expected": "0 0.00\n1 15.14\n2 20.48\n3 16.00\n4 1.72"
+        },
+        {
+          "name": "Typed 9.81",
+          "inputs": [
+            "9.81"
+          ],
+          "expected": "0 0.00\n1 4.95\n2 0.10"
+        },
+        {
+          "name": "Typed 50",
+          "inputs": [
+            "50"
+          ],
+          "expected": "0 0.00\n1 45.14\n2 80.48\n3 106.00\n4 121.72\n5 127.62\n6 123.71\n7 110.00\n8 86.47\n9 53.14\n10 9.99"
+        },
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "0 0.00"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of values is not known in advance.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the value with two decimal places using :.2f.\"\nassert re.search(r\"%\\s*100\\b\", __code__), \"Count the steps and print when step % 100 == 0.\"\nassert \"INTERVAL\" in __code__ and \"GRAVITY\" in __code__, \"Use the constants INTERVAL and GRAVITY in the updates.\"\n",
+      "answer": "SU5URVJWQUwgPSAwLjAxCkdSQVZJVFkgPSA5LjgxCnZlbG9jaXR5ID0gZmxvYXQoaW5wdXQoKSkKaGVpZ2h0ID0gMC4wCnN0ZXAgPSAwCnByaW50KCcwIDAuMDAnKQp3aGlsZSBoZWlnaHQgPj0gMDoKICAgIGhlaWdodCA9IGhlaWdodCArIHZlbG9jaXR5ICogSU5URVJWQUwKICAgIHZlbG9jaXR5ID0gdmVsb2NpdHkgLSBHUkFWSVRZICogSU5URVJWQUwKICAgIHN0ZXAgPSBzdGVwICsgMQogICAgaWYgc3RlcCAlIDEwMCA9PSAwIGFuZCBoZWlnaHQgPj0gMDoKICAgICAgICBwcmludChzdGVwIC8vIDEwMCwgZid7aGVpZ2h0Oi4yZn0nKQ==",
+      "answerNote": "A step counter avoids unreliable equality tests on floating-point time."
+    },
+    "p15": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "initial = float(input())\nhalf_life = float(input())\n# Print hours 0 through 24.",
+      "cases": [
+        {
+          "name": "Typed 100, 6",
+          "inputs": [
+            "100",
+            "6"
+          ],
+          "expected": "0 1.0000 100.0000\n1 0.8909 89.0899\n2 0.7937 79.3701\n3 0.7071 70.7107\n4 0.6300 62.9961\n5 0.5612 56.1231\n6 0.5000 50.0000\n7 0.4454 44.5449\n8 0.3969 39.6850\n9 0.3536 35.3553\n10 0.3150 31.4980\n11 0.2806 28.0616\n12 0.2500 25.0000\n13 0.2227 22.2725\n14 0.1984 19.8425\n15 0.1768 17.6777\n16 0.1575 15.7490\n17 0.1403 14.0308\n18 0.1250 12.5000\n19 0.1114 11.1362\n20 0.0992 9.9213\n21 0.0884 8.8388\n22 0.0787 7.8745\n23 0.0702 7.0154\n24 0.0625 6.2500"
+        },
+        {
+          "name": "Typed 1, 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "0 1.0000 1.0000\n1 0.5000 0.5000\n2 0.2500 0.2500\n3 0.1250 0.1250\n4 0.0625 0.0625\n5 0.0312 0.0312\n6 0.0156 0.0156\n7 0.0078 0.0078\n8 0.0039 0.0039\n9 0.0020 0.0020\n10 0.0010 0.0010\n11 0.0005 0.0005\n12 0.0002 0.0002\n13 0.0001 0.0001\n14 0.0001 0.0001\n15 0.0000 0.0000\n16 0.0000 0.0000\n17 0.0000 0.0000\n18 0.0000 0.0000\n19 0.0000 0.0000\n20 0.0000 0.0000\n21 0.0000 0.0000\n22 0.0000 0.0000\n23 0.0000 0.0000\n24 0.0000 0.0000"
+        },
+        {
+          "name": "Typed 50, 24",
+          "inputs": [
+            "50",
+            "24"
+          ],
+          "expected": "0 1.0000 50.0000\n1 0.9715 48.5766\n2 0.9439 47.1937\n3 0.9170 45.8502\n4 0.8909 44.5449\n5 0.8655 43.2768\n6 0.8409 42.0448\n7 0.8170 40.8479\n8 0.7937 39.6850\n9 0.7711 38.5553\n10 0.7492 37.4577\n11 0.7278 36.3913\n12 0.7071 35.3553\n13 0.6870 34.3488\n14 0.6674 33.3710\n15 0.6484 32.4210\n16 0.6300 31.4980\n17 0.6120 30.6013\n18 0.5946 29.7302\n19 0.5777 28.8838\n20 0.5612 28.0616\n21 0.5453 27.2627\n22 0.5297 26.4866\n23 0.5147 25.7326\n24 0.5000 25.0000"
+        },
+        {
+          "name": "Typed 8, 3",
+          "inputs": [
+            "8",
+            "3"
+          ],
+          "expected": "0 1.0000 8.0000\n1 0.7937 6.3496\n2 0.6300 5.0397\n3 0.5000 4.0000\n4 0.3969 3.1748\n5 0.3150 2.5198\n6 0.2500 2.0000\n7 0.1984 1.5874\n8 0.1575 1.2599\n9 0.1250 1.0000\n10 0.0992 0.7937\n11 0.0787 0.6300\n12 0.0625 0.5000\n13 0.0496 0.3969\n14 0.0394 0.3150\n15 0.0312 0.2500\n16 0.0248 0.1984\n17 0.0197 0.1575\n18 0.0156 0.1250\n19 0.0124 0.0992\n20 0.0098 0.0787\n21 0.0078 0.0625\n22 0.0062 0.0496\n23 0.0049 0.0394\n24 0.0039 0.0312"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\":[^}]*\\.4f\\}\", __source__), \"Print the value with four decimal places using :.4f.\"\nassert re.search(r\"range\\(\\s*25\\s*\\)|range\\(\\s*0\\s*,\\s*25\\s*\\)\", __code__), \"Visit hours 0 through 24 with range(25).\"\nassert re.search(r\"2\\s*\\*\\*\", __code__), \"Compute the relative amount with 2 ** (-hour / half_life).\"\n",
+      "answer": "aW5pdGlhbCA9IGZsb2F0KGlucHV0KCkpCmhhbGZfbGlmZSA9IGZsb2F0KGlucHV0KCkpCmZvciBob3VyIGluIHJhbmdlKDI1KToKICAgIHJlbGF0aXZlID0gMiAqKiAoLWhvdXIgLyBoYWxmX2xpZmUpCiAgICBwcmludChob3VyLCBmJ3tyZWxhdGl2ZTouNGZ9JywgZid7aW5pdGlhbCAqIHJlbGF0aXZlOi40Zn0nKQ==",
+      "answerNote": "The loop generates the requested time points and evaluates the provided formula."
+    },
+    "p16": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 4,
+      "starter": "# Use an integer counter to create x = 0.0, 0.1, ..., 1.0.",
+      "cases": [
+        {
+          "name": "The 11 rows",
+          "expected": "0.0000 200.0000\n0.1000 200.3997\n0.2000 200.7988\n0.3000 201.1973\n0.4000 201.5952\n0.5000 201.9925\n0.6000 202.3892\n0.7000 202.7853\n0.8000 203.1808\n0.9000 203.5757\n1.0000 203.9700"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\":[^}]*\\.4f\\}\", __source__), \"Print the value with four decimal places using :.4f.\"\nassert re.search(r\"range\\(\\s*11\\s*\\)|range\\(\\s*0\\s*,\\s*11\\s*\\)\", __code__), \"Count the rows with an integer counter: range(11).\"\nassert re.search(r\"/\\s*10\\b|\\*\\s*0\\.1\\b|0\\.1\\s*\\*\", __code__), \"Turn the counter into x by dividing by 10.\"\n",
+      "answer": "Zm9yIHN0ZXAgaW4gcmFuZ2UoMTEpOgogICAgeCA9IHN0ZXAgLyAxMAogICAgeSA9IDAuMDAwMDUgKiB4ICoqIDMgLSAwLjAzICogeCAqKiAyICsgNCAqIHggKyAyMDAKICAgIHByaW50KGYne3g6LjRmfScsIGYne3k6LjRmfScp",
+      "answerNote": "The integer counter creates exact tenths for a table that could later supply points to graphics code."
+    }
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "id": "lecture-16-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 16 Boss Problems",
+  "short": "L16 bosses",
+  "subtitle": "Common loop algorithms and random numbers",
+  "exercises": {
+    "grades": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 20,
+      "starter": "grade = input()\ntotal = 0.0\ncount = 0\n# Convert and accumulate grades until the blank sentinel.",
+      "cases": [
+        {
+          "name": "Typed A, C+, B, blank",
+          "inputs": [
+            "A",
+            "C+",
+            "B",
+            ""
+          ],
+          "expected": "Grade point average: 3.10"
+        },
+        {
+          "name": "Typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "No grades entered."
+        },
+        {
+          "name": "Typed F, blank",
+          "inputs": [
+            "F",
+            ""
+          ],
+          "expected": "Grade point average: 0.00"
+        },
+        {
+          "name": "Typed A+, A-, B+, B-, C-, D+, D, blank",
+          "inputs": [
+            "A+",
+            "A-",
+            "B+",
+            "B-",
+            "C-",
+            "D+",
+            "D",
+            ""
+          ],
+          "expected": "Grade point average: 2.53"
+        },
+        {
+          "name": "Typed C, C, C, blank",
+          "inputs": [
+            "C",
+            "C",
+            "C",
+            ""
+          ],
+          "expected": "Grade point average: 2.00"
+        },
+        {
+          "name": "Typed A+, F, blank",
+          "inputs": [
+            "A+",
+            "F",
+            ""
+          ],
+          "expected": "Grade point average: 2.00"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of lines is not known in advance.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the result with two decimal places using :.2f.\"\nassert \"import\" not in __code__, \"No import is needed; a while loop and if statements are enough.\"\nassert re.search(r\"grade\\s*!=\\s*''|''\\s*!=\\s*grade|grade\\s*!=\\s*\\\"\\\"|\\\"\\\"\\s*!=\\s*grade|grade\\s*==\\s*''|len\\(grade\\)\", __source__), \"Stop the loop at the blank line: while grade != ''.\"\nassert \"elif\" in __code__, \"Convert each grade with an if, elif, else chain.\"\nassert re.search(r\"count\\s*==\\s*0|count\\s*>\\s*0|count\\s*<\\s*1|count\\s*>=\\s*1\", __code__), \"Test whether count is 0 before dividing.\"\n",
+      "hints": [
+        "The loop condition is `while grade != ''`. Inside it, turn `grade` into a number of points, add the points to `total`, add 1 to `count`, and read the next `grade` as the last statement of the body.",
+        "Convert with a chain that starts `if grade == 'A+' or grade == 'A':` and sets `points = 4.0`, then one `elif` per remaining grade down to `D`, and an `else` for `F` that sets `points = 0.0`.",
+        "After the loop, `if count == 0:` print `No grades entered.`; otherwise print `f'Grade point average: {total / count:.2f}'`."
+      ],
+      "answer": "Z3JhZGUgPSBpbnB1dCgpCnRvdGFsID0gMC4wCmNvdW50ID0gMAp3aGlsZSBncmFkZSAhPSAnJzoKICAgIGlmIGdyYWRlID09ICdBKycgb3IgZ3JhZGUgPT0gJ0EnOgogICAgICAgIHBvaW50cyA9IDQuMAogICAgZWxpZiBncmFkZSA9PSAnQS0nOgogICAgICAgIHBvaW50cyA9IDMuNwogICAgZWxpZiBncmFkZSA9PSAnQisnOgogICAgICAgIHBvaW50cyA9IDMuMwogICAgZWxpZiBncmFkZSA9PSAnQic6CiAgICAgICAgcG9pbnRzID0gMy4wCiAgICBlbGlmIGdyYWRlID09ICdCLSc6CiAgICAgICAgcG9pbnRzID0gMi43CiAgICBlbGlmIGdyYWRlID09ICdDKyc6CiAgICAgICAgcG9pbnRzID0gMi4zCiAgICBlbGlmIGdyYWRlID09ICdDJzoKICAgICAgICBwb2ludHMgPSAyLjAKICAgIGVsaWYgZ3JhZGUgPT0gJ0MtJzoKICAgICAgICBwb2ludHMgPSAxLjcKICAgIGVsaWYgZ3JhZGUgPT0gJ0QrJzoKICAgICAgICBwb2ludHMgPSAxLjMKICAgIGVsaWYgZ3JhZGUgPT0gJ0QnOgogICAgICAgIHBvaW50cyA9IDEuMAogICAgZWxzZToKICAgICAgICBwb2ludHMgPSAwLjAKICAgIHRvdGFsID0gdG90YWwgKyBwb2ludHMKICAgIGNvdW50ID0gY291bnQgKyAxCiAgICBncmFkZSA9IGlucHV0KCkKaWYgY291bnQgPT0gMDoKICAgIHByaW50KCdObyBncmFkZXMgZW50ZXJlZC4nKQplbHNlOgogICAgcHJpbnQoZidHcmFkZSBwb2ludCBhdmVyYWdlOiB7dG90YWwgLyBjb3VudDouMmZ9Jyk=",
+      "answerNote": "Use one branch for each grade point value, add it to the total, and count the grade. Divide only when the count is positive."
+    },
+    "perimeter": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 14,
+      "starter": "import math\nfirst_x = float(input())\nfirst_y = float(input())\n# Remember both the first and previous points.",
+      "cases": [
+        {
+          "name": "Typed 0, 0, 3, 0, 3, 4, blank",
+          "inputs": [
+            "0",
+            "0",
+            "3",
+            "0",
+            "3",
+            "4",
+            ""
+          ],
+          "expected": "Route perimeter: 12.00"
+        },
+        {
+          "name": "Typed 1, 1, 4, 1, blank",
+          "inputs": [
+            "1",
+            "1",
+            "4",
+            "1",
+            ""
+          ],
+          "expected": "Route perimeter: 6.00"
+        },
+        {
+          "name": "Typed 0, 0, 1, 0, 1, 1, 0, 1, blank",
+          "inputs": [
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "1",
+            "0",
+            "1",
+            ""
+          ],
+          "expected": "Route perimeter: 4.00"
+        },
+        {
+          "name": "Typed 2.5, -1, -0.5, 3, blank",
+          "inputs": [
+            "2.5",
+            "-1",
+            "-0.5",
+            "3",
+            ""
+          ],
+          "expected": "Route perimeter: 10.00"
+        },
+        {
+          "name": "Typed 0, 0, 0, 5, 12, 5, 12, 0, 6, -8, blank",
+          "inputs": [
+            "0",
+            "0",
+            "0",
+            "5",
+            "12",
+            "5",
+            "12",
+            "0",
+            "6",
+            "-8",
+            ""
+          ],
+          "expected": "Route perimeter: 42.00"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"^\\s*while\\b\", __code__, re.M), \"Use a while loop; the number of lines is not known in advance.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the result with two decimal places using :.2f.\"\nassert \"math.sqrt(\" in __code__, \"Compute each segment length with math.sqrt().\"\nassert \"previous_x\" in __code__ and \"previous_y\" in __code__, \"Keep the previous point in previous_x and previous_y.\"\nassert re.search(r\"first_x\\s*-|-\\s*first_x\", __code__), \"After the loop, add the segment from the last point back to first_x, first_y.\"\n",
+      "hints": [
+        "Before the loop, copy the first point into `previous_x` and `previous_y`, set `perimeter = 0.0`, and read the next `x` as text: `x_text = input()`.",
+        "Loop `while x_text != ''`. Inside, convert `current_x = float(x_text)`, read `current_y = float(input())`, and add `math.sqrt((current_x - previous_x) ** 2 + (current_y - previous_y) ** 2)` to `perimeter`.",
+        "Still inside the loop, make the current point the previous one and read the next `x_text` as the last statement.",
+        "After the loop, add the segment from `(previous_x, previous_y)` back to `(first_x, first_y)`, then print `f'Route perimeter: {perimeter:.2f}'`."
+      ],
+      "answer": "aW1wb3J0IG1hdGgKZmlyc3RfeCA9IGZsb2F0KGlucHV0KCkpCmZpcnN0X3kgPSBmbG9hdChpbnB1dCgpKQpwcmV2aW91c194ID0gZmlyc3RfeApwcmV2aW91c195ID0gZmlyc3RfeQpwZXJpbWV0ZXIgPSAwLjAKeF90ZXh0ID0gaW5wdXQoKQp3aGlsZSB4X3RleHQgIT0gJyc6CiAgICBjdXJyZW50X3ggPSBmbG9hdCh4X3RleHQpCiAgICBjdXJyZW50X3kgPSBmbG9hdChpbnB1dCgpKQogICAgcGVyaW1ldGVyID0gcGVyaW1ldGVyICsgbWF0aC5zcXJ0KAogICAgICAgIChjdXJyZW50X3ggLSBwcmV2aW91c194KSAqKiAyICsgKGN1cnJlbnRfeSAtIHByZXZpb3VzX3kpICoqIDIKICAgICkKICAgIHByZXZpb3VzX3ggPSBjdXJyZW50X3gKICAgIHByZXZpb3VzX3kgPSBjdXJyZW50X3kKICAgIHhfdGV4dCA9IGlucHV0KCkKcGVyaW1ldGVyID0gcGVyaW1ldGVyICsgbWF0aC5zcXJ0KAogICAgKGZpcnN0X3ggLSBwcmV2aW91c194KSAqKiAyICsgKGZpcnN0X3kgLSBwcmV2aW91c195KSAqKiAyCikKcHJpbnQoZidSb3V0ZSBwZXJpbWV0ZXI6IHtwZXJpbWV0ZXI6LjJmfScp",
+      "answerNote": "Add each new segment from the previous point, update the previous point, then close the route after the loop."
+    },
+    "records": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 12,
+      "starter": "import random\nseed = int(input())\nn = int(input())\nrandom.seed(seed)\n# Generate the first value before the remaining-value loop.",
+      "cases": [
+        {
+          "name": "Typed 5, 6",
+          "inputs": [
+            "5",
+            "6"
+          ],
+          "expected": "80\n33\n95 new record\n46\n89\n95\nMaximum: 95\nUpdates: 1"
+        },
+        {
+          "name": "Typed 2, 1",
+          "inputs": [
+            "2",
+            "1"
+          ],
+          "expected": "8\nMaximum: 8\nUpdates: 0"
+        },
+        {
+          "name": "Typed 1, 10",
+          "inputs": [
+            "1",
+            "10"
+          ],
+          "expected": "18\n73 new record\n98 new record\n9\n33\n16\n64\n98\n58\n61\nMaximum: 98\nUpdates: 2"
+        },
+        {
+          "name": "Typed 42, 3",
+          "inputs": [
+            "42",
+            "3"
+          ],
+          "expected": "82\n15\n4\nMaximum: 82\nUpdates: 0"
+        },
+        {
+          "name": "Typed 7, 20",
+          "inputs": [
+            "7",
+            "20"
+          ],
+          "expected": "42\n20\n51 new record\n84 new record\n7\n10\n69\n13\n47\n75\n8\n65\n28\n5\n12\n56\n54\n9\n31\n12\nMaximum: 84\nUpdates: 2"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop for the remaining n - 1 values.\"\nassert len(re.findall(r\"random\\.randint\\(\\s*1\\s*,\\s*100\\s*\\)\", __code__)) == 2, \"Call random.randint(1, 100) in exactly two places: once for the first value and once inside the loop.\"\nassert not re.search(r\"largest\\s*=\\s*0\\b|largest\\s*=\\s*-\", __code__), \"Initialize the running maximum from the first generated value, not from 0.\"\n",
+      "hints": [
+        "Generate the first value with `largest = random.randint(1, 100)`, set `updates = 0`, and print `largest` on its own line before the loop.",
+        "Loop `for item in range(1, n)` so the body runs `n - 1` times. Each pass generates `value = random.randint(1, 100)`.",
+        "If `value > largest`, store it as the new `largest`, add 1 to `updates`, and print `value, 'new record'`; otherwise print `value` alone.",
+        "After the loop, print `'Maximum:', largest` and `'Updates:', updates`."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCm4gPSBpbnQoaW5wdXQoKSkKcmFuZG9tLnNlZWQoc2VlZCkKbGFyZ2VzdCA9IHJhbmRvbS5yYW5kaW50KDEsIDEwMCkKdXBkYXRlcyA9IDAKcHJpbnQobGFyZ2VzdCkKZm9yIGl0ZW0gaW4gcmFuZ2UoMSwgbik6CiAgICB2YWx1ZSA9IHJhbmRvbS5yYW5kaW50KDEsIDEwMCkKICAgIGlmIHZhbHVlID4gbGFyZ2VzdDoKICAgICAgICBsYXJnZXN0ID0gdmFsdWUKICAgICAgICB1cGRhdGVzID0gdXBkYXRlcyArIDEKICAgICAgICBwcmludCh2YWx1ZSwgJ25ldyByZWNvcmQnKQogICAgZWxzZToKICAgICAgICBwcmludCh2YWx1ZSkKcHJpbnQoJ01heGltdW06JywgbGFyZ2VzdCkKcHJpbnQoJ1VwZGF0ZXM6JywgdXBkYXRlcyk=",
+      "answerNote": "The first generated number is a real starting maximum. Increment the update counter only when a later number beats it."
+    },
+    "streaks": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 16,
+      "starter": "import random\nseed = int(input())\ntrials = int(input())\nrandom.seed(seed)\ntotal_flips = 0\n# Run one complete three-in-a-row experiment per trial.",
+      "cases": [
+        {
+          "name": "Typed 4, 2",
+          "inputs": [
+            "4",
+            "2"
+          ],
+          "expected": "HTHTTHHH: 8\nHTTHHTTHHTHHTTHHTTT: 19\nAverage flips: 13.50"
+        },
+        {
+          "name": "Typed 1, 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "HHTHTTT: 7\nAverage flips: 7.00"
+        },
+        {
+          "name": "Typed 9, 5",
+          "inputs": [
+            "9",
+            "5"
+          ],
+          "expected": "TTT: 3\nHHH: 3\nTTHTHTHTTHHH: 12\nHHH: 3\nHTHTHHTHTHTTT: 13\nAverage flips: 6.80"
+        },
+        {
+          "name": "Typed 12, 3",
+          "inputs": [
+            "12",
+            "3"
+          ],
+          "expected": "TTT: 3\nHTHTTT: 6\nTHHH: 4\nAverage flips: 4.33"
+        },
+        {
+          "name": "Typed 3, 10",
+          "inputs": [
+            "3",
+            "10"
+          ],
+          "expected": "HHTTHHTTHHTTT: 13\nHHH: 3\nTHHH: 4\nHTHTTT: 6\nTTT: 3\nHTHHH: 5\nTHTTT: 5\nTTT: 3\nTHTHTHTHHTTHHTTHTHTHHTTT: 24\nHHH: 3\nAverage flips: 6.90"
+        }
+      ],
+      "check": "import re\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\":[^}]*\\.2f\\}\", __source__), \"Print the result with two decimal places using :.2f.\"\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use an outer for loop over the trials.\"\nassert re.search(r\"^\\s+while\\b\", __code__, re.M), \"Use an inner while loop that flips until the run length reaches 3.\"\nassert re.search(r\"random\\.choice\\(\\s*['\\\"]HT['\\\"]\\s*\\)\", __source__), \"Flip the coin with random.choice('HT').\"\n",
+      "hints": [
+        "Each trial starts fresh: `previous = ''`, `run_length = 0`, `flips = 0`, and `outcomes = ''`. Put those four lines at the top of the `for trial in range(trials)` body.",
+        "The inner loop is `while run_length < 3`. Each pass flips `outcome = random.choice('HT')`, appends it to `outcomes`, and adds 1 to `flips`.",
+        "If `outcome == previous`, add 1 to `run_length`; otherwise set `previous = outcome` and `run_length = 1`.",
+        "After the inner loop, print `outcomes + ':', flips` and add `flips` to `total_flips`. After the outer loop, print `f'Average flips: {total_flips / trials:.2f}'`."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnRyaWFscyA9IGludChpbnB1dCgpKQpyYW5kb20uc2VlZChzZWVkKQp0b3RhbF9mbGlwcyA9IDAKZm9yIHRyaWFsIGluIHJhbmdlKHRyaWFscyk6CiAgICBwcmV2aW91cyA9ICcnCiAgICBydW5fbGVuZ3RoID0gMAogICAgZmxpcHMgPSAwCiAgICBvdXRjb21lcyA9ICcnCiAgICB3aGlsZSBydW5fbGVuZ3RoIDwgMzoKICAgICAgICBvdXRjb21lID0gcmFuZG9tLmNob2ljZSgnSFQnKQogICAgICAgIG91dGNvbWVzID0gb3V0Y29tZXMgKyBvdXRjb21lCiAgICAgICAgZmxpcHMgPSBmbGlwcyArIDEKICAgICAgICBpZiBvdXRjb21lID09IHByZXZpb3VzOgogICAgICAgICAgICBydW5fbGVuZ3RoID0gcnVuX2xlbmd0aCArIDEKICAgICAgICBlbHNlOgogICAgICAgICAgICBwcmV2aW91cyA9IG91dGNvbWUKICAgICAgICAgICAgcnVuX2xlbmd0aCA9IDEKICAgIHByaW50KG91dGNvbWVzICsgJzonLCBmbGlwcykKICAgIHRvdGFsX2ZsaXBzID0gdG90YWxfZmxpcHMgKyBmbGlwcwpwcmludChmJ0F2ZXJhZ2UgZmxpcHM6IHt0b3RhbF9mbGlwcyAvIHRyaWFsczouMmZ9Jyk=",
+      "answerNote": "Each inner loop resets its run state, extends or restarts the current run, and stops at length three. The outer loop accumulates the trial lengths."
+    }
+  }
+}
