@@ -27,7 +27,7 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 9 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, f-strings, the six relational operators, <code>abs()</code>, one <code>if</code> with an <code>else</code>, and separate <code>if</code> statements one after another. There is no <code>elif</code> and no <code>and</code> or <code>or</code> yet. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>A boss problem is bigger than the practice questions in the workbook, but it only uses what Lectures 4 to 9 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, f-strings, the six relational operators, <code>abs()</code>, one <code>if</code> with an <code>else</code>, and separate <code>if</code> statements one after another. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
   <p>Every problem here reads its values with <code>input()</code>. Keep those lines exactly as they are: <strong>Check</strong> runs your program several times, typing different answers at the prompts each time, and every run must print exactly what the table shows. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 🐉 and are worth 10, 15, and 20 XP.</p>
 </section>
@@ -74,7 +74,7 @@ Explanation: 439 is exactly 1 Hz below A4, which still counts as in tune.</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Exactly one <code>if</code> with an <code>else</code>. No <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>Exactly one <code>if</code> with an <code>else</code>.</li>
     <li>Use <code>abs()</code> so one comparison covers readings above and below 440.</li>
     <li>A distance of exactly 1 Hz is in tune.</li>
     <li>Print one line.</li>
@@ -85,7 +85,7 @@ Explanation: 439 is exactly 1 Hz below A4, which still counts as in tune.</pre>
 
 <h2 id="equilateral" data-toc-title="👾 Equilateral">👾 Boss 2: Equilateral or Not</h2>
 <p>A triangle is equilateral when all three of its sides have the same length. You are given the three side lengths, <code>a</code>, <code>b</code>, and <code>c</code>. Print whether the triangle is equilateral.</p>
-<p>Read the three sides with <code>input()</code> as <code>float</code> values and print one line. Lecture 9 has no <code>and</code> yet, so start with <code>kind = 'equilateral'</code> and let separate <code>if</code> statements change it.</p>
+<p>Read the three sides with <code>input()</code> as <code>float</code> values and print one line. Start with <code>kind = 'equilateral'</code> and let separate <code>if</code> statements change it.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input: a = 3, b = 3, c = 3
@@ -123,7 +123,7 @@ A triangle with sides 3.0, 3.0 and 3.0 is equilateral.</pre>
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>At least two separate <code>if</code> statements, each comparing one pair of sides with <code>==</code> or <code>!=</code>.</li>
-    <li>No <code>else</code>, <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>No <code>else</code>.</li>
     <li>One <code>print()</code>, after the <code>if</code> statements.</li>
   </ul>
 </div>
@@ -184,7 +184,7 @@ Total: $24.08</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Exactly two <code>if</code> statements: one for the extra minutes, one for the extra texts. No <code>else</code>, <code>elif</code>, <code>and</code>, or <code>or</code>.</li>
+    <li>Exactly two <code>if</code> statements: one for the extra minutes, one for the extra texts. No <code>else</code>.</li>
     <li>Show every amount with <code>.2f</code>, as in <code>${tax:.2f}</code>.</li>
     <li>Print between four and six lines, starting with the base plan and ending with the total.</li>
   </ul>

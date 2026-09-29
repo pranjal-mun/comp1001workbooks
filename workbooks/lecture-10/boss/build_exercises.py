@@ -22,9 +22,8 @@ def run(code, inputs=()):
 def input_cases(solution, *runs):
     return [{"name": name, "inputs": list(inputs), "expected": run(solution, inputs)} for name, inputs in runs]
 
-# Lecture 10 adds elif chains and nested decisions. Still no and/or.
-NO_BOOL_OPS = ('import re\n'
-               'assert not re.search(r"\\b(and|or|not)\\b", __code__), "and, or and not are not part of this lecture yet; use an elif chain or a nested if."\n')
+# Lecture 10 adds elif chains and nested decisions.
+RE = 'import re\n'
 ONE_CHAIN = ('assert len(re.findall(r"^\\s*if\\b", __code__, re.M)) == 1, "One if/elif/else chain is enough: every case is a different alternative for the same value."\n'
              'assert re.search(r"^\\s*elif\\b", __code__, re.M), "Use elif for the middle alternatives."\n')
 
@@ -56,7 +55,7 @@ E["shape"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 12,
     "starter": "sides = int(input('Sides: '))\n# Print the name of the shape.\n",
     "cases": input_cases(shape, ("Typed 8", ["8"]), ("Typed 3", ["3"]), ("Typed 10", ["10"]),
                          ("Typed 2", ["2"]), ("Typed 11", ["11"]), ("Typed 6", ["6"])),
-    "check": NO_BOOL_OPS + ONE_CHAIN + """assert re.search(r"^\\s*else\\s*:", __code__, re.M), "End the chain with else for a count outside 3 to 10."
+    "check": RE + ONE_CHAIN + """assert re.search(r"^\\s*else\\s*:", __code__, re.M), "End the chain with else for a count outside 3 to 10."
 assert __code__.count("print(") == 1, "Store the name inside the branches, then print once after the chain."
 assert __stdout__.strip().endswith("."), "End the sentence with a full stop."
 """,
@@ -92,7 +91,7 @@ E["richter"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 12,
     "starter": "magnitude = float(input('Magnitude: '))\n# Print the descriptor for the magnitude.\n",
     "cases": input_cases(richter, ("Typed 7.2", ["7.2"]), ("Typed 5.5", ["5.5"]), ("Typed 2.0", ["2.0"]),
                          ("Typed 1.9", ["1.9"]), ("Typed 10", ["10"]), ("Typed 6", ["6"]), ("Typed 8.0", ["8.0"])),
-    "check": NO_BOOL_OPS + ONE_CHAIN + """assert re.search(r"^\\s*else\\s*:", __code__, re.M), "End the chain with else for 10.0 or more."
+    "check": RE + ONE_CHAIN + """assert re.search(r"^\\s*else\\s*:", __code__, re.M), "End the chain with else for 10.0 or more."
 assert __code__.count("print(") == 1, "Store the descriptor inside the branches, then print once after the chain."
 assert __code__.count("<") + __code__.count(">") <= 9, "Order the branches so each one needs a single comparison; the earlier branches have already ruled out the smaller magnitudes."
 """,
@@ -135,7 +134,7 @@ E["zodiac"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 16,
     "starter": "year = int(input('Year: '))\n# Print the animal for the year.\n",
     "cases": input_cases(zodiac, ("Typed 2019", ["2019"]), ("Typed 2000", ["2000"]), ("Typed 2026", ["2026"]),
                          ("Typed 1999", ["1999"]), ("Typed 1925", ["1925"]), ("Typed 0", ["0"]), ("Typed 2035", ["2035"])),
-    "check": NO_BOOL_OPS + ONE_CHAIN + """assert "%" in __code__, "Use % to find where the year falls in the 12-year cycle."
+    "check": RE + ONE_CHAIN + """assert "%" in __code__, "Use % to find where the year falls in the 12-year cycle."
 assert __code__.count("print(") == 1, "Store the animal inside the branches, then print once after the chain."
 assert __code__.count("elif") >= 10, "The chain needs one branch per animal: eleven tests and an else."
 """,
@@ -171,7 +170,7 @@ E["note"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 14,
     "starter": "note = input('Note: ')\n# Print the frequency of the note.\n",
     "cases": input_cases(note, ("Typed A4", ["A4"]), ("Typed C4", ["C4"]), ("Typed C5", ["C5"]),
                          ("Typed A3", ["A3"]), ("Typed C0", ["C0"]), ("Typed B8", ["B8"]), ("Typed G6", ["G6"])),
-    "check": NO_BOOL_OPS + ONE_CHAIN + """assert __code__.count("elif") == 5 and re.search(r"^\\s*else\\s*:", __code__, re.M), "One chain with seven branches, one per letter: an if, five elifs and an else."
+    "check": RE + ONE_CHAIN + """assert __code__.count("elif") == 5 and re.search(r"^\\s*else\\s*:", __code__, re.M), "One chain with seven branches, one per letter: an if, five elifs and an else."
 assert "[" in __code__, "Pick the letter and the octave digit out of note with indexes."
 assert "**" in __code__, "Use ** to double or halve the fourth-octave frequency the right number of times."
 assert re.search(r":[^}]*\\.2f\\}", __source__), "Show the frequency with two decimal places."

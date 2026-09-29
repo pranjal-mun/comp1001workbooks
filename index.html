@@ -39,6 +39,10 @@
     .wb-lec.is-soon, .wb-lec.is-locked { color: var(--ink-quiet); }
     .wb-lec.is-soon .wb-lec-num, .wb-lec.is-locked .wb-lec-num { color: var(--rule-strong); }
     .wb-lec-date.is-locked { color: var(--warn-ink); }
+    .wb-lec.is-dropped { color: var(--ink-quiet); }
+    .wb-lec.is-dropped .wb-lec-num { color: var(--rule-strong); }
+    .wb-lec.is-dropped .wb-lec-title { text-decoration: line-through; }
+    .wb-drop-note { grid-column: 2 / -1; font-size: 0.74rem; line-height: 1.35; margin-top: 0.15rem; }
     .wb-lec.is-next { background: var(--accent-wash); }
     .wb-lec.is-next::before { content: ""; position: absolute; left: 0; top: 0.3rem; bottom: 0.3rem; width: 3px; border-radius: 2px; background: var(--accent-fill); }
 
@@ -79,7 +83,7 @@
   <script type="module">
     import { initTheme } from "./runtime/theme.js";
     import { revealPage } from "./runtime/page.js";
-    import { UNITS, LECTURES, KEY_DATES, workbookId, bossId, isOpen, fmtDate, fmtOpens } from "./runtime/schedule.js";
+    import { UNITS, LECTURES, DROPPED, KEY_DATES, workbookId, bossId, isOpen, fmtDate, fmtOpens } from "./runtime/schedule.js";
     import { initInstructor, isInstructor, instructorBadge } from "./runtime/instructor.js";
 
     initTheme();
@@ -110,6 +114,9 @@
         const date = open && locked ? `<time class="wb-lec-date is-locked" datetime="${l.date}" title="Opens ${fmtOpens(l)}">${short(l.date)}</time>` : `<time class="wb-lec-date" datetime="${l.date}">${short(l.date)}</time>`;
         const title = open ? `<a class="wb-lec-title" href="${pageOf(l)}">${l.title}</a>` : `<span class="wb-lec-title">${l.title}</span>`;
         card.append(h(`<div class="wb-lec${cls}${open ? " is-open" : ""}" data-n="${l.n}" data-id="${workbookId(l.n)}"${hint}><span class="wb-lec-num">L${l.n}</span>${title}${date}<span class="wb-lec-foot"><span class="wb-lec-prog" hidden></span></span></div>`));
+      }
+      for (const d of DROPPED.filter((d) => d.unit === u.n)) {
+        card.append(h(`<div class="wb-lec is-dropped"><span class="wb-lec-num">L${d.n}</span><span class="wb-lec-title">${d.title}</span><span class="wb-lec-date">Dropped</span><span class="wb-drop-note">${d.note}</span></div>`));
       }
       units.append(card);
     }

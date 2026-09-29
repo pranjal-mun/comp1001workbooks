@@ -27,7 +27,7 @@ def input_cases(solution, *runs):
 ONE_IF_ELSE = '''import re
 assert len(re.findall(r"^\\s*if\\b", __code__, re.M)) == 1, "Use exactly one if statement."
 assert re.search(r"^\\s*else\\s*:", __code__, re.M), "Handle the other case with else."
-assert not re.search(r"^\\s*elif\\b", __code__, re.M), "elif is not part of this lecture; one if and one else are enough here."
+assert not re.search(r"^\\s*elif\\b", __code__, re.M), "Solve this one without elif: one if and one else are enough here."
 assert __code__.count("print(") == 1, "Choose the value inside the branches, then print once after them."
 '''
 
