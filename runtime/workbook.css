@@ -543,6 +543,8 @@ wb-bosses { display: block; }
 }
 .wb-editor .CodeMirror-lines { padding: 0.45rem 0; }
 .wb-editor .CodeMirror pre.CodeMirror-line, .wb-editor .CodeMirror pre.CodeMirror-line-like { padding: 0 0.7rem; }
+/* CodeMirror turns contextual ligatures back on for each line, which draws `>=` as one symbol. */
+body .CodeMirror pre.CodeMirror-line, body .CodeMirror pre.CodeMirror-line-like { font-variant-ligatures: none; }
 .wb-editor .CodeMirror-gutters { background: var(--panel); border-right: 1px solid var(--rule-soft); }
 .wb-editor .CodeMirror-linenumber { color: var(--rule-strong); font-size: 0.78rem; padding: 0 0.45rem 0 0.7rem; min-width: 1.4rem; }
 .wb-editor .CodeMirror-cursor { border-left: 2px solid var(--ink); }
