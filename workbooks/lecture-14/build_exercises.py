@@ -199,7 +199,7 @@ E["cp10-why"] = {"type": "short", "xp": 2, "minChars": 15, "rows": 3, "placehold
     "The accumulator must be initialized before the loop so the first pass has an existing string to add to and later passes do not erase earlier work.")}
 
 # ============================================================ 11. Counting characters
-E["ex-vowels"] = example("text = 'Programming is useful'.lower()\nvowels = 0\n\nfor character in text:\n    if character in 'aeiou':\n        vowels = vowels + 1\n\nprint(f'Vowels: {vowels}')\n")
+E["ex-vowels"] = example("text = 'Programming is useful'.lower()\nvowels = 0\n\nfor character in text:\n    if character in 'aeiou':\n        vowels = vowels + 1\n\nprint('Vowels:', vowels)\n")
 assert E["ex-vowels"]["output"] == "Vowels: 7"
 E["cp11"] = {"type": "table", "xp": 1, "blanks": {
     "i_in": yes_no(True), "i_n": num(1),

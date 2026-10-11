@@ -575,7 +575,7 @@
     },
     "ex-vowels": {
       "type": "example",
-      "code": "text = 'Programming is useful'.lower()\nvowels = 0\n\nfor character in text:\n    if character in 'aeiou':\n        vowels = vowels + 1\n\nprint(f'Vowels: {vowels}')",
+      "code": "text = 'Programming is useful'.lower()\nvowels = 0\n\nfor character in text:\n    if character in 'aeiou':\n        vowels = vowels + 1\n\nprint('Vowels:', vowels)",
       "output": "Vowels: 7"
     },
     "cp11": {

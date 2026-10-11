@@ -38,15 +38,24 @@
 </section>
 <hr>
 
-<h2 id="s1" data-toc-title="A for loop visits each item">1. A <code>for</code> Loop Visits Each Item</h2>
-<p>A <code>for</code> loop repeats once for each item in a sequence. It gives a loop variable one item at a time and runs the indented body for that item.</p>
+<p class="wb-part" id="part-for">The <code>for</code> Loop</p>
+
+<h2 id="s1">1. The <code>for</code> Loop</h2>
+<p>A <code>for</code> loop repeats once for each item in a sequence.</p>
+<ul>
+  <li>The loop variable receives one item at the start of each pass.</li>
+  <li>The indented body runs for that item.</li>
+  <li>Python manages the next value. There is no separate update statement.</li>
+</ul>
+
+<h3>A First <code>for</code> Loop</h3>
 <wb-example id="ex-for5"></wb-example>
 <p>Read the header as "for each <code>number</code> in <code>range(5)</code>." The variable <code>number</code> receives 0, then 1, then 2, then 3, then 4.</p>
 <p>Unlike a <code>while</code> loop, this loop needs no separate initialization, condition, or update. The <code>for</code> statement manages those steps.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 1</div>
-  <p>For the program above, give the first value of <code>number</code>, the last value, the number of iterations, and the statement that forms the loop body.</p>
+  <div class="wb-block-title">Checkpoint 1: Loop Values</div>
+  <p>For <code>for number in range(5):</code>, what are the first and last values of <code>number</code>, and how many times does the loop body run? Also give the statement that forms the loop body in the program above.</p>
   <wb-table id="cp1">
     <table>
       <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
@@ -60,16 +69,24 @@
   </wb-table>
 </div>
 
-<h2 id="s2" data-toc-title="range(n)">2. <code>range(n)</code></h2>
+<p class="wb-part" id="part-ranges">Ranges</p>
+
+<h2 id="s2">2. <code>range(n)</code></h2>
 <p><code>range(n)</code> supplies the whole numbers from 0 up to, but not including, <code>n</code>.</p>
 <wb-example id="ex-range4"></wb-example>
+<ul>
+  <li><code>range(n)</code> starts at 0.</li>
+  <li>It stops before <code>n</code>.</li>
+  <li>It supplies exactly <code>n</code> values when <code>n</code> is nonnegative.</li>
+  <li><code>range(0)</code> supplies no values.</li>
+</ul>
 <p>The stop value is <strong>exclusive</strong>: <code>range(4)</code> does not include 4. It supplies exactly four values, which makes it useful for repeating an action four times.</p>
 <wb-example id="ex-check3"></wb-example>
 <p>The loop variable does not have to appear in the body when only the repetition count matters.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 2</div>
-  <p>Write the values supplied by each range, separated by commas.</p>
+  <div class="wb-block-title">Checkpoint 2: Range Values</div>
+  <p>Write the values supplied by <code>range(3)</code>, <code>range(1)</code>, and <code>range(0)</code>. How many iterations does <code>for i in range(8):</code> make? Separate the values with commas.</p>
   <wb-table id="cp2">
     <table>
       <thead><tr><th>Range</th><th>Values supplied</th></tr></thead>
@@ -83,10 +100,15 @@
   </wb-table>
 </div>
 
-<h2 id="s3" data-toc-title="range(start, stop)">3. <code>range(start, stop)</code></h2>
-<p>The two-argument form is <code>range(start, stop)</code>. It includes <code>start</code> and excludes <code>stop</code>.</p>
+<h2 id="s3">3. <code>range(start, stop)</code></h2>
+<p>The two-argument form is <code>range(start, stop)</code>.</p>
 <wb-example id="ex-range16"></wb-example>
-<p>To include 5, the stop value must be 6. When the step is 1, <code>range(start, stop)</code> supplies <code>stop - start</code> values.</p>
+<ul>
+  <li>The first argument is included.</li>
+  <li>The stop argument is excluded.</li>
+  <li>With a step of 1, <code>range(start, stop)</code> supplies <code>stop - start</code> values.</li>
+  <li>To include 5, use a stop of 6.</li>
+</ul>
 <wb-example id="ex-total"></wb-example>
 <p>The accumulator pattern has not changed. Only the loop control is shorter.</p>
 
@@ -107,10 +129,14 @@
   <wb-short id="cp3-why"></wb-short>
 </div>
 
-<h2 id="s4" data-toc-title="range(start, stop, step)">4. <code>range(start, stop, step)</code></h2>
+<h2 id="s4">4. <code>range(start, stop, step)</code></h2>
 <p>The three-argument form is <code>range(start, stop, step)</code>. After each value, Python adds <code>step</code> to get the next one.</p>
 <wb-example id="ex-step2"></wb-example>
-<p>The next value would be 10, but 10 is the excluded stop value.</p>
+<ul>
+  <li>Python adds <code>step</code> after each value.</li>
+  <li>The next value would be 10, but 10 is the excluded stop value.</li>
+  <li>A step of 0 is not allowed.</li>
+</ul>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Range</th><th>Values supplied</th></tr></thead>
@@ -121,7 +147,7 @@
   </tbody>
 </table>
 </div>
-<p>The step cannot be 0 because the range would never move toward a stopping point.</p>
+<p>A step of 0 would never move toward a stopping point.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 4</div>
@@ -138,15 +164,19 @@
   </wb-table>
 </div>
 
-<h2 id="s5" data-toc-title="Counting backwards">5. Counting Backwards</h2>
+<h2 id="s5">5. Counting Backwards</h2>
 <p>Use a negative step when values should decrease.</p>
 <wb-example id="ex-countdown"></wb-example>
-<p>The stop value 0 is excluded. To include 0 in a countdown, use a stop below it: <code>range(5, -1, -1)</code>.</p>
-<p>The direction of the step must agree with the start and stop. A positive step cannot move from 5 down toward 0, so <code>range(5, 0)</code> supplies no values.</p>
+<ul>
+  <li>A negative step counts backwards.</li>
+  <li>The stop value 0 is excluded. To include 0, use <code>range(5, -1, -1)</code>.</li>
+  <li>The direction must move from the start toward the stop, so <code>range(5, 0)</code> supplies no values.</li>
+</ul>
+<p>A positive step cannot move from 5 down toward 0.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 5</div>
-  <p>Write the values supplied, then write the requested range.</p>
+  <div class="wb-block-title">Checkpoint 5: Backward Ranges</div>
+  <p>Write the values supplied by <code>range(4, 0, -1)</code> and <code>range(4, -1, -1)</code>. Then write a range for 10, 8, 6, 4, 2.</p>
   <wb-table id="cp5">
     <table>
       <thead><tr><th>Range</th><th>Your answer</th></tr></thead>
@@ -159,15 +189,17 @@
   </wb-table>
 </div>
 
-<h2 id="s6" data-toc-title="Choosing a loop">6. Choosing a Loop</h2>
+<p class="wb-part" id="part-control">Loop Control</p>
+
+<h2 id="s6">6. Choosing a Loop</h2>
 <p>Use a <code>for</code> loop when the values or number of iterations are known before the loop starts. Use a <code>while</code> loop when repetition depends on a condition that changes during the run.</p>
 <div class="wb-table-wrap">
 <table>
-  <thead><tr><th>Use <code>for</code> when...</th><th>Use <code>while</code> when...</th></tr></thead>
+  <thead><tr><th>Use <code>for</code></th><th>Use <code>while</code></th></tr></thead>
   <tbody>
-    <tr><td>repeating a known number of times</td><td>the number of passes is not known</td></tr>
-    <tr><td>visiting every character in a string</td><td>waiting until a target is reached</td></tr>
-    <tr><td>counting through a range</td><td>reading until a sentinel is entered</td></tr>
+    <tr><td>The count is known.</td><td>The number of passes is not known.</td></tr>
+    <tr><td>Every item will be visited.</td><td>A condition or sentinel decides when to stop.</td></tr>
+    <tr><td>The values come from a range.</td><td>The loop waits for a target.</td></tr>
   </tbody>
 </table>
 </div>
@@ -178,7 +210,7 @@
 <p>Use the simplest loop that clearly matches the problem.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 6</div>
+  <div class="wb-block-title">Checkpoint 6: Loop Choice</div>
   <p>Choose <code>for</code> or <code>while</code> for each task.</p>
   <wb-table id="cp6">
     <table>
@@ -193,11 +225,16 @@
   </wb-table>
 </div>
 
-<h2 id="s7" data-toc-title="The loop variable">7. The Loop Variable</h2>
+<h2 id="s7">7. The Loop Variable</h2>
 <p>In <code>for i in range(5):</code>, the loop creates or reuses <code>i</code> and assigns the next range value at the start of each pass. Do not update it yourself.</p>
 <wb-example id="ex-loopvar"></wb-example>
-<p>The assignment to 100 does not change the range. At the next pass, the loop assigns the next range value to <code>i</code>. Assigning to a loop variable is legal, but usually confusing and ineffective.</p>
-<p>Choose a name that describes the item: <code>number</code>, <code>character</code>, or <code>position</code> is clearer than a vague name when the variable's role matters.</p>
+<ul>
+  <li>The loop assigns 0, 1, and 2 to <code>i</code>.</li>
+  <li>Assigning 100 does not change the range.</li>
+  <li>The next pass overwrites 100 with the next range value.</li>
+  <li>Use a descriptive name such as <code>number</code> or <code>position</code>.</li>
+</ul>
+<p>Assigning to a loop variable is legal, but usually confusing and ineffective. A name such as <code>number</code>, <code>character</code>, or <code>position</code> is clearer than a vague name when the variable's role matters.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 7</div>
@@ -215,15 +252,22 @@
   <wb-short id="cp7-why"></wb-short>
 </div>
 
-<h2 id="s8" data-toc-title="Looping directly over a string">8. Looping Directly Over a String</h2>
-<p>A string is a sequence of characters. A <code>for</code> loop can visit those characters directly.</p>
+<p class="wb-part" id="part-strings">Strings</p>
+
+<h2 id="s8">8. Looping Over a String</h2>
+<p>A <code>for</code> loop can visit the characters of a string directly.</p>
 <wb-example id="ex-chars"></wb-example>
-<p>This form gives the characters themselves. It needs no index and cannot run past the end of the string.</p>
+<ul>
+  <li>A string is a sequence of characters.</li>
+  <li>Direct looping gives the characters themselves.</li>
+  <li>An empty string causes zero iterations.</li>
+  <li>Direct looping cannot run past the end of the string.</li>
+</ul>
 <wb-example id="ex-letters"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 8</div>
-  <p>Write the values received by <code>character</code> for <code>word = 'loop'</code>, separated by commas. How many iterations occur for the empty string <code>''</code>?</p>
+  <div class="wb-block-title">Checkpoint 8: String Characters</div>
+  <p>Write the values received by <code>character</code> for <code>word = 'loop'</code>. How many iterations occur for the empty string <code>''</code>? Separate the values with commas.</p>
   <wb-table id="cp8">
     <table>
       <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
@@ -237,10 +281,14 @@
   <wb-short id="cp8-why"></wb-short>
 </div>
 
-<h2 id="s9" data-toc-title="Looping over indexes">9. Looping Over Indexes</h2>
+<h2 id="s9">9. Looping Over Indexes</h2>
 <p>Sometimes the position is needed. The valid indexes of a string are 0 through <code>len(text) - 1</code>. Therefore, <code>range(len(text))</code> supplies exactly those indexes.</p>
 <wb-example id="ex-index"></wb-example>
-<p>Use direct character looping when you need only the character. Use index looping when you need the position as well.</p>
+<ul>
+  <li><code>range(len(text))</code> gives every valid index.</li>
+  <li>Use indexes when the position is part of the task.</li>
+  <li>Use direct looping when only the character matters.</li>
+</ul>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 9</div>
@@ -258,10 +306,10 @@
   </wb-table>
 </div>
 
-<h2 id="s10" data-toc-title="Building a string">10. Building a String</h2>
+<h2 id="s10">10. Building a String</h2>
 <p>An accumulator can build text. Start with the empty string and add one piece on each pass.</p>
 <wb-example id="ex-upper"></wb-example>
-<p>The empty string plays the same role as 0 in a sum: it is the starting value that adds no content. Initializing <code>result</code> inside the loop would erase the earlier characters.</p>
+<p>Start with the empty string. Initializing inside the loop would erase earlier characters. The empty string plays the same role as 0 in a sum: it is the starting value that adds no content.</p>
 <wb-example id="ex-compact"></wb-example>
 
 <div class="wb-checkpoint">
@@ -280,7 +328,7 @@
   <wb-short id="cp10-why"></wb-short>
 </div>
 
-<h2 id="s11" data-toc-title="Counting characters">11. Counting Characters</h2>
+<h2 id="s11">11. Counting Characters</h2>
 <p>Counting matches combines a <code>for</code> loop, an <code>if</code>, and a counter.</p>
 <wb-example id="ex-vowels"></wb-example>
 <p>The program converts the text to lowercase once before the loop. The membership test checks whether each character appears in the string <code>'aeiou'</code>. The counter changes only for matching characters.</p>
@@ -302,9 +350,16 @@
   </wb-table>
 </div>
 
-<h2 id="together" data-toc-title="Putting it all together">12. Putting It All Together</h2>
-<p>The following task uses both accumulator patterns from this lecture. A program reads a course label, removes its spaces, changes its letters to uppercase, and counts its digits.</p>
-<p>First choose the loop form. The program visits every character in one string, so a direct <code>for</code> loop fits. Before the loop, it needs an empty string named <code>compact</code> and a numeric counter named <code>digits</code>.</p>
+<h2 id="together" data-toc-title="Putting It All Together" data-toc-group>Putting It All Together</h2>
+<p>The following task uses both accumulator patterns from this lecture. A course-label cleaner will remove spaces, convert letters to uppercase, and count digits.</p>
+<ol>
+  <li>Visit every character directly.</li>
+  <li>Start <code>compact</code> with the empty string.</li>
+  <li>Start <code>digits</code> at 0.</li>
+  <li>Add non-space characters to <code>compact</code>.</li>
+  <li>Count characters for which <code>isdigit()</code> is true.</li>
+</ol>
+<p>The program visits every character in one string, so a direct <code>for</code> loop fits.</p>
 <p>For each character, the program makes two decisions:</p>
 <ol>
   <li>If the character is not a space, add its uppercase form to <code>compact</code>.</li>
@@ -321,42 +376,15 @@
   </tbody>
 </table>
 </div>
-<p>The complete program keeps the two updates independent because a digit must be added to <code>compact</code> and counted.</p>
+<h3>Course-Label Cleaner</h3>
+<p>The two updates are independent because a digit must be kept and counted.</p>
 <wb-example id="ex-label"></wb-example>
 <pre class="wb-shell"><span class="wb-prompt">Course label: </span><span class="wb-typed">Comp 1001</span>
 Code: COMP1001
 Digits: 4</pre>
-<p>For an empty label, the loop makes zero iterations and prints an empty code with a digit count of 0.</p>
+<p>For <code>Comp 1001</code>, the program prints <code>COMP1001</code> and a digit count of 4. For an empty label, the loop makes zero iterations and prints an empty code with a digit count of 0.</p>
 
-<h2 id="review">Review</h2>
-<ol>
-  <li>What does a <code>for</code> loop do?
-    <wb-short id="fr1"></wb-short>
-  </li>
-  <li>What values does <code>range(5)</code> supply?
-    <wb-short id="fr2"></wb-short>
-  </li>
-  <li>Why is the stop value of a range called exclusive?
-    <wb-short id="fr3"></wb-short>
-  </li>
-  <li>State the purpose of each argument in <code>range(start, stop, step)</code>.
-    <wb-short id="fr4"></wb-short>
-  </li>
-  <li>When is a <code>while</code> loop a better choice than a <code>for</code> loop?
-    <wb-short id="fr5"></wb-short>
-  </li>
-  <li>Where does a <code>for</code> loop's loop variable get its values?
-    <wb-short id="fr6"></wb-short>
-  </li>
-  <li>When should you loop over a string by index?
-    <wb-short id="fr7"></wb-short>
-  </li>
-  <li>What starting value should a string accumulator use?
-    <wb-short id="fr8"></wb-short>
-  </li>
-</ol>
-
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The exercises below use only ideas introduced by this point in the course.</p>
 
 <h3>A. Choose the Loop</h3>
@@ -539,6 +567,61 @@ new lynx  = lynx * (1 - 0.01 + 0.00002 * hares)</pre>
 <wb-exercise id="pn"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<ol>
+  <li>What does a <code>for</code> loop do?
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>What values does <code>range(5)</code> supply?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>Why is the stop value of a range called exclusive?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>State the purpose of each argument in <code>range(start, stop, step)</code>.
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>When is a <code>while</code> loop a better choice than a <code>for</code> loop?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>Where does a <code>for</code> loop's loop variable get its values?
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>When should you loop over a string by index?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>What starting value should a string accumulator use?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h3>Syntax and Ranges</h3>
+<pre><code><span class="wb-kw">for</span> item <span class="wb-kw">in</span> sequence:
+    statements
+
+<span class="wb-fn">range</span>(stop)
+<span class="wb-fn">range</span>(start, stop)
+<span class="wb-fn">range</span>(start, stop, step)</code></pre>
+<ul>
+  <li>The stop is excluded.</li>
+  <li>A negative step counts backwards.</li>
+  <li><code>range(len(text))</code> gives the valid string indexes.</li>
+</ul>
+
+<h3>Decisions and Patterns</h3>
+<ul>
+  <li>Use <code>for</code> for a known sequence or count.</li>
+  <li>Use <code>while</code> when a condition or sentinel decides when to stop.</li>
+  <li>Loop directly over a string unless the position is needed.</li>
+  <li>Start a numeric counter at 0.</li>
+  <li>Start a string accumulator with the empty string.</li>
+  <li>Initialize before the loop and update inside the loop.</li>
+  <li>Test the empty sequence and both ends of a range.</li>
+</ul>
+
 <hr>
 <p class="wb-meta">End of Lecture 14 Workbook.</p>
 </main>
