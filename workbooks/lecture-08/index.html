@@ -48,19 +48,37 @@
 </section>
 <hr>
 
-<h2 id="s1">1. Why programs need decisions</h2>
-<p>Programs often need to behave differently in different situations. A store may charge shipping for a small order but offer free shipping for a larger order. A program makes this choice by testing a <strong>condition</strong>.</p>
+<p class="wb-part" id="part-decisions">Decisions</p>
+<h2 id="s1">1. Decisions in Programs</h2>
+<p>A straight-line program runs every statement from top to bottom. A decision lets a program behave differently in different situations:</p>
+<ul>
+  <li>charge shipping for a small order;</li>
+  <li>offer free shipping for a larger order;</li>
+  <li>warn when a balance is low; or</li>
+  <li>stay quiet when no warning is needed.</li>
+</ul>
+<p>A program makes this choice by testing a <strong>condition</strong>.</p>
+
+<h3>Conditions</h3>
 <div class="wb-block">
   <div class="wb-block-title">Condition</div>
   <p>A <strong>condition</strong> is an expression whose value is either <code>True</code> or <code>False</code>.</p>
 </div>
-<p>So far, our programs have followed one straight path. Every statement ran from top to bottom. A decision creates two possible paths. Python chooses a path from the condition's value.</p>
+<p>Python uses that value to choose whether a block runs. A decision creates two possible paths.</p>
+
+<h3>The if Statement</h3>
 <wb-example id="ex-w01"></wb-example>
-<p>The first message runs because <code>temperature &lt; 18</code> is <code>True</code>. The final message is outside the decision, so it always runs.</p>
+<p>The body runs only when the condition is <code>True</code>. The first message runs because <code>temperature &lt; 18</code> is <code>True</code>. The final message is outside the decision, so it always runs.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 1</div>
-  <p>If <code>temperature</code> changes to <code>22</code>, which line of output is skipped? Which line still appears?</p>
+  <div class="wb-block-title">Checkpoint 1: Temperature</div>
+  <p>If <code>temperature</code> changes to <code>22</code>, which line of output is skipped? Which line still appears, and why?</p>
+<pre><code>temperature = <span class="wb-num">22</span>
+
+<span class="wb-kw">if</span> temperature &lt; <span class="wb-num">18</span>:
+    <span class="wb-fn">print</span>(<span class="wb-str">'Bring a jacket.'</span>)
+
+<span class="wb-fn">print</span>(<span class="wb-str">'Have a good day!'</span>)</code></pre>
   <wb-table id="cp1">
     <table>
       <thead><tr><th>Question</th><th>Line of output</th></tr></thead>
@@ -74,16 +92,19 @@
   <wb-short id="cp1-why"></wb-short>
 </div>
 
-<h2 id="s2">2. The six stages for a decision problem</h2>
-<p>The same problem-solving stages used for straight-line programs still apply. A decision adds a branch during design and an extra responsibility during testing.</p>
+<p class="wb-part" id="part-designing">Designing Decisions</p>
+<h2 id="s2">2. Decision Problems</h2>
+<p>The six problem-solving stages still apply. A decision adds a branch during design and an extra responsibility during testing.</p>
 <ol>
-  <li><strong>Understand:</strong> State the different situations in clear sentences.</li>
-  <li><strong>Decompose:</strong> Separate steps that always happen from steps that depend on the situation.</li>
-  <li><strong>Find patterns:</strong> Look for a threshold, category, or validity rule.</li>
-  <li><strong>Design:</strong> Write the decision as a yes/no question and show both paths.</li>
-  <li><strong>Implement:</strong> Translate the design into Python.</li>
-  <li><strong>Reflect:</strong> Test every path, especially values at the boundary.</li>
+  <li><strong>Understand:</strong> state the two situations.</li>
+  <li><strong>Decompose:</strong> separate shared and conditional work.</li>
+  <li><strong>Find patterns:</strong> look for a threshold or validity rule.</li>
+  <li><strong>Design:</strong> write one yes-or-no question and both paths.</li>
+  <li><strong>Implement:</strong> translate the design into Python.</li>
+  <li><strong>Reflect:</strong> test both paths and the boundary.</li>
 </ol>
+
+<h3>Shipping Rule</h3>
 <div class="wb-block">
   <div class="wb-block-title">Worked problem: a shipping charge</div>
   <p><strong>Problem:</strong> An order ships free when its total is at least $50. Otherwise, shipping costs $8.</p>
@@ -96,11 +117,26 @@
     <li>Reflect: test a total below $50, exactly $50, and above $50.</li>
   </ul>
 </div>
+<p>The design question is: <em>Is the order total at least $50?</em> This question separates the two cases.</p>
+
+<h3>Boundary Tests</h3>
+<p>For a $50 threshold, test below, at, and above the boundary.</p>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Test</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Below</td><td>$49</td></tr>
+      <tr><td>At</td><td>$50</td></tr>
+      <tr><td>Above</td><td>$51</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>The boundary is where <code>&gt;</code> and <code>&gt;=</code> behave differently.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 2</div>
+  <div class="wb-block-title">Checkpoint 2: Museum Boundary</div>
   <p>A museum charges a reduced price when a visitor is younger than 18.</p>
-  <p>Write the yes/no question that separates the two cases.</p>
+  <p>Write the yes-or-no question that separates the two cases.</p>
   <wb-short id="cp2-question"></wb-short>
   <p>Name three ages that would test below, at, and above the boundary.</p>
   <wb-table id="cp2-ages">
@@ -113,18 +149,19 @@
   </wb-table>
 </div>
 
-<h2 id="s3">3. The shape of an <code>if</code> statement</h2>
+<p class="wb-part" id="part-ifelse">if and else</p>
+<h2 id="s3">3. if Statement Structure</h2>
 <p>An <code>if</code> statement has a header and an indented body.</p>
 <pre class="wb-code"><span class="wb-kw">if</span> total &gt;= <span class="wb-num">50</span>:
     shipping = <span class="wb-num">0</span></pre>
-<p>The four required parts are:</p>
+<p>An <code>if</code> statement needs four parts:</p>
 <ul>
   <li>the keyword <code>if</code>;</li>
   <li>a condition;</li>
   <li>a colon <code>:</code> at the end of the header; and</li>
   <li>an indented block below the header.</li>
 </ul>
-<p>The body runs only when the condition is <code>True</code>. If the condition is <code>False</code>, Python skips the body and continues after the block.</p>
+<p>If the condition is <code>False</code>, Python skips the body and continues after the block.</p>
 <wb-example id="ex-w02"></wb-example>
 
 <div class="wb-checkpoint">
@@ -147,8 +184,14 @@
   </wb-table>
 </div>
 
-<h2 id="s4">4. Indentation creates a block</h2>
-<p>A <strong>block</strong> is a group of statements that belong together. Python uses indentation to show where a block begins and ends. In this course, indent each level by four spaces.</p>
+<h2 id="s4">4. Blocks and Indentation</h2>
+<p>A <strong>block</strong> is a group of statements that belong together. Python uses indentation as part of its syntax.</p>
+<ul>
+  <li>Use four spaces for each level in this course.</li>
+  <li>Statements at the same indentation level belong together.</li>
+  <li>The first unindented line ends the block.</li>
+  <li>Moving a line can change meaning without causing an error.</li>
+</ul>
 <wb-example id="ex-w03"></wb-example>
 <p>Both indented statements belong to the <code>if</code>. The unindented final statement is outside the block and always runs. Moving a line by four spaces can change the program's meaning even when Python reports no error.</p>
 <table>
@@ -161,8 +204,8 @@
 </table>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 4</div>
-  <p>Mark the statements that belong to the <code>if</code> block.</p>
+  <div class="wb-block-title">Checkpoint 4: Identify the Block</div>
+  <p>Which two statements belong to the <code>if</code> block? Which output statement always runs?</p>
   <pre class="wb-code">hours = <span class="wb-num">7</span>
 <span class="wb-kw">if</span> hours &lt; <span class="wb-num">8</span>:
     <span class="wb-fn">print</span>(<span class="wb-str">'Short sleep'</span>)
@@ -186,12 +229,14 @@
   </wb-table>
 </div>
 
-<h2 id="s5">5. <code>else</code> handles the other case</h2>
+<h2 id="s5">5. if and else</h2>
 <p>Use <code>else</code> when exactly one action should run for a <code>False</code> condition.</p>
 <wb-example id="ex-w04"></wb-example>
-<p>Exactly one branch runs. The <code>else</code> header has no condition because it means “in every remaining case.” It ends with a colon and lines up with <code>if</code>.</p>
+<p>Exactly one branch runs: never both and never neither. The <code>else</code> header has no condition because it means “in every remaining case.” It ends with a colon and lines up with <code>if</code>.</p>
 <wb-example id="ex-w05"></wb-example>
-<p>The value <code>50</code> belongs in the free-shipping branch because the condition uses <code>&gt;=</code> rather than <code>&gt;</code>.</p>
+
+<h3>Tracing the Boundary</h3>
+<p>The value <code>50</code> belongs in the free-shipping branch. The phrase <em>at least</em> includes 50, so the condition needs <code>&gt;=</code>.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 5</div>
@@ -208,7 +253,7 @@
   </wb-table>
 </div>
 
-<h2 id="s6">6. A decision as a flowchart</h2>
+<h2 id="s6">6. Branching Flowchart</h2>
 <p>A <strong>flowchart</strong> shows the order of program steps. A rectangle shows a task. A diamond shows a condition with a Yes path and a No path. Arrows show the direction of execution.</p>
 <svg class="wb-flowchart" viewBox="0 0 480 340" role="img" aria-label="Flowchart: read the order total; if total is at least 50 then shipping = 0, otherwise shipping = 8; then print the shipping charge.">
   <defs>
@@ -250,8 +295,8 @@
   <wb-short id="cp6-rejoin"></wb-short>
 </div>
 
-<h2 id="s7">7. Put shared work after the branches</h2>
-<p>Avoid repeating the same statement in both branches.</p>
+<h2 id="s7">7. Shared Work</h2>
+<p>Avoid repeating the same statement in both branches. The branches choose shipping. Both cases need the final calculation and output, so write that work once after the branches.</p>
 <wb-example id="ex-w06"></wb-example>
 <p>The calculation and <code>print</code> call are outside the branches because they happen in both cases. Keeping shared work in one place makes code easier to read and change.</p>
 
@@ -261,8 +306,8 @@
   <wb-exercise id="cp7-fix"></wb-exercise>
 </div>
 
-<h2 id="s8">8. Choose a precise condition</h2>
-<p>The Python syntax is short. The harder part is choosing the condition that separates the cases correctly. Pay special attention to the boundary.</p>
+<h2 id="s8">8. Conditions and Boundaries</h2>
+<p>The Python syntax is short. The harder part is choosing the condition that separates the cases correctly. Read the rule carefully before choosing the operator.</p>
 <table>
   <thead><tr><th>Rule in words</th><th>Condition</th></tr></thead>
   <tbody>
@@ -288,7 +333,8 @@
   </wb-table>
 </div>
 
-<h2 id="s9">9. Recognize two common syntax errors</h2>
+<p class="wb-part" id="part-errors">Errors</p>
+<h2 id="s9">9. Syntax and Indentation Errors</h2>
 <p>The colon is part of the <code>if</code> and <code>else</code> syntax. Omitting it causes a <code>SyntaxError</code>. Run this listing to see the error Python reports.</p>
 <wb-example id="ex-w07"></wb-example>
 <p>Python reports an error similar to:</p>
@@ -300,40 +346,12 @@
 <p>Use four spaces for each indentation level. Configure your editor to insert spaces when you press the Tab key so that tabs and spaces are not mixed.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 9</div>
-  <p>Correct both errors. Run the program first to read the error, then fix it and <strong>Check</strong>. The first line sets <code>age</code> for testing; the checker also tries <code>age = 30</code>, which should print nothing.</p>
+  <div class="wb-block-title">Checkpoint 9: Repair the Program</div>
+  <p>Correct the header and the body. Run the program first to read the error, then fix it and <strong>Check</strong>. The first line sets <code>age</code> for testing; the checker also tries <code>age = 30</code>, which should print nothing.</p>
   <wb-exercise id="cp9-fix"></wb-exercise>
 </div>
 
-<h2 id="final-review">Final review</h2>
-<p><strong>1.</strong> What two values can a condition produce?</p>
-<wb-table id="fr1">
-  <table>
-    <tbody><tr><td style="width: 40%">The two values</td><td data-blank="v1"></td><td data-blank="v2"></td></tr></tbody>
-  </table>
-</wb-table>
-<p><strong>2.</strong> What four parts are required in an <code>if</code> statement?</p>
-<wb-short id="fr2"></wb-short>
-<p><strong>3.</strong> How does Python show which statements belong to a block?</p>
-<wb-short id="fr3"></wb-short>
-<p><strong>4.</strong> Explain when an <code>else</code> block runs.</p>
-<wb-short id="fr4"></wb-short>
-<p><strong>5.</strong> Why should a decision program be tested on both branches and at its boundary?</p>
-<wb-short id="fr5"></wb-short>
-<p><strong>6.</strong> Complete the trace, then run the program to confirm it.</p>
-<wb-example id="ex-w09"></wb-example>
-<wb-table id="fr6">
-  <table>
-    <thead><tr><th>Item</th><th>Value</th></tr></thead>
-    <tbody>
-      <tr><td>Condition value</td><td data-blank="cond"></td></tr>
-      <tr><td>Branch taken</td><td data-blank="branch"></td></tr>
-      <tr><td>Output</td><td data-blank="out"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
-
-<h2 id="additional-practice">Additional practice</h2>
+<h2 id="additional-practice" data-toc-group>Additional Practice</h2>
 <h3>A. Trace two paths</h3>
 <p>Trace this program twice: first with <code>age = 15</code>, then with <code>age = 21</code>.</p>
 <pre class="wb-code"><span class="wb-kw">if</span> age &lt; <span class="wb-num">18</span>:
@@ -377,13 +395,16 @@ Fee: 5</pre>
 <p>This program should print <code>Access allowed</code> when <code>age</code> is at least 16 and <code>Access denied</code> otherwise. Correct its colon, indentation, alignment, and boundary problems. The first line sets <code>age</code> for testing; the checker tries <code>16</code>, <code>15</code>, and <code>40</code>.</p>
 <wb-exercise id="pe"></wb-exercise>
 
-<h2 id="together">Putting It All Together</h2>
-<h3>A complete decision program</h3>
-<p>This example combines input, numeric conversion, a precise boundary, two branches, shared work, and labelled output. It uses the shipping rule from the lesson:</p>
+<h2 id="together" data-toc-group>Putting It All Together</h2>
+<p><strong>Goal:</strong> calculate a final order total.</p>
 <ul>
-  <li>an order of at least $50 ships free;</li>
-  <li>a smaller order has an $8 shipping charge.</li>
+  <li>Orders of at least $50 ship free.</li>
+  <li>Smaller orders have an $8 shipping charge.</li>
+  <li>The final total includes the selected shipping charge.</li>
 </ul>
+<p>The decision changes shipping. The final calculation is shared. This example combines input, numeric conversion, a precise boundary, two branches, shared work, and labelled output.</p>
+
+<h3>1. Program Design</h3>
 <p>Start with a design before writing Python.</p>
 <pre class="wb-output">Read the order total.
 If the total is at least 50:
@@ -391,9 +412,13 @@ If the total is at least 50:
 Otherwise:
     Set shipping to 8.
 Calculate the final total.
-Print the shipping charge and final total.</pre>
+Print shipping and final total.</pre>
+
+<h3>2. Complete Program</h3>
 <p>Now translate each design step into Python. Press <strong>▶ Run</strong> and type an order total at the prompt.</p>
 <wb-example id="ex-w10"></wb-example>
+
+<h3>3. Test Runs</h3>
 <p>Sample run below the boundary:</p>
 <pre class="wb-shell"><span class="wb-prompt">Order total: $</span><span class="wb-typed">38</span>
 Shipping: $8.00
@@ -402,11 +427,11 @@ Final total: $46.00</pre>
 <pre class="wb-shell"><span class="wb-prompt">Order total: $</span><span class="wb-typed">50</span>
 Shipping: $0.00
 Final total: $50.00</pre>
-<p>The <code>if</code> and <code>else</code> blocks only choose <code>shipping</code>. The calculation and two output statements are shared, so they appear once after the branches.</p>
+<p>Both paths reach the shared calculation and output, so those statements appear once after the branches.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Integrated trace</div>
-  <p>Complete the trace for an order total of <code>72.50</code>.</p>
+  <div class="wb-block-title">Integrated trace: Trace the Program</div>
+  <p>For <code>order_total = 72.50</code>, record the value of <code>order_total &gt;= 50</code>, the branch taken, the value of <code>shipping</code>, and the value of <code>final_total</code>.</p>
   <wb-table id="it-trace">
     <table>
       <thead><tr><th>Item</th><th>Value</th></tr></thead>
@@ -422,10 +447,10 @@ Final total: $50.00</pre>
   <wb-short id="it-why"></wb-short>
 </div>
 
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>Each task uses one two-way decision. Later lectures add more branches and compound conditions. These programs read keyboard input: <strong>▶ Run</strong> lets you type at the prompts; <strong>Check</strong> runs your program against every supplied case, typing the case's values at the prompts, and compares the displayed output. Use the prompts exactly as shown in the example runs.</p>
 
-<h3>Program A: magnitude without <code>abs</code></h3>
+<h3>Coding Practice A: Magnitude without abs</h3>
 <p>Write a complete program that:</p>
 <ul>
   <li>asks the user for a number;</li>
@@ -434,14 +459,17 @@ Final total: $50.00</pre>
   <li>prints the original number and its non-negative magnitude.</li>
 </ul>
 <p>Use one <code>if</code>/<code>else</code> statement. Do not call <code>abs</code>.</p>
-<p>Example run:</p>
+<p>Example runs:</p>
 <pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">-7.5</span>
 Original: -7.5
 Magnitude: 7.5</pre>
+<pre class="wb-shell"><span class="wb-prompt">Number: </span><span class="wb-typed">4</span>
+Original: 4.0
+Magnitude: 4.0</pre>
 <p>Write the complete program.</p>
 <wb-exercise id="ca"></wb-exercise>
 
-<h3>Program B: weekly pay with overtime</h3>
+<h3>Coding Practice B: Weekly Pay with Overtime</h3>
 <p>Write a complete program that:</p>
 <ul>
   <li>asks for an employee's name, hourly wage, and hours worked;</li>
@@ -450,12 +478,17 @@ Magnitude: 7.5</pre>
   <li>prints the employee's name and total pay to two decimal places.</li>
 </ul>
 <p>Use exactly one <code>if</code>/<code>else</code> statement. Put the final output after the branches.</p>
-<p>Example run:</p>
+<p>Example runs:</p>
 <pre class="wb-shell"><span class="wb-prompt">Employee name: </span><span class="wb-typed">Sam</span>
 <span class="wb-prompt">Hourly wage: $</span><span class="wb-typed">20</span>
 <span class="wb-prompt">Hours worked: </span><span class="wb-typed">45</span>
 Employee: Sam
 Pay: $950.00</pre>
+<pre class="wb-shell"><span class="wb-prompt">Employee name: </span><span class="wb-typed">Lee</span>
+<span class="wb-prompt">Hourly wage: $</span><span class="wb-typed">18</span>
+<span class="wb-prompt">Hours worked: </span><span class="wb-typed">40</span>
+Employee: Lee
+Pay: $720.00</pre>
 <p>Write the complete program.</p>
 <wb-exercise id="cb"></wb-exercise>
 
@@ -473,6 +506,83 @@ Pay: $950.00</pre>
 </div>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="final-review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<p><strong>1.</strong> What two values can a condition produce?</p>
+<wb-table id="fr1">
+  <table>
+    <tbody><tr><td style="width: 40%">The two values</td><td data-blank="v1"></td><td data-blank="v2"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> What four parts are required in an <code>if</code> statement?</p>
+<wb-short id="fr2"></wb-short>
+<p><strong>3.</strong> How does Python show which statements belong to a block?</p>
+<wb-short id="fr3"></wb-short>
+<p><strong>4.</strong> Explain when an <code>else</code> block runs.</p>
+<wb-short id="fr4"></wb-short>
+<p><strong>5.</strong> Why should a decision program be tested on both branches and at its boundary?</p>
+<wb-short id="fr5"></wb-short>
+<p><strong>6.</strong> Complete the trace, then run the program to confirm it.</p>
+<wb-example id="ex-w09"></wb-example>
+<wb-table id="fr6">
+  <table>
+    <thead><tr><th>Item</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Condition value</td><td data-blank="cond"></td></tr>
+      <tr><td>Branch taken</td><td data-blank="branch"></td></tr>
+      <tr><td>Output</td><td data-blank="out"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>if and else</h3>
+<pre><code><span class="wb-kw">if</span> condition:
+    true_block
+<span class="wb-kw">else</span>:
+    false_block
+
+shared_work</code></pre>
+<ul>
+  <li>A condition is <code>True</code> or <code>False</code>.</li>
+  <li>Exactly one branch runs.</li>
+  <li>Indentation identifies each block (four spaces in this course).</li>
+  <li><code>else</code> lines up with <code>if</code>.</li>
+</ul>
+
+<h3>Design, Test, and Debug</h3>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Design</th><th>Test</th></tr></thead>
+    <tbody>
+      <tr><td>State the two cases.</td><td>Run both branches.</td></tr>
+      <tr><td>Ask one yes-or-no question.</td><td>Test below, at, and above the boundary.</td></tr>
+      <tr><td>Put shared work after the branches.</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Boundary words</th><th>Operator</th></tr></thead>
+    <tbody>
+      <tr><td>at least</td><td><code>&gt;=</code></td></tr>
+      <tr><td>below, younger than</td><td><code>&lt;</code></td></tr>
+      <tr><td>more than</td><td><code>&gt;</code></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Debug</th><th>Result or check</th></tr></thead>
+    <tbody>
+      <tr><td>Missing colon</td><td><code>SyntaxError</code></td></tr>
+      <tr><td>Missing block indent</td><td><code>IndentationError</code></td></tr>
+      <tr><td><code>else</code> alignment</td><td>Check that <code>else</code> lines up with <code>if</code>.</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <hr>
 <p class="wb-meta">End of Lecture 8 Workbook.</p>
 </main>

@@ -69,6 +69,35 @@
     .wb-foot { font-family: var(--font-sans); font-size: 0.8rem; color: var(--ink-quiet); margin-top: 2rem; }
     .wb-topbar .wb-btn { text-decoration: none; }
 
+    /* What's new: a notice that opens once per notice id, then lives behind the top-bar button. */
+    .wb-news-btn { position: relative; }
+    .wb-news-btn.is-unread::after { content: ""; position: absolute; top: 0.25rem; right: 0.25rem; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--accent-fill); }
+    .wb-news-btn.is-arrived { animation: wb-news-pulse 0.7s ease-out; }
+    @keyframes wb-news-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); } 100% { box-shadow: 0 0 0 0.7rem transparent; } }
+    .wb-notice { width: min(40rem, calc(100vw - 2rem)); max-height: min(88vh, 52rem); padding: 0; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); color: var(--ink); box-shadow: var(--shadow); overflow: auto; overscroll-behavior: contain; }
+    .wb-notice::backdrop { background: rgba(20, 16, 17, 0.55); transition: opacity 0.35s; }
+    .wb-notice.is-closing::backdrop { opacity: 0; }
+    .wb-notice-body { padding: 1.4rem 1.6rem 1.2rem; font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; }
+    .wb-notice-kicker { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0; }
+    .wb-notice h2 { font-size: 1.45rem; margin: 0.2rem 0 0.9rem; padding: 0; }
+    .wb-notice h2::before { display: none; }
+    .wb-notice h2:focus { outline: none; }
+    .wb-notice h3 { font-family: var(--font-sans); font-size: 0.98rem; font-weight: 700; margin: 1.15rem 0 0.35rem; }
+    .wb-notice p { margin: 0.35rem 0; }
+    .wb-notice ul, .wb-notice ol { margin: 0.35rem 0; padding-left: 1.3rem; }
+    .wb-notice li { margin: 0.2rem 0; }
+    .wb-notice-key { border: 1px solid var(--accent); background: var(--accent-wash); border-radius: 8px; padding: 0.7rem 0.9rem; margin: 0.8rem 0 0.4rem; }
+    .wb-notice-key h3 { margin-top: 0; color: var(--accent); }
+    .wb-notice-same { border: 1px solid var(--good); background: var(--good-wash); border-radius: 8px; padding: 0.7rem 0.9rem; margin: 0.8rem 0 0.4rem; }
+    .wb-notice-same h3 { margin-top: 0; color: var(--good-ink); }
+    .wb-notice kbd { font-family: var(--font-mono); font-size: 0.82em; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0.05em 0.35em; background: var(--panel); }
+    .wb-notice-foot { border-top: 1px solid var(--rule-soft); margin-top: 1.2rem; padding-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .wb-notice-foot p { color: var(--ink-quiet); font-size: 0.84rem; margin: 0; flex: 1 1 14rem; }
+    .wb-notice-foot .wb-btn { font-size: 0.92rem; padding: 0.7rem 1.3rem; }
+    @media (max-width: 40rem) {
+      .wb-notice-body { padding: 1.1rem 1.1rem 1rem; font-size: 0.92rem; }
+    }
+
     @media (max-width: 62rem) {
       .wb-dash-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "next" "units" "side"; grid-template-rows: auto; }
       .wb-dash-head .wb-meta { text-align: left; }
@@ -158,7 +187,48 @@
       latestLink.hidden = false;
     }
 
-    revealPage();
+    revealPage().then(initNotice);
+
+    // What's new. The notice opens by itself once for each NOTICE_ID; OK at its foot closes it into the
+    // top-bar button, which opens it again at any time. Change NOTICE_ID to show a new notice to everyone.
+    function initNotice() {
+      const NOTICE_ID = "2026-10-workbooks-update";
+      const KEY = "pylab-workbooks:notice-seen";
+      const dialog = document.querySelector("#notice");
+      const btn = document.querySelector("#news-btn");
+      const ok = dialog.querySelector("#notice-ok");
+      let seen = false;
+      try { seen = localStorage.getItem(KEY) === NOTICE_ID; } catch {}
+      btn.classList.toggle("is-unread", !seen);
+      const open = () => {
+        ok.textContent = seen ? "Close" : "OK, I have read this";
+        dialog.setAttribute("closedby", seen ? "any" : "none");
+        dialog.showModal(); dialog.scrollTop = 0;
+      };
+      // The first time, the notice stays until OK is pressed; later, Escape also closes it.
+      // Browsers may close a dialog on Escape even when "cancel" is prevented, so reopen it until OK.
+      dialog.addEventListener("cancel", (e) => { if (!seen) e.preventDefault(); });
+      dialog.addEventListener("keydown", (e) => { if (e.key === "Escape" && !seen) e.preventDefault(); });
+      dialog.addEventListener("close", () => { if (!seen) open(); });
+      btn.addEventListener("click", open);
+      ok.addEventListener("click", () => {
+        seen = true;
+        try { localStorage.setItem(KEY, NOTICE_ID); } catch {}
+        btn.classList.remove("is-unread");
+        const from = dialog.getBoundingClientRect(), to = btn.getBoundingClientRect();
+        const done = () => { dialog.close(); dialog.classList.remove("is-closing"); btn.classList.remove("is-arrived"); void btn.offsetWidth; btn.classList.add("is-arrived"); btn.focus(); };
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches || !dialog.animate) return done();
+        dialog.classList.add("is-closing");
+        const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+        const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+        const scale = Math.max(to.width / from.width, 0.05);
+        dialog.animate([
+          { transform: "none", opacity: 1 },
+          { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, opacity: 0.2 },
+        ], { duration: 450, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }).finished.then(done, done);
+      });
+      if (!seen) open();
+    }
 
     // Progress: XP and per-workbook records live in localStorage; totals come from each exercises.json.
     const read = (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
@@ -207,6 +277,7 @@
   <a class="wb-topbar-brand" href="./index.html" title="Home"><img src="./runtime/img/mun-logo.svg" alt="Memorial University"></a>
   <div class="wb-topbar-title"><strong>COMP 1001</strong><span>Interactive Workbooks</span></div>
   <span class="wb-spacer"></span>
+  <button id="news-btn" class="wb-btn wb-btn-quiet wb-news-btn" type="button" title="What's new" aria-haspopup="dialog" aria-controls="notice"><span class="wb-news-label">What's new</span></button>
   <a class="wb-btn wb-btn-quiet" href="./lab/index.html">PyLab</a>
   <button id="theme-toggle" class="wb-btn wb-btn-quiet wb-theme-toggle" type="button" title="Toggle light / dark">◐</button>
 </header>
@@ -264,5 +335,56 @@
 
   <p class="wb-foot">Python runs locally in your browser (Pyodide). Nothing you type is sent anywhere. Progress and XP are saved in this browser; the ⋯ menu inside a workbook exports and imports them.</p>
 </main>
+<dialog class="wb-notice" id="notice" aria-labelledby="notice-h" closedby="none">
+  <div class="wb-notice-body">
+    <p class="wb-notice-kicker">What's new · October 2026</p>
+    <h2 id="notice-h" tabindex="-1" autofocus>Workbook titles now match the slides</h2>
+
+    <p>Hi everyone,</p>
+    <p>To help you switch between the slides and the workbooks more easily while you prepare for Term Test 1, I updated the workbooks for Lectures 4 to 12 so that their sections, groups and titles match the lecture slides.</p>
+
+    <div class="wb-notice-same">
+      <h3>The content is the same</h3>
+      <p>All the lessons, examples, questions and answers are the same as before. Apart from the new titles, there are only some small corrections and a few optional practice checks from the slides, all listed below.</p>
+      <p><strong>Your work is safe.</strong> The work you've done, the XP you've earned and the boss problems you've solved all carry over to the new version. No graded question, answer or XP value has changed.</p>
+    </div>
+
+    <div class="wb-notice-key">
+      <h3>Term Test 1 covers Lectures 1 to 12</h3>
+      <p>The Term Test 1 syllabus was still showing the old coverage (up to Lecture 13). It now correctly says up to Lecture 12.</p>
+    </div>
+
+    <h3>What changed in Lectures 4 to 12</h3>
+    <ul>
+      <li>Section and checkpoint titles now match the slide titles, and the sidebar is grouped by the slide sections.</li>
+      <li>The sidebar opens only the section you are reading. Click "Expand all" at the top of it to open every section, and "Collapse all" to go back.</li>
+      <li>A few short examples and "Check" questions from the slides were added. Their answers are hidden under "Show the answer". They are for practice only and do not affect your XP or progress.</li>
+      <li>The Review section is now at the end of each workbook, after Coding Practice. The review questions come first, followed by summary tables from the slides.</li>
+    </ul>
+
+    <h3>Small fixes</h3>
+    <p>While making that change, I also fixed some small typos and tidied up a few explanations. Nothing significant. For the most part, the titles are what you'll notice.</p>
+    <ul>
+      <li><strong>Lecture 4:</strong> Checkpoint 7 now explains that Check only tests the value 35.</li>
+      <li><strong>Lecture 5:</strong> Clearer wording on remainders and divisibility, and in the resistance problem.</li>
+      <li><strong>Lecture 6:</strong> The Receipt practice prompt now mentions the "Receipt" title line.</li>
+      <li><strong>Lecture 7:</strong> The Review now says that negative indexes (<code>-1</code> through <code>-len(s)</code>) are also valid.</li>
+      <li><strong>Lecture 8:</strong> Clearer wording on how indentation marks a block.</li>
+      <li><strong>Lecture 9:</strong> A small correction in the tolerance example, and a simpler Checkpoint 5 prompt.</li>
+      <li><strong>Lecture 10:</strong> Clearer explanation of redundant conditions, and new examples in a few practice questions.</li>
+      <li><strong>Lecture 11:</strong> A more complete answer for the "Same Value for These Inputs" question.</li>
+      <li><strong>Lecture 12:</strong> Small wording fixes in the loop explanation, the Checkpoint 9 prompt and one model answer.</li>
+    </ul>
+
+    <h3>If something looks off</h3>
+    <p>If a page looks odd, refresh it first with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Mac. If you still notice a glitch, let me know. I can easily roll back to the previous version if needed.</p>
+    <p>Thanks!<br>Pranjal Patra</p>
+
+    <div class="wb-notice-foot">
+      <p>To read this message again, click "What's new" at the top of the home page.</p>
+      <button class="wb-btn wb-btn-primary" id="notice-ok" type="button">OK, I have read this</button>
+    </div>
+  </div>
+</dialog>
 </body>
 </html>

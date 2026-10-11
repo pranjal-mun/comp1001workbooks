@@ -130,7 +130,8 @@ E["cp9-fix"] = {"type": "code", "xp": 2, "minLines": 4,
     "starter": "age = 15\n\nif age < 18\nprint('Reduced price')\n",
     "cases": [case("age = 15", cp9), case("age = 30 (nothing printed)", cp9, rewrite=[["age = 15", "age = 30"]])],
     "check": 'assert "age < 18" in __source__ or "age<18" in __source__ or "18 > age" in __source__, "Keep the condition age < 18."',
-    "answer": b64(cp9)}
+    "answer": b64(cp9),
+    "answerNote": "The colon finishes the header. Four spaces place the print call inside the block."}
 # ---------------------------------------------------------------- Final review
 E["fr1"] = {"type": "table", "xp": 1, "blanks": {
     "v1": {"accept": ["True", "False"], "caseSensitive": True, "placeholder": "value", "width": "7rem", "show": "True"},

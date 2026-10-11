@@ -39,6 +39,7 @@
 </section>
 <hr>
 
+<p class="wb-part" id="part-io">Input and Output</p>
 <h2 id="s1">1. Input, Processing, and Output</h2>
 <p>Most programs follow the same three-stage pattern.</p>
 <div class="wb-refers wb-stages">
@@ -51,7 +52,7 @@
   <li><strong>Processing</strong> calculates or transforms those values.</li>
   <li><strong>Output</strong> presents the results.</li>
 </ul>
-<p>The program below uses assigned values as its input.</p>
+<p>An area program can read a length and width, multiply them, and print the area. The program below uses assigned values as its input.</p>
 <wb-example id="ex-area"></wb-example>
 <p>The assigned values are the input, the multiplication is the processing, and <code>print()</code> produces the output. Later in this workbook, <code>input()</code> reads values from the keyboard instead of fixing them in the code.</p>
 
@@ -61,13 +62,25 @@
   <wb-short id="cp1"></wb-short>
 </div>
 
-<h2 id="s2">2. Controlling <code>print()</code></h2>
-<p><code>print()</code> can display several values in one call. By default it separates them with a space and ends the line with a newline.</p>
+<h2 id="s2">2. Printing Values</h2>
+<p><code>print()</code> can display several values in one call.</p>
 <wb-example id="ex-print"></wb-example>
-<p>The <code>sep</code> argument changes the separator placed between the values.</p>
+<p>By default, <code>print()</code> puts one space between values and a newline after them.</p>
+
+<h3><code>sep</code> and <code>end</code></h3>
+<p>Change the separator: the <code>sep</code> argument replaces the space placed between the values.</p>
 <wb-example id="ex-sep"></wb-example>
-<p>The <code>end</code> argument changes what is printed after the last value. The default is a newline.</p>
+<p>Change the line ending: the <code>end</code> argument replaces what is printed after the last value.</p>
 <wb-example id="ex-end"></wb-example>
+
+<div class="wb-block">
+  <div class="wb-block-title">Check: Output Control</div>
+  <p>Write the exact output of <code>print('red', 'green', sep='-')</code>.</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+<pre class="wb-output">red-green</pre>
+  </details>
+</div>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 2</div>
@@ -84,20 +97,23 @@
   </wb-table>
 </div>
 
-<h2 id="s3">3. Reading Keyboard Input</h2>
+<h2 id="s3">3. Keyboard Input</h2>
 <p><code>input()</code> displays a prompt, waits for the user to type a line, and returns that line as a string. Press <strong>▶ Run</strong> and type a name when the prompt appears.</p>
 <wb-example id="ex-name"></wb-example>
 <pre class="wb-shell"><span class="wb-prompt">Name: </span><span class="wb-typed">Maya</span>
 Hello Maya</pre>
-<p><code>input()</code> always returns a string, even when the user types digits. To calculate with the value, convert it first. <code>int()</code> converts text to a whole number, and <code>float()</code> converts text to a number that may have a decimal part.</p>
+<h3>Converting Input</h3>
+<p><code>input()</code> always returns the entered characters as a <code>str</code>, even when the user types digits. To calculate with the value, convert it first. Convert at the point of reading when the program needs a number. Use <code>int()</code> for whole numbers and <code>float()</code> for values that may have a decimal part.</p>
 <wb-example id="ex-age"></wb-example>
 <pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">20</span>
 Next age: 21</pre>
-<p>Convert each value as soon as it is read, so the rest of the program works with numbers.</p>
 <wb-example id="ex-price"></wb-example>
 <pre class="wb-shell"><span class="wb-prompt">Price: </span><span class="wb-typed">3.5</span>
 <span class="wb-prompt">Quantity: </span><span class="wb-typed">4</span>
 Total: 14.0</pre>
+<h3>Invalid Numeric Input</h3>
+<p>If the user enters <code>twenty</code>, Python cannot convert it to an integer. The final line of the error is:</p>
+<pre class="wb-error">ValueError: invalid literal for int() with base 10: 'twenty'</pre>
 <div class="wb-callout is-warn">
   <div class="wb-callout-title">Invalid text</div>
   <p>If the text cannot be converted, Python raises a <code>ValueError</code>. Run the program below to see the error message. Handling this situation is a later topic; for now, assume the user types valid values.</p>
@@ -105,8 +121,8 @@ Total: 14.0</pre>
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 3</div>
-  <p>Replace the blanks so that <code>students</code> is a whole number and <code>temperature</code> may have a decimal part. The program prints nothing; Check looks at the types of the two names.</p>
+  <div class="wb-block-title">Checkpoint 3: Input Conversion</div>
+  <p>Replace the blanks so that <code>students</code> is a whole number and <code>temperature</code> may have a decimal part. A sample entry of <code>28</code> must store integer 28; a sample entry of <code>-1.5</code> must store floating-point value -1.5. The program prints nothing; Check looks at the types of the two names.</p>
   <wb-exercise id="cp3"></wb-exercise>
   <p>Why does <code>input()</code> alone not produce a number?</p>
   <wb-short id="cp3-why"></wb-short>
@@ -118,10 +134,15 @@ Total: 14.0</pre>
   </wb-table>
 </div>
 
-<h2 id="s4">4. Building Output with F-Strings</h2>
-<p>An <strong>f-string</strong> is a string literal with <code>f</code> before the opening quote. Any expression inside braces <code>{ }</code> is evaluated and its value is placed into the text.</p>
+<p class="wb-part" id="part-fstrings">F-Strings</p>
+<h2 id="s4">4. F-Strings</h2>
+<p>An <strong>f-string</strong> combines text and values. It is a string literal with <code>f</code> before the opening quote. Any expression inside braces <code>{ }</code> is evaluated and its value is placed into the text.</p>
 <wb-example id="ex-fstring"></wb-example>
 <p>Text outside the braces is copied as written; the braces mark the parts that Python computes.</p>
+
+<h3>Expressions in F-Strings</h3>
+<p>An expression in braces may be a variable or a calculation.</p>
+<wb-example id="ex-s4-expr"></wb-example>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 4</div>
@@ -147,13 +168,13 @@ Total: 14.0</pre>
 </table>
 </div>
 <h3>Money and Thousands Separators</h3>
-<p>Money is usually displayed with exactly two decimal places. A dollar sign is ordinary text placed before the braces.</p>
+<p>A dollar sign is ordinary text placed before the braces. A comma in the specifier inserts thousands separators.</p>
 <wb-example id="ex-money"></wb-example>
-<p>A comma in the specifier inserts thousands separators.</p>
+<p>Use <code>.2f</code> for money so both decimal places appear. The comma also works on its own:</p>
 <wb-example id="ex-thousands"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 5</div>
+  <div class="wb-block-title">Checkpoint 5: Number Formatting</div>
   <p>Write an f-string expression that produces each required display.</p>
   <wb-table id="cp5">
     <table>
@@ -169,10 +190,23 @@ Total: 14.0</pre>
   <wb-short id="cp5-why"></wb-short>
 </div>
 
-<h2 id="s6">6. Aligning a Simple Table</h2>
+<h2 id="s6">6. Alignment</h2>
+<p>A width reserves a minimum number of character positions.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Form</th><th>Alignment</th><th>Typical use</th></tr></thead>
+  <tbody>
+    <tr><td><code>&lt;12</code></td><td>left</td><td>text</td></tr>
+    <tr><td><code>&gt;8</code></td><td>right</td><td>numbers</td></tr>
+    <tr><td><code>^10</code></td><td>centre</td><td>headings</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Simple Tables</h3>
 <p>Width and alignment specifiers line up columns. <code>&lt;</code> aligns left, <code>&gt;</code> aligns right, and the number is the column width. The headings below are string literals inside the braces, so they use double quotes to avoid ending the f-string.</p>
 <wb-example id="ex-table"></wb-example>
-<p>The width is a <em>minimum</em>: a value longer than the width is displayed in full and pushes the rest of the line to the right.</p>
+<p>Use the same width for a column in every row. A value longer than its width is displayed in full and pushes the rest of the line to the right.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 6</div>
@@ -182,7 +216,8 @@ Total: 14.0</pre>
   <wb-short id="cp6-why"></wb-short>
 </div>
 
-<h2 id="s7">7. Recognizing Legacy <code>%</code> Formatting</h2>
+<p class="wb-part" id="part-other">Other Output Syntax</p>
+<h2 id="s7">7. Legacy <code>%</code> Formatting</h2>
 <p>The textbook sometimes uses an older style in which <code>%</code> combines a format string with a value.</p>
 <wb-example id="ex-legacy"></wb-example>
 <p>Course code uses an f-string for the same result.</p>
@@ -215,7 +250,7 @@ Total: 14.0</pre>
 <p>The gap produced by a tab depends on where the text is displayed, so fixed-width specifiers are more reliable for tables.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 8</div>
+  <div class="wb-block-title">Checkpoint 8: Escape Sequences</div>
   <p>Write one string literal that displays <code>input</code>, <code>process</code>, and <code>output</code> on three separate lines.</p>
   <wb-exercise id="cp8"></wb-exercise>
   <p>Which escape sequence produces one backslash?</p>
@@ -226,43 +261,17 @@ Total: 14.0</pre>
   </wb-table>
 </div>
 
-<h2 id="final-review">Final Review</h2>
-<p>Read the program, then answer the questions. Assume the user enters <code>Notebook</code>, <code>4.75</code>, and <code>3</code>. You can run it to confirm your answers.</p>
-<wb-example id="ex-fr"></wb-example>
-<p><strong>1.</strong> What type does each <code>input()</code> call return before any conversion?</p>
-<wb-table id="fr1">
-  <table>
-    <tbody><tr><td style="width: 40%">Type returned by <code>input()</code></td><td data-blank="t"></td></tr></tbody>
-  </table>
-</wb-table>
-<p><strong>2.</strong> What are the types of <code>price</code> and <code>quantity</code> after conversion?</p>
-<wb-table id="fr2">
-  <table>
-    <thead><tr><th>Variable</th><th>Type</th></tr></thead>
-    <tbody>
-      <tr><td><code>price</code></td><td data-blank="p"></td></tr>
-      <tr><td><code>quantity</code></td><td data-blank="q"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
-<p><strong>3.</strong> What value does <code>total</code> hold?</p>
-<wb-table id="fr3">
-  <table>
-    <tbody><tr><td style="width: 40%"><code>total</code></td><td data-blank="total"></td></tr></tbody>
-  </table>
-</wb-table>
-<p><strong>4.</strong> Write the two table lines exactly as displayed, including every space.</p>
-<wb-table id="fr4">
-  <table>
-    <thead><tr><th>Line</th><th>Text displayed</th></tr></thead>
-    <tbody>
-      <tr><td>Heading</td><td data-blank="l1"></td></tr>
-      <tr><td>Data</td><td data-blank="l2"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
+<div class="wb-block">
+  <div class="wb-block-title">Check: A Windows Path</div>
+  <p>Write one string literal whose displayed text is <code>C:\courses\comp1001</code>.</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+<pre><code><span class="wb-str">'C:\\courses\\comp1001'</span></code></pre>
+    <p>Each doubled backslash in the source becomes one displayed backslash.</p>
+  </details>
+</div>
 
-<h2 id="additional-practice">Additional Practice</h2>
+<h2 id="additional-practice" data-toc-group>Additional Practice</h2>
 <h3>Practice A: Control <code>print()</code></h3>
 <p>Display <code>A-B-C</code> using one <code>print()</code> call with <code>sep</code>. Then display <code>Ready...go</code> using two <code>print()</code> calls and <code>end</code>.</p>
 <wb-exercise id="pa"></wb-exercise>
@@ -295,29 +304,41 @@ Notebook      4.75</pre>
 <p>Explain every part of <code>print(f'{total:10.2f}')</code>: the <code>f</code>, the braces, the colon, the <code>10</code>, and the <code>.2f</code>.</p>
 <wb-short id="pe"></wb-short>
 
-<h2 id="together">Putting It All Together</h2>
-<p>A receipt program combines everything in this lecture. Plan it in three stages before writing code.</p>
+<h2 id="together" data-toc-group>Putting It All Together</h2>
+<h3>Receipt Program</h3>
+<p>A receipt program combines everything in this lecture. Goal: ask for an item, unit price, and quantity, then print one aligned receipt row. Plan it in three stages before writing code.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Input</th><th>Processing</th><th>Output</th></tr></thead>
   <tbody>
-    <tr>
-      <td>item as text; unit price as a <code>float</code>; quantity as an <code>int</code></td>
-      <td>multiply price by quantity; store the total</td>
-      <td>aligned headings; item, quantity, and total; money with two decimals</td>
-    </tr>
+    <tr><td>item text</td><td>price × quantity</td><td>headings</td></tr>
+    <tr><td>unit price</td><td>store total</td><td>aligned data row</td></tr>
+    <tr><td>whole-number quantity</td><td></td><td>total to two decimals</td></tr>
   </tbody>
 </table>
 </div>
-<h3>Part 1: Read and Convert</h3>
+<h3>Part 1: Program Parts</h3>
 <p>Complete the conversions and the total. The program prints nothing yet; Check looks at the types and the total.</p>
 <wb-exercise id="pt1"></wb-exercise>
+<p>Keep <code>total</code> numeric until it is printed. Plan the columns:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Column</th><th>Width</th><th>Align</th></tr></thead>
+  <tbody>
+    <tr><td>Item</td><td>14</td><td>left</td></tr>
+    <tr><td>Qty</td><td>8</td><td>right</td></tr>
+    <tr><td>Total</td><td>12</td><td>right</td></tr>
+  </tbody>
+</table>
+</div>
 <h3>Part 2: Align the Output</h3>
 <p>Complete the specifiers: the item column is left aligned in width 14, the quantity column is right aligned in width 8, and the total is right aligned in width 12 with two decimal places. The values are assigned at the top so the rows can be checked.</p>
 <wb-exercise id="pt2"></wb-exercise>
-<h3>Complete Program</h3>
+<h3>Complete Receipt Program</h3>
 <p>The finished program reads the values, then prints a blank line, a title, and the two aligned rows. Run it and type your own item.</p>
 <wb-example id="ex-receipt"></wb-example>
+<h3>Receipt Test Runs</h3>
+<p>A regular quantity:</p>
 <pre class="wb-shell"><span class="wb-prompt">Item: </span><span class="wb-typed">Marker set</span>
 <span class="wb-prompt">Unit price: $</span><span class="wb-typed">6.5</span>
 <span class="wb-prompt">Quantity: </span><span class="wb-typed">2</span>
@@ -325,9 +346,35 @@ Notebook      4.75</pre>
 Receipt
 Item               Qty       Total
 Marker set           2       13.00</pre>
+<p>A zero quantity:</p>
+<pre class="wb-shell"><span class="wb-prompt">Item: </span><span class="wb-typed">Eraser</span>
+<span class="wb-prompt">Unit price: $</span><span class="wb-typed">0.75</span>
+<span class="wb-prompt">Quantity: </span><span class="wb-typed">0</span>
 
-<h2 id="coding-practice">Coding Practice</h2>
+Receipt
+Item               Qty       Total
+Eraser               0        0.00</pre>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>Each task uses only the tools from this lecture: input, conversion, arithmetic, and output. Two functions from Lecture 5 are useful: <code>round(value)</code> rounds to the nearest whole number, and <code>math.log(value)</code> is the natural logarithm. Each task shows an example run; press <strong>Check</strong> to test your program with several sets of typed values.</p>
+
+<h3>Coding Practice: Receipt</h3>
+<p>Write a complete program that asks for an item, its unit price, and a whole-number quantity. Print a blank line, the title <code>Receipt</code>, and then a two-row receipt with columns Item (left aligned, width 14), Qty (right aligned, width 8), and Total (right aligned, width 12, two decimal places). Marker set, 6.5, and 2 must give a total of 13.00; Eraser, 0.75, and 0 must give a total of 0.00. Assume valid input.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Receipt</div>
+  <p>This is the receipt program from Putting It All Together. Write it without looking back, then compare.</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+<pre><code>item = input('Item: ')
+unit_price = float(input('Unit price: $'))
+quantity = int(input('Quantity: '))
+total = unit_price * quantity
+
+print('\nReceipt')
+print(f'{"Item":&lt;14}{"Qty":&gt;8}{"Total":&gt;12}')
+print(f'{item:&lt;14}{quantity:&gt;8}{total:&gt;12.2f}')</code></pre>
+  </details>
+</div>
 
 <h3>Task 1: Power Report</h3>
 <p>Read a number and display its square, cube, and fourth power. Build the square and cube by multiplication and use <code>**</code> only for the fourth power.</p>
@@ -431,6 +478,83 @@ Force: 0.07190 N</pre>
 <wb-exercise id="c13"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="final-review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<p>Read the program, then answer the questions. Assume the user enters <code>Notebook</code>, <code>4.75</code>, and <code>3</code>. You can run it to confirm your answers.</p>
+<wb-example id="ex-fr"></wb-example>
+<p><strong>1.</strong> What type does each <code>input()</code> call return before any conversion?</p>
+<wb-table id="fr1">
+  <table>
+    <tbody><tr><td style="width: 40%">Type returned by <code>input()</code></td><td data-blank="t"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>2.</strong> What are the types of <code>price</code> and <code>quantity</code> after conversion?</p>
+<wb-table id="fr2">
+  <table>
+    <thead><tr><th>Variable</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><code>price</code></td><td data-blank="p"></td></tr>
+      <tr><td><code>quantity</code></td><td data-blank="q"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p><strong>3.</strong> What value does <code>total</code> hold?</p>
+<wb-table id="fr3">
+  <table>
+    <tbody><tr><td style="width: 40%"><code>total</code></td><td data-blank="total"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>4.</strong> Write the two table lines exactly as displayed, including every space.</p>
+<wb-table id="fr4">
+  <table>
+    <thead><tr><th>Line</th><th>Text displayed</th></tr></thead>
+    <tbody>
+      <tr><td>Heading</td><td data-blank="l1"></td></tr>
+      <tr><td>Data</td><td data-blank="l2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>Input and Output</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Tool</th><th>Operational rule</th></tr></thead>
+  <tbody>
+    <tr><td><code>print(a, b)</code></td><td>space between values; newline after</td></tr>
+    <tr><td><code>sep=</code></td><td>replaces the separator</td></tr>
+    <tr><td><code>end=</code></td><td>replaces the final newline</td></tr>
+    <tr><td><code>input(prompt)</code></td><td>always returns a <code>str</code></td></tr>
+    <tr><td><code>int(input(...))</code></td><td>reads a whole number</td></tr>
+    <tr><td><code>float(input(...))</code></td><td>reads a number with a possible decimal part</td></tr>
+  </tbody>
+</table>
+</div>
+<ul>
+  <li>Invalid numeric text raises <code>ValueError</code>; handling is deferred.</li>
+  <li>Test a complete input program with ordinary values and an edge value such as zero.</li>
+</ul>
+
+<h3>F-Strings and Formatting</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Syntax</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>f'{value}'</code></td><td>insert a value</td></tr>
+    <tr><td><code>.2f</code> / <code>,.2f</code></td><td>decimals / commas and decimals</td></tr>
+    <tr><td><code>&lt;12</code> / <code>&gt;8</code> / <code>^10</code></td><td>left / right / centre</td></tr>
+    <tr><td><code>\n</code> / <code>\t</code></td><td>newline / tab</td></tr>
+    <tr><td><code>\\</code></td><td>one displayed backslash</td></tr>
+  </tbody>
+</table>
+</div>
+<ul>
+  <li>Formatting changes display text, not the stored number.</li>
+  <li>Use the same width for a column in every row.</li>
+  <li>Recognize legacy <code>%</code> formatting; write f-strings in course code.</li>
+</ul>
+
 <hr>
 <p class="wb-meta">End of Lecture 6 Workbook.</p>
 

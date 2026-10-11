@@ -76,7 +76,7 @@ export const DROPPED = [
 ];
 
 export const KEY_DATES = [
-  { name: "Term Test 1", date: "2026-10-15", note: "Lectures 1 to 13, in your lab slot" },
+  { name: "Term Test 1", date: "2026-10-15", note: "Lectures 1 to 12, in your lab slot" },
   { name: "Term Test 2", date: "2026-11-10", note: "Lectures 1 to 23, in your lab slot" },
   { name: "Last day to drop", date: "2026-11-04" },
   { name: "Final examination", when: "Dec 10 to 18", note: "Registrar-scheduled" },

@@ -235,7 +235,7 @@
     },
     "ex-w10": {
       "type": "example",
-      "code": "# Use one named value so the rate is easy to update later.\nTAX_RATE = 0.15\n\nprint('Current tax rate:', TAX_RATE)",
+      "code": "# Keep the rate in one place for future updates.\nTAX_RATE = 0.15\n\nprint('Current tax rate:', TAX_RATE)",
       "output": "Current tax rate: 0.15"
     },
     "cp6-names": {

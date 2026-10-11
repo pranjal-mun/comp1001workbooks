@@ -37,6 +37,7 @@ export async function initWorkbook({ id, specs: specsUrl = "./exercises.json", t
   const progress = new Progress(id);
   const exerciseIds = [...document.querySelectorAll("wb-exercise[id], wb-table[id], wb-short[id]")].map((el) => el.id).filter((eid) => specs[eid]);
 
+  wrapTables();
   defineComponents({ workbookId: id, specs, progress });
   buildTopBar({ id, title: title ?? data.title ?? document.title, short: data.short, subtitle: data.subtitle, progress, exerciseIds });
   buildContents(progress);
@@ -46,6 +47,17 @@ export async function initWorkbook({ id, specs: specsUrl = "./exercises.json", t
   if (python) runner.warmUp();
   // Widgets grow as they initialise, so a #section link needs a second jump.
   if (location.hash) setTimeout(() => document.getElementById(location.hash.slice(1))?.scrollIntoView(), 300);
+}
+
+/** A table wider than the screen scrolls inside its own box, so on a phone it does not widen the page. */
+function wrapTables() {
+  for (const table of document.querySelectorAll("main table")) {
+    if (table.closest(".wb-table-wrap")) continue;
+    const wrap = document.createElement("div");
+    wrap.className = "wb-table-wrap";
+    table.before(wrap);
+    wrap.append(table);
+  }
 }
 
 // ------------------------------------------------------------- top bar
@@ -213,7 +225,12 @@ async function renderBosses(id, entry) {
   if (toc) {
     const mark = el("span", { class: "wb-toc-mark" }, done === bosses.length ? "✓" : `${done}/${bosses.length}`);
     mark.classList.toggle("is-done", done === bosses.length);
-    toc.append(el("div", { class: "wb-toc-bosses", "aria-label": "Boss problems" }, mark, ...bosses.map(marker)));
+    const row = el("div", { class: "wb-toc-bosses", "aria-label": "Boss problems" }, mark, ...bosses.map(marker));
+    // Under the contents entry of the section that holds <wb-bosses>, when a later section follows it.
+    let section = host?.previousElementSibling;
+    while (section && section.tagName !== "H2") section = section.previousElementSibling;
+    const item = section?.id && toc.querySelector(`.wb-toc-list > li > a[href="#${CSS.escape(section.id)}"]`)?.parentElement;
+    if (item?.nextElementSibling) item.append(row); else toc.append(row);
   }
   if (!host) return;
   const strip = el("div", { class: "wb-boss-strip" }, ...bosses.map(marker));
@@ -233,22 +250,71 @@ function buildContents(progress) {
   if (!headings.length) return;
   const list = el("ol", { class: "wb-toc-list" });
   const entries = [];
-  for (const heading of headings) {
-    const ids = sectionExerciseIds(heading);
+  const entry = (heading, ids, parent, cls) => {
     const mark = el("span", { class: "wb-toc-mark" });
     const link = el("a", { href: `#${heading.id}` }, mark, heading.dataset.tocTitle ?? heading.textContent);
-    list.append(el("li", {}, link));
+    const item = el("li", cls ? { class: cls } : {}, link);
+    parent.append(item);
     entries.push({ heading, ids, mark, link });
+    return item;
+  };
+  // Optional grouping. A <p class="wb-part" id="…"> directly in <main> starts a
+  // group that holds the h2s after it; an h2 with data-toc-group is a group of
+  // its own h3s. Pages without either get the flat list as before.
+  let group = null;
+  for (const node of main.querySelectorAll(":scope > .wb-part[id], h2[id]")) {
+    if (node.matches(".wb-part")) {
+      const sub = el("ol", { class: "wb-toc-sub" });
+      entry(node, [], list, "wb-toc-group").append(sub);
+      group = { sub, entry: entries.at(-1) };
+      continue;
+    }
+    if (node.hasAttribute("data-toc-group")) {
+      group = null;
+      const sub = el("ol", { class: "wb-toc-sub" });
+      entry(node, sectionExerciseIds(node), list, "wb-toc-group").append(sub);
+      [...sectionHeadings(node)].forEach((h3, i) => {
+        h3.id ||= `${node.id}-${i + 1}`;
+        entry(h3, subsectionExerciseIds(h3), sub);
+      });
+      continue;
+    }
+    const ids = sectionExerciseIds(node);
+    entry(node, ids, group ? group.sub : list);
+    if (group) group.entry.ids.push(...ids);
   }
   // A page with no graded widgets has nothing to count, so it gets no marks column.
   const plain = entries.every((entry) => !entry.ids.length);
-  const nav = el("nav", { class: `wb-toc${plain ? " is-plain" : ""}`, "aria-label": "Contents" }, el("div", { class: "wb-toc-title" }, "Contents"), list);
+  // Groups fold so a long list stays short. By default only the group that holds the
+  // section in view is open; the Expand all button opens every group, and pressing it
+  // again (now Collapse all) goes back to the default.
+  const groups = [...list.querySelectorAll(":scope > li.wb-toc-group")].filter((li) => li.querySelector(".wb-toc-sub > li"));
+  let expanded = false;
+  const refold = () => {
+    const current = list.querySelector("a.is-current")?.closest("li.wb-toc-group");
+    for (const g of groups) g.classList.toggle("is-folded", !expanded && g !== current);
+  };
+  const title = el("div", { class: "wb-toc-title" }, el("span", {}, "Contents"));
+  if (groups.length) {
+    for (const g of groups) g.classList.add("is-foldable");
+    const fold = el("button", { type: "button", class: "wb-toc-fold", "aria-pressed": "false" }, "Expand all");
+    fold.addEventListener("click", () => {
+      expanded = !expanded;
+      fold.textContent = expanded ? "Collapse all" : "Expand all";
+      fold.setAttribute("aria-pressed", String(expanded));
+      refold();
+    });
+    title.append(fold);
+    refold();
+  }
+  const nav = el("nav", { class: `wb-toc${plain ? " is-plain" : ""}`, "aria-label": "Contents" }, title, list);
   main.parentNode.insertBefore(nav, main);
   document.body.classList.add("wb-has-toc");
   addContentsToggle(nav, list);
 
   progress.subscribe((p) => {
     for (const entry of entries) {
+      entry.mark.classList.toggle("is-none", !entry.ids.length);
       if (!entry.ids.length) { entry.mark.textContent = ""; continue; }
       const { done, total } = p.summary(entry.ids);
       entry.mark.textContent = done === total ? "✓" : `${done}/${total}`;
@@ -256,14 +322,24 @@ function buildContents(progress) {
     }
   });
 
-  // Highlight the section in view.
-  const observer = new IntersectionObserver((records) => {
-    for (const record of records) {
-      if (!record.isIntersecting) continue;
-      for (const entry of entries) entry.link.classList.toggle("is-current", entry.heading === record.target);
+  // Highlight the section in view: the last heading above a line a fifth of the way down
+  // the window. Measuring on scroll (not an observer band) also catches jumps from a link.
+  let queued = false;
+  const highlight = () => {
+    queued = false;
+    const line = innerHeight * 0.2;
+    let current = null;
+    for (const entry of entries) {
+      if (entry.heading.getBoundingClientRect().top > line) break;
+      current = entry;
     }
-  }, { rootMargin: "-10% 0px -80% 0px" });
-  for (const entry of entries) observer.observe(entry.heading);
+    for (const entry of entries) entry.link.classList.toggle("is-current", entry === current);
+    if (groups.length) refold();
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(highlight); } };
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", queue);
+  queue();
 }
 
 /** On narrow screens the contents list is a drop-down under a ☰ button in the top bar. */
@@ -294,6 +370,23 @@ function sectionExerciseIds(heading) {
     if (node.matches("wb-exercise[id], wb-table[id], wb-short[id]")) ids.push(node.id);
     ids.push(...[...node.querySelectorAll("wb-exercise[id], wb-table[id], wb-short[id]")].map((n) => n.id));
     node = node.nextElementSibling;
+  }
+  return ids;
+}
+
+/** The h3s directly in <main> between this h2 and the next one. */
+function* sectionHeadings(heading) {
+  for (let node = heading.nextElementSibling; node && node.tagName !== "H2"; node = node.nextElementSibling) {
+    if (node.tagName === "H3") yield node;
+  }
+}
+
+/** Exercise ids between this h3 and the next h2 or h3. */
+function subsectionExerciseIds(heading) {
+  const ids = [];
+  for (let node = heading.nextElementSibling; node && !/^H[23]$/.test(node.tagName); node = node.nextElementSibling) {
+    if (node.matches("wb-exercise[id], wb-table[id], wb-short[id]")) ids.push(node.id);
+    ids.push(...[...node.querySelectorAll("wb-exercise[id], wb-table[id], wb-short[id]")].map((n) => n.id));
   }
   return ids;
 }

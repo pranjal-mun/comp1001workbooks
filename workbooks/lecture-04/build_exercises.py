@@ -76,7 +76,7 @@ E["cp5-why"] = {"type": "short", "xp": 2, "answer": b64(
     "`studentCount` and `Students` are valid Python but do not follow `lower_case_with_underscores`.")}
 # ---------------------------------------------------------------- Section 6
 E["ex-w09"] = example("TAX_RATE = 0.15\nMAX_ATTEMPTS = 3\n", output=False)
-E["ex-w10"] = example("# Use one named value so the rate is easy to update later.\nTAX_RATE = 0.15\n\nprint('Current tax rate:', TAX_RATE)\n")
+E["ex-w10"] = example("# Keep the rate in one place for future updates.\nTAX_RATE = 0.15\n\nprint('Current tax rate:', TAX_RATE)\n")
 E["cp6-names"] = {"type": "table", "xp": 1, "blanks": {
     "r1": {"accept": ["TAX_RATE", "TAX_RATE_PERCENT", "SALES_TAX_RATE", "TAX"], "caseSensitive": True, "placeholder": "constant"},
     "r2": {"accept": ["number_of_seats", "seat_count", "num_seats", "seats", "seat_total", "total_seats", "num_of_seats", "seats_count"], "caseSensitive": True},

@@ -540,7 +540,8 @@
         }
       ],
       "check": "assert \"age < 18\" in __source__ or \"age<18\" in __source__ or \"18 > age\" in __source__, \"Keep the condition age < 18.\"",
-      "answer": "YWdlID0gMTUKCmlmIGFnZSA8IDE4OgogICAgcHJpbnQoJ1JlZHVjZWQgcHJpY2UnKQ=="
+      "answer": "YWdlID0gMTUKCmlmIGFnZSA8IDE4OgogICAgcHJpbnQoJ1JlZHVjZWQgcHJpY2UnKQ==",
+      "answerNote": "The colon finishes the header. Four spaces place the print call inside the block."
     },
     "fr1": {
       "type": "table",

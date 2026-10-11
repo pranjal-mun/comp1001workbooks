@@ -115,6 +115,11 @@
       "code": "name = 'Maya'\ncount = 3\n\nprint(f'{name} has {count} items')\nprint(f'{count} squared is {count ** 2}')",
       "output": "Maya has 3 items\n3 squared is 9"
     },
+    "ex-s4-expr": {
+      "type": "example",
+      "code": "count = 3\nprice = 4.5\n\nprint(f'{count} squared is {count ** 2}')\nprint(f'Total: {count * price}')",
+      "output": "3 squared is 9\nTotal: 13.5"
+    },
     "cp4": {
       "type": "code",
       "xp": 2,
@@ -146,8 +151,8 @@
     },
     "ex-money": {
       "type": "example",
-      "code": "subtotal = 19.5\nprint(f'Subtotal: ${subtotal:.2f}')",
-      "output": "Subtotal: $19.50"
+      "code": "subtotal = 19.5\npopulation = 1234567\n\nprint(f'Subtotal: ${subtotal:.2f}')\nprint(f'Population: {population:,}')",
+      "output": "Subtotal: $19.50\nPopulation: 1,234,567"
     },
     "ex-thousands": {
       "type": "example",

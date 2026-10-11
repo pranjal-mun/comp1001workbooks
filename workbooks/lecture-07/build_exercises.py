@@ -55,7 +55,7 @@ E["cp1-why"] = {"type": "short", "xp": 2, "answer": b64(
     "A space is a character, so `len()` counts it. `'ice cream'` has three letters, one space, and five letters: 9 characters in total.")}
 
 # ---------------------------------------------------------------- 2. Joining and Repeating Strings
-E["ex-w03"] = example("first = 'data'\nsecond = 'science'\nphrase = first + ' ' + second\n\nprint(phrase)\n")
+E["ex-w03"] = example("first = 'data'\nsecond = 'science'\nphrase = first + ' ' + second\n\nprint(phrase)\nprint('-' * 12)\n")
 E["ex-w04"] = example("print('-' * 12)\nprint('go! ' * 3)\n")
 E["ex-w05"] = example("room = 301\nlabel = 'Room ' + str(room)\nprint(label)\n")
 cp2 = "print('COMP' + ' ' + '1001')\nprint('=' * 20)\nprint('Lab ' + str(4))\n"
@@ -85,7 +85,7 @@ E["cp4"] = {"type": "table", "xp": 1, "blanks": {
 
 # ---------------------------------------------------------------- 5. Slicing a String
 E["ex-w09"] = example("word = 'Python'\n\nprint(word[0:3])\nprint(word[2:5])\n")
-E["ex-w10"] = example("word = 'Python'\n\nprint(word[:3])\nprint(word[3:])\nprint(word[-3:])\nprint(word[:])\n")
+E["ex-w10"] = example("word = 'Python'\n\nprint(word[:3])\nprint(word[3:])\nprint(word[-3:])\nprint(word[3:20])\n")
 E["cp5-slices"] = {"type": "table", "xp": 1, "blanks": {
     "s1": {"accept": ["course[:4]", "course[0:4]", "course[:-4]", "course[0:-4]"], "placeholder": "slice", "width": "10rem"},
     "s2": {"accept": ["course[4:]", "course[4:8]", "course[-4:]", "course[-4:8]"], "placeholder": "slice", "width": "10rem"},

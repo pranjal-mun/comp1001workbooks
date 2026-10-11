@@ -219,7 +219,11 @@ main th, main td {
 }
 main th { color: var(--ink-quiet); border-bottom: 2px solid var(--rule-strong); font-weight: 700; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
 main td code, main th code { white-space: nowrap; }
-main .wb-table-wrap { overflow-x: auto; }
+/* Every table sits in one of these (initWorkbook wraps the rest), so a wide table scrolls inside it on a phone. */
+main .wb-table-wrap { overflow-x: auto; margin: 0.8rem 0 1.2rem; }
+main .wb-table-wrap > table { margin: 0; }
+/* A long string in running text breaks rather than widening the page. */
+main p code, main li code { overflow-wrap: anywhere; }
 
 /* Title block (the PDF's opening page). */
 .wb-title-block {
@@ -279,6 +283,12 @@ wb-bosses { display: block; }
 .wb-callout.is-warn > .wb-callout-title { color: var(--warn-ink); }
 .wb-callout.is-bad { border-color: var(--bad); }
 .wb-callout.is-bad > .wb-callout-title { color: var(--bad-ink); }
+/* Slide-section label above a run of h2s (<p class="wb-part">). With an id it also groups the contents sidebar. */
+.wb-part { font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-quiet); font-weight: 700; margin: 2.2rem 0 -0.6rem; }
+/* Ungraded check with its answer folded away (<details class="wb-answer"><summary>Show the answer</summary>…</details>).
+   It shares .wb-answer with the model-answer panel below on purpose, so it gets the same dashed rule and wash. */
+details.wb-answer { margin: 0.6rem 0 0.2rem; }
+details.wb-answer > summary { cursor: pointer; font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600; color: var(--accent); }
 .wb-good { color: var(--good-ink); }
 .wb-warn { color: var(--warn-ink); }
 .wb-bad { color: var(--bad-ink); }
@@ -407,7 +417,10 @@ wb-bosses { display: block; }
   font-family: var(--font-sans);
   font-size: 0.82rem;
 }
-.wb-toc-title { color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; font-weight: 700; margin-bottom: 0.5rem; padding-left: 0.6rem; }
+.wb-toc-title { display: flex; align-items: baseline; gap: 0.8rem; color: var(--ink-quiet); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; font-weight: 700; margin-bottom: 0.5rem; padding-left: 0.6rem; }
+/* The Expand all / Collapse all toggle for grouped contents. */
+.wb-toc-fold { margin-left: 0.4rem; font: inherit; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+.wb-toc-fold:hover { text-decoration: underline; }
 .wb-toc-list { list-style: none; margin: 0; padding: 0; }
 .wb-toc-list li { margin: 0; }
 .wb-toc-list a {
@@ -423,6 +436,16 @@ wb-bosses { display: block; }
 .wb-toc-list a:hover { background: var(--panel); color: var(--ink); }
 .wb-toc-list a.is-current { border-left-color: var(--accent-fill); color: var(--accent); font-weight: 600; border-radius: 0 5px 5px 0; }
 .wb-toc.is-plain .wb-toc-mark { display: none; }
+/* Grouped contents (a .wb-part label or an h2 with data-toc-group). */
+.wb-toc-list > li.wb-toc-group { margin-top: 0.7rem; }
+.wb-toc-list > li.wb-toc-group > a { color: var(--ink); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.72rem; }
+.wb-toc-sub { list-style: none; margin: 0 0 0 0.9rem; padding: 0; border-left: 1px solid var(--rule-soft); }
+/* A folded group shows only its header (its mark still counts the whole group); the caret shows it can open. */
+.wb-toc-group.is-folded > .wb-toc-sub { display: none; }
+.wb-toc-list > li.wb-toc-group.is-foldable > a::after { content: "▾"; margin-left: auto; padding-left: 0.4rem; color: var(--ink-quiet); font-weight: 400; }
+.wb-toc-list > li.wb-toc-group.is-folded > a::after { content: "▸"; }
+/* A grouped item with nothing to answer gets a faint dash, so its title lines up with its neighbours. */
+.wb-toc-sub .wb-toc-mark.is-none::before { content: "–"; opacity: 0.5; }
 .wb-toc-mark { flex: none; min-width: 2.2em; font-variant-numeric: tabular-nums; color: var(--ink-quiet); font-size: 0.7rem; }
 .wb-toc-mark.is-done { color: var(--good-ink); font-weight: 700; }
 /* Boss markers under the last contents entry (filled by renderBosses in workbook.js). */

@@ -192,7 +192,7 @@ E["pe"] = {"type": "code", "xp": 5, "minLines": 8,
     "answerNote": "The distance decision belongs inside the local branch."}
 
 E["ex-pf"] = example(grade_chain.replace("score = 76", "score = 64"))
-E["pf"] = {"type": "short", "xp": 2, "rows": 9, "placeholder": "score → grade — what it tests, one case per line", "answer": b64(
+E["pf"] = {"type": "short", "xp": 2, "rows": 9, "placeholder": "score → grade: what it tests, one case per line", "answer": b64(
     "One compact set is 49/F, 50/D, 59/D, 60/C, 69/C, 70/B, 79/B, and 80/A. It checks each boundary from both sides and reaches every branch. "
     "Adding a value above 80, such as 95/A, is also useful.")}
 

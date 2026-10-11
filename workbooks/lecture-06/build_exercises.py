@@ -78,6 +78,7 @@ E["cp3-error"] = {"type": "table", "xp": 1, "blanks": {"err": {
 
 # ---------------------------------------------------------------- 4. Building Output with F-Strings
 E["ex-fstring"] = example("name = 'Maya'\ncount = 3\n\nprint(f'{name} has {count} items')\nprint(f'{count} squared is {count ** 2}')\n")
+E["ex-s4-expr"] = example("count = 3\nprice = 4.5\n\nprint(f'{count} squared is {count ** 2}')\nprint(f'Total: {count * price}')\n")
 cp4 = "course = 'COMP 1001'\nstudents = 28\nprint(f'{course} has {students} students')\n"
 cp4_check = '''assert "{course}" in __source__, "Put the variable name course inside braces: {course}."
 assert "{students}" in __source__, "Put the variable name students inside braces: {students}."
@@ -92,7 +93,7 @@ E["cp4-why"] = {"type": "short", "xp": 2, "answer": b64(
     "The variable names `course` and `students` must be inside braces. The connecting words and spaces (` has ` and ` students`) are ordinary string text.")}
 
 # ---------------------------------------------------------------- 5. Format Specifiers
-E["ex-money"] = example("subtotal = 19.5\nprint(f'Subtotal: ${subtotal:.2f}')\n")
+E["ex-money"] = example("subtotal = 19.5\npopulation = 1234567\n\nprint(f'Subtotal: ${subtotal:.2f}')\nprint(f'Population: {population:,}')\n")
 E["ex-thousands"] = example("population = 1234567\nprint(f'{population:,}')\n")
 assert eval("f'{7.5:.2f}'") == "7.50" and eval("f'{2500.4:,.2f}'") == "2,500.40" and eval("f'{42:05d}'") == "00042"
 E["cp5"] = {"type": "table", "xp": 1, "blanks": {

@@ -37,8 +37,8 @@
     },
     "ex-w03": {
       "type": "example",
-      "code": "first = 'data'\nsecond = 'science'\nphrase = first + ' ' + second\n\nprint(phrase)",
-      "output": "data science"
+      "code": "first = 'data'\nsecond = 'science'\nphrase = first + ' ' + second\n\nprint(phrase)\nprint('-' * 12)",
+      "output": "data science\n------------"
     },
     "ex-w04": {
       "type": "example",
@@ -149,8 +149,8 @@
     },
     "ex-w10": {
       "type": "example",
-      "code": "word = 'Python'\n\nprint(word[:3])\nprint(word[3:])\nprint(word[-3:])\nprint(word[:])",
-      "output": "Pyt\nhon\nhon\nPython"
+      "code": "word = 'Python'\n\nprint(word[:3])\nprint(word[3:])\nprint(word[-3:])\nprint(word[3:20])",
+      "output": "Pyt\nhon\nhon\nhon"
     },
     "cp5-slices": {
       "type": "table",

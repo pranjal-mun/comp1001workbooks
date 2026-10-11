@@ -116,6 +116,10 @@ invest = ("RATE = 50.0\nINITIAL_BALANCE = 100.0\nTARGET = 200.0\n\nbalance = INI
           "while balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n"
           "    print(f'After year {year}: ${balance:.2f}')\n\nprint(f'Target reached after {year} years.')\n")
 E["ex-5c"] = example(invest)
+# The slide deck's "Investment Program" listing, verbatim.
+E["ex-5s"] = example("RATE = 50.0\nTARGET = 200.0\nbalance = 100.0\nyear = 0\n\n"
+                     "while balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n\n"
+                     "print(f'Years: {year}')\nprint(f'Balance: ${balance:.2f}')\n")
 E["cp5"] = {"type": "table", "xp": 1, "blanks": {
     "y0": num(0), "b0": num(100.0),
     "y1": num(1), "b1": num(150.0), "i1": num(50.0),
@@ -173,11 +177,11 @@ E["cp10-why"] = {"type": "short", "xp": 2, "minChars": 20, "rows": 3, "placehold
 # ============================================================ 11. A loop can read until the user stops
 E["ex-11"] = example("total = 0.0\ntext = input('Value, or press Enter to finish: ')\n\nwhile text != '':\n    total = total + float(text)\n    text = input('Value, or press Enter to finish: ')\n\nprint(f'Total: {total:.2f}')\n", output=False)
 E["cp11-before"] = {"type": "short", "xp": 2, "minChars": 15, "rows": 2, "placeholder": "Why is an input call needed before this loop?", "answer": b64(
-    "The first input initializes `text` for the first condition test.")}
+    "The first input gives `text` a value for the first condition test.")}
 E["cp11-end"] = {"type": "short", "xp": 2, "minChars": 15, "rows": 2, "placeholder": "Why is another input call needed at the end of the body?", "answer": b64(
-    "The second input updates `text` for the next test.")}
+    "The input at the end of the body gives `text` a value for the next test.")}
 E["cp11-blank"] = {"type": "short", "xp": 2, "minChars": 15, "rows": 2, "placeholder": "What happens if the user presses Enter at the first prompt?", "answer": b64(
-    "If the first input is blank, the loop runs zero times and the program prints `Total: 0.00`.")}
+    "If the first input is blank, the loop runs zero times and the initialized total remains 0.0, so the program prints `Total: 0.00`.")}
 
 # ============================================================ Final review
 FR = [

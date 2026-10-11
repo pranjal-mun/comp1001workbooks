@@ -38,9 +38,9 @@
 </section>
 <hr>
 
-<h2 id="s1">1. Boolean Values and Operators</h2>
+<h2 id="s1" data-toc-group>1. Boolean Values and Operators</h2>
 
-<h3>Boolean variables</h3>
+<h3>Boolean Values and Variables</h3>
 <p>The type <code>bool</code> has exactly two values: <code>True</code> and <code>False</code>. These words begin with capital letters. They are values, not strings. A comparison produces a Boolean value, and a variable can store it.</p>
 <wb-example id="ex-e01"></wb-example>
 <p>Choose a name that reads like a true-or-false statement. Names such as <code>is_valid</code>, <code>has_paid</code>, <code>can_edit</code>, and <code>was_found</code> explain what <code>True</code> means. A vague name such as <code>flag</code> does not.</p>
@@ -49,7 +49,7 @@
 <p>Write <code>if not is_valid:</code> when a block should run for the false case. A positive name is usually easiest to read. A name such as <code>is_not_empty</code> can lead to the confusing condition <code>not is_not_empty</code>.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 1</div>
+  <div class="wb-block-title">Checkpoint 1: Boolean Variables</div>
   <p>Choose a clear Boolean variable name for each fact. Then rewrite <code>if is_ready == True:</code> without the redundant comparison.</p>
   <wb-table id="cp1">
     <table>
@@ -63,7 +63,7 @@
   </wb-table>
 </div>
 
-<h3>The <code>and</code> operator</h3>
+<h3>The <code>and</code> Operator</h3>
 <p>The expression <code>A and B</code> is <code>True</code> only when <strong>both</strong> parts are <code>True</code>. Use <code>and</code> when every requirement must pass.</p>
 <wb-example id="ex-e03"></wb-example>
 <p>If either requirement fails, the whole expression is <code>False</code>.</p>
@@ -82,7 +82,7 @@
   </wb-table>
 </div>
 
-<h3>The <code>or</code> operator</h3>
+<h3>The <code>or</code> Operator</h3>
 <p>The expression <code>A or B</code> is <code>True</code> when <strong>at least one</strong> part is <code>True</code>. Python uses inclusive <code>or</code>: the result is also <code>True</code> when both parts are <code>True</code>.</p>
 <wb-example id="ex-e04"></wb-example>
 <p>Use <code>or</code> when any one acceptable case is enough. Do not use it when the rule requires exactly one case.</p>
@@ -101,9 +101,10 @@
   </wb-table>
 </div>
 
-<h3>The <code>not</code> operator</h3>
+<h3>The <code>not</code> Operator</h3>
 <p>The operator <code>not</code> reverses one Boolean value. The expression <code>not True</code> is <code>False</code>, and <code>not False</code> is <code>True</code>.</p>
 <wb-example id="ex-e05"></wb-example>
+<p>Prefer positive names. <code>not is_empty</code> is easier to read than <code>not is_not_empty</code>.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 4</div>
@@ -120,8 +121,8 @@
   </wb-table>
 </div>
 
-<h3>Truth tables</h3>
-<p>A <strong>truth table</strong> lists every possible input combination and the result. It gives the definitive meaning of a Boolean operator.</p>
+<h3>Truth Tables</h3>
+<p>A <strong>truth table</strong> lists every input combination and its result. It gives the definitive meaning of a Boolean operator.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th><em>A</em></th><th><em>B</em></th><th><code>A and B</code></th><th><code>A or B</code></th></tr></thead>
@@ -133,6 +134,11 @@
   </tbody>
 </table>
 </div>
+<p>The table settles two common questions:</p>
+<ul>
+  <li><code>and</code> requires both inputs.</li>
+  <li><code>or</code> includes the row where both inputs are true.</li>
+</ul>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th><em>A</em></th><th><code>not A</code></th></tr></thead>
@@ -144,7 +150,7 @@
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 5</div>
+  <div class="wb-block-title">Checkpoint 5: Truth Table</div>
   <p>Complete the missing results.</p>
   <wb-table id="cp5-table">
     <table>
@@ -159,13 +165,13 @@
   <wb-short id="cp5-why"></wb-short>
 </div>
 
-<h3>Precedence</h3>
+<h3>Boolean Operator Precedence</h3>
 <p>Python evaluates comparisons before Boolean operators. Among the Boolean operators, the precedence order is <code>not</code>, then <code>and</code>, then <code>or</code>. Therefore, <code>a or b and c</code> means <code>a or (b and c)</code>.</p>
 <wb-example id="ex-e06"></wb-example>
-<p>Parentheses make intended grouping clear. Add them when a reader may need to stop and work out the precedence.</p>
+<p>Output: <code>True</code>, then <code>False</code>. Parentheses make intended grouping clear. Add them when a reader may need to stop and work out the precedence.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 6</div>
+  <div class="wb-block-title">Checkpoint 6: Precedence</div>
   <p>Add parentheses to show Python's default grouping in <code>not a or b and c</code>.</p>
   <wb-table id="cp6-group">
     <table>
@@ -179,9 +185,18 @@
   <wb-short id="cp6-why"></wb-short>
 </div>
 
-<h2 id="s2">2. Readable and Safe Conditions</h2>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Same Value for These Inputs</div>
+  <p>Use <code>a = True</code>, <code>b = False</code>, and <code>c = False</code>. Does <code>(not a or b) and c</code> have the same value as <code>not a or b and c</code> for these inputs?</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <p>Yes. For these inputs both expressions are <code>False</code>. They are still not equivalent: with <code>a = False</code> and <code>c = False</code>, <code>not a or b and c</code> is <code>True</code> but <code>(not a or b) and c</code> is <code>False</code>.</p>
+  </details>
+</div>
 
-<h3>Short-circuit evaluation</h3>
+<h2 id="s2" data-toc-group>2. Reading Boolean Expressions</h2>
+
+<h3>Short-Circuit Evaluation</h3>
 <p>Python evaluates a Boolean expression from left to right and stops when the answer is already known. This behaviour is <strong>short-circuit evaluation</strong>.</p>
 <ul>
   <li>For <code>and</code>, a false left side makes the whole expression false, so Python skips the right side.</li>
@@ -192,7 +207,7 @@
 <p>The left side is false, so Python never evaluates <code>total / count</code>. No division by zero occurs. Reversing the two tests would be unsafe.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 7</div>
+  <div class="wb-block-title">Checkpoint 7: Short Circuit</div>
   <p>For <code>count = 0</code>, which part of <code>count &gt; 0 and total / count &gt; 50</code> is evaluated first?</p>
   <wb-table id="cp7-first">
     <table>
@@ -206,18 +221,28 @@
   <wb-short id="cp7-why"></wb-short>
 </div>
 
-<h3>De Morgan's laws</h3>
-<p>Compound negations can be difficult to read. De Morgan's laws give two equivalent forms:</p>
+<h3>De Morgan's Laws</h3>
+<p>Compound negations can be difficult to read. De Morgan's laws move a negation inward:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Original</th><th>Equivalent form</th></tr></thead>
+  <tbody>
+    <tr><td><code>not (A and B)</code></td><td><code>(not A) or (not B)</code></td></tr>
+    <tr><td><code>not (A or B)</code></td><td><code>(not A) and (not B)</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Two changes happen together:</p>
 <ul>
-  <li><code>not (A and B)</code> is the same as <code>(not A) or (not B)</code>.</li>
-  <li><code>not (A or B)</code> is the same as <code>(not A) and (not B)</code>.</li>
+  <li>reverse each part;</li>
+  <li>swap <code>and</code> with <code>or</code>.</li>
 </ul>
-<p>Moving <code>not</code> inward reverses each part and swaps <code>and</code> with <code>or</code>. Forgetting to swap the operator changes the meaning.</p>
+<p>Forgetting the swap changes the meaning.</p>
 <wb-example id="ex-e08"></wb-example>
 <p>The two expressions have the same value for every possible input combination.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 8</div>
+  <div class="wb-block-title">Checkpoint 8: De Morgan's Laws</div>
   <p>Rewrite each expression by moving <code>not</code> inward.</p>
   <wb-table id="cp8">
     <table>
@@ -232,10 +257,10 @@
   <wb-short id="cp8-op"></wb-short>
 </div>
 
-<h3>Chained comparisons</h3>
-<p>Python lets one value appear in a chain of comparisons. The expression <code>0 &lt;= score &lt;= 100</code> means the same as <code>0 &lt;= score and score &lt;= 100</code>. The chained form keeps the tested value in the middle, as it appears in mathematics.</p>
+<h3>Chained Comparisons</h3>
+<p>Python writes ranges in the same order as mathematics. One value can appear in a chain of comparisons. The expression <code>0 &lt;= score &lt;= 100</code> means the same as <code>0 &lt;= score and score &lt;= 100</code>. The tested value sits in the middle.</p>
 <wb-example id="ex-e09"></wb-example>
-<p>The boundaries are included because the chain uses <code>&lt;=</code>. To exclude a boundary, use <code>&lt;</code> at that end.</p>
+<p>The boundaries are included because the chain uses <code>&lt;=</code>. Use <code>&lt;=</code> to include a boundary and <code>&lt;</code> to exclude it.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 9</div>
@@ -251,21 +276,21 @@
   </wb-table>
 </div>
 
-<h2 id="s3">3. String Tests and Input Validation</h2>
+<h2 id="s3" data-toc-group>3. String Tests and Validation</h2>
 
-<h3>String methods that return Booleans</h3>
-<p>Several string methods answer a yes-or-no question and return a Boolean value.</p>
+<h3>String Tests</h3>
+<p>String methods can return Boolean values. Each one answers a yes-or-no question.</p>
 <div class="wb-table-wrap">
 <table>
-  <thead><tr><th>Method</th><th>Question it answers</th></tr></thead>
+  <thead><tr><th>Method</th><th>Question</th></tr></thead>
   <tbody>
-    <tr><td><code>text.isdigit()</code></td><td>Is the nonempty text made only of digits?</td></tr>
-    <tr><td><code>text.isalpha()</code></td><td>Is the nonempty text made only of letters?</td></tr>
-    <tr><td><code>text.isspace()</code></td><td>Is the nonempty text made only of whitespace?</td></tr>
-    <tr><td><code>text.islower()</code></td><td>Are all cased letters lowercase?</td></tr>
-    <tr><td><code>text.isupper()</code></td><td>Are all cased letters uppercase?</td></tr>
-    <tr><td><code>text.startswith(x)</code></td><td>Does the text begin with <code>x</code>?</td></tr>
-    <tr><td><code>text.endswith(x)</code></td><td>Does the text end with <code>x</code>?</td></tr>
+    <tr><td><code>s.isdigit()</code></td><td>only digits and not empty?</td></tr>
+    <tr><td><code>s.isalpha()</code></td><td>only letters and not empty?</td></tr>
+    <tr><td><code>s.isspace()</code></td><td>only whitespace and not empty?</td></tr>
+    <tr><td><code>s.islower()</code></td><td>all cased letters lowercase?</td></tr>
+    <tr><td><code>s.isupper()</code></td><td>all cased letters uppercase?</td></tr>
+    <tr><td><code>s.startswith(x)</code></td><td>begins with <code>x</code>?</td></tr>
+    <tr><td><code>s.endswith(x)</code></td><td>ends with <code>x</code>?</td></tr>
   </tbody>
 </table>
 </div>
@@ -273,7 +298,7 @@
 <p>The first result is false because <code>code</code> contains digits as well as letters. The empty string fails <code>isdigit()</code> and <code>isalpha()</code>. Also, <code>'-5'.isdigit()</code> is false because the minus sign is not a digit, and <code>'3.5'.isdigit()</code> is false because the decimal point is not a digit.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 10</div>
+  <div class="wb-block-title">Checkpoint 10: String Tests</div>
   <p>Predict each result.</p>
   <wb-table id="cp10">
     <table>
@@ -290,9 +315,19 @@
   <wb-short id="cp10-why"></wb-short>
 </div>
 
-<h3>Validate before converting</h3>
-<p><strong>Input validation</strong> checks whether user input is usable before a program uses it. Place validation close to the <code>input()</code> call. Then later code can rely on the value having passed the checks.</p>
+<h3>Input Validation</h3>
+<p><strong>Input validation</strong> checks whether data is usable before the program uses it.</p>
+<ol>
+  <li>Read the text.</li>
+  <li>Clean it with a method such as <code>strip()</code> or <code>lower()</code>.</li>
+  <li>Test its form with a string method.</li>
+  <li>Convert only on a safe path.</li>
+  <li>Test the converted value's range.</li>
+</ol>
+<p>Keep these checks close to <code>input()</code>. Code after the boundary can then rely on valid data.</p>
 <p>When text should contain a nonnegative whole number, test <code>isdigit()</code> before calling <code>int()</code>. Converting first would defeat the check because bad text would already cause a <code>ValueError</code>.</p>
+
+<h3>Validation Example</h3>
 <wb-example id="ex-e11"></wb-example>
 <p>Sample run with invalid text:</p>
 <pre class="wb-shell"><span class="wb-prompt">Enter your age: </span><span class="wb-typed">twenty</span>
@@ -300,7 +335,7 @@ Please enter a whole number.</pre>
 <p>Sample run with valid text:</p>
 <pre class="wb-shell"><span class="wb-prompt">Enter your age: </span><span class="wb-typed">24</span>
 Age recorded: 24</pre>
-<p>The order matters. Python reaches <code>int(raw)</code> only when the text contains digits.</p>
+<p>The digit test comes before every conversion that could receive invalid text. Python reaches <code>int(raw)</code> only when the text contains digits.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 11</div>
@@ -345,51 +380,7 @@ Choice recorded: large</pre>
   <wb-short id="cp12-where"></wb-short>
 </div>
 
-<h2 id="final-review">Final Review</h2>
-<ol>
-  <li>What two values belong to the type <code>bool</code>?
-    <wb-table id="fr1">
-      <table>
-        <tbody><tr><td>The two values</td><td data-blank="vals"></td></tr></tbody>
-      </table>
-    </wb-table>
-  </li>
-  <li>When is <code>A and B</code> true? When is <code>A or B</code> true?
-    <wb-short id="fr2"></wb-short>
-  </li>
-  <li>State the precedence order of <code>not</code>, <code>and</code>, and <code>or</code>.
-    <wb-table id="fr3">
-      <table>
-        <tbody><tr><td>Precedence order</td><td data-blank="order"></td></tr></tbody>
-      </table>
-    </wb-table>
-  </li>
-  <li>Explain short-circuit evaluation for <code>and</code>.
-    <wb-short id="fr4"></wb-short>
-  </li>
-  <li>Complete the equivalence: <code>not (A or B)</code> is the same as …
-    <wb-table id="fr5">
-      <table>
-        <tbody><tr><td><code>not (A or B)</code> is the same as</td><td data-blank="eq"></td></tr></tbody>
-      </table>
-    </wb-table>
-  </li>
-  <li>Write a chained comparison for <code>x</code> from 0 through 100.
-    <wb-table id="fr6">
-      <table>
-        <tbody><tr><td>Chained comparison</td><td data-blank="chain"></td></tr></tbody>
-      </table>
-    </wb-table>
-  </li>
-  <li>Why should validation happen close to the <code>input()</code> call?
-    <wb-short id="fr7"></wb-short>
-  </li>
-  <li>Why is <code>if is_valid:</code> clearer than <code>if is_valid == True:</code>?
-    <wb-short id="fr8"></wb-short>
-  </li>
-</ol>
-
-<h2 id="additional-practice">Additional Practice</h2>
+<h2 id="additional-practice" data-toc-group>Additional Practice</h2>
 
 <h3>Complete truth tables</h3>
 <p>Fill the final two columns.</p>
@@ -491,14 +482,16 @@ Choice recorded: large</pre>
 </wb-table>
 <p class="wb-meta">Write a short description such as <em>whole-number error</em>, <em>range error</em>, or <em>record 8</em>.</p>
 
-<h2 id="together">Putting It All Together</h2>
+<h2 id="together" data-toc-group>Putting It All Together</h2>
+
+<h3>Registration Request Design</h3>
 <p>A registration program asks for a course code and a seat count. It accepts a request only when the code begins with <code>COMP</code>, the seat text contains digits, and the converted count is from 1 through 40.</p>
 <p>Build the program in stages. First, clean the two inputs. At this point both values are still strings.</p>
 <wb-example id="ex-e14"></wb-example>
 <p>Next, name the tests that are safe before conversion.</p>
 <pre><code><span class="wb-fn">is_comp_course</span> = course.<span class="wb-fn">startswith</span>(<span class="wb-str">'COMP'</span>)
 <span class="wb-fn">has_whole_seats</span> = raw_seats.<span class="wb-fn">isdigit</span>()</code></pre>
-<p>Only the branch where <code>has_whole_seats</code> is true may convert the text. The range test therefore belongs inside that branch.</p>
+<p>Only a true <code>has_whole_seats</code> path may call <code>int()</code>. The range test therefore belongs inside that path.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Synthesis Check</div>
@@ -514,8 +507,10 @@ Choice recorded: large</pre>
   </wb-table>
 </div>
 
+<h3>Registration Request Program</h3>
 <p>Now all parts have been introduced. The complete program keeps validation next to the inputs and uses named Boolean values to show the intent.</p>
 <wb-example id="ex-e15"></wb-example>
+<p>The program validates text before conversion and the numeric range after it.</p>
 <p>Sample runs:</p>
 <pre class="wb-shell"><span class="wb-prompt">Course code: </span><span class="wb-typed">comp1001</span>
 <span class="wb-prompt">Number of seats: </span><span class="wb-typed">24</span>
@@ -525,7 +520,7 @@ Request recorded: COMP1001 24</pre>
 Enter a COMP course and a whole seat count.</pre>
 <p>The second run reports one boundary error without attempting an unsafe conversion. The exact cause could be reported separately in a larger program, but the Boolean structure is already safe.</p>
 
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The following exercises adapt the selected textbook skills using new wording and course contexts. Each task uses only ideas introduced before this section.</p>
 
 <h3>Exercise 1: Three-input truth table</h3>
@@ -737,6 +732,11 @@ both</pre>
   </tbody>
 </table>
 </div>
+<p>Sample runs:</p>
+<pre class="wb-shell"><span class="wb-prompt">PIN: </span><span class="wb-typed">4821</span>
+PIN format accepted</pre>
+<pre class="wb-shell"><span class="wb-prompt">PIN: </span><span class="wb-typed">08A2</span>
+Enter four digits without a leading zero</pre>
 <wb-exercise id="cx14"></wb-exercise>
 
 <h3>Exercise 15: Sliding-door conditions</h3>
@@ -769,6 +769,89 @@ both</pre>
 <wb-exercise id="cx16"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="final-review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<ol>
+  <li>What two values belong to the type <code>bool</code>?
+    <wb-table id="fr1">
+      <table>
+        <tbody><tr><td>The two values</td><td data-blank="vals"></td></tr></tbody>
+      </table>
+    </wb-table>
+  </li>
+  <li>When is <code>A and B</code> true? When is <code>A or B</code> true?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>State the precedence order of <code>not</code>, <code>and</code>, and <code>or</code>.
+    <wb-table id="fr3">
+      <table>
+        <tbody><tr><td>Precedence order</td><td data-blank="order"></td></tr></tbody>
+      </table>
+    </wb-table>
+  </li>
+  <li>Explain short-circuit evaluation for <code>and</code>.
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Complete the equivalence: <code>not (A or B)</code> is the same as …
+    <wb-table id="fr5">
+      <table>
+        <tbody><tr><td><code>not (A or B)</code> is the same as</td><td data-blank="eq"></td></tr></tbody>
+      </table>
+    </wb-table>
+  </li>
+  <li>Write a chained comparison for <code>x</code> from 0 through 100.
+    <wb-table id="fr6">
+      <table>
+        <tbody><tr><td>Chained comparison</td><td data-blank="chain"></td></tr></tbody>
+      </table>
+    </wb-table>
+  </li>
+  <li>Why should validation happen close to the <code>input()</code> call?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>Why is <code>if is_valid:</code> clearer than <code>if is_valid == True:</code>?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h3>Boolean Expressions</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Item</th><th>Rule</th></tr></thead>
+  <tbody>
+    <tr><td><code>bool</code></td><td><code>True</code> or <code>False</code></td></tr>
+    <tr><td><code>A and B</code></td><td>true only when both are true</td></tr>
+    <tr><td><code>A or B</code></td><td>true when at least one is true</td></tr>
+    <tr><td><code>not A</code></td><td>reverses the value</td></tr>
+    <tr><td>Precedence</td><td><code>not</code>, then <code>and</code>, then <code>or</code></td></tr>
+    <tr><td>Short circuit</td><td>guard first, protected operation second</td></tr>
+    <tr><td>De Morgan</td><td>reverse parts and swap <code>and</code>/<code>or</code></td></tr>
+    <tr><td>Range</td><td><code>low &lt;= value &lt;= high</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use named Boolean variables to make a condition read like a statement.</p>
+
+<h3>String Tests and Validation</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Need</th><th>Useful test or action</th></tr></thead>
+  <tbody>
+    <tr><td>digits only</td><td><code>text.isdigit()</code></td></tr>
+    <tr><td>letters only</td><td><code>text.isalpha()</code></td></tr>
+    <tr><td>prefix or suffix</td><td><code>startswith()</code>, <code>endswith()</code></td></tr>
+    <tr><td>ignore spaces</td><td><code>strip()</code> before testing</td></tr>
+    <tr><td>ignore case</td><td><code>lower()</code> or <code>upper()</code> before testing</td></tr>
+    <tr><td>safe integer conversion</td><td>test digits, then call <code>int()</code></td></tr>
+    <tr><td>valid numeric range</td><td>use a chained comparison after conversion</td></tr>
+    <tr><td>validation location</td><td>immediately after <code>input()</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Common error: converting invalid text before its format has been checked.</p>
+
 <hr>
 <p class="wb-meta">End of Lecture 11 Workbook.</p>
 </main>

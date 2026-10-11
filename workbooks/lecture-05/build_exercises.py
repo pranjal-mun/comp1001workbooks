@@ -48,6 +48,7 @@ assert not any(l.startswith("from math import") for l in lines), "Use `import ma
 E = {}
 
 # ---------------------------------------------------------------- Section 1
+E["ex-s1-cost"] = example("cost = 8 * 5\nprint(cost)\n")
 E["ex-w01"] = example("print(8 + 5)\nprint(8 * 5)\nprint(2 ** 5)\n")
 E["cp1"] = {"type": "table", "xp": 1, "blanks": blanks(
     v1="16", v2="8", v3="48", v4="27")}
@@ -62,7 +63,7 @@ E["cp2"] = {"type": "table", "xp": 1, "blanks": {
     "v1": {"accept": ["6"], "placeholder": "value", "width": "5rem"},
     "e2": {"accept": ["53 % 8", "53%8"], "placeholder": "expression", "width": "9rem"},
     "v2": {"accept": ["5"], "placeholder": "value", "width": "5rem"}}}
-E["cp2-check"] = example("print(53 // 8)\nprint(53 % 8)\n", output=False)
+E["cp2-check"] = example("items = 53\nboxes = items // 8\nleftover = items % 8\nprint(boxes)\nprint(leftover)\n", output=False)
 
 # ---------------------------------------------------------------- Section 3
 E["ex-w04"] = example("print(2 + 3 * 4)\nprint((2 + 3) * 4)\nprint(2 ** 3 * 4)\n")

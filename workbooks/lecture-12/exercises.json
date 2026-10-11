@@ -216,6 +216,11 @@
       "code": "RATE = 50.0\nINITIAL_BALANCE = 100.0\nTARGET = 200.0\n\nbalance = INITIAL_BALANCE\nyear = 0\n\nwhile balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n    print(f'After year {year}: ${balance:.2f}')\n\nprint(f'Target reached after {year} years.')",
       "output": "After year 1: $150.00\nAfter year 2: $225.00\nTarget reached after 2 years."
     },
+    "ex-5s": {
+      "type": "example",
+      "code": "RATE = 50.0\nTARGET = 200.0\nbalance = 100.0\nyear = 0\n\nwhile balance < TARGET:\n    year = year + 1\n    interest = balance * RATE / 100\n    balance = balance + interest\n\nprint(f'Years: {year}')\nprint(f'Balance: ${balance:.2f}')",
+      "output": "Years: 2\nBalance: $225.00"
+    },
     "cp5": {
       "type": "table",
       "xp": 1,
@@ -621,7 +626,7 @@
       "minChars": 15,
       "rows": 2,
       "placeholder": "Why is an input call needed before this loop?",
-      "answer": "VGhlIGZpcnN0IGlucHV0IGluaXRpYWxpemVzIGB0ZXh0YCBmb3IgdGhlIGZpcnN0IGNvbmRpdGlvbiB0ZXN0Lg=="
+      "answer": "VGhlIGZpcnN0IGlucHV0IGdpdmVzIGB0ZXh0YCBhIHZhbHVlIGZvciB0aGUgZmlyc3QgY29uZGl0aW9uIHRlc3Qu"
     },
     "cp11-end": {
       "type": "short",
@@ -629,7 +634,7 @@
       "minChars": 15,
       "rows": 2,
       "placeholder": "Why is another input call needed at the end of the body?",
-      "answer": "VGhlIHNlY29uZCBpbnB1dCB1cGRhdGVzIGB0ZXh0YCBmb3IgdGhlIG5leHQgdGVzdC4="
+      "answer": "VGhlIGlucHV0IGF0IHRoZSBlbmQgb2YgdGhlIGJvZHkgZ2l2ZXMgYHRleHRgIGEgdmFsdWUgZm9yIHRoZSBuZXh0IHRlc3Qu"
     },
     "cp11-blank": {
       "type": "short",
@@ -637,7 +642,7 @@
       "minChars": 15,
       "rows": 2,
       "placeholder": "What happens if the user presses Enter at the first prompt?",
-      "answer": "SWYgdGhlIGZpcnN0IGlucHV0IGlzIGJsYW5rLCB0aGUgbG9vcCBydW5zIHplcm8gdGltZXMgYW5kIHRoZSBwcm9ncmFtIHByaW50cyBgVG90YWw6IDAuMDBgLg=="
+      "answer": "SWYgdGhlIGZpcnN0IGlucHV0IGlzIGJsYW5rLCB0aGUgbG9vcCBydW5zIHplcm8gdGltZXMgYW5kIHRoZSBpbml0aWFsaXplZCB0b3RhbCByZW1haW5zIDAuMCwgc28gdGhlIHByb2dyYW0gcHJpbnRzIGBUb3RhbDogMC4wMGAu"
     },
     "fr1": {
       "type": "short",

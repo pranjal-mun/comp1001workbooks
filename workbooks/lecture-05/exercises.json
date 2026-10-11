@@ -4,6 +4,11 @@
   "title": "Lecture 5 Workbook",
   "subtitle": "Arithmetic, expressions, and modules",
   "exercises": {
+    "ex-s1-cost": {
+      "type": "example",
+      "code": "cost = 8 * 5\nprint(cost)",
+      "output": "40"
+    },
     "ex-w01": {
       "type": "example",
       "code": "print(8 + 5)\nprint(8 * 5)\nprint(2 ** 5)",
@@ -96,7 +101,7 @@
     },
     "cp2-check": {
       "type": "example",
-      "code": "print(53 // 8)\nprint(53 % 8)"
+      "code": "items = 53\nboxes = items // 8\nleftover = items % 8\nprint(boxes)\nprint(leftover)"
     },
     "ex-w04": {
       "type": "example",

@@ -38,15 +38,16 @@
 </section>
 <hr>
 
-<h2 id="s1">1. Nested Decisions</h2>
+<h2 id="s1" data-toc-group>1. Nested Decisions</h2>
 <h3>A Decision Inside a Decision</h3>
 <div class="wb-callout is-good">
   <div class="wb-callout-title">Nested decision</div>
-  <p>A <strong>nested decision</strong> is an <code>if</code> statement inside a branch of another decision. Use nesting when a second question matters only after one particular answer to the first question.</p>
+  <p>A <strong>nested decision</strong> is an <code>if</code> statement inside a branch of another decision.</p>
+  <p>Use nesting when a second question matters only after one particular answer to the first question.</p>
 </div>
 <p>In the next program, the order total matters only for members. Python first asks the outer question. It reaches the inner question only when the outer condition is <code>True</code>.</p>
 <wb-example id="ex-w01"></wb-example>
-<p>The outer question is “Is the customer a member?” The inner question is “Is the total more than 100?” A non-member skips the inner decision completely.</p>
+<p>The total matters only after the member test succeeds. The outer question is “Is the customer a member?” The inner question is “Is the total more than 100?” A non-member skips the inner decision completely.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 1: Trace the outer branch</div>
@@ -65,10 +66,11 @@
   <wb-short id="cp1-why"></wb-short>
 </div>
 
-<h3>Reading Indentation</h3>
-<p>Indentation shows both which statements form a block and which <code>else</code> belongs to which <code>if</code>. An <code>else</code> lines up with its matching <code>if</code>.</p>
+<h3>Indentation and Matching Branches</h3>
+<p>Indentation shows both which statements form a block and which <code>else</code> belongs to which <code>if</code>.</p>
 <wb-example id="ex-w02"></wb-example>
 <p>The inner <code>else</code> is indented four spaces, so it pairs with the inner <code>if</code>. The outer <code>else</code> starts in the same column as the outer <code>if</code>.</p>
+<p>Matching <code>if</code> and <code>else</code> headers line up.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 2: Match each <code>else</code></div>
@@ -94,21 +96,21 @@
   <wb-short id="cp2-when"></wb-short>
 </div>
 
-<h3>Hand-Tracing One Path</h3>
-<p>When tracing nested code, follow only the path selected by each condition. Do not execute statements in skipped branches. Record the value of each condition that Python actually reaches.</p>
+<h3>Tracing a Nested Decision</h3>
+<p>Follow only the path selected by each condition. Do not execute statements in skipped branches. Record the value of each condition that Python actually reaches.</p>
 <div class="wb-block">
   <div class="wb-block-title">Worked trace</div>
   <p>For <code>member = 'yes'</code> and <code>total = 80</code>, the program above follows this path:</p>
   <table>
-    <thead><tr><th>Step</th><th>Condition or statement</th><th>Result</th></tr></thead>
+    <thead><tr><th>Step</th><th>Test or action</th><th>Result</th></tr></thead>
     <tbody>
       <tr><td>1</td><td><code>member == 'yes'</code></td><td><code>True</code>; enter the outer block</td></tr>
       <tr><td>2</td><td><code>total &gt; 100</code></td><td><code>False</code>; take the inner <code>else</code></td></tr>
       <tr><td>3</td><td>assignment</td><td><code>message</code> becomes <code>Member order</code></td></tr>
-      <tr><td>4</td><td><code>print(message)</code></td><td>prints <code>Member order</code></td></tr>
+      <tr><td>4</td><td>output</td><td>prints <code>Member order</code></td></tr>
     </tbody>
   </table>
-  <p>Only one inner branch runs. The outer <code>else</code> is skipped because the outer condition was <code>True</code>.</p>
+  <p>Only one inner branch runs. The outer <code>else</code> is skipped because the outer condition was <code>True</code>. Skipped branches do not run and their conditions are not revisited.</p>
 </div>
 
 <div class="wb-checkpoint">
@@ -127,11 +129,20 @@
   </wb-table>
 </div>
 
-<h2 id="s2">2. Multiple Alternatives</h2>
-<h3>The <code>elif</code> Keyword</h3>
-<p>Some decisions choose one result from several alternatives. A grade belongs to one band: A, B, C, D, or F. Deep nesting can express this choice, but every extra level shifts the code farther right. Python uses <code>elif</code>, short for “else if,” to keep the alternatives aligned.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Nested Paths</div>
+  <p>Trace the nested member-discount program (the first program in this section) for <code>member = 'yes'</code>, <code>total = 100</code>. Which inner branch runs, and what discount is printed? (Checkpoint 1 traced <code>member = 'no'</code>, <code>total = 120</code>.)</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <p>Both the member test and <code>total &gt; 100</code> are reached. The inner condition is <code>False</code>, so the inner <code>else</code> prints <code>Discount: 0.1</code>.</p>
+  </details>
+</div>
+
+<h2 id="s2" data-toc-group>2. Multiple Alternatives</h2>
+<h3>The <code>elif</code> Chain</h3>
+<p>A grade belongs to one band: A, B, C, D, or F. Deep nesting can express this choice, but every extra level shifts the code farther right. Python uses <code>elif</code>, short for “else if.” An <code>elif</code> chain chooses one result from several alternatives while keeping every alternative header aligned.</p>
 <wb-example id="ex-w03"></wb-example>
-<p>An <code>if</code>/<code>elif</code>/<code>else</code> chain has one starting <code>if</code>, zero or more <code>elif</code> branches, and an optional final <code>else</code>. All headers in the chain line up.</p>
+<p>One <code>if</code> starts the chain. Any number of <code>elif</code> branches may follow. The optional final <code>else</code> catches everything left over.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 4: Trace a chain</div>
@@ -150,7 +161,7 @@
   </wb-table>
 </div>
 
-<h3>The First True Condition Wins</h3>
+<h3>The First True Condition</h3>
 <p>Python checks a chain from top to bottom. It runs the block for the <strong>first</strong> true condition and then skips the rest of the chain.</p>
 <wb-example id="ex-w04"></wb-example>
 <p>Although <code>score &gt;= 70</code> is also true, Python never tests it because the first branch already won.</p>
@@ -170,11 +181,26 @@
   </wb-table>
 </div>
 
+<div class="wb-block">
+  <div class="wb-block-title">Check: Trace a Grade Chain</div>
+  <p>Trace the grade chain for <code>score = 80</code>. List the conditions Python tests, identify the first true condition, and give the final grade. (Checkpoint 4 traced <code>score = 64</code>.)</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <div class="wb-table-wrap">
+      <table>
+        <thead><tr><th>Score</th><th>Tests reached</th><th>First true test</th><th>Grade</th></tr></thead>
+        <tbody><tr><td>80</td><td><code>&gt;=80</code></td><td><code>&gt;=80</code></td><td>A</td></tr></tbody>
+      </table>
+    </div>
+    <p>Later conditions are skipped as soon as a branch wins.</p>
+  </details>
+</div>
+
 <h3>Ordering Conditions</h3>
 <p>Order matters when several conditions could be true for the same value. The condition that accepts fewer values is usually more restrictive and should come first.</p>
 <p>This order is wrong:</p>
 <wb-example id="ex-w05"></wb-example>
-<p>The first condition is true for every passing score, so no later condition can win. Python reports no error; the program quietly produces a wrong answer.</p>
+<p>For <code>score = 92</code>, the first condition is already <code>True</code>. The result is D, not A. There is no error message. The first condition is true for every passing score, so no later condition can win. Put the most restrictive overlapping condition first.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 6: Order overlapping conditions</div>
@@ -196,12 +222,35 @@
   </wb-table>
 </div>
 
+<div class="wb-block">
+  <div class="wb-block-title">Check: Repair the Order</div>
+  <p>The chain should assign <code>heavy</code> for at least 50 mm of rain, <code>moderate</code> for at least 10, <code>light</code> for at least 1, and <code>dry</code> otherwise. Rewrite its conditions in the correct order and explain why that order is necessary.</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+<pre><code><span class="wb-kw">if</span> rain_mm &gt;= <span class="wb-num">50</span>:
+    label = <span class="wb-str">"heavy"</span>
+<span class="wb-kw">elif</span> rain_mm &gt;= <span class="wb-num">10</span>:
+    label = <span class="wb-str">"moderate"</span>
+<span class="wb-kw">elif</span> rain_mm &gt;= <span class="wb-num">1</span>:
+    label = <span class="wb-str">"light"</span>
+<span class="wb-kw">else</span>:
+    label = <span class="wb-str">"dry"</span></code></pre>
+    <p>A value of 50 also satisfies the lower thresholds, so its more restrictive test must come first.</p>
+  </details>
+</div>
+
 <h3>Redundant Conditions</h3>
-<p>In the correct grade chain, reaching <code>score &gt;= 70</code> means <code>score &gt;= 80</code> has already failed. Python therefore already knows the score is below 80.</p>
-<p>Prefer the shorter condition:</p>
-<pre class="wb-code"><span class="wb-kw">elif</span> score &gt;= <span class="wb-num">70</span>:
+<p>In the correct grade chain, when Python reaches <code>score &gt;= 70</code>, the test <code>score &gt;= 80</code> has already failed. It already knows two facts:</p>
+<ul>
+  <li>the score is below 80; and</li>
+  <li>only the lower boundary still needs to be tested.</li>
+</ul>
+<p>Use the remaining boundary:</p>
+<pre class="wb-code"><span class="wb-kw">if</span> score &gt;= <span class="wb-num">80</span>:
+    grade = <span class="wb-str">"A"</span>
+<span class="wb-kw">elif</span> score &gt;= <span class="wb-num">70</span>:
     grade = <span class="wb-str">"B"</span></pre>
-<p>There is no need to test the upper boundary again. The earlier branch already ruled it out. Removing a redundant test makes the chain easier to read and gives you fewer places to make a boundary mistake.</p>
+<p>Repeating a fact already ruled out makes the condition longer and gives you another boundary to mistype.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 7: Use what an earlier branch ruled out</div>
@@ -217,9 +266,9 @@
 </div>
 
 <h3>The Final <code>else</code></h3>
-<p>The final <code>else</code> runs only when every earlier condition is false. It has no condition because it catches all remaining values.</p>
+<p>The final <code>else</code> runs only when every earlier condition is false. The final <code>else</code> has no condition. It catches every remaining value and ensures <code>label</code> is assigned on every path.</p>
 <wb-example id="ex-w07"></wb-example>
-<p>The catch-all ensures that <code>label</code> receives a value for every possible temperature. Without it, a value below 10 would leave <code>label</code> unassigned, and a later use could cause a <code>NameError</code>.</p>
+<p>Without it, a value below 10 would leave <code>label</code> unassigned, and a later use could cause a <code>NameError</code>.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 8: Check every band</div>
@@ -237,8 +286,27 @@
   </wb-table>
 </div>
 
-<h2 id="s3">3. Choosing a Decision Structure</h2>
-<h3>An <code>elif</code> Chain Versus Separate <code>if</code>s</h3>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Temperature Boundaries</div>
+  <p>For the temperature chain with cutoffs 30, 20, and 10, record the first true branch and final label for each value: 30, 20, 10, and 9. Which case uses the final <code>else</code>?</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <div class="wb-table-wrap">
+      <table>
+        <thead><tr><th>Value</th><th>First true branch</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>30</td><td><code>temperature &gt;= 30</code></td><td>hot</td></tr>
+          <tr><td>20</td><td><code>temperature &gt;= 20</code></td><td>warm</td></tr>
+          <tr><td>10</td><td><code>temperature &gt;= 10</code></td><td>cool</td></tr>
+          <tr><td>9</td><td>final <code>else</code></td><td>cold</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<h2 id="s3" data-toc-group>3. Choosing a Structure</h2>
+<h3><code>elif</code> Versus Separate <code>if</code>s</h3>
 <p>An <code>elif</code> chain stops after one branch wins. Separate <code>if</code> statements are independent, so Python tests every one.</p>
 <wb-example id="ex-w08"></wb-example>
 <p>Both conditions are true. The second assignment overwrites the first. When the cases are alternatives, use one chain so only one branch runs.</p>
@@ -263,7 +331,16 @@
   <wb-short id="cp9-why"></wb-short>
 </div>
 
-<h3>Nesting, a Chain, or Separate Questions</h3>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Alternatives or Independent Results</div>
+  <p>Choose an <code>elif</code> chain or separate <code>if</code> statements for this task, and explain the choice: assign exactly one tax bracket to an income. (The slide's other two cases, the age category and the safety warnings, are in Checkpoint 9.)</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <p>Use a chain: one income falls in exactly one bracket.</p>
+  </details>
+</div>
+
+<h3>Choosing a Decision Structure</h3>
 <p>Choose the shape that matches the problem.</p>
 <table>
   <thead><tr><th>Problem structure</th><th>Best shape</th></tr></thead>
@@ -273,7 +350,7 @@
     <tr><td>Several independent results may all apply</td><td>separate <code>if</code> statements</td></tr>
   </tbody>
 </table>
-<p>Use nesting for “Is the customer a member? If yes, is the order large?” Use a chain for “Which one grade band contains this score?”</p>
+<p>The shape follows the questions the program must ask. Use nesting for “Is the customer a member? If yes, is the order large?” Use a chain for “Which one grade band contains this score?”</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 10: Choose a structure</div>
@@ -293,18 +370,16 @@
   <wb-short id="cp10b-why"></wb-short>
 </div>
 
-<h2 id="final-review">Final Review</h2>
-<ol>
-  <li><p>What is a nested decision?</p><wb-short id="fr1"></wb-short></li>
-  <li><p>How can indentation show which <code>else</code> belongs to which <code>if</code>?</p><wb-short id="fr2"></wb-short></li>
-  <li><p>What happens after the first true condition in an <code>elif</code> chain?</p><wb-short id="fr3"></wb-short></li>
-  <li><p>Why should the most restrictive condition usually come first?</p><wb-short id="fr4"></wb-short></li>
-  <li><p>What does a final <code>else</code> do?</p><wb-short id="fr5"></wb-short></li>
-  <li><p>Explain one difference between an <code>elif</code> chain and separate <code>if</code> statements.</p><wb-short id="fr6"></wb-short></li>
-  <li><p>When is nesting clearer than a chain?</p><wb-short id="fr7"></wb-short></li>
-</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Check: Nesting or a Chain</div>
+  <p>Choose nesting or an <code>elif</code> chain and explain why: choose one ticket price from matinee, evening, and late-night shows. (The slide's other case, the member discount, is Checkpoint 10.)</p>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <p>Use an <code>elif</code> chain because the show times are alternatives: each ticket gets one price.</p>
+  </details>
+</div>
 
-<h2 id="additional-practice">Additional Practice</h2>
+<h2 id="additional-practice" data-toc-group>Additional Practice</h2>
 
 <h3>Practice A: Trace a Nested Decision</h3>
 <p>Trace the program for <code>member = 'yes'</code> and <code>visits = 3</code>.</p>
@@ -367,7 +442,7 @@
 <p>List each score, its expected grade, and the branch or boundary it tests.</p>
 <wb-short id="pf"></wb-short>
 
-<h2 id="together">Putting It All Together</h2>
+<h2 id="together" data-toc-group>Putting It All Together</h2>
 <p>The final program combines a chain and a nested decision. It calculates an admission price from three pieces of information:</p>
 <ul>
   <li>A visitor younger than 13 pays a base price of $8.</li>
@@ -378,16 +453,17 @@
 </ul>
 <p>Assume that the user enters a valid non-negative age and visit count, and enters <code>yes</code> or <code>no</code> for membership. Input validation belongs to the next lecture.</p>
 
-<h3>Step 1: Choose One Base Price</h3>
-<p>The age bands are alternatives, so use one chain. The tests use increasing upper limits. If <code>age &lt; 13</code> fails, the next branch already knows the visitor is at least 13.</p>
+<h3>1. Admission Base Price</h3>
+<p>The admission program first chooses one base price. The age bands are alternatives, so use one chain. The tests use increasing upper limits.</p>
 <pre class="wb-code"><span class="wb-kw">if</span> age &lt; <span class="wb-num">13</span>:
     base_price = <span class="wb-num">8</span>
 <span class="wb-kw">elif</span> age &lt; <span class="wb-num">65</span>:
     base_price = <span class="wb-num">14</span>
 <span class="wb-kw">else</span>:
     base_price = <span class="wb-num">10</span></pre>
+<p>The failed first test supplies the lower limit for the middle band. If <code>age &lt; 13</code> fails, the next branch already knows the visitor is at least 13.</p>
 
-<h3>Step 2: Decide the Member Discount</h3>
+<h3>2. Member Discount</h3>
 <p>The visit count matters only for members, so put that decision inside the member branch.</p>
 <pre class="wb-code"><span class="wb-kw">if</span> member == <span class="wb-str">"yes"</span>:
     <span class="wb-kw">if</span> visits &gt;= <span class="wb-num">5</span>:
@@ -396,16 +472,19 @@
         discount = <span class="wb-num">1</span>
 <span class="wb-kw">else</span>:
     discount = <span class="wb-num">0</span></pre>
-<p>The two decisions assign <code>base_price</code> and <code>discount</code>. The final calculation is shared by every path, so it belongs after both decisions.</p>
+<p>The chain chooses <code>base_price</code>. The nested decision chooses <code>discount</code>. Every path then uses both values in the same final calculation, so it belongs after both decisions.</p>
 
-<h3>Step 3: Complete and Test the Program</h3>
+<h3>3. Complete Admission Program</h3>
 <p>Press <strong>▶ Run</strong> and answer the three prompts in the console to try the program yourself.</p>
 <wb-example id="ex-admission"></wb-example>
-<p>Two test runs:</p>
+
+<h3>4. Admission Program Tests</h3>
+<p><strong>Boundary test</strong></p>
 <pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">13</span>
 <span class="wb-prompt">Member (yes/no): </span><span class="wb-typed">no</span>
 <span class="wb-prompt">Previous visits: </span><span class="wb-typed">0</span>
 Admission: $14.00</pre>
+<p><strong>Nested-path test</strong></p>
 <pre class="wb-shell"><span class="wb-prompt">Age: </span><span class="wb-typed">65</span>
 <span class="wb-prompt">Member (yes/no): </span><span class="wb-typed">yes</span>
 <span class="wb-prompt">Previous visits: </span><span class="wb-typed">5</span>
@@ -430,7 +509,7 @@ Admission: $7.00</pre>
   </wb-table>
 </div>
 
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The exercises below adapt the approved textbook-practice skills into new course problems. Unless a task says otherwise, assume the input follows the stated format. Each programming task includes a starter shell; add the decision structure and output it requests.</p>
 
 <h3>Coding Practice 1: Special Dates</h3>
@@ -540,7 +619,7 @@ Admission: $7.00</pre>
 <wb-exercise id="c10"></wb-exercise>
 
 <h3>Coding Practice 11: Bookstore Voucher</h3>
-<p>A campus bookstore awards one voucher based on a purchase total in Canadian dollars. The voucher is 15% of a purchase of $200 or more, 10% from $100 up to but not including $200, 5% from $50 up to but not including $100, and $0 below $50. Write a complete program that reads the purchase total and prints the voucher value to two decimal places.</p>
+<p>A campus bookstore awards one voucher based on a purchase total in Canadian dollars. The voucher is 15% of a purchase of $200 or more, 10% from $100 up to but not including $200, 5% from $50 up to but not including $100, and $0 below $50. Write a complete program that reads the purchase total and prints the voucher value to two decimal places. Boundary cases: input <code>49</code> must produce <code>Voucher: $0.00</code>; input <code>200</code> must produce <code>Voucher: $30.00</code>.</p>
 <table>
   <thead><tr><th>Purchase total</th><th>Expected output</th></tr></thead>
   <tbody>
@@ -583,6 +662,49 @@ Admission: $7.00</pre>
 <wb-exercise id="c13"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="final-review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<ol>
+  <li><p>What is a nested decision?</p><wb-short id="fr1"></wb-short></li>
+  <li><p>How can indentation show which <code>else</code> belongs to which <code>if</code>?</p><wb-short id="fr2"></wb-short></li>
+  <li><p>What happens after the first true condition in an <code>elif</code> chain?</p><wb-short id="fr3"></wb-short></li>
+  <li><p>Why should the most restrictive condition usually come first?</p><wb-short id="fr4"></wb-short></li>
+  <li><p>What does a final <code>else</code> do?</p><wb-short id="fr5"></wb-short></li>
+  <li><p>Explain one difference between an <code>elif</code> chain and separate <code>if</code> statements.</p><wb-short id="fr6"></wb-short></li>
+  <li><p>When is nesting clearer than a chain?</p><wb-short id="fr7"></wb-short></li>
+</ol>
+
+<h3>Syntax and Execution</h3>
+<pre><code><span class="wb-kw">if</span> first_condition:
+    first_block
+<span class="wb-kw">elif</span> next_condition:
+    next_block
+<span class="wb-kw">else</span>:
+    catch_all_block</code></pre>
+<ul>
+  <li>Headers in one chain line up.</li>
+  <li>Python tests from top to bottom.</li>
+  <li>The first true condition wins.</li>
+  <li>The final <code>else</code> catches the rest.</li>
+  <li>A nested block adds four spaces.</li>
+</ul>
+
+<h3>Design and Testing</h3>
+<div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Choose the shape</th><th>Check the logic</th></tr></thead>
+    <tbody>
+      <tr><td>dependent second question: nest;</td><td>Put restrictive overlapping tests first.</td></tr>
+      <tr><td>one of many alternatives: chain;</td><td>Remove limits already ruled out.</td></tr>
+      <tr><td>several results may apply: separate <code>if</code>s.</td><td>Test every branch.</td></tr>
+      <tr><td></td><td>Test just below, at, and just above each boundary.</td></tr>
+      <tr><td></td><td>Hand-trace only conditions Python reaches.</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <hr>
 <p class="wb-meta">End of Lecture 10 Workbook.</p>
 </main>
