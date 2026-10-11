@@ -488,7 +488,7 @@
     },
     "ex-break": {
       "type": "example",
-      "code": "total = 0.0\ncount = 0\n\nwhile True:\n    text = input('Mark (-1 to finish): ')\n    mark = float(text)\n    if mark == -1:\n        break\n    total = total + mark\n    count = count + 1\n\nprint('Values entered:', count)"
+      "code": "total = 0.0\ncount = 0\n\nwhile True:\n    mark = float(input('Mark (-1 to finish): '))\n    if mark == -1:\n        break\n    total = total + mark\n    count = count + 1\n\nprint('Values entered:', count)"
     },
     "cp7": {
       "type": "table",

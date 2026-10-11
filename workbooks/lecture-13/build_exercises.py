@@ -133,7 +133,7 @@ E["cp6-missing"] = {"type": "short", "xp": 2, "answer": b64(
     "If the second input were missing and the first value were not blank, `text` would never change and the loop would not end.")}
 
 # ============================================================ 7. while True with break avoids the duplicate read
-brk = ("total = 0.0\ncount = 0\n\nwhile True:\n    text = input('Mark (-1 to finish): ')\n    mark = float(text)\n"
+brk = ("total = 0.0\ncount = 0\n\nwhile True:\n    mark = float(input('Mark (-1 to finish): '))\n"
        "    if mark == -1:\n        break\n    total = total + mark\n    count = count + 1\n\nprint('Values entered:', count)\n")
 E["ex-break"] = example(brk, output=False)
 assert run_with_prompts(brk, ["72", "84", "-1"]).endswith("Values entered: 2")
