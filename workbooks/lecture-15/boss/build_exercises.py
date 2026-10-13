@@ -45,7 +45,7 @@ assert len(_fors) >= 2 and max(_fors) > min(_fors), "Use nested for loops: an in
 
 E = {}
 
-# ---------------------------------------------------------------- 1 Course Product Grid
+# ---------------------------------------------------------------- 1 Multiplication Grid
 grid = """size = int(input())
 
 print("    ", end="")
@@ -76,7 +76,7 @@ assert E["grid"]["cases"][0]["expected"] == "       1   2   3\n   1   1   2   3\
 assert E["grid"]["cases"][1]["expected"] == "       1\n   1   1"
 assert E["grid"]["cases"][2]["expected"].split("\n")[-1] == "   9   9  18  27  36  45  54  63  72  81"
 
-# ---------------------------------------------------------------- 2 Lab Station Binary Label
+# ---------------------------------------------------------------- 2 Binary Label
 binary = """number = int(input())
 result = ""
 quotient = number

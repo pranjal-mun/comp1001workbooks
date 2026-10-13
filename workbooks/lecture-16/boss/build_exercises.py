@@ -105,7 +105,7 @@ assert E["grades"]["cases"][0]["expected"] == "Grade point average: 3.10"
 assert E["grades"]["cases"][1]["expected"] == "No grades entered."
 assert E["grades"]["cases"][2]["expected"] == "Grade point average: 0.00"
 
-# ---------------------------------------------------------------- 2 Campus Route Perimeter
+# ---------------------------------------------------------------- 2 Route Perimeter
 perimeter = """import math
 first_x = float(input())
 first_y = float(input())

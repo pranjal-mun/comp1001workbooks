@@ -335,7 +335,7 @@
 </ol>
 
 <h2 id="together" data-toc-title="Putting It All Together">Putting It All Together</h2>
-<p>Suppose EN2043 has three rows with five seats in each row. Seat 3 is reserved in every row, so the program should skip it. In row 2, a maintenance barrier before seat 5 means that row ends early.</p>
+<p>Suppose a small theatre has three rows with five seats in each row. Seat 3 is reserved in every row, so the program should skip it. In row 2, a maintenance barrier before seat 5 means that row ends early.</p>
 <p>First, use the outer loop to choose a row and the inner loop to visit its seats:</p>
 <wb-example id="ex-seats1"></wb-example>
 <p>Next, place a <code>continue</code> before the main work to skip reserved seat 3:</p>
@@ -434,8 +434,8 @@
 <p>Use loops for the growing and shrinking halves.</p>
 <wb-exercise id="p9"></wb-exercise>
 
-<h3>10. Lab-seat sale</h3>
-<p>There are 12 seats for a lab review. Repeatedly read a requested number of seats from 1 through 4. If the request is larger than the number remaining, print <code>Not enough seats</code> and ask again. Otherwise, sell the requested seats. When all seats are sold, print the number of buyers.</p>
+<h3>10. Seat sale</h3>
+<p>There are 12 seats for sale. Repeatedly read a requested number of seats from 1 through 4. If the request is larger than the number remaining, print <code>Not enough seats</code> and ask again. Otherwise, sell the requested seats. When all seats are sold, print the number of buyers.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>
@@ -446,8 +446,8 @@
 </div>
 <wb-exercise id="p10"></wb-exercise>
 
-<h3>11. EN2043 occupancy</h3>
-<p>EN2043 has a capacity of 8 for this small exercise. Start with an occupancy of 0. Read changes until the room reaches 8 people. A positive value is an arriving group and a negative value is a departing group. Reject a change that would make the occupancy less than 0 or greater than 8 by printing <code>Rejected</code>. After every accepted change, print the new occupancy. When the room reaches 8, print <code>Full</code>.</p>
+<h3>11. Room occupancy</h3>
+<p>A small room has a capacity of 8. Start with an occupancy of 0. Read changes until the room reaches 8 people. A positive value is an arriving group and a negative value is a departing group. Reject a change that would make the occupancy less than 0 or greater than 8 by printing <code>Rejected</code>. After every accepted change, print the new occupancy. When the room reaches 8, print <code>Full</code>.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Typed</th><th>Expected output</th></tr></thead>

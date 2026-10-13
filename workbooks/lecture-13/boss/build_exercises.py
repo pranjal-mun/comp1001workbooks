@@ -44,7 +44,7 @@ assert __code__.count("break") == 1, "Use exactly one break to leave the loop."
 
 E = {}
 
-# ---------------------------------------------------------------- 1 Oliver's Treat Average
+# ---------------------------------------------------------------- 1 Daily Treat Average
 treats = """total = 0
 count = 0
 
@@ -80,7 +80,7 @@ assert re.search(r":[^}]*\\.2f\\}", __source__), "Print the average with two dig
 assert E["treats"]["cases"][0]["expected"].endswith("Average treats: 4.00")
 assert E["treats"]["cases"][1]["expected"].endswith("No days were entered.")
 
-# ---------------------------------------------------------------- 2 Campus Shop Cash Total
+# ---------------------------------------------------------------- 2 Shop Cash Total
 cash = """total = 0.0
 
 while True:

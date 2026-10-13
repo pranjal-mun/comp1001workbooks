@@ -323,7 +323,7 @@ E["p9"] = {"type": "code", "xp": 10, "minLines": 7, "starter": "size = int(input
 assert E["p9"]["cases"][0]["expected"] == "  1\n 222\n33333\n 222\n  1"
 assert E["p9"]["cases"][1]["expected"] == "1"
 
-# 10. Lab-seat sale
+# 10. Seat sale
 sale = ('remaining = 12\nbuyers = 0\n\nwhile remaining > 0:\n    requested = int(input())\n    if requested > remaining:\n'
         '        print("Not enough seats")\n        continue\n    remaining = remaining - requested\n    buyers = buyers + 1\n\nprint(f"Buyers: {buyers}")\n')
 E["p10"] = {"type": "code", "xp": 10, "minLines": 8, "starter": "remaining = 12\nbuyers = 0\n\n# Sell seats until none remain, then print the number of buyers.\n",
@@ -338,7 +338,7 @@ assert E["p10"]["cases"][0]["expected"] == "Not enough seats\nBuyers: 4"
 assert E["p10"]["cases"][1]["expected"] == "Buyers: 3"
 assert E["p10"]["cases"][4]["expected"] == "Not enough seats\nBuyers: 5"
 
-# 11. EN2043 occupancy
+# 11. Room occupancy
 occupancy = ('occupancy = 0\n\nwhile occupancy < 8:\n    change = int(input())\n    proposed = occupancy + change\n    if proposed < 0 or proposed > 8:\n'
              '        print("Rejected")\n        continue\n    occupancy = proposed\n    print(occupancy)\n\nprint("Full")\n')
 E["p11"] = {"type": "code", "xp": 10, "minLines": 8, "starter": "occupancy = 0\n\n# Read changes until the room reaches 8 people.\n",
