@@ -395,9 +395,9 @@ No marks were entered.</pre>
 </div>
 
 <h2 id="together" data-toc-title="Putting It All Together" data-toc-group>Putting It All Together</h2>
-<p>Design a program that reads nonnegative study times in minutes. The value <code>-1</code> ends input. The program prints the number of entries and their average. Start with the conversation.</p>
+<p>Design a program that reads nonnegative study times in minutes. The value <code>-1</code> ends input. The program prints the number of entries and their average. Start with the conversation, then work through the six problem-solving stages.</p>
 
-<h3>1. Storyboards</h3>
+<h3>Storyboards</h3>
 <p>Typical data:</p>
 <pre class="wb-shell"><span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">30</span>
 <span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">45</span>
@@ -407,15 +407,83 @@ Average of 2 entries: 37.50 minutes</pre>
 <pre class="wb-shell"><span class="wb-prompt">Study time (-1 to finish): </span><span class="wb-typed">-1</span>
 No study times were entered.</pre>
 
-<h3>2. Plan the state and order</h3>
-<p>The program needs <code>total</code> and <code>count</code>. Each loop pass follows the read-test-process order. After the loop, the program checks <code>count &gt; 0</code> before division.</p>
+<h3>1. Understand</h3>
+<ul>
+  <li>Input: study times in minutes, each 0 or more.</li>
+  <li><code>-1</code> ends input. It is not a study time.</li>
+  <li>Output: the number of entries and their average.</li>
+  <li>No entries: print a message instead.</li>
+</ul>
 
-<h3>3. Complete Program</h3>
-<p>Fill in the five blanks. <strong>Check</strong> runs the program with the two storyboards above and two more input sequences.</p>
+<h3>2. Decompose</h3>
+<ol>
+  <li>Read a study time.</li>
+  <li>Stop if it is <code>-1</code>.</li>
+  <li>Add it to a running total.</li>
+  <li>Count it.</li>
+  <li>After the loop, print the average or the message.</li>
+</ol>
+
+<h3>3. Find patterns</h3>
+<p>Every small task is one we have already solved.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Task</th><th>Pattern we know</th></tr></thead>
+  <tbody>
+    <tr><td>read until <code>-1</code></td><td>sentinel loop: <code>while True</code> with <code>break</code></td></tr>
+    <tr><td>keep a running sum</td><td>accumulator: <code>total</code></td></tr>
+    <tr><td>know how many</td><td>counter: <code>count</code></td></tr>
+    <tr><td>find the average</td><td><code>total / count</code>, guarded by <code>count &gt; 0</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The new work is putting the pieces together in the right order.</p>
+
+<h3>4a. Design the steps</h3>
+<p>Write the steps in plain words before writing Python.</p>
+<pre><code>set total to 0 and count to 0
+repeat:
+    read a study time
+    if it is -1, stop repeating
+    add it to total
+    add 1 to count
+if count &gt; 0:
+    print count and total / count
+otherwise:
+    print "No study times were entered."</code></pre>
+
+<h3>4b. Evaluate the design</h3>
+<p>Walk each test case through the steps before coding.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input</th><th>Case</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td><code>30</code>, <code>45</code>, <code>-1</code></td><td>typical data</td><td><code>Average of 2 entries: 37.50 minutes</code></td></tr>
+    <tr><td><code>-1</code></td><td>sentinel first</td><td><code>No study times were entered.</code></td></tr>
+    <tr><td><code>0</code>, <code>60</code>, <code>-1</code></td><td>zero is real data</td><td><code>Average of 2 entries: 30.00 minutes</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>For input <code>-1</code>, the loop exits with <code>total = 0.0</code> and <code>count = 0</code>. Without the <code>count &gt; 0</code> check, the second case would divide by zero.</p>
+
+<h3>5. Implement</h3>
+<p>Translate each design step into Python. Fill in the five blanks. <strong>Check</strong> runs the program with the two storyboards above and two more input sequences.</p>
 <wb-exercise id="syn"></wb-exercise>
 
-<h3>4. Trace the boundary</h3>
-<p>For input <code>-1</code>, the loop exits with <code>total = 0.0</code> and <code>count = 0</code>. The <code>else</code> branch runs. The program does not divide.</p>
+<h3>6. Reflect</h3>
+<p>Ask why each part is there.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+  <tbody>
+    <tr><td>Why <code>while True</code> and not a fixed number of passes?</td><td>The number of entries is unknown until <code>-1</code> arrives.</td></tr>
+    <tr><td>Why test for <code>-1</code> before adding?</td><td>The sentinel is not data. Adding it would change <code>total</code> and <code>count</code>.</td></tr>
+    <tr><td>Why check <code>count &gt; 0</code>?</td><td>With no entries, <code>total / count</code> raises a <code>ZeroDivisionError</code>.</td></tr>
+    <tr><td>What if the user types <code>abc</code>?</td><td><code>float('abc')</code> raises a <code>ValueError</code>. The program assumes numeric input.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Bigger problems use the same six stages: split the problem until every piece is one you already know.</p>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The exercises below use only ideas introduced by this point in the course.</p>
