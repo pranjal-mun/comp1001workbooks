@@ -31,7 +31,7 @@
   <ul>
     <li>hand-trace a loop using a trace table;</li>
     <li>design a sentinel-controlled loop and choose a safe sentinel value;</li>
-    <li>compare priming-read and loop-and-a-half structures; and</li>
+    <li>compare a priming read with <code>while True</code> and <code>break</code>; and</li>
     <li>compute an average safely when no values may have been entered.</li>
   </ul>
   <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
@@ -253,7 +253,7 @@ Total: 3.0</pre>
   <wb-short id="cp6-missing"></wb-short>
 </div>
 
-<h2 id="s7">7. A Loop and a Half</h2>
+<h2 id="s7">7. <code>while True</code> with <code>break</code></h2>
 <p><code>while True</code> has no exit condition in its header. <code>break</code> leaves the nearest loop immediately.</p>
 <wb-example id="ex-break"></wb-example>
 <p>Sample run:</p>
@@ -261,7 +261,7 @@ Total: 3.0</pre>
 <span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">84</span>
 <span class="wb-prompt">Mark (-1 to finish): </span><span class="wb-typed">-1</span>
 Values entered: 2</pre>
-<p>The input appears once. The exit test sits partway through the body, after the read, which is why this structure is called a <strong>loop and a half</strong>. Use one clear <code>break</code> after the read and before processing. Several hidden <code>break</code> statements make a loop hard to trace.</p>
+<p>The input appears once. The exit test sits inside the body, right after the read. Use one clear <code>break</code> after the read and before processing. Several hidden <code>break</code> statements make a loop hard to trace.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 7</div>
