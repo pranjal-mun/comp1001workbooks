@@ -38,6 +38,8 @@
 </section>
 <hr>
 
+<p class="wb-part" id="part-nested">Nested Loops</p>
+
 <h2 id="s1" data-toc-title="A loop inside a loop">1. A nested loop is a loop inside a loop</h2>
 <p>A <strong>nested loop</strong> is a loop in the body of another loop. The loop on the outside is the <strong>outer loop</strong>. The loop inside it is the <strong>inner loop</strong>.</p>
 <wb-example id="ex-nested"></wb-example>
@@ -121,6 +123,8 @@
   <p>Explain why the counts are multiplied.</p>
   <wb-short id="cp3-why"></wb-short>
 </div>
+
+<p class="wb-part" id="part-rows">Rows and Columns</p>
 
 <h2 id="s4" data-toc-title="Rows and columns">4. Think of the loops as rows and columns</h2>
 <p>The outer loop often selects a row. The inner loop moves across the columns in that row.</p>
@@ -210,6 +214,8 @@
   <wb-short id="cp7-why"></wb-short>
 </div>
 
+<p class="wb-part" id="part-break"><code>break</code></p>
+
 <h2 id="s8" data-toc-title="break leaves a loop">8. <code>break</code> leaves a loop immediately</h2>
 <p><code>break</code> ends the nearest loop and continues with the first statement after that loop.</p>
 <wb-example id="ex-break"></wb-example>
@@ -252,6 +258,8 @@
   <p>What would have to be true for the outer loop to stop early?</p>
   <wb-short id="cp9-why"></wb-short>
 </div>
+
+<p class="wb-part" id="part-continue"><code>continue</code></p>
 
 <h2 id="s10" data-toc-title="continue skips one pass">10. <code>continue</code> skips the rest of one pass</h2>
 <p><code>continue</code> skips the remaining statements in the current iteration and begins the next iteration of the nearest loop. It does not end the loop.</p>
@@ -306,43 +314,83 @@
   <wb-short id="cp11-c"></wb-short>
 </div>
 
-<h2 id="final-review">Final review</h2>
+<h2 id="together" data-toc-title="Putting It All Together" data-toc-group>Putting It All Together</h2>
+<p>Design a program that prints the seat numbers for a theatre with three rows of five seats. Seat 3 is reserved in every row, so the program skips it. In row 2, a barrier before seat 5 ends the row early. Start with the conversation, then work through the six problem-solving stages.</p>
+
+<h3>Storyboards</h3>
+<p>Typical data (a row with no barrier):</p>
+<pre class="wb-output">Row 1: 1 2 4 5</pre>
+<p>Boundary case (the row with the barrier):</p>
+<pre class="wb-output">Row 2: 1 2 4</pre>
+
+<h3>1. Understand</h3>
+<ul>
+  <li>Input: none. The theatre always has 3 rows of 5 seats.</li>
+  <li>Output: one line per row, with the row label and then the seat numbers.</li>
+  <li>Seat 3 never prints.</li>
+  <li>Row 2 stops before seat 5. Rows 1 and 3 print every seat except seat 3.</li>
+</ul>
+
+<h3>2. Decompose</h3>
 <ol>
-  <li>Define outer loop and inner loop.
-    <wb-short id="fr1"></wb-short>
-  </li>
-  <li>In what order do nested loops change their variables?
-    <wb-short id="fr2"></wb-short>
-  </li>
-  <li>How many times does the inner body run for fixed loop counts?
-    <wb-short id="fr3"></wb-short>
-  </li>
-  <li>What is the purpose of <code>end=""</code> when printing a row?
-    <wb-short id="fr4"></wb-short>
-  </li>
-  <li>Why must the empty <code>print()</code> appear after the inner loop?
-    <wb-short id="fr5"></wb-short>
-  </li>
-  <li>What does <code>break</code> do?
-    <wb-short id="fr6"></wb-short>
-  </li>
-  <li>What does <code>continue</code> do?
-    <wb-short id="fr7"></wb-short>
-  </li>
-  <li>Which loop is affected by a <code>break</code> inside the inner loop?
-    <wb-short id="fr8"></wb-short>
-  </li>
+  <li>Visit each row.</li>
+  <li>Print the row label.</li>
+  <li>Visit each seat in that row.</li>
+  <li>End the row at the barrier.</li>
+  <li>Skip the reserved seat.</li>
+  <li>Print the seat number on the same line.</li>
+  <li>After the seats, end the line.</li>
 </ol>
 
-<h2 id="together" data-toc-title="Putting It All Together">Putting It All Together</h2>
-<p>Suppose a small theatre has three rows with five seats in each row. Seat 3 is reserved in every row, so the program should skip it. In row 2, a maintenance barrier before seat 5 means that row ends early.</p>
-<p>First, use the outer loop to choose a row and the inner loop to visit its seats:</p>
+<h3>3. Find patterns</h3>
+<p>Every small task is one we have already solved.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Task</th><th>Pattern we know</th></tr></thead>
+  <tbody>
+    <tr><td>visit every seat in every row</td><td>nested loops: outer <code>row</code>, inner <code>seat</code></td></tr>
+    <tr><td>keep one row on one line</td><td><code>print(..., end="")</code>, then <code>print()</code></td></tr>
+    <tr><td>skip the reserved seat</td><td><code>continue</code></td></tr>
+    <tr><td>end a row early</td><td><code>break</code>, which leaves only the inner loop</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The new work is using <code>break</code> and <code>continue</code> in the same inner loop.</p>
+
+<h3>4a. Design the steps</h3>
+<p>Write the steps in plain words before writing Python.</p>
+<pre><code>for each row from 1 to 3:
+    print the row label and stay on the same line
+    for each seat from 1 to 5:
+        if this is row 2 and seat 5, stop this row
+        if this is seat 3, skip to the next seat
+        print the seat number on the same line
+    end the line</code></pre>
+
+<h3>4b. Evaluate the design</h3>
+<p>Walk each row through the steps before coding.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Row</th><th>Case</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>typical row</td><td><code>Row 1: 1 2 4 5</code></td></tr>
+    <tr><td>2</td><td>barrier row</td><td><code>Row 2: 1 2 4</code></td></tr>
+    <tr><td>3</td><td>row after the barrier</td><td><code>Row 3: 1 2 4 5</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Without the <code>row == 2</code> part of the barrier test, every row would stop before seat 5. If <code>break</code> ended both loops, row 3 would never print.</p>
+
+<h3>5. Implement</h3>
+<p>Build the program in three steps. First, use the outer loop to choose a row and the inner loop to visit its seats:</p>
 <wb-example id="ex-seats1"></wb-example>
 <p>Next, place a <code>continue</code> before the main work to skip reserved seat 3:</p>
 <wb-example id="ex-seats2"></wb-example>
-<p>Finally, check the maintenance barrier first. The <code>break</code> ends only the inner seat loop, so the next row still begins.</p>
+<p>Finally, add the row labels and check the barrier first. The <code>break</code> ends only the inner seat loop, so the next row still begins.</p>
 <wb-example id="ex-seats3"></wb-example>
 
+<h3>6. Reflect</h3>
+<p>Answer these questions about why each part is there.</p>
 <div class="wb-checkpoint">
   <div class="wb-block-title">Synthesis check</div>
   <p>Why is the barrier test before the reserved-seat test?</p>
@@ -357,8 +405,10 @@
     </table>
   </wb-table>
 </div>
+<p>The barrier test names row 2 and seat 5. A barrier in another place means changing that condition.</p>
+<p>Bigger problems use the same six stages: split the problem until every piece is one you already know.</p>
 
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The exercises below use only ideas introduced by this point in the course. Programs that read input use plain <code>input()</code> with no prompt, and the console under each box supplies the values.</p>
 
 <h3>1. Nested-loop vocabulary</h3>
@@ -482,6 +532,46 @@ Depth 4 m: 0.0 m</pre>
 <wb-exercise id="p13"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="final-review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<ol>
+  <li>Define outer loop and inner loop.
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>In what order do nested loops change their variables?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>How many times does the inner body run for fixed loop counts?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>What is the purpose of <code>end=""</code> when printing a row?
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Why must the empty <code>print()</code> appear after the inner loop?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>What does <code>break</code> do?
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>What does <code>continue</code> do?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>Which loop is affected by a <code>break</code> inside the inner loop?
+    <wb-short id="fr8"></wb-short>
+  </li>
+</ol>
+
+<h3>Summary</h3>
+<ul>
+  <li>For each outer value, the inner loop goes through all of its values.</li>
+  <li>Fixed counts: inner-body runs = outer passes &times; inner passes.</li>
+  <li><code>end=""</code> keeps several values on the same row.</li>
+  <li><code>break</code> ends the nearest loop; inside an inner loop, only the inner loop.</li>
+  <li><code>continue</code> skips to the next iteration of the nearest loop.</li>
+</ul>
+
 <hr>
 <p class="wb-meta">End of Lecture 15 Workbook.</p>
 </main>
