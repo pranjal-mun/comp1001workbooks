@@ -38,6 +38,8 @@
 </section>
 <hr>
 
+<p class="wb-part" id="part-algorithms">Common Loop Algorithms</p>
+
 <h2 id="s1" data-toc-title="Recognize the algorithm">1. Recognize the Algorithm Before Writing the Loop</h2>
 <p>Many loop problems use a small set of standard patterns. Recognizing the pattern makes the design easier.</p>
 <div class="wb-table-wrap">
@@ -137,6 +139,8 @@
   <wb-short id="cp4-why"></wb-short>
 </div>
 
+<p class="wb-part" id="part-search">Searching and Comparing</p>
+
 <h2 id="s5" data-toc-title="Search for the first match">5. Search for the First Match</h2>
 <p>A search can use a position initialized to <code>-1</code>. The value <code>-1</code> means "not found" because it is outside the valid index range.</p>
 <wb-example id="ex-first"></wb-example>
@@ -204,6 +208,8 @@
   </wb-table>
 </div>
 
+<p class="wb-part" id="part-random">Random Numbers</p>
+
 <h2 id="s8" data-toc-title="The random module">8. The Random Module</h2>
 <p>A simulation uses a program to imitate a process. Many simulations need unpredictable choices. Python's <code>random</code> module provides pseudorandom values: they behave unpredictably, but they are produced by a repeatable calculation.</p>
 <wb-example id="ex-random"></wb-example>
@@ -246,6 +252,8 @@
   <wb-short id="cp9"></wb-short>
 </div>
 
+<p class="wb-part" id="part-simulation">Building a Simulation</p>
+
 <h2 id="s10" data-toc-title="Simulation">10. Simulation</h2>
 <p>Suppose two dice are rolled. One trial is easy: generate two integers from 1 through 6 and test whether their sum is 7. A loop repeats that trial many times.</p>
 <wb-example id="ex-simulation"></wb-example>
@@ -284,52 +292,100 @@
   <wb-short id="cp11"></wb-short>
 </div>
 
-<h2 id="together" data-toc-title="Putting it all together">12. Putting It All Together</h2>
-<p>We will build a short simulation in stages. The goal is to estimate how often a random digit is greater than the digit before it.</p>
-<p>First, generate one digit. Then generate a second digit and compare the pair.</p>
+<h2 id="together" data-toc-title="Putting It All Together" data-toc-group>Putting It All Together</h2>
+<p>Design a program that estimates how often a random digit is greater than the digit before it. With seed 12, it makes 9 random digits from 0 through 9, one at a time, and counts how many of the 8 neighbouring pairs increase. Start with the conversation, then work through the six problem-solving stages.</p>
+
+<h3>Storyboards</h3>
+<p>Typical data (the seed-12 digits <code>7 4 8 5 2 6 0 5 7</code>):</p>
+<pre class="wb-output">Pairs: 8
+Increases: 4
+Estimated fraction: 0.500</pre>
+<p>Boundary case (no pair increases, for example <code>9 9 7 7 5 5 3 3 1</code>):</p>
+<pre class="wb-output">Pairs: 8
+Increases: 0
+Estimated fraction: 0.000</pre>
+
+<h3>1. Understand</h3>
+<ul>
+  <li>Input: none. <code>random.seed(12)</code> fixes the digits.</li>
+  <li>Output: the number of pairs, the number of increases, and the fraction of pairs that increase, to 3 decimal places.</li>
+  <li>A pair is a new digit and the digit just before it. 9 digits make 8 pairs.</li>
+  <li>An increase means the new digit is greater. Equal digits do not count.</li>
+</ul>
+
+<h3>2. Decompose</h3>
+<ol>
+  <li>Fix the seed.</li>
+  <li>Make the first digit.</li>
+  <li>Make the next digit.</li>
+  <li>Compare it with the digit before it.</li>
+  <li>If it is greater, count an increase.</li>
+  <li>Make the new digit the one before the next.</li>
+  <li>Repeat steps 3 to 6 for each of the 8 pairs.</li>
+  <li>Print the pairs, the increases and the fraction.</li>
+</ol>
+
+<h3>3. Find patterns</h3>
+<p>Every small task is one we have already solved.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Task</th><th>Pattern we know</th></tr></thead>
+  <tbody>
+    <tr><td>repeatable random digits</td><td><code>random.seed(12)</code>, then <code>random.randint(0, 9)</code></td></tr>
+    <tr><td>compare with the digit before</td><td>adjacent items: remember <code>previous</code></td></tr>
+    <tr><td>count the increases</td><td>counting matches: add 1 when the test holds</td></tr>
+    <tr><td>repeat for 8 pairs</td><td><code>for pair in range(PAIRS)</code></td></tr>
+    <tr><td>the fraction</td><td>a simulation estimate: <code>increases / PAIRS</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The new work is that the loop makes each item as it goes, instead of reading it from a string.</p>
+
+<h3>4a. Design the steps</h3>
+<p>Write the steps in plain words before writing Python.</p>
+<pre><code>set the seed to 12
+PAIRS = 8
+increases = 0
+previous = a random digit
+repeat PAIRS times:
+    current = a random digit
+    if current &gt; previous, add 1 to increases
+    previous = current
+print PAIRS, increases, and increases / PAIRS</code></pre>
+
+<h3>4b. Evaluate the design</h3>
+<p>Walk some digits through the steps before coding.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Digits</th><th>Case</th><th>Expected result</th></tr></thead>
+  <tbody>
+    <tr><td><code>7 4 8</code></td><td>typical</td><td>1 increase in 2 pairs</td></tr>
+    <tr><td><code>5 5</code></td><td>equal neighbours</td><td>0 increases in 1 pair</td></tr>
+    <tr><td><code>0 1 2</code></td><td>every pair rises</td><td>2 increases in 2 pairs</td></tr>
+    <tr><td><code>7 4 8 5 2 6 0 5 7</code></td><td>the seed-12 digits</td><td>4 increases in 8 pairs (0.500)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Without <code>previous = current</code>, every digit would be compared with the first one. The seed-12 digits would then give 1 increase, not 4.</p>
+
+<h3>5. Implement</h3>
+<p>Check one pair first. Generate one digit, then a second digit, and compare the pair.</p>
 <wb-example id="ex-pair"></wb-example>
 <p>Next, keep the first digit as <code>previous</code>. Each loop pass generates one new digit, tests one adjacent pair, and updates <code>previous</code>.</p>
 <wb-example id="ex-pairs"></wb-example>
 <p>This program combines a counter, adjacent-value state, random integers, a fixed seed, and a safe nonzero trial count.</p>
 
+<h3>6. Reflect</h3>
+<p>Answer these questions about why each part is there.</p>
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 12</div>
   <p>Why is <code>previous</code> initialized before the loop? Why is it updated at the end of every pass? What makes the displayed output reproducible?</p>
   <wb-short id="cp12"></wb-short>
 </div>
+<p>The test uses <code>&gt;</code> because equal digits are not an increase. The exact chance of an increase is 0.45, so 0.500 is only a rough estimate. More pairs usually give a more stable estimate.</p>
+<p>Bigger problems use the same six stages: split the problem until every piece is one you already know.</p>
 
-<h2 id="review">Review</h2>
-<ol>
-  <li>Match each purpose to a pattern: total, count, largest, first match.
-    <wb-short id="fr1"></wb-short>
-  </li>
-  <li>Why should an extreme usually be initialized from real data?
-    <wb-short id="fr2"></wb-short>
-  </li>
-  <li>Why can a first-match search use <code>break</code> but a last-match search cannot?
-    <wb-short id="fr3"></wb-short>
-  </li>
-  <li>What value can represent "no matching index"?
-    <wb-short id="fr4"></wb-short>
-  </li>
-  <li>Why does an adjacent-value loop often start at index 1?
-    <wb-short id="fr5"></wb-short>
-  </li>
-  <li>State the possible results of <code>random.randint(1, 6)</code>.
-    <wb-short id="fr6"></wb-short>
-  </li>
-  <li>What does a fixed random seed provide?
-    <wb-short id="fr7"></wb-short>
-  </li>
-  <li>What does one iteration represent in a simulation?
-    <wb-short id="fr8"></wb-short>
-  </li>
-  <li>How can solving a simpler problem help design a loop?
-    <wb-short id="fr9"></wb-short>
-  </li>
-</ol>
-
-<h2 id="coding-practice">Coding Practice</h2>
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>The exercises appear in the same order as the skills selected for this lecture. Every program below reads its values with plain <code>input()</code> and no prompt, one value per line, in the order the statement gives. Press <strong>Check</strong> to run the listed cases; the checker types the inputs for you.</p>
 
 <h3>1. Safe Extreme Initialization</h3>
@@ -692,6 +748,51 @@ new_predators = predators * (1 - c + d * prey)</pre>
 <wb-exercise id="p16"></wb-exercise>
 
 <wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Review questions</h3>
+<ol>
+  <li>Match each purpose to a pattern: total, count, largest, first match.
+    <wb-short id="fr1"></wb-short>
+  </li>
+  <li>Why should an extreme usually be initialized from real data?
+    <wb-short id="fr2"></wb-short>
+  </li>
+  <li>Why can a first-match search use <code>break</code> but a last-match search cannot?
+    <wb-short id="fr3"></wb-short>
+  </li>
+  <li>What value can represent "no matching index"?
+    <wb-short id="fr4"></wb-short>
+  </li>
+  <li>Why does an adjacent-value loop often start at index 1?
+    <wb-short id="fr5"></wb-short>
+  </li>
+  <li>State the possible results of <code>random.randint(1, 6)</code>.
+    <wb-short id="fr6"></wb-short>
+  </li>
+  <li>What does a fixed random seed provide?
+    <wb-short id="fr7"></wb-short>
+  </li>
+  <li>What does one iteration represent in a simulation?
+    <wb-short id="fr8"></wb-short>
+  </li>
+  <li>How can solving a simpler problem help design a loop?
+    <wb-short id="fr9"></wb-short>
+  </li>
+</ol>
+
+<h3>Summary</h3>
+<ul>
+  <li>Totals use an accumulator; averages also need a count and an empty-input guard.</li>
+  <li>Counts add 1 for a match. Extremes start from real data.</li>
+  <li>First-match search may stop; last-match search must continue.</li>
+  <li>Adjacent comparisons remember the previous item and begin with a real first item.</li>
+  <li><code>randint</code> includes both endpoints. <code>random()</code> excludes 1.0.</li>
+  <li>A fixed seed reproduces the same calls. More trials usually stabilize a simulation estimate.</li>
+  <li>When a loop is hard to design, solve one iteration first.</li>
+</ul>
+
 <hr>
 <p class="wb-meta">End of Lecture 16 Workbook.</p>
 </main>
