@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 17 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-17-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 17 Boss Problems</h1>
+    <div class="wb-subtitle">Problem solving with functions: black boxes and decomposition</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the functions from Lecture 17: a <code>def</code> with empty parentheses, a docstring as the first statement of the body, definitions placed before the calls, and one clear job for each function. They use only what Lectures 4 to 17 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, <code>%</code> formatting, <code>if</code>, <code>elif</code> and <code>else</code>, <code>while</code> and <code>for</code> loops, and nested loops. None of the functions takes parameters or returns a value. Test each function on its own as well as the complete program. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here that reads values uses a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them: <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="notice" data-toc-title="👹 Practice notice">👹 Boss 1: Practice notice</h2>
+<p>Given no input, produce a three-part notice. Define <code>show_heading</code>, <code>show_details</code>, and <code>show_closing</code>. Call them in that order. The heading prints <code>Practice notice</code>; the details print <code>Topic: functions</code> and <code>Task: test each part</code>; the closing prints <code>Keep your results.</code></p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+(none)
+Output:
+Practice notice
+Topic: functions
+Task: test each part
+Keep your results.
+Explanation:
+Each function supplies one part of the notice.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(none; run the program again)
+Output:
+Practice notice
+Topic: functions
+Task: test each part
+Keep your results.
+Explanation:
+The fixed notice is the same on every run.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read no input; print exactly the four specified lines.</li>
+    <li>Use the three named functions with empty parentheses and a docstring in each.</li>
+    <li>Put the definitions before the calls.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> runs the program twice, as in the two examples, and also calls each function on its own.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Read no input; the notice is fixed.</li>
+    <li>Define <code>show_heading</code>, <code>show_details</code>, and <code>show_closing</code> with empty parentheses and a docstring as the first statement of each body.</li>
+    <li>Each function prints only its own part: <code>show_heading</code> prints <code>Practice notice</code>, <code>show_details</code> prints <code>Topic: functions</code> and <code>Task: test each part</code>, and <code>show_closing</code> prints <code>Keep your results.</code></li>
+    <li>Call each function once, after all three definitions.</li>
+  </ul>
+</div>
+<wb-exercise id="notice"></wb-exercise>
+
+<h2 id="framed" data-toc-title="👾 Framed rows">👾 Boss 2: Framed rows</h2>
+<p>Given a row count from 0 to 4, produce a pattern between two borders. Each border is exactly six <code>=</code> characters. Each row contains six <code>*</code> characters. Define <code>print_border</code> once and call it before and after a nested loop that prints the rows. A nested loop is a loop inside another loop.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2
+Output:
+======
+******
+******
+======
+Explanation:
+Two rows appear between the borders.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+======
+======
+Explanation:
+Zero rows leave the borders on consecutive lines.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read one whole number from 0 to 4 at the top level.</li>
+    <li>Each border and pattern row has six characters.</li>
+    <li>Use a documented function with empty parentheses, called exactly twice.</li>
+    <li>Use nested loops for the pattern body. Do not use string repetition for its rows.</li>
+  </ul>
+</div>
+<p>The program reads the row count with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed">2</span>
+======
+******
+******
+======</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2</code></td><td><code>======</code>, two rows of <code>******</code>, <code>======</code></td></tr>
+    <tr><td><code>0</code></td><td><code>======</code>, <code>======</code></td></tr>
+    <tr><td><code>1</code></td><td><code>======</code>, one row of <code>******</code>, <code>======</code></td></tr>
+    <tr><td><code>3</code></td><td><code>======</code>, three rows of <code>******</code>, <code>======</code></td></tr>
+    <tr><td><code>4</code></td><td><code>======</code>, four rows of <code>******</code>, <code>======</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>print_border</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li><code>print_border</code> prints exactly six <code>=</code> characters and nothing else.</li>
+    <li>Call <code>print_border</code> exactly twice: once before the rows and once after them.</li>
+    <li>Use nested loops for the pattern rows.</li>
+    <li>Do not use string repetition for the rows; print each <code>*</code> in the inner loop.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>rows = int(input())</code> unchanged. The checker will type the other row counts.</p>
+<wb-exercise id="framed"></wb-exercise>
+
+<h2 id="group" data-toc-title="🐉 Group entry report">🐉 Boss 3: Group entry report</h2>
+<p>Given ages for a group visiting a theatre, produce a total entry cost. For this problem, ages 0 to 4 cost nothing, ages 5 to 15 cost $8 each, ages 16 to 59 cost $15 each, and ages 60 to 120 cost $10 each. Read one age per line until a blank line. Print <code>Group entry</code>, the total as <code>Total: $</code> followed by two decimal places, and <code>End of report</code>. An empty group has total $0.00.</p>
+<p>Define <code>show_heading</code>, <code>report_group_cost</code>, and <code>show_closing</code>, then call them in that order. The middle function owns the whole cost report: it reads the ages, adds their prices, and prints the total. Keeping those steps together lets this function finish its task without passing values between functions.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+4
+5
+16
+60
+(blank line)
+Output:
+Group entry
+Total: $33.00
+End of report
+Explanation:
+The four prices are $0, $8, $15, and $10.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Group entry
+Total: $0.00
+End of report
+Explanation:
+No ages means there are no charges to add.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read 0 to 20 ages, each a whole number from 0 to 120, followed by a blank line.</li>
+    <li>These prices are rules for this problem.</li>
+    <li>Use the three named, documented functions with empty parentheses.</li>
+    <li>Use a sentinel loop and an <code>if</code>/<code>elif</code>/<code>else</code> chain.</li>
+    <li>Keep the input, calculation, and total output inside <code>report_group_cost</code>.</li>
+  </ul>
+</div>
+<p>The program reads one age per line with no prompt, inside <code>report_group_cost</code>.</p>
+<pre class="wb-shell">Group entry
+<span class="wb-typed">4</span>
+<span class="wb-typed">5</span>
+<span class="wb-typed">16</span>
+<span class="wb-typed">60</span>
+<span class="wb-typed"></span>
+Total: $33.00
+End of report</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4</code>, <code>5</code>, <code>16</code>, <code>60</code>, blank</td><td><code>Group entry</code>, <code>Total: $33.00</code>, <code>End of report</code></td></tr>
+    <tr><td>blank</td><td><code>Group entry</code>, <code>Total: $0.00</code>, <code>End of report</code></td></tr>
+    <tr><td><code>0</code>, <code>4</code>, <code>15</code>, <code>16</code>, <code>59</code>, <code>60</code>, <code>120</code>, blank</td><td><code>Group entry</code>, <code>Total: $58.00</code>, <code>End of report</code></td></tr>
+    <tr><td><code>30</code>, <code>30</code>, blank</td><td><code>Group entry</code>, <code>Total: $30.00</code>, <code>End of report</code></td></tr>
+    <tr><td>twenty ages of <code>61</code>, blank</td><td><code>Group entry</code>, <code>Total: $200.00</code>, <code>End of report</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_heading</code>, <code>report_group_cost</code>, and <code>show_closing</code> with empty parentheses and a docstring as the first statement of each body.</li>
+    <li><code>show_heading</code> prints <code>Group entry</code> and nothing else; <code>show_closing</code> prints <code>End of report</code> and nothing else.</li>
+    <li>Call each function once, after all three definitions.</li>
+    <li>Keep the input inside <code>report_group_cost</code>.</li>
+    <li>Keep the total output inside <code>report_group_cost</code>.</li>
+    <li>Use a sentinel loop: a <code>while</code> loop that stops at the blank line.</li>
+    <li>Choose each price with an <code>if</code>/<code>elif</code>/<code>else</code> chain.</li>
+  </ul>
+</div>
+<wb-exercise id="group"></wb-exercise>
+
+<h2 id="growth" data-toc-title="💀 Two growth tables">💀 Boss 4: Two growth tables</h2>
+<p>Given an initial balance, produce two separate three-year growth tables. A balance is an amount of money. Each year, interest adds a percentage of the current balance. For the first table use 2 percent per year; for the second use 5 percent per year. Start each table from the same initial balance. Apply each year's interest by multiplying the current balance by <code>1.02</code> or <code>1.05</code>. Round only the displayed amounts to two decimal places.</p>
+<p>Read the initial balance once at the top level. Print <code>Rate: 2%</code> and <code>Rate: 5%</code> as the table headings. Under each heading print years 1, 2, and 3, with the year and balance separated by one space. Print ten hyphens before the first heading, between the tables, and after the second table. Define <code>print_separator</code> once and use it for all three separators. A zero balance stays zero in both tables.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+100
+Output:
+----------
+Rate: 2%
+1 102.00
+2 104.04
+3 106.12
+----------
+Rate: 5%
+1 105.00
+2 110.25
+3 115.76
+----------
+Explanation:
+Each table starts from 100 and applies its own rate three times.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+----------
+Rate: 2%
+1 0.00
+2 0.00
+3 0.00
+----------
+Rate: 5%
+1 0.00
+2 0.00
+3 0.00
+----------
+Explanation:
+Multiplying zero by either growth factor leaves zero.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read one decimal amount from 0 to 10000, with at most two decimal places.</li>
+    <li>Print three years for each of the two specified rates.</li>
+    <li>Use a documented <code>print_separator</code> function with empty parentheses, defined once and called three times.</li>
+    <li>Keep the input and growth loops at the top level.</li>
+    <li>Reset the balance to the initial amount before the second table.</li>
+  </ul>
+</div>
+<p>The program reads the initial balance with no prompt.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Year lines under <code>Rate: 2%</code></th><th>Year lines under <code>Rate: 5%</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>100</code></td><td><code>1 102.00</code>, <code>2 104.04</code>, <code>3 106.12</code></td><td><code>1 105.00</code>, <code>2 110.25</code>, <code>3 115.76</code></td></tr>
+    <tr><td><code>0</code></td><td><code>1 0.00</code>, <code>2 0.00</code>, <code>3 0.00</code></td><td><code>1 0.00</code>, <code>2 0.00</code>, <code>3 0.00</code></td></tr>
+    <tr><td><code>10000</code></td><td><code>1 10200.00</code>, <code>2 10404.00</code>, <code>3 10612.08</code></td><td><code>1 10500.00</code>, <code>2 11025.00</code>, <code>3 11576.25</code></td></tr>
+    <tr><td><code>49.99</code></td><td><code>1 50.99</code>, <code>2 52.01</code>, <code>3 53.05</code></td><td><code>1 52.49</code>, <code>2 55.11</code>, <code>3 57.87</code></td></tr>
+    <tr><td><code>1</code></td><td><code>1 1.02</code>, <code>2 1.04</code>, <code>3 1.06</code></td><td><code>1 1.05</code>, <code>2 1.10</code>, <code>3 1.16</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>print_separator</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li><code>print_separator</code> prints exactly ten hyphens and nothing else.</li>
+    <li>Call <code>print_separator</code> exactly three times: before the first table, between the tables, and after the second.</li>
+    <li>Keep the growth loops at the top level, not inside a function.</li>
+    <li>Read the initial balance once at the top level.</li>
+    <li>Multiply the balance by <code>1.02</code> in the first table and by <code>1.05</code> in the second.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the line <code>initial_balance = float(input())</code> unchanged. The checker will type the other balances.</p>
+<wb-exercise id="growth"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 17 Boss Problems.</p>
+</main>
+</body>
+</html>

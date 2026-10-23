@@ -1,0 +1,297 @@
+{
+  "id": "lecture-18-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 18 Boss Problems",
+  "short": "L18 bosses",
+  "subtitle": "Parameters and return values",
+  "exercises": {
+    "diagonal": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 6,
+      "starter": "def diagonal(width, height):\n    # Return the diagonal length.\n\nwidth = float(input())\nheight = float(input())\n# Call the function and print two decimal places.",
+      "cases": [
+        {
+          "name": "Example 1: typed 8 and 15",
+          "inputs": [
+            "8",
+            "15"
+          ],
+          "expected": "17.00"
+        },
+        {
+          "name": "Example 2: typed 1 and 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "1.41"
+        },
+        {
+          "name": "Typed 3 and 4",
+          "inputs": [
+            "3",
+            "4"
+          ],
+          "expected": "5.00"
+        },
+        {
+          "name": "Typed 10000 and 10000",
+          "inputs": [
+            "10000",
+            "10000"
+          ],
+          "expected": "14142.14"
+        },
+        {
+          "name": "Typed 0.5 and 1.2",
+          "inputs": [
+            "0.5",
+            "1.2"
+          ],
+          "expected": "1.30"
+        },
+        {
+          "name": "Typed 2.5 and 6",
+          "inputs": [
+            "2.5",
+            "6"
+          ],
+          "expected": "6.50"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"diagonal\", \"width\", \"height\")\n_returns('diagonal', (3.0, 4.0), 5.0)\n_returns('diagonal', (8.0, 15.0), 17.0)\n_returns('diagonal', (1.0, 1.0), 1.4142135623730951)\n_returns('diagonal', (0.5, 1.2), 1.3)\nassert _call(\"diagonal\", 3.0, 4.0)[1] == \"\", \"Print only in the caller: diagonal returns the length and prints nothing.\"\n",
+      "hints": [
+        "`diagonal` returns `(width ** 2 + height ** 2) ** 0.5`. For 8 and 15 that is the square root of 64 + 225 = 289, which is `17.0`.",
+        "The caller formats the returned value: `print(f'{diagonal(width, height):.2f}')`. The function itself prints nothing."
+      ],
+      "answer": "ZGVmIGRpYWdvbmFsKHdpZHRoLCBoZWlnaHQpOgogICAgcmV0dXJuICh3aWR0aCAqKiAyICsgaGVpZ2h0ICoqIDIpICoqIDAuNQoKd2lkdGggPSBmbG9hdChpbnB1dCgpKQpoZWlnaHQgPSBmbG9hdChpbnB1dCgpKQpwcmludChmJ3tkaWFnb25hbCh3aWR0aCwgaGVpZ2h0KTouMmZ9Jyk=",
+      "answerNote": "The function returns the calculation. Formatting belongs to the caller."
+    },
+    "triangle": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 6,
+      "starter": "def can_form_triangle(a, b, c):\n    # Return the Boolean expression.\n\n# Read three lengths, call the function, and print the result.",
+      "cases": [
+        {
+          "name": "Example 1: typed 4, 6, 7",
+          "inputs": [
+            "4",
+            "6",
+            "7"
+          ],
+          "expected": "True"
+        },
+        {
+          "name": "Example 2: typed 2, 5, 7",
+          "inputs": [
+            "2",
+            "5",
+            "7"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed 3, 4, 5",
+          "inputs": [
+            "3",
+            "4",
+            "5"
+          ],
+          "expected": "True"
+        },
+        {
+          "name": "Typed 1, 1, 2",
+          "inputs": [
+            "1",
+            "1",
+            "2"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed 7, 2, 5",
+          "inputs": [
+            "7",
+            "2",
+            "5"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed 5, 9, 4",
+          "inputs": [
+            "5",
+            "9",
+            "4"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed 0.5, 0.5, 0.5",
+          "inputs": [
+            "0.5",
+            "0.5",
+            "0.5"
+          ],
+          "expected": "True"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"can_form_triangle\", \"a\", \"b\", \"c\")\n_nodes = _body(\"can_form_triangle\")\nassert sum(isinstance(n, ast.Return) for n in _nodes) == 1 and not any(isinstance(n, (ast.If, ast.IfExp)) for n in _nodes), \"Return one Boolean expression: use a single return statement and no if.\"\nimport itertools\n_want = '1000000010000000100000001000000010000000100000001010000011100000111000001110000011100000111000001100100000111000111110001111100011111000111100001110001000001110001111101111111011111100111110001111000010000011100011111011111111111110111111001111100000100000111000111100111110111111111111101111110000001000001100001110001111001111101111111111111'\nfor _i, _t in enumerate(itertools.product(range(1, 8), repeat=3)):\n    _returns(\"can_form_triangle\", _t, _want[_i] == \"1\")\n",
+      "hints": [
+        "Each pair of lengths needs a sum strictly greater than the remaining length. The three comparisons are `a + b > c`, `a + c > b`, and `b + c > a`.",
+        "All three comparisons must be true, so join them with `and` in one `return` statement. For 2, 5, 7 the first comparison is `7 > 7`, which is `False`.",
+        "Read the lengths with `a = float(input())`, `b = float(input())`, and `c = float(input())`, then print `can_form_triangle(a, b, c)`."
+      ],
+      "answer": "ZGVmIGNhbl9mb3JtX3RyaWFuZ2xlKGEsIGIsIGMpOgogICAgcmV0dXJuIGEgKyBiID4gYyBhbmQgYSArIGMgPiBiIGFuZCBiICsgYyA+IGEKCmEgPSBmbG9hdChpbnB1dCgpKQpiID0gZmxvYXQoaW5wdXQoKSkKYyA9IGZsb2F0KGlucHV0KCkpCnByaW50KGNhbl9mb3JtX3RyaWFuZ2xlKGEsIGIsIGMpKQ==",
+      "answerNote": "All three comparisons must be true, so the expression uses `and`."
+    },
+    "middle": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 11,
+      "starter": "def middle_value(a, b, c):\n    # Return the middle value on every path.\n\n# Read three integers and print the returned result.",
+      "cases": [
+        {
+          "name": "Example 1: typed 14, 3, 8",
+          "inputs": [
+            "14",
+            "3",
+            "8"
+          ],
+          "expected": "8"
+        },
+        {
+          "name": "Example 2: typed 5, 5, 9",
+          "inputs": [
+            "5",
+            "5",
+            "9"
+          ],
+          "expected": "5"
+        },
+        {
+          "name": "Typed 9, 5, 5",
+          "inputs": [
+            "9",
+            "5",
+            "5"
+          ],
+          "expected": "5"
+        },
+        {
+          "name": "Typed 7, 7, 7",
+          "inputs": [
+            "7",
+            "7",
+            "7"
+          ],
+          "expected": "7"
+        },
+        {
+          "name": "Typed 2, 1, 3",
+          "inputs": [
+            "2",
+            "1",
+            "3"
+          ],
+          "expected": "2"
+        },
+        {
+          "name": "Typed -1000000, 1000000, 0",
+          "inputs": [
+            "-1000000",
+            "1000000",
+            "0"
+          ],
+          "expected": "0"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"middle_value\", \"a\", \"b\", \"c\")\nassert not re.search(r\"\\b(sorted|sort|list|min|max)\\b|\\[\", __code__), \"Do not use sorting, lists, min, or max. Compare the values instead.\"\nassert sum(isinstance(n, ast.Return) for n in _body(\"middle_value\")) >= 2, \"Use several return statements, one for each way a value can be the middle.\"\nimport itertools\n_want = '00000011110122201233012340111111111112221123311234012221122222222222332223401233112332223333333333340123411234222343333444444'\nfor _i, _t in enumerate(itertools.product(range(-2, 3), repeat=3)):\n    _returns(\"middle_value\", _t, int(_want[_i]) - 2)\n",
+      "hints": [
+        "`b` is the middle when it lies between the other two, in either order: `a <= b <= c` or `c <= b <= a`. Return `b` in that case.",
+        "Test `a` the same way with `b <= a <= c` or `c <= a <= b`, and return `a`. For 14, 3, 8 neither test is true.",
+        "If neither `b` nor `a` is the middle, the last line returns `c`. Inclusive comparisons handle ties: for 5, 5, 9 the first test `5 <= 5 <= 9` is true and returns 5."
+      ],
+      "answer": "ZGVmIG1pZGRsZV92YWx1ZShhLCBiLCBjKToKICAgIGlmIChhIDw9IGIgPD0gYykgb3IgKGMgPD0gYiA8PSBhKToKICAgICAgICByZXR1cm4gYgogICAgaWYgKGIgPD0gYSA8PSBjKSBvciAoYyA8PSBhIDw9IGIpOgogICAgICAgIHJldHVybiBhCiAgICByZXR1cm4gYwoKYSA9IGludChpbnB1dCgpKQpiID0gaW50KGlucHV0KCkpCmMgPSBpbnQoaW5wdXQoKSkKcHJpbnQobWlkZGxlX3ZhbHVlKGEsIGIsIGMpKQ==",
+      "answerNote": "Test whether b lies between the other two values, then whether a does. If neither does, c is the middle. Inclusive comparisons handle ties."
+    },
+    "integer": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 16,
+      "starter": "def is_integer_text(text):\n    # Check outside spaces, the optional sign, and every remaining character.\n\ntext = input()\nprint(is_integer_text(text))",
+      "cases": [
+        {
+          "name": "Example 1: typed '  -42  '",
+          "inputs": [
+            "  -42  "
+          ],
+          "expected": "True"
+        },
+        {
+          "name": "Example 2: typed '+'",
+          "inputs": [
+            "+"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Example 3: typed an empty line",
+          "inputs": [
+            ""
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed '12 3'",
+          "inputs": [
+            "12 3"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed '+5'",
+          "inputs": [
+            "+5"
+          ],
+          "expected": "True"
+        },
+        {
+          "name": "Typed '--4'",
+          "inputs": [
+            "--4"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed '4.0'",
+          "inputs": [
+            "4.0"
+          ],
+          "expected": "False"
+        },
+        {
+          "name": "Typed '   '",
+          "inputs": [
+            "   "
+          ],
+          "expected": "False"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"is_integer_text\", \"text\")\nassert not re.search(r\"\\b(int|float)\\s*\\(\", __code__), \"Do not convert the text with int or float. Check each character instead.\"\n_nodes = _body(\"is_integer_text\")\nassert sum(isinstance(n, ast.Return) for n in _nodes) >= 2, \"Use several return paths: return False as soon as the text fails a rule.\"\nassert any(isinstance(n, (ast.For, ast.While)) for n in _nodes), \"Use a loop to check the remaining characters.\"\n_returns('is_integer_text', ('  -42  ',), True)\n_returns('is_integer_text', ('+',), False)\n_returns('is_integer_text', ('',), False)\n_returns('is_integer_text', ('007',), True)\n_returns('is_integer_text', ('12 3',), False)\n_returns('is_integer_text', ('-',), False)\n_returns('is_integer_text', ('+5',), True)\n_returns('is_integer_text', ('abc',), False)\n_returns('is_integer_text', ('   ',), False)\n_returns('is_integer_text', ('4.0',), False)\n_returns('is_integer_text', ('--4',), False)\n_returns('is_integer_text', (' 12',), True)\n_returns('is_integer_text', ('12 ',), True)\n_returns('is_integer_text', ('+-3',), False)\n_returns('is_integer_text', ('0',), True)\n_returns('is_integer_text', ('- 4',), False)\n_returns('is_integer_text', ('9a',), False)\n_returns('is_integer_text', ('+0099',), True)\n_returns('is_integer_text', ('1,000',), False)\n_returns('is_integer_text', ('  +  ',), False)\n",
+      "hints": [
+        "Remove the outside spaces with two loops. `while len(text) > 0 and text[0] == ' ':` drops the first character with `text = text[1:]`, and a second loop drops the last one with `text = text[:-1]`.",
+        "If nothing is left, return `False`. If `text[0]` is `'+'` or `'-'`, remove it with `text[1:]`, then return `False` again if nothing is left. For `+` this second test returns `False`.",
+        "Loop over the remaining characters. A character below `'0'` or above `'9'` is not a digit, so return `False` at once. After the loop, return `True`."
+      ],
+      "answer": "ZGVmIGlzX2ludGVnZXJfdGV4dCh0ZXh0KToKICAgIHdoaWxlIGxlbih0ZXh0KSA+IDAgYW5kIHRleHRbMF0gPT0gJyAnOgogICAgICAgIHRleHQgPSB0ZXh0WzE6XQogICAgd2hpbGUgbGVuKHRleHQpID4gMCBhbmQgdGV4dFstMV0gPT0gJyAnOgogICAgICAgIHRleHQgPSB0ZXh0WzotMV0KICAgIGlmIGxlbih0ZXh0KSA9PSAwOgogICAgICAgIHJldHVybiBGYWxzZQogICAgaWYgdGV4dFswXSA9PSAnKycgb3IgdGV4dFswXSA9PSAnLSc6CiAgICAgICAgdGV4dCA9IHRleHRbMTpdCiAgICBpZiBsZW4odGV4dCkgPT0gMDoKICAgICAgICByZXR1cm4gRmFsc2UKICAgIGZvciBjaGFyYWN0ZXIgaW4gdGV4dDoKICAgICAgICBpZiBjaGFyYWN0ZXIgPCAnMCcgb3IgY2hhcmFjdGVyID4gJzknOgogICAgICAgICAgICByZXR1cm4gRmFsc2UKICAgIHJldHVybiBUcnVlCgp0ZXh0ID0gaW5wdXQoKQpwcmludChpc19pbnRlZ2VyX3RleHQodGV4dCkp",
+      "answerNote": "The length checks protect indexing and reject an empty value or a sign alone. A non-digit ends the call with False. Reaching the last line means every remaining character is a digit."
+    }
+  }
+}

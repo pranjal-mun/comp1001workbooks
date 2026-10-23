@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 17 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-17", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 17 Workbook</h1>
+    <div class="wb-subtitle">Problem solving with functions: black boxes and decomposition</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>A function gives a task a name. Define and call functions, put loops and decisions in their bodies, and divide a program into smaller jobs. Use docstrings to describe each job and test each function on its own.</p>
+  <p>Reading: §5.1, §5.2</p>
+  <ul>
+    <li>Apply the problem-solving stages while decomposing a program into functions.</li>
+    <li>Explain the black-box view of a function.</li>
+    <li>Define and call functions, and trace execution after a call.</li>
+    <li>Use input, decisions, and loops inside a function.</li>
+    <li>Document and test a function independently.</li>
+    <li>Choose functions with one clear job.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-functions">Functions</p>
+
+<h2 id="s1" data-toc-title="Calling functions">1. You have been calling functions since day one</h2>
+<p>Your first Python program already used a function: <code>print("Hello World")</code>. The function name is <code>print</code>, and the argument is the string <code>"Hello World"</code>. The parentheses call <code>print</code> with that string. Python runs the function, and the screen shows <code>Hello World</code>.</p>
+<p>Someone wrote the code behind <code>print</code>. We have been using it without reading all of that code. So far, we have learned how to use functions. Today, we learn how to write our own.</p>
+
+<h2 id="s2" data-toc-title="A function names a task">2. A function gives a task a name</h2>
+<p>A <strong>function</strong> is a named sequence of instructions that performs a task. For <code>make_coffee()</code>, the instructions are to grind the beans, brew the coffee, and pour into a cup. The name lets us refer to the whole task at once. Calling the function means asking it to carry out those instructions. The same idea works for a greeting, a calculation, or a report.</p>
+
+<h2 id="s3" data-toc-title="Black boxes">3. A function as a black box</h2>
+<p>In <code>round(6.8275, 2)</code>, the arguments are <code>6.8275</code> and <code>2</code>, and the result is <code>6.83</code>. To use <code>round</code>, we need its <strong>specification</strong>: give it a number and a number of decimal places, and it returns the rounded value. We can use that promise without knowing its internal steps. Arguments are values supplied by the program. They can come from variables or literals as well as user input.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1: The black-box view</div>
+  <p>For <code>len("coffee")</code>, identify the function name, the argument, and the result.</p>
+  <pre><code><span class="wb-fn">len</span>(<span class="wb-str">"coffee"</span>)</code></pre>
+  <wb-short id="cp1"></wb-short>
+</div>
+
+<p class="wb-part" id="part-definitions">Definitions</p>
+
+<h2 id="s4" data-toc-title="Our first function">4. Our first function</h2>
+<wb-example id="ex-greet"></wb-example>
+<p><code>def greet():</code> creates the function. The colon ends its header. Indent the function <strong>body</strong>. The first string is the <strong>docstring</strong>. It describes the function. Each <code>greet()</code> runs that body.</p>
+<pre class="wb-output">Hello!
+Hello!</pre>
+<p>The definition alone prints nothing. Here we define the function once and call it twice. Empty parentheses mean no arguments.</p>
+
+<h2 id="s5" data-toc-title="A call runs the body">5. A call runs the body, then execution continues</h2>
+<wb-example id="ex-call"></wb-example>
+<p>The call displays <code>Hello!</code>. Once the body finishes, Python continues after the call and displays <code>Back here</code>.</p>
+
+<h2 id="s6" data-toc-title="Loops and decisions">6. Loops and decisions inside a function</h2>
+<p>The loop belongs to the function body. <code>print("Go!")</code> lines up with <code>for</code>, so it runs once after the loop.</p>
+<wb-example id="ex-countdown"></wb-example>
+<p><code>show_result()</code> reads a mark and chooses one message.</p>
+<wb-example id="ex-result"></wb-example>
+<p>Entering <code>72</code> displays <code>Pass</code>. Entering <code>40</code> displays <code>Try again</code>. Assignments, input, loops, and <code>if</code> statements can all appear inside a function. Indentation still groups the statements.</p>
+
+<h2 id="s7" data-toc-title="Definition before call">7. Python needs the definition before the call runs</h2>
+<p>This order fails:</p>
+<wb-example id="ex-order-fail"></wb-example>
+<p>The first line raises <code>NameError</code> because <code>greet</code> does not yet exist.</p>
+<p>This order works:</p>
+<wb-example id="ex-order-fixed"></wb-example>
+<p>Python creates the function, then the call runs its body. For now, put function definitions above the statements that call them.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2: Coffee for two</div>
+  <p>Define <code>make_coffee()</code> to display <code>Grind the beans</code>, <code>Brew the coffee</code>, and <code>Pour into a cup</code>, in that order. Add a docstring and call it twice.</p>
+  <p>Before running your program, write down the six output lines.</p>
+  <wb-table id="cp2-predict">
+    <table>
+      <thead><tr><th>Line</th><th>Predicted output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+        <tr><td>4</td><td data-blank="l4"></td></tr>
+        <tr><td>5</td><td data-blank="l5"></td></tr>
+        <tr><td>6</td><td data-blank="l6"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>make_coffee</code> with empty parentheses and a docstring as the first statement of its body.</li>
+      <li><code>make_coffee</code> prints <code>Grind the beans</code>, <code>Brew the coffee</code>, and <code>Pour into a cup</code>, in that order, and nothing else.</li>
+      <li>Call <code>make_coffee</code> twice.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3: A function that reads a mark</div>
+  <p>Define <code>show_grade()</code> to read a whole-number mark from 0 to 100. Print <code>Excellent</code> for 80 or above, <code>Pass</code> for 50 to 79, and <code>Try again</code> below 50. Use <code>if</code>/<code>elif</code>/<code>else</code>, add a docstring, and call it once.</p>
+  <p>Assume the user enters a valid mark. Test 80, 50, and 49 to check where the message changes.</p>
+  <div class="wb-table-wrap">
+  <table>
+    <thead><tr><th>Input</th><th>Message</th></tr></thead>
+    <tbody>
+      <tr><td><code>80</code></td><td><code>Excellent</code></td></tr>
+      <tr><td><code>50</code></td><td><code>Pass</code></td></tr>
+      <tr><td><code>49</code></td><td><code>Try again</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Check</strong> types each of these marks, and also 100, 79, and 0. Any prompt is accepted. The checker looks only at the message your program prints.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>show_grade</code> with empty parentheses and a docstring as the first statement of its body.</li>
+      <li>Read the mark with <code>input()</code> inside the body of <code>show_grade</code>.</li>
+      <li>Choose the message with <code>if</code>, <code>elif</code>, and <code>else</code>.</li>
+      <li>For each mark, print the matching message and no other message.</li>
+      <li>Call <code>show_grade</code> once.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 4: Fibonacci numbers</div>
+  <p>Define <code>show_fibonacci()</code> to read a nonnegative count and print that many Fibonacci numbers, one per line. Start with 0 and 1. Each later number is the sum of the previous two. A count of 0 prints no numbers. Add a docstring and call the function once.</p>
+  <p>For a count of 7, the output lines are:</p>
+  <p><code>0, 1, 1, 2, 3, 5, 8</code></p>
+  <p>Use a loop. Keep track of two consecutive numbers as you go.</p>
+  <p><strong>Check</strong> types the counts 7, 0, 1, and 2. Any prompt is accepted. The checker looks only at the numbers your program prints after it.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>show_fibonacci</code> with empty parentheses and a docstring as the first statement of its body.</li>
+      <li>Read the count with <code>input()</code> inside the body of <code>show_fibonacci</code>.</li>
+      <li>Use a loop to print the numbers.</li>
+      <li>For each count, print exactly that many Fibonacci numbers, one per line.</li>
+      <li>Call <code>show_fibonacci</code> once.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp4"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-decomposition">Decomposition</p>
+
+<h2 id="s8" data-toc-title="Decomposition and the six stages">8. Decomposition and the six stages</h2>
+<p>Suppose a program must display an event notice. Give each function one job: <code>show_heading()</code> displays the title, <code>show_details()</code> displays the time and place, and <code>show_reminder()</code> displays what to bring. The caller puts the pieces in order. We can understand the overall plan before writing each body.</p>
+<wb-example id="ex-notice"></wb-example>
+<p>The calls read like the plan for the notice. Each function names one job and can be tested separately. If another notice needs the same heading, call <code>show_heading()</code> again.</p>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td><strong>1. Understand</strong></td><td>The notice must show a title, time and place, and a reminder.</td></tr>
+    <tr><td><strong>2. Decompose</strong></td><td>Give the heading, details, and reminder separate jobs.</td></tr>
+    <tr><td><strong>3. Find patterns</strong></td><td>Each job uses familiar <code>print</code> statements.</td></tr>
+    <tr><td><strong>4. Design</strong></td><td>Name the functions and decide their call order. Check that each required line appears once.</td></tr>
+    <tr><td><strong>5. Implement</strong></td><td>Write the function bodies and the calls in Python.</td></tr>
+    <tr><td><strong>6. Reflect</strong></td><td>Test each function, then the whole notice. Check the wording and order against the requirements.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>If a piece becomes hard to describe, revisit the decomposition.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 5: Choosing function boundaries</div>
+  <p>A program reads a mark, calculates a grade, and displays a report. How would you divide it into functions? Give each function a name and one job.</p>
+  <p>Look for tasks that have one clear purpose and can be checked separately.</p>
+  <wb-short id="cp5"></wb-short>
+</div>
+
+<p class="wb-part" id="part-documentation">Documentation and Testing</p>
+
+<h2 id="s9" data-toc-title="Docstrings">9. A docstring describes the function's promise</h2>
+<wb-example id="ex-docstring"></wb-example>
+<p>A string placed first in the body is the <strong>docstring</strong>. It tells the caller what the function does. <code>help(show_heading)</code> displays the stored documentation. Describe the function's promise. Keep the internal steps in the code.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>Programs 6 to 11 assign their fixed values inside the function body, as each starter shows. Keep those assignment lines as given. <strong>Check</strong> runs each program as written, then again with the test values from the statement in place of those assignments.</p>
+
+<h3>1. Information in a call</h3>
+<p>For <code>len('paper')</code>, name the function, write the information supplied, and give the value produced.</p>
+<wb-short id="p1"></wb-short>
+
+<h3>2. Execution order</h3>
+<p>Write the output of this program in execution order.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">show_tag</span>():
+    <span class="wb-fn">print</span>(<span class="wb-str">'Item'</span>)
+
+<span class="wb-fn">print</span>(<span class="wb-str">'Open'</span>)
+<span class="wb-fn">show_tag</span>()
+<span class="wb-fn">print</span>(<span class="wb-str">'Close'</span>)</code></pre>
+<wb-table id="p2">
+  <table>
+    <thead><tr><th>Line</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="l1"></td></tr>
+      <tr><td>2</td><td data-blank="l2"></td></tr>
+      <tr><td>3</td><td data-blank="l3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>3. Names and promises</h3>
+<p>Write a header and a docstring for each task: display a report heading; display a closing reminder. Complete each function with one output statement and call each function once. Choose the displayed text yourself.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define two functions with empty parentheses and a docstring as the first statement of each body.</li>
+    <li>Call each function exactly once.</li>
+    <li>Give each function one output statement, so the program prints two lines.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Definitions and calls</h3>
+<p>Decide whether each statement is true or false. Correct each false statement.</p>
+<wb-table id="p4">
+  <table>
+    <thead><tr><th>Statement</th><th>True or false</th></tr></thead>
+    <tbody>
+      <tr><td>1. Defining a function runs its body immediately.</td><td data-blank="s1"></td></tr>
+      <tr><td>2. A function can be called more than once.</td><td data-blank="s2"></td></tr>
+      <tr><td>3. Every function body must contain a <code>print</code> statement.</td><td data-blank="s3"></td></tr>
+      <tr><td>4. Python must have created a function before a call to it runs.</td><td data-blank="s4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p4-fix"></wb-short>
+
+<h3>5. Repeated calls</h3>
+<p>Write the output and count how many times each function body runs.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">show_left</span>():
+    <span class="wb-fn">print</span>(<span class="wb-str">'Left'</span>)
+
+<span class="wb-kw">def</span> <span class="wb-fn">show_right</span>():
+    <span class="wb-fn">print</span>(<span class="wb-str">'Right'</span>)
+
+<span class="wb-fn">show_left</span>()
+<span class="wb-fn">show_right</span>()
+<span class="wb-fn">show_left</span>()</code></pre>
+<wb-table id="p5">
+  <table>
+    <thead><tr><th>Line</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="l1"></td></tr>
+      <tr><td>2</td><td data-blank="l2"></td></tr>
+      <tr><td>3</td><td data-blank="l3"></td></tr>
+    </tbody>
+  </table>
+  <p>The body of <code>show_left</code> runs <span data-blank="left"></span> times. The body of <code>show_right</code> runs <span data-blank="right"></span> times.</p>
+</wb-table>
+
+<h3>6. A numerical summary</h3>
+<p>Define <code>show_smallest</code> and <code>show_average</code>. In each body, assign <code>a = 8</code>, <code>b = 3</code>, and <code>c = 7</code>. The first function prints the smallest value. The second prints their arithmetic average, which is their sum divided by three. Document and call both functions. Test again with all three values set to 4.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Values</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>a = 8</code>, <code>b = 3</code>, <code>c = 7</code></td><td><code>3</code>, <code>6.0</code></td></tr>
+    <tr><td><code>a = 4</code>, <code>b = 4</code>, <code>c = 4</code></td><td><code>4</code>, <code>4.0</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_smallest</code> and <code>show_average</code> with empty parentheses and a docstring as the first statement of each body.</li>
+    <li>Assign <code>a</code>, <code>b</code>, and <code>c</code> inside each function body.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Relationships between values</h3>
+<p>Define <code>show_relationships</code> with the fixed values <code>a = 4</code>, <code>b = 4</code>, and <code>c = 6</code>. Print three Boolean values, one per line: whether all three are equal; whether every pair is different; whether the values are in increasing order, allowing equality. Document and call the function. Test again with <code>2, 2, 2</code> and with <code>1, 3, 5</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Values</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4, 4, 6</code></td><td><code>False</code>, <code>False</code>, <code>True</code></td></tr>
+    <tr><td><code>2, 2, 2</code></td><td><code>True</code>, <code>False</code>, <code>True</code></td></tr>
+    <tr><td><code>1, 3, 5</code></td><td><code>False</code>, <code>True</code>, <code>True</code></td></tr>
+    <tr><td><code>5, 3, 1</code></td><td><code>False</code>, <code>True</code>, <code>False</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_relationships</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li>Assign <code>a</code>, <code>b</code>, and <code>c</code> inside the function body.</li>
+  </ul>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Digits of a number</h3>
+<p>Define <code>show_digits</code> with <code>number = 8040</code> inside its body. Print its first digit, last digit, and number of digits, one per line. Document and call the function. Test again with zero, which has one digit.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>number</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>8040</code></td><td><code>8</code>, <code>0</code>, <code>4</code></td></tr>
+    <tr><td><code>0</code></td><td><code>0</code>, <code>0</code>, <code>1</code></td></tr>
+    <tr><td><code>7</code></td><td><code>7</code>, <code>7</code>, <code>1</code></td></tr>
+    <tr><td><code>123456</code></td><td><code>1</code>, <code>6</code>, <code>6</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_digits</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li>Assign <code>number</code> inside the function body.</li>
+  </ul>
+</div>
+<wb-exercise id="p8"></wb-exercise>
+
+<h3>9. Middle characters</h3>
+<p>Define <code>show_middle</code> with <code>word = 'planet'</code> inside its body.</p>
+<ol>
+  <li>Print the central character for an odd length, or the central two characters for an even length. Print <code>Empty</code> for an empty string.</li>
+  <li>Include a docstring and call the function once.</li>
+  <li>Test with <code>'planet'</code>, <code>'stone'</code>, and <code>''</code>. The outputs are <code>an</code>, <code>o</code>, and <code>Empty</code>.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>word</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>'planet'</code></td><td><code>an</code></td></tr>
+    <tr><td><code>'stone'</code></td><td><code>o</code></td></tr>
+    <tr><td><code>''</code></td><td><code>Empty</code></td></tr>
+    <tr><td><code>'a'</code></td><td><code>a</code></td></tr>
+    <tr><td><code>'ab'</code></td><td><code>ab</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_middle</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li>Assign <code>word</code> inside the function body.</li>
+  </ul>
+</div>
+<wb-exercise id="p9"></wb-exercise>
+
+<h3>10. A growing balance</h3>
+<p>Define <code>show_balance</code> with an initial balance of 200, an annual interest rate of 3 percent, and 2 years stored inside its body. Each year, interest adds 3 percent of the current balance, so multiply the balance by <code>1.03</code>. Print only the final balance with two decimal places. Document and call the function. Test zero years as well.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>years</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2</code></td><td><code>212.18</code></td></tr>
+    <tr><td><code>0</code></td><td><code>200.00</code></td></tr>
+    <tr><td><code>10</code></td><td><code>268.78</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_balance</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li>Assign <code>balance</code> and <code>years</code> inside the function body.</li>
+    <li>Use a loop that applies one year of growth on each pass.</li>
+    <li>Multiply the balance by <code>1.03</code> for each year.</li>
+  </ul>
+</div>
+<wb-exercise id="p10"></wb-exercise>
+
+<h3>11. A colour code</h3>
+<p>A colour uses three whole-number components: red, green, and blue, each from 0 to 255. The combined code is <code>65536 × red + 256 × green + blue</code>. Use a temperature from 0 to 100 degrees Celsius. Use this path to assign its colour:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Temperature <var>t</var></th><th>Red</th><th>Green</th><th>Blue</th></tr></thead>
+  <tbody>
+    <tr><td>0 ≤ <var>t</var> ≤ 25</td><td>0</td><td>255<var>t</var>/25</td><td>255</td></tr>
+    <tr><td>25 &lt; <var>t</var> ≤ 50</td><td>0</td><td>255</td><td>255(50 − <var>t</var>)/25</td></tr>
+    <tr><td>50 &lt; <var>t</var> ≤ 75</td><td>255(<var>t</var> − 50)/25</td><td>255</td><td>0</td></tr>
+    <tr><td>75 &lt; <var>t</var> ≤ 100</td><td>255</td><td>255(100 − <var>t</var>)/25</td><td>0</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Round each component with <code>round</code>. Define <code>show_colour</code> with <code>temperature = 25</code> inside its body, then compute and print the combined code. Document and call it. Test the five path endpoints: 0, 25, 50, 75, and 100, as well as 12.5.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>temperature</code></th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>25</code></td><td><code>65535</code></td></tr>
+    <tr><td><code>0</code></td><td><code>255</code></td></tr>
+    <tr><td><code>50</code></td><td><code>65280</code></td></tr>
+    <tr><td><code>75</code></td><td><code>16776960</code></td></tr>
+    <tr><td><code>100</code></td><td><code>16711680</code></td></tr>
+    <tr><td><code>12.5</code></td><td><code>33023</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p class="wb-meta"><strong>Check</strong> also tries 40, 60, and 90, one inside each of the other segments.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_colour</code> with empty parentheses and a docstring as the first statement of its body.</li>
+    <li>Assign <code>temperature</code> inside the function body.</li>
+    <li>Round each component with <code>round</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p11"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Function definitions and calls</h3>
+<wb-example id="ex-review-coffee"></wb-example>
+<p>A function is a named sequence of instructions. Its body can contain assignments, input, decisions, and loops.</p>
+<ul>
+  <li><code>def</code> creates the function. Use a colon and an indented body. Names follow the rules for variable names.</li>
+  <li>A call runs the body, then execution continues after the call.</li>
+  <li>Define the function before calling it. Each new call runs the body again.</li>
+  <li>Put the docstring first in the body to describe what the function does.</li>
+</ul>
+
+<h3>Design, documentation, and testing</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Function boundaries</td><td>Give each function one clear job. A useful name, repeated work, or a separate test can justify a function.</td></tr>
+    <tr><td>Black-box interface</td><td>Know the function's task and how to call it. The implementation can stay hidden.</td></tr>
+    <tr><td>Documentation</td><td>Put the docstring first in the body. Describe the function's promise. <code>help(function_name)</code> shows it.</td></tr>
+    <tr><td>Tests</td><td>Predict the results before running. Test each function separately, then test the complete program. Check ordinary inputs and boundaries.</td></tr>
+    <tr><td>Decisions and loops</td><td><code>if</code>/<code>elif</code>/<code>else</code> selects one branch. A loop repeats its body. Keep statements that should run once outside the loop.</td></tr>
+    <tr><td>Cases worth checking</td><td>Fibonacci: counts 0, 1, and several. Middle characters: empty, odd length, and even length. Check the empty string before indexing.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Understand, decompose, find patterns, design and check, implement, reflect. Revisit an earlier stage when a test exposes a problem.</p>
+
+<hr>
+<p class="wb-meta">End of Lecture 17 Workbook.</p>
+</main>
+</body>
+</html>

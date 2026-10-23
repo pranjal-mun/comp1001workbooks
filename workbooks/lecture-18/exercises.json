@@ -1,0 +1,535 @@
+{
+  "id": "lecture-18",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 18 Workbook",
+  "subtitle": "Parameters and return values",
+  "exercises": {
+    "ex-greet": {
+      "type": "example",
+      "code": "def greet(name):\n    \"\"\"Display a greeting for name.\"\"\"\n    print(\"Hello,\", name)\n\ngreet(\"Maya\")\ngreet(\"Noah\")",
+      "output": "Hello, Maya\nHello, Noah"
+    },
+    "ex-cube": {
+      "type": "example",
+      "code": "def cube_volume(side_length):\n    \"\"\"Return the cube's volume.\"\"\"\n    volume = side_length ** 3\n    return volume\n\nanswer = cube_volume(2)\nprint(answer)"
+    },
+    "ex-difference": {
+      "type": "example",
+      "code": "def difference(first, second):\n    \"\"\"Return first minus second.\"\"\"\n    return first - second"
+    },
+    "ex-double": {
+      "type": "example",
+      "code": "def double(n):\n    n = n * 2\n    return n\n\nvalue = 5\nresult = double(value)\nprint(value, result)"
+    },
+    "cp1-predict": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "score": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "new_score": {
+          "accept": [
+            "11"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        }
+      }
+    },
+    "cp1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Parameters: … Arguments: …",
+      "answer": "UGFyYW1ldGVyczogYGFtb3VudGAsIGBzdGVwYC4KCkFyZ3VtZW50czogdGhlIHZhbHVlIGA4YCBmcm9tIGBzY29yZWAsIHRoZW4gYDNgLgoKVGhlIGZ1bmN0aW9uIGNoYW5nZXMgaXRzIG93biBgYW1vdW50YCB0byBgMTFgIGFuZCByZXR1cm5zIGl0LiBUaGUgcHJvZ3JhbSBwcmludHMgYDggMTFgLg=="
+    },
+    "ex-square": {
+      "type": "example",
+      "code": "def square(n):\n    return n * n\n\nresult = square(4) + 1"
+    },
+    "ex-magnitude": {
+      "type": "example",
+      "code": "def magnitude(number):\n    if number < 0:\n        return -number\n    return number\n\nprint(magnitude(-5))\nprint(magnitude(3))"
+    },
+    "ex-first-digit": {
+      "type": "example",
+      "code": "def first_digit(text):\n    for character in text:\n        if character in \"0123456789\":\n            return character\n    return \"\"\n\nprint(first_digit(\"Room 204\"))"
+    },
+    "ex-score-label": {
+      "type": "example",
+      "code": "def score_label(score):\n    if score >= 80:\n        return \"Excellent\"\n    if score >= 50:\n        return \"Pass\"\n    return \"Try again\""
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def delivery_fee(total, express):\n    # Return the delivery fee.",
+      "cases": [
+        {
+          "name": "delivery_fee(50, True) returns 8",
+          "check": "_returns('delivery_fee', (50, True), 8)\n"
+        },
+        {
+          "name": "delivery_fee(40, False) returns 0",
+          "check": "_returns('delivery_fee', (40, False), 0)\n"
+        },
+        {
+          "name": "delivery_fee(20, False) returns 4",
+          "check": "_returns('delivery_fee', (20, False), 4)\n"
+        },
+        {
+          "name": "delivery_fee(30, True) returns 8",
+          "check": "_returns('delivery_fee', (30, True), 8)\n"
+        },
+        {
+          "name": "delivery_fee(40, True) returns 8",
+          "check": "_returns('delivery_fee', (40, True), 8)\n"
+        },
+        {
+          "name": "delivery_fee(0, True) returns 8",
+          "check": "_returns('delivery_fee', (0, True), 8)\n"
+        },
+        {
+          "name": "delivery_fee(39, False) returns 4",
+          "check": "_returns('delivery_fee', (39, False), 4)\n"
+        },
+        {
+          "name": "delivery_fee(0, False) returns 4",
+          "check": "_returns('delivery_fee', (0, False), 4)\n"
+        },
+        {
+          "name": "delivery_fee(100, False) returns 0",
+          "check": "_returns('delivery_fee', (100, False), 0)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"delivery_fee\", \"total\", \"express\")\n",
+      "answer": "ZGVmIGRlbGl2ZXJ5X2ZlZSh0b3RhbCwgZXhwcmVzcyk6CiAgICAiIiJSZXR1cm4gdGhlIGRlbGl2ZXJ5IGZlZS4iIiIKICAgIGlmIGV4cHJlc3M6CiAgICAgICAgcmV0dXJuIDgKICAgIGlmIHRvdGFsID49IDQwOgogICAgICAgIHJldHVybiAwCiAgICByZXR1cm4gNAoKcHJpbnQoZGVsaXZlcnlfZmVlKDUwLCBUcnVlKSkKcHJpbnQoZGVsaXZlcnlfZmVlKDQwLCBGYWxzZSkpCnByaW50KGRlbGl2ZXJ5X2ZlZSgyMCwgRmFsc2UpKQ==",
+      "answerNote": "Check express delivery first: it applies even when the total reaches 40."
+    },
+    "ex-banner": {
+      "type": "example",
+      "code": "def show_banner(text):\n    print(\"=\" * len(text))\n    print(text)\n    print(\"=\" * len(text))\n\nresult = show_banner(\"Hi\")\nprint(result)",
+      "output": "==\nHi\n==\nNone"
+    },
+    "ex-show-square": {
+      "type": "example",
+      "code": "def show_square(n):\n    print(n * n)\n\nx = show_square(4)"
+    },
+    "ex-square-y": {
+      "type": "example",
+      "code": "def square(n):\n    return n * n\n\ny = square(4)"
+    },
+    "ex-sign-missing": {
+      "type": "example",
+      "code": "def sign_label(number):\n    if number < 0:\n        return \"negative\"\n\nprint(sign_label(-2))\nprint(sign_label(2))",
+      "output": "negative\nNone"
+    },
+    "ex-sign-fixed": {
+      "type": "example",
+      "code": "def sign_label(number):\n    \"\"\"Return negative or nonnegative.\"\"\"\n    if number < 0:\n        return \"negative\"\n    return \"nonnegative\""
+    },
+    "ex-is-even": {
+      "type": "example",
+      "code": "def is_even(number):\n    \"\"\"Return whether number is even.\"\"\"\n    return number % 2 == 0\n\nif is_even(6):\n    print(\"Even\")",
+      "output": "Even"
+    },
+    "ex-has-digit": {
+      "type": "example",
+      "code": "def has_digit(text):\n    \"\"\"Return whether text has a digit.\"\"\"\n    for character in text:\n        if character in \"0123456789\":\n            return True\n    return False"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def is_prime(number):\n    # Return whether number is prime.",
+      "cases": [
+        {
+          "name": "is_prime(1) returns False",
+          "check": "_returns('is_prime', (1,), False)\n"
+        },
+        {
+          "name": "is_prime(2) returns True",
+          "check": "_returns('is_prime', (2,), True)\n"
+        },
+        {
+          "name": "is_prime(9) returns False",
+          "check": "_returns('is_prime', (9,), False)\n"
+        },
+        {
+          "name": "is_prime(17) returns True",
+          "check": "_returns('is_prime', (17,), True)\n"
+        },
+        {
+          "name": "is_prime(-7) returns False",
+          "check": "_returns('is_prime', (-7,), False)\n"
+        },
+        {
+          "name": "is_prime(0) returns False",
+          "check": "_returns('is_prime', (0,), False)\n"
+        },
+        {
+          "name": "is_prime(3) returns True",
+          "check": "_returns('is_prime', (3,), True)\n"
+        },
+        {
+          "name": "is_prime(4) returns False",
+          "check": "_returns('is_prime', (4,), False)\n"
+        },
+        {
+          "name": "is_prime(25) returns False",
+          "check": "_returns('is_prime', (25,), False)\n"
+        },
+        {
+          "name": "is_prime(97) returns True",
+          "check": "_returns('is_prime', (97,), True)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"is_prime\", \"number\")\nassert re.search(r\"^\\s*(for|while)\\b\", __code__, re.M), \"Test possible divisors with a loop.\"\nassert \"%\" in __code__, \"Use % to check divisibility.\"\n",
+      "answer": "ZGVmIGlzX3ByaW1lKG51bWJlcik6CiAgICAiIiJSZXR1cm4gd2hldGhlciBudW1iZXIgaXMgcHJpbWUuIiIiCiAgICBpZiBudW1iZXIgPCAyOgogICAgICAgIHJldHVybiBGYWxzZQogICAgZm9yIGRpdmlzb3IgaW4gcmFuZ2UoMiwgbnVtYmVyKToKICAgICAgICBpZiBudW1iZXIgJSBkaXZpc29yID09IDA6CiAgICAgICAgICAgIHJldHVybiBGYWxzZQogICAgcmV0dXJuIFRydWU=",
+      "answerNote": "For `2`, the loop has no iterations. The final return gives `True`. For `9`, divisor `3` gives a remainder of zero, so the function returns `False`."
+    },
+    "p1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Arguments: … Parameters: … Returned value: …",
+      "answer": "VGhlIGFyZ3VtZW50cyBhcmUgNiBhbmQgMjsgdGhlIHBhcmFtZXRlcnMgYXJlIGB3aWR0aGAgYW5kIGBoZWlnaHRgLiBUaGlzIGRlZmluaXRpb24gcmVxdWlyZXMgdHdvIGFyZ3VtZW50cy4gT25lIGNhbGwgcmV0dXJucyBvbmUgdmFsdWUsIDEyLg=="
+    },
+    "p1-call": {
+      "type": "code",
+      "xp": 2,
+      "minLines": 4,
+      "starter": "def rectangle_area(width, height):\n    return width * height\n\n# Confirm the result with a call.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "12"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"rectangle_area\", \"width\", \"height\")\nassert re.search(r\"\\brectangle_area\\s*\\(\\s*6\\s*,\\s*2\\s*\\)\", __code__), \"Call rectangle_area(6, 2) and print the result.\"\n",
+      "answer": "ZGVmIHJlY3RhbmdsZV9hcmVhKHdpZHRoLCBoZWlnaHQpOgogICAgcmV0dXJuIHdpZHRoICogaGVpZ2h0CgpwcmludChyZWN0YW5nbGVfYXJlYSg2LCAyKSk="
+    },
+    "p2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "def show_money(amount):\n    # Print the amount with a dollar sign and two decimal places.\n\n# Test with 7.5 and 0.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "$7.50\n$0.00"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"show_money\", \"amount\")\n_prints('show_money', (3.14159,), '$3.14\\n')\n_prints('show_money', (12,), '$12.00\\n')\nassert _calls(\"show_money\") == 2, \"Use the same function for both calls: call show_money twice.\"\n",
+      "answer": "ZGVmIHNob3dfbW9uZXkoYW1vdW50KToKICAgIHByaW50KGYnJHthbW91bnQ6LjJmfScpCgpzaG93X21vbmV5KDcuNSkKc2hvd19tb25leSgwKQ==",
+      "answerNote": "This function's job is output, so its return value is `None`. Each caller uses `show_money(amount)`."
+    },
+    "p2-eur": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 2,
+      "placeholder": "The line to change and its new version…",
+      "answer": "VG8gY2hhbmdlIHRoZSBjdXJyZW5jeSBsYWJlbCwgcmVwbGFjZSB0aGUgcHJpbnQgbGluZSB3aXRoIGBwcmludChmJ0VVUiB7YW1vdW50Oi4yZn0nKWAu"
+    },
+    "p3-plan": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Pseudocode, one step per line…",
+      "answer": "U3RhcnQgd2l0aCBhbiBlbXB0eSByZXN1bHQuIEZvciBlYWNoIGNoYXJhY3RlciwgYXBwZW5kIHRoZSBkaWdpdCBmb3IgaXRzIGxldHRlciBncm91cCwgb3IgYXBwZW5kIHRoZSB1bmNoYW5nZWQgY2hhcmFjdGVyLiBSZXR1cm4gdGhlIGNvbXBsZXRlZCByZXN1bHQu"
+    },
+    "p3": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 22,
+      "starter": "def phone_digits(text):\n    # Return text with each letter replaced by its keypad digit.\n\n# Print each result inside [ and ].",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "[8-228]\n[]"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"phone_digits\", \"text\")\n_returns('phone_digits', ('8-CAT',), '8-228')\n_returns('phone_digits', ('',), '')\n_returns('phone_digits', ('HELLO',), '43556')\n_returns('phone_digits', ('PQRS-TUV-WXYZ',), '7777-888-9999')\n_returns('phone_digits', ('1-800-FLOWERS',), '1-800-3569377')\n_returns('phone_digits', ('ADGJMPTW',), '23456789')\n",
+      "answer": "ZGVmIHBob25lX2RpZ2l0cyh0ZXh0KToKICAgIHJlc3VsdCA9ICcnCiAgICBmb3IgY2hhcmFjdGVyIGluIHRleHQ6CiAgICAgICAgaWYgY2hhcmFjdGVyIGluICdBQkMnOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyAnMicKICAgICAgICBlbGlmIGNoYXJhY3RlciBpbiAnREVGJzoKICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgJzMnCiAgICAgICAgZWxpZiBjaGFyYWN0ZXIgaW4gJ0dISSc6CiAgICAgICAgICAgIHJlc3VsdCA9IHJlc3VsdCArICc0JwogICAgICAgIGVsaWYgY2hhcmFjdGVyIGluICdKS0wnOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyAnNScKICAgICAgICBlbGlmIGNoYXJhY3RlciBpbiAnTU5PJzoKICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgJzYnCiAgICAgICAgZWxpZiBjaGFyYWN0ZXIgaW4gJ1BRUlMnOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyAnNycKICAgICAgICBlbGlmIGNoYXJhY3RlciBpbiAnVFVWJzoKICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgJzgnCiAgICAgICAgZWxpZiBjaGFyYWN0ZXIgaW4gJ1dYWVonOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyAnOScKICAgICAgICBlbHNlOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyBjaGFyYWN0ZXIKICAgIHJldHVybiByZXN1bHQKCnByaW50KCdbJyArIHBob25lX2RpZ2l0cygnOC1DQVQnKSArICddJykKcHJpbnQoJ1snICsgcGhvbmVfZGlnaXRzKCcnKSArICddJyk="
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "def separated_copies(text, count, separator):\n    # Return count copies with the separator only between copies.\n\n# Print each result inside brackets.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "[go/go/go]\n[]\n[go]"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"separated_copies\", \"text\", \"count\", \"separator\")\n_returns('separated_copies', ('go', 3, '/'), 'go/go/go')\n_returns('separated_copies', ('go', 0, '/'), '')\n_returns('separated_copies', ('go', 1, '/'), 'go')\n_returns('separated_copies', ('ab', 2, ', '), 'ab, ab')\n_returns('separated_copies', ('x', 5, ''), 'xxxxx')\n",
+      "answer": "ZGVmIHNlcGFyYXRlZF9jb3BpZXModGV4dCwgY291bnQsIHNlcGFyYXRvcik6CiAgICByZXN1bHQgPSAnJwogICAgZm9yIGluZGV4IGluIHJhbmdlKGNvdW50KToKICAgICAgICBpZiBpbmRleCA+IDA6CiAgICAgICAgICAgIHJlc3VsdCA9IHJlc3VsdCArIHNlcGFyYXRvcgogICAgICAgIHJlc3VsdCA9IHJlc3VsdCArIHRleHQKICAgIHJldHVybiByZXN1bHQKCnByaW50KCdbJyArIHNlcGFyYXRlZF9jb3BpZXMoJ2dvJywgMywgJy8nKSArICddJykKcHJpbnQoJ1snICsgc2VwYXJhdGVkX2NvcGllcygnZ28nLCAwLCAnLycpICsgJ10nKQpwcmludCgnWycgKyBzZXBhcmF0ZWRfY29waWVzKCdnbycsIDEsICcvJykgKyAnXScp",
+      "answerNote": "The separator is appended before every copy after the first, so the result has no trailing separator."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def vowel_count(text):\n    # Return the number of vowels in text.\n\n# Print the three results.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "2\n0\n5"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"vowel_count\", \"text\")\n_returns('vowel_count', ('Blue sky',), 2)\n_returns('vowel_count', ('',), 0)\n_returns('vowel_count', ('AEIOU',), 5)\n_returns('vowel_count', ('Programming',), 3)\n_returns('vowel_count', ('xyz',), 0)\n_returns('vowel_count', ('QUEUE queue',), 8)\n",
+      "answer": "ZGVmIHZvd2VsX2NvdW50KHRleHQpOgogICAgY291bnQgPSAwCiAgICBmb3IgY2hhcmFjdGVyIGluIHRleHQ6CiAgICAgICAgaWYgY2hhcmFjdGVyLmxvd2VyKCkgaW4gJ2FlaW91JzoKICAgICAgICAgICAgY291bnQgPSBjb3VudCArIDEKICAgIHJldHVybiBjb3VudAoKcHJpbnQodm93ZWxfY291bnQoJ0JsdWUgc2t5JykpCnByaW50KHZvd2VsX2NvdW50KCcnKSkKcHJpbnQodm93ZWxfY291bnQoJ0FFSU9VJykp",
+      "answerNote": "This program takes text as arguments and prints the vowel count for each string. The counter starts at zero. Each vowel adds one, and the function returns the count after the loop."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 13,
+      "starter": "def word_count(text):\n    # Return the number of words in text.\n\n# Print the three results.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "2\n0\n1"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"word_count\", \"text\")\nassert not re.search(r\"\\bsplit\\b\", __code__), \"Do not use split. Count each word where a non-space character follows a space or the start.\"\n_returns('word_count', ('red  blue',), 2)\n_returns('word_count', ('',), 0)\n_returns('word_count', ('   one   ',), 1)\n_returns('word_count', ('a b c',), 3)\n_returns('word_count', ('   ',), 0)\n_returns('word_count', ('one',), 1)\n_returns('word_count', (' x  y ',), 2)\n",
+      "answer": "ZGVmIHdvcmRfY291bnQodGV4dCk6CiAgICBjb3VudCA9IDAKICAgIGluX3dvcmQgPSBGYWxzZQogICAgZm9yIGNoYXJhY3RlciBpbiB0ZXh0OgogICAgICAgIGlmIGNoYXJhY3RlciA9PSAnICc6CiAgICAgICAgICAgIGluX3dvcmQgPSBGYWxzZQogICAgICAgIGVsaWYgbm90IGluX3dvcmQ6CiAgICAgICAgICAgIGNvdW50ID0gY291bnQgKyAxCiAgICAgICAgICAgIGluX3dvcmQgPSBUcnVlCiAgICByZXR1cm4gY291bnQKCnByaW50KHdvcmRfY291bnQoJ3JlZCAgYmx1ZScpKQpwcmludCh3b3JkX2NvdW50KCcnKSkKcHJpbnQod29yZF9jb3VudCgnICAgb25lICAgJykp",
+      "answerNote": "A new word begins at a non-space character when `in_word` is false."
+    },
+    "p7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def swap_inside(word, first, second):\n    # Return word with the characters at first and second exchanged.\n\n# Print the two results.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "peanlt\nacbd"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"swap_inside\", \"word\", \"first\", \"second\")\n_returns('swap_inside', ('planet', 1, 4), 'peanlt')\n_returns('swap_inside', ('abcd', 1, 2), 'acbd')\n_returns('swap_inside', ('python', 2, 3), 'pyhton')\n_returns('swap_inside', ('abcdef', 1, 4), 'aecdbf')\n_returns('swap_inside', ('letter', 2, 3), 'letter')\n",
+      "answer": "ZGVmIHN3YXBfaW5zaWRlKHdvcmQsIGZpcnN0LCBzZWNvbmQpOgogICAgcmVzdWx0ID0gJycKICAgIGZvciBpbmRleCBpbiByYW5nZShsZW4od29yZCkpOgogICAgICAgIGlmIGluZGV4ID09IGZpcnN0OgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyB3b3JkW3NlY29uZF0KICAgICAgICBlbGlmIGluZGV4ID09IHNlY29uZDoKICAgICAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgd29yZFtmaXJzdF0KICAgICAgICBlbHNlOgogICAgICAgICAgICByZXN1bHQgPSByZXN1bHQgKyB3b3JkW2luZGV4XQogICAgcmV0dXJuIHJlc3VsdAoKcHJpbnQoc3dhcF9pbnNpZGUoJ3BsYW5ldCcsIDEsIDQpKQpwcmludChzd2FwX2luc2lkZSgnYWJjZCcsIDEsIDIpKQ==",
+      "answerNote": "At each selected index, append the character from the other index. Copy every other character unchanged."
+    },
+    "p8": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 27,
+      "starter": "import math\n\n# Define the six functions here.\n\nr = float(input())\nh = float(input())\n# Print the six results in order, each to two decimal places.",
+      "cases": [
+        {
+          "name": "Typed 2 and 3",
+          "inputs": [
+            "2",
+            "3"
+          ],
+          "expected": "33.51\n50.27\n37.70\n62.83\n12.57\n35.22"
+        },
+        {
+          "name": "Typed 1 and 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "4.19\n12.57\n3.14\n12.57\n1.05\n7.58"
+        },
+        {
+          "name": "Typed 0.5 and 4",
+          "inputs": [
+            "0.5",
+            "4"
+          ],
+          "expected": "0.52\n3.14\n3.14\n14.14\n1.05\n7.12"
+        },
+        {
+          "name": "Typed 10 and 2.5",
+          "inputs": [
+            "10",
+            "2.5"
+          ],
+          "expected": "4188.79\n1256.64\n785.40\n785.40\n261.80\n637.99"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn('sphere_volume', 'r')\n_fn('sphere_area', 'r')\n_fn('cylinder_volume', 'r', 'h')\n_fn('cylinder_area', 'r', 'h')\n_fn('cone_volume', 'r', 'h')\n_fn('cone_area', 'r', 'h')\nassert re.search(r\"\\bmath\\.pi\\b\", __code__), \"Use math.pi.\"\n_returns('sphere_volume', (1.0,), 4.1887902047863905)\n_returns('sphere_volume', (2.5,), 65.44984694978736)\n_returns('sphere_area', (1.0,), 12.566370614359172)\n_returns('sphere_area', (2.5,), 78.53981633974483)\n_returns('cylinder_volume', (1.0, 1.0), 3.141592653589793)\n_returns('cylinder_volume', (2.0, 3.0), 37.69911184307752)\n_returns('cylinder_area', (1.0, 1.0), 12.566370614359172)\n_returns('cylinder_area', (2.0, 3.0), 62.83185307179586)\n_returns('cone_volume', (1.0, 1.0), 1.0471975511965976)\n_returns('cone_volume', (2.0, 3.0), 12.566370614359172)\n_returns('cone_area', (1.0, 1.0), 7.584475591748159)\n_returns('cone_area', (2.0, 3.0), 35.22071741263713)\n",
+      "answer": "aW1wb3J0IG1hdGgKCmRlZiBzcGhlcmVfdm9sdW1lKHIpOgogICAgcmV0dXJuIDQgKiBtYXRoLnBpICogciAqKiAzIC8gMwoKZGVmIHNwaGVyZV9hcmVhKHIpOgogICAgcmV0dXJuIDQgKiBtYXRoLnBpICogciAqKiAyCgpkZWYgY3lsaW5kZXJfdm9sdW1lKHIsIGgpOgogICAgcmV0dXJuIG1hdGgucGkgKiByICoqIDIgKiBoCgpkZWYgY3lsaW5kZXJfYXJlYShyLCBoKToKICAgIHJldHVybiAyICogbWF0aC5waSAqIHIgKiAociArIGgpCgpkZWYgY29uZV92b2x1bWUociwgaCk6CiAgICByZXR1cm4gbWF0aC5waSAqIHIgKiogMiAqIGggLyAzCgpkZWYgY29uZV9hcmVhKHIsIGgpOgogICAgcmV0dXJuIG1hdGgucGkgKiByICogKHIgKyAociAqKiAyICsgaCAqKiAyKSAqKiAwLjUpCgpyID0gZmxvYXQoaW5wdXQoKSkKaCA9IGZsb2F0KGlucHV0KCkpCnByaW50KGYne3NwaGVyZV92b2x1bWUocik6LjJmfScpCnByaW50KGYne3NwaGVyZV9hcmVhKHIpOi4yZn0nKQpwcmludChmJ3tjeWxpbmRlcl92b2x1bWUociwgaCk6LjJmfScpCnByaW50KGYne2N5bGluZGVyX2FyZWEociwgaCk6LjJmfScpCnByaW50KGYne2NvbmVfdm9sdW1lKHIsIGgpOi4yZn0nKQpwcmludChmJ3tjb25lX2FyZWEociwgaCk6LjJmfScp",
+      "answerNote": "Each function returns one measurement. The caller reads the dimensions once and formats all six results."
+    },
+    "p9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 5,
+      "starter": "def read_number(message):\n    # Display message and a space, then return the number typed as a float.\n\n# Read the length and width, then print their product.",
+      "cases": [
+        {
+          "name": "Typed 2.5 and 4",
+          "inputs": [
+            "2.5",
+            "4"
+          ],
+          "expected": "Length: Width: 10.0"
+        },
+        {
+          "name": "Typed 3 and 3",
+          "inputs": [
+            "3",
+            "3"
+          ],
+          "expected": "Length: Width: 9.0"
+        },
+        {
+          "name": "Typed 0.5 and 0.5",
+          "inputs": [
+            "0.5",
+            "0.5"
+          ],
+          "expected": "Length: Width: 0.25"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_f = _fn(\"read_number\", \"message\")\nassert \"input\" in _f.__code__.co_names and \"float\" in _f.__code__.co_names, \"Read the number with input() and convert it with float() inside read_number.\"\nassert _calls(\"read_number\") == 2, \"Call read_number twice: once with Length: and once with Width:.\"\n",
+      "answer": "ZGVmIHJlYWRfbnVtYmVyKG1lc3NhZ2UpOgogICAgcmV0dXJuIGZsb2F0KGlucHV0KG1lc3NhZ2UgKyAnICcpKQoKbGVuZ3RoID0gcmVhZF9udW1iZXIoJ0xlbmd0aDonKQp3aWR0aCA9IHJlYWRfbnVtYmVyKCdXaWR0aDonKQpwcmludChsZW5ndGggKiB3aWR0aCk=",
+      "answerNote": "Each call returns the converted input. This output capture shows prompts without typed-input echo; an interactive terminal also echoes the user's input."
+    },
+    "p10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def weekly_pay(rate, hours):\n    # Return the pay for the week.\n\ndef show_pay(name, amount):\n    # Print the name and pay to two decimal places.\n\n# Read a name, rate, and hours, then call both functions.",
+      "cases": [
+        {
+          "name": "Typed Lee, 12, 37",
+          "inputs": [
+            "Lee",
+            "12",
+            "37"
+          ],
+          "expected": "Lee: $456.00"
+        },
+        {
+          "name": "Typed Sam, 12, 0",
+          "inputs": [
+            "Sam",
+            "12",
+            "0"
+          ],
+          "expected": "Sam: $0.00"
+        },
+        {
+          "name": "Typed Ana, 20, 35",
+          "inputs": [
+            "Ana",
+            "20",
+            "35"
+          ],
+          "expected": "Ana: $700.00"
+        },
+        {
+          "name": "Typed Kim, 10, 40",
+          "inputs": [
+            "Kim",
+            "10",
+            "40"
+          ],
+          "expected": "Kim: $425.00"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"weekly_pay\", \"rate\", \"hours\")\n_fn(\"show_pay\", \"name\", \"amount\")\n_returns('weekly_pay', (12.0, 37.0), 456.0)\n_returns('weekly_pay', (12.0, 0.0), 0.0)\n_returns('weekly_pay', (20.0, 35.0), 700.0)\n_returns('weekly_pay', (10.0, 40.0), 425.0)\n_prints('show_pay', ('Ana', 3.5), 'Ana: $3.50\\n')\n_prints('show_pay', ('Lee', 456.0), 'Lee: $456.00\\n')\n",
+      "answer": "ZGVmIHdlZWtseV9wYXkocmF0ZSwgaG91cnMpOgogICAgaWYgaG91cnMgPD0gMzU6CiAgICAgICAgcmV0dXJuIHJhdGUgKiBob3VycwogICAgcmV0dXJuIHJhdGUgKiAzNSArIChob3VycyAtIDM1KSAqIHJhdGUgKiAxLjUKCmRlZiBzaG93X3BheShuYW1lLCBhbW91bnQpOgogICAgcHJpbnQoZid7bmFtZX06ICR7YW1vdW50Oi4yZn0nKQoKbmFtZSA9IGlucHV0KCkKcmF0ZSA9IGZsb2F0KGlucHV0KCkpCmhvdXJzID0gZmxvYXQoaW5wdXQoKSkKc2hvd19wYXkobmFtZSwgd2Vla2x5X3BheShyYXRlLCBob3Vycykp",
+      "answerNote": "The calculation returns an amount. The output function receives that amount as an argument."
+    },
+    "p11": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 13,
+      "starter": "def base_steps():\n    # Print the two base steps.\n\ndef finish_steps(warm):\n    # Print the final instruction.\n\n# Read warm or cool, then call both functions.",
+      "cases": [
+        {
+          "name": "Typed warm",
+          "inputs": [
+            "warm"
+          ],
+          "expected": "Fill the container.\nAdd the mixture.\nWarm the mixture."
+        },
+        {
+          "name": "Typed cool",
+          "inputs": [
+            "cool"
+          ],
+          "expected": "Fill the container.\nAdd the mixture.\nLeave it cool."
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"base_steps\")\n_fn(\"finish_steps\", \"warm\")\n_prints('base_steps', (), 'Fill the container.\\nAdd the mixture.\\n')\n_prints('finish_steps', (True,), 'Warm the mixture.\\n')\n_prints('finish_steps', (False,), 'Leave it cool.\\n')\nassert re.search(r\"\\bfinish_steps\\s*\\(\\s*(choice\\s*==\\s*[\\x22\\x27]{2}|[\\x22\\x27]{2}\\s*==\\s*choice)\\s*\\)\", __code__), \"Pass the comparison choice == 'warm' to finish_steps.\"\n",
+      "answer": "ZGVmIGJhc2Vfc3RlcHMoKToKICAgIHByaW50KCdGaWxsIHRoZSBjb250YWluZXIuJykKICAgIHByaW50KCdBZGQgdGhlIG1peHR1cmUuJykKCmRlZiBmaW5pc2hfc3RlcHMod2FybSk6CiAgICBpZiB3YXJtOgogICAgICAgIHByaW50KCdXYXJtIHRoZSBtaXh0dXJlLicpCiAgICBlbHNlOgogICAgICAgIHByaW50KCdMZWF2ZSBpdCBjb29sLicpCgpjaG9pY2UgPSBpbnB1dCgpCmJhc2Vfc3RlcHMoKQpmaW5pc2hfc3RlcHMoY2hvaWNlID09ICd3YXJtJyk=",
+      "answerNote": "Both functions perform output and return `None`; the Boolean argument chooses the final instruction."
+    },
+    "p12": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "import math\n\ndef view_angle(distance, bottom, height):\n    # Return the viewing angle in radians.\n\ndef standard_angle(distance):\n    # Return the angle for bottom 1 and height 2.\n\n# Print the two results to three decimal places.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "0.399\n0.785"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"view_angle\", \"distance\", \"bottom\", \"height\")\n_s = _fn(\"standard_angle\", \"distance\")\nassert \"view_angle\" in _s.__code__.co_names, \"Let standard_angle call view_angle with bottom 1 and height 2.\"\n_returns('view_angle', (5, 0, 5), 0.7853981633974483)\n_returns('view_angle', (2, 0.5, 1.5), 0.5404195002705842)\n_returns('view_angle', (10, 3, 1), 0.0890495826344978)\n_returns('standard_angle', (4,), 0.39852244566642026)\n_returns('standard_angle', (1,), 0.46364760900080615)\n_returns('standard_angle', (7.5,), 0.24795484481569088)\n",
+      "answer": "aW1wb3J0IG1hdGgKCmRlZiB2aWV3X2FuZ2xlKGRpc3RhbmNlLCBib3R0b20sIGhlaWdodCk6CiAgICByZXR1cm4gKG1hdGguYXRhbigoYm90dG9tICsgaGVpZ2h0KSAvIGRpc3RhbmNlKQogICAgICAgICAgICAtIG1hdGguYXRhbihib3R0b20gLyBkaXN0YW5jZSkpCgpkZWYgc3RhbmRhcmRfYW5nbGUoZGlzdGFuY2UpOgogICAgcmV0dXJuIHZpZXdfYW5nbGUoZGlzdGFuY2UsIDEsIDIpCgpwcmludChmJ3tzdGFuZGFyZF9hbmdsZSg0KTouM2Z9JykKcHJpbnQoZid7dmlld19hbmdsZSg1LCAwLCA1KTouM2Z9Jyk=",
+      "answerNote": "The general function receives every varying measurement. The second function supplies fixed screen dimensions."
+    },
+    "p13": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "def focal_length(n, radius1, radius2, thickness):\n    # Compute q, then return 1 / q.\n\n# Print the two results to three decimal places.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "10.000\n10.345"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"focal_length\", \"n\", \"radius1\", \"radius2\", \"thickness\")\n_returns('focal_length', (1.5, 10, -10, 0), 10.0)\n_returns('focal_length', (1.5, 10, -10, 2), 10.344827586206895)\n_returns('focal_length', (1.6, 20, -15, 1), 14.440433212996389)\n_returns('focal_length', (1.5, 10, 20, 0.5), 39.34426229508197)\n",
+      "answer": "ZGVmIGZvY2FsX2xlbmd0aChuLCByYWRpdXMxLCByYWRpdXMyLCB0aGlja25lc3MpOgogICAgcSA9IChuIC0gMSkgKiAoMSAvIHJhZGl1czEgLSAxIC8gcmFkaXVzMgogICAgICAgICsgKG4gLSAxKSAqIHRoaWNrbmVzcyAvIChuICogcmFkaXVzMSAqIHJhZGl1czIpKQogICAgcmV0dXJuIDEgLyBxCgpwcmludChmJ3tmb2NhbF9sZW5ndGgoMS41LCAxMCwgLTEwLCAwKTouM2Z9JykKcHJpbnQoZid7Zm9jYWxfbGVuZ3RoKDEuNSwgMTAsIC0xMCwgMik6LjNmfScp",
+      "answerNote": "Compute the reciprocal value q first, then return its reciprocal. The input rules exclude division by zero."
+    },
+    "p14": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "import math\n\ndef container_volume(r1, r2, h):\n    # Return the volume.\n\ndef container_area(r1, r2, h):\n    # Return the area of the side and bottom.\n\n# Print both results to three decimal places.",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "6.283\n15.708"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"container_volume\", \"r1\", \"r2\", \"h\")\n_fn(\"container_area\", \"r1\", \"r2\", \"h\")\n_returns('container_volume', (1, 1, 2), 6.283185307179586)\n_returns('container_volume', (1, 2, 3), 21.991148575128552)\n_returns('container_volume', (0.5, 1.5, 1), 3.4033920413889427)\n_returns('container_area', (1, 1, 2), 15.707963267948966)\n_returns('container_area', (1, 2, 3), 32.94535745097809)\n_returns('container_area', (0.5, 1.5, 1), 9.671164039714181)\n",
+      "answer": "aW1wb3J0IG1hdGgKCmRlZiBjb250YWluZXJfdm9sdW1lKHIxLCByMiwgaCk6CiAgICByZXR1cm4gbWF0aC5waSAqIGggKiAocjEgKiogMiArIHIyICoqIDIgKyByMSAqIHIyKSAvIDMKCmRlZiBjb250YWluZXJfYXJlYShyMSwgcjIsIGgpOgogICAgc2xhbnQgPSAoKHIyIC0gcjEpICoqIDIgKyBoICoqIDIpICoqIDAuNQogICAgcmV0dXJuIG1hdGgucGkgKiAocjEgKyByMikgKiBzbGFudCArIG1hdGgucGkgKiByMSAqKiAyCgpwcmludChmJ3tjb250YWluZXJfdm9sdW1lKDEsIDEsIDIpOi4zZn0nKQpwcmludChmJ3tjb250YWluZXJfYXJlYSgxLCAxLCAyKTouM2Z9Jyk=",
+      "answerNote": "The area function computes the slant length from the vertical height and the difference between the radii."
+    },
+    "p15": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 13,
+      "starter": "def print_border_grid(width, height, border):\n    # Print the grid, one row per line.\n\n# Test (5, 3, '#') and (2, 2, '*').",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "#####\n#...#\n#####\n**\n**"
+        }
+      ],
+      "check": "import types, io, contextlib, re\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _prints(name, args, want):\n    value, printed = _call(name, *args)\n    assert printed == want, _shown(name, args) + \" should print \" + repr(want.rstrip(\"\\n\")) + \", not \" + repr(printed.rstrip(\"\\n\")) + \".\"\n    assert value is None, _shown(name, args) + \" should print its output and return None.\"\ndef _calls(name):\n    return len(re.findall(r\"\\b\" + name + r\"\\s*\\(\", __code__)) - 1\n_fn(\"print_border_grid\", \"width\", \"height\", \"border\")\n_prints('print_border_grid', (4, 4, '+'), '++++\\n+..+\\n+..+\\n++++\\n')\n_prints('print_border_grid', (3, 2, '@'), '@@@\\n@@@\\n')\n_prints('print_border_grid', (6, 5, '#'), '######\\n#....#\\n#....#\\n#....#\\n######\\n')\n",
+      "answer": "ZGVmIHByaW50X2JvcmRlcl9ncmlkKHdpZHRoLCBoZWlnaHQsIGJvcmRlcik6CiAgICBmb3Igcm93IGluIHJhbmdlKGhlaWdodCk6CiAgICAgICAgbGluZSA9ICcnCiAgICAgICAgZm9yIGNvbHVtbiBpbiByYW5nZSh3aWR0aCk6CiAgICAgICAgICAgIGlmIChyb3cgPT0gMCBvciByb3cgPT0gaGVpZ2h0IC0gMQogICAgICAgICAgICAgICAgICAgIG9yIGNvbHVtbiA9PSAwIG9yIGNvbHVtbiA9PSB3aWR0aCAtIDEpOgogICAgICAgICAgICAgICAgbGluZSA9IGxpbmUgKyBib3JkZXIKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIGxpbmUgPSBsaW5lICsgJy4nCiAgICAgICAgcHJpbnQobGluZSkKCnByaW50X2JvcmRlcl9ncmlkKDUsIDMsICcjJykKcHJpbnRfYm9yZGVyX2dyaWQoMiwgMiwgJyonKQ==",
+      "answerNote": "The row and column tests identify the outside cells. This output-only function needs no value-producing return."
+    }
+  }
+}

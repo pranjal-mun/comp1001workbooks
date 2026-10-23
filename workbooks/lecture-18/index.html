@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 18 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-18", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 18 Workbook</h1>
+    <div class="wb-subtitle">Parameters and return values</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>The caller supplies arguments to a function's parameters. A returned value takes the place of the call, so the caller can use it in a calculation. Printing sends output to the screen.</p>
+  <p>Reading: §5.3, §5.4, §5.5</p>
+  <ul>
+    <li>Match positional arguments to parameters and trace local parameter changes.</li>
+    <li>Use returned values in expressions and trace early returns in branches and loops.</li>
+    <li>Distinguish screen output from returned values, including <code>None</code>.</li>
+    <li>Test missing-return paths and their boundaries.</li>
+    <li>Write functions that return Boolean results, including a search with a loop.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-arguments">Arguments</p>
+
+<h2 id="s1">1. Parameters and arguments</h2>
+<p>In L17, our functions often read their own input or used a fixed value. Now the caller can supply the value when it makes the call. A <strong>parameter</strong> is a name in the definition. An <strong>argument</strong> is a value supplied by a call.</p>
+<wb-example id="ex-greet"></wb-example>
+<p>In <code>greet("Maya")</code>, <code>name</code> gets <code>"Maya"</code>. An argument can be a literal, a variable's value, or the result of an expression.</p>
+
+<h2 id="s2">2. A function can send a result back</h2>
+<wb-example id="ex-cube"></wb-example>
+<p><code>return volume</code> gives the value <code>8</code> to the caller. The assignment stores it in <code>answer</code>. The final line displays it.</p>
+
+<h3 id="s2-time">Calls and results, in time order</h3>
+<pre><code>first = <span class="wb-fn">cube_volume</span>(2)
+second = <span class="wb-fn">cube_volume</span>(10)</code></pre>
+<ol>
+  <li><code>cube_volume(2)</code> returns <code>8</code>, which is stored in <code>first</code>.</li>
+  <li><code>cube_volume(10)</code> returns <code>1000</code>, which is stored in <code>second</code>.</li>
+</ol>
+
+<h2 id="s3">3. Argument order and local parameter changes</h2>
+<p>Several arguments match by position. Python matches values from left to right.</p>
+<wb-example id="ex-difference"></wb-example>
+<p>For <code>difference(20, 6)</code>, <code>first</code> receives <code>20</code> and <code>second</code> receives <code>6</code>. <code>difference(20, 6)</code> returns <code>14</code>. Reversing the arguments, <code>difference(6, 20)</code>, returns <code>-14</code>.</p>
+
+<h3 id="s3-local">Changing a parameter leaves the caller's name alone</h3>
+<wb-example id="ex-double"></wb-example>
+<p>The output is <code>5 10</code>. The parameter <code>n</code> is a separate name. To use the returned value as the new value, write <code>value = double(value)</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Predict the values of <code>score</code> and <code>new_score</code> after the call. Identify the parameters and the arguments.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">adjust</span>(amount, step):
+    amount = amount + step
+    <span class="wb-kw">return</span> amount
+
+score = 8
+new_score = <span class="wb-fn">adjust</span>(score, 3)
+<span class="wb-fn">print</span>(score, new_score)</code></pre>
+  <wb-table id="cp1-predict">
+    <table>
+      <thead><tr><th>Name</th><th>Value after the call</th></tr></thead>
+      <tbody>
+        <tr><td><code>score</code></td><td data-blank="score"></td></tr>
+        <tr><td><code>new_score</code></td><td data-blank="new_score"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <wb-short id="cp1"></wb-short>
+</div>
+
+<p class="wb-part" id="part-return-flow">Return flow</p>
+
+<h2 id="s4">4. Returned values and early returns</h2>
+<p>A returned value takes the place of the call.</p>
+<wb-example id="ex-square"></wb-example>
+<p>The expression <code>square(4) + 1</code> becomes <code>16 + 1</code>, then <code>17</code>. The function can return an expression directly. Its caller can store the result, display it, compare it, or use it in another calculation.</p>
+
+<h3 id="s4-early">A return ends the function immediately</h3>
+<wb-example id="ex-magnitude"></wb-example>
+<p>The output is <code>5</code>, then <code>3</code>. For a negative input, the first <code>return</code> ends the call. Python never reaches the second one.</p>
+
+<h2 id="s5">5. Returns in loops and alternative cases</h2>
+<p>A return inside a loop leaves the whole function.</p>
+<wb-example id="ex-first-digit"></wb-example>
+<p>The loop reaches <code>"2"</code>, returns it, and stops scanning. The final <code>return ""</code> handles text with no digit, including an empty string.</p>
+
+<h3 id="s5-alternatives">Several returns can describe the alternatives</h3>
+<wb-example id="ex-score-label"></wb-example>
+<p>Each matching case answers and leaves. The final line covers scores below 50.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write <code>delivery_fee(total, express)</code>. Express delivery costs 8, regardless of the total. Otherwise, delivery is free for totals of 40 or more and costs 4 for smaller totals. Return the fee. Assume <code>total</code> is nonnegative and <code>express</code> is a Boolean.</p>
+  <p>Check <code>(50, True)</code>, <code>(40, False)</code>, and <code>(20, False)</code>. The expected fees are <code>8</code>, <code>0</code>, and <code>4</code>.</p>
+  <p><strong>Check</strong> calls <code>delivery_fee</code> with these three cases and also with <code>(30, True)</code>, <code>(40, True)</code>, <code>(0, True)</code>, <code>(39, False)</code>, <code>(0, False)</code>, and <code>(100, False)</code>. It compares the value each call returns, not what your program prints.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>delivery_fee(total, express)</code> with two parameters.</li>
+      <li>Send the fee back with <code>return</code>. A printed fee does not count.</li>
+      <li>Each call returns the fee the rules above give.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-output">Output and None</p>
+
+<h2 id="s6">6. Reaching the end gives back None</h2>
+<wb-example id="ex-banner"></wb-example>
+<p>The banner appears on the screen. The assignment receives <code>None</code>, Python's special value for no result provided. A bare <code>return</code> also ends a function with the result <code>None</code>.</p>
+
+<h2 id="s7">7. Printing and returning do different jobs</h2>
+<wb-example id="ex-show-square"></wb-example>
+<p>Screen: <code>16</code><br>Value stored in <code>x</code>: <code>None</code></p>
+<wb-example id="ex-square-y"></wb-example>
+<p>Screen: nothing<br>Value stored in <code>y</code>: <code>16</code></p>
+<p><code>y + 1</code> is <code>17</code>. Trying <code>x + 1</code> raises <code>TypeError</code>. For a calculation, return its answer and let the caller choose what to display.</p>
+
+<h3 id="s7-separate">The screen output and the returned value travel separately</h3>
+<p><code>x = show_square(4)</code> stores <code>None</code> in <code>x</code>. The displayed <code>16</code> belongs to the screen output. With <code>y = square(4)</code>, the function returns <code>16</code> to the caller and sends nothing to the screen.</p>
+
+<h2 id="s8">8. Missing-return paths</h2>
+<p>A missing return can leave one path unfinished.</p>
+<wb-example id="ex-sign-missing"></wb-example>
+<p>When <code>number &lt; 0</code> is false, the function reaches its end and returns <code>None</code>.</p>
+
+<h3 id="s8-every-path">Every path needs an answer when a result is promised</h3>
+<wb-example id="ex-sign-fixed"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Expected return value</th></tr></thead>
+  <tbody>
+    <tr><td><code>sign_label(-2)</code></td><td><code>"negative"</code></td></tr>
+    <tr><td><code>sign_label(0)</code></td><td><code>"nonnegative"</code></td></tr>
+    <tr><td><code>sign_label(2)</code></td><td><code>"nonnegative"</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Check both sides of a condition and its boundary. A successful test on the negative path would not have exposed the missing answer for other inputs.</p>
+
+<p class="wb-part" id="part-boolean">Boolean results</p>
+
+<h2 id="s9">9. A predicate returns True or False</h2>
+<wb-example id="ex-is-even"></wb-example>
+<p>The comparison already produces a Boolean value, so we can return it directly.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Comparison</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>is_even(6)</code></td><td><code>6 % 2 == 0</code></td><td><code>True</code></td></tr>
+    <tr><td><code>is_even(-3)</code></td><td><code>-3 % 2 == 0</code></td><td><code>False</code></td></tr>
+    <tr><td><code>is_even(0)</code></td><td><code>0 % 2 == 0</code></td><td><code>True</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s10">10. Boolean results from loops</h2>
+<p>A loop can search for evidence.</p>
+<wb-example id="ex-has-digit"></wb-example>
+<p><code>has_digit("Room 2")</code> gives <code>True</code>. <code>has_digit("Room")</code> gives <code>False</code>. <code>has_digit("")</code> gives <code>False</code>.</p>
+<p>One digit is enough to return <code>True</code>. Return <code>False</code> only after checking every character. The final return lines up with <code>for</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write <code>is_prime(number)</code> to return a Boolean. A prime number is an integer greater than 1 whose only positive divisors are 1 and itself. Test possible divisors with a loop. Return <code>False</code> as soon as you find a factor.</p>
+  <p>Integers below 2 are not prime. For other inputs, try divisors from 2 up to, but excluding, the number itself. Use <code>%</code> to check divisibility.</p>
+  <p>Expected results: <code>is_prime(1)</code> is <code>False</code>, <code>is_prime(2)</code> is <code>True</code>, <code>is_prime(9)</code> is <code>False</code>, and <code>is_prime(17)</code> is <code>True</code>.</p>
+  <p><strong>Check</strong> calls <code>is_prime</code> with these four numbers and also with -7, 0, 3, 4, 25, and 97. It compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>is_prime(number)</code> with one parameter.</li>
+      <li>Test possible divisors with a loop.</li>
+      <li>Use <code>%</code> to check divisibility.</li>
+      <li>Send the result back with <code>return</code>: <code>True</code> or <code>False</code>, never a printed value or a string.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>For each function, keep calculations in the function and display results in the caller unless the task asks for an output-only function.</p>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values, listed under each task, and compares what they return or print. Programs that read input read each value with no prompt, unless the task gives one.</p>
+
+<h3>1. Inputs and results</h3>
+<p>Assume <code>rectangle_area(width, height)</code> returns <code>width * height</code>.</p>
+<p>For <code>rectangle_area(6, 2)</code>, identify the arguments, parameters, and returned value. How many arguments does this definition require, and how many values does one call return in this lecture's examples? Confirm the result with a call.</p>
+<wb-short id="p1"></wb-short>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep <code>rectangle_area(width, height)</code> with two parameters.</li>
+    <li>Call <code>rectangle_area(6, 2)</code> and print the result.</li>
+  </ul>
+</div>
+<wb-exercise id="p1-call"></wb-exercise>
+
+<h3>2. Money display</h3>
+<p>Write <code>show_money(amount)</code> to print a dollar sign and exactly two digits after the decimal point. Test it with 7.5 and 0. Use the same function for both calls. What one line would you change to display <code>EUR</code> before the number instead?</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_money(amount)</code> with one parameter.</li>
+    <li><code>show_money</code> prints the amount with a dollar sign and two decimal places, and returns <code>None</code>. <strong>Check</strong> also calls it with 3.14159 and 12.</li>
+    <li>Use the same function for both calls: call <code>show_money</code> twice.</li>
+  </ul>
+</div>
+<wb-exercise id="p2"></wb-exercise>
+<wb-short id="p2-eur"></wb-short>
+
+<h3>3. Letter-to-digit conversion</h3>
+<p>Write pseudocode and then <code>phone_digits(text)</code> to return a copy of <code>text</code> with uppercase letters replaced by phone-keypad digits. Use ABC: 2, DEF: 3, GHI: 4, JKL: 5, MNO: 6, PQRS: 7, TUV: 8, WXYZ: 9. Keep digits and hyphens unchanged. Input contains only these characters. Test <code>8-CAT</code> and the empty string. Print <code>[</code> and <code>]</code> around each result so the empty result is visible.</p>
+<wb-short id="p3-plan"></wb-short>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>phone_digits(text)</code> with one parameter.</li>
+    <li><code>phone_digits</code> returns the converted text. <strong>Check</strong> also calls it with <code>'HELLO'</code>, <code>'PQRS-TUV-WXYZ'</code>, <code>'1-800-FLOWERS'</code>, and <code>'ADGJMPTW'</code>.</li>
+    <li>Print each result inside <code>[</code> and <code>]</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Separated copies</h3>
+<p>Write <code>separated_copies(text, count, separator)</code> to return <code>count</code> copies with the separator only between copies. Assume <code>count</code> is a non-negative integer. Print each result inside brackets. Cases: <code>('go', 3, '/')</code> gives <code>[go/go/go]</code>; <code>('go', 0, '/')</code> gives <code>[]</code>; <code>('go', 1, '/')</code> gives <code>[go]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>separated_copies(text, count, separator)</code> with three parameters.</li>
+    <li><code>separated_copies</code> returns the joined copies. <strong>Check</strong> also calls it with <code>('ab', 2, ', ')</code> and <code>('x', 5, '')</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Vowel count</h3>
+<p>Write <code>vowel_count(text)</code> to return the number of vowels in <code>text</code>. Count a, e, i, o, and u in either case. Print the results for <code>Blue sky</code>, the empty string, and <code>AEIOU</code>. The results must be 2, 0, and 5.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>vowel_count(text)</code> with one parameter.</li>
+    <li><code>vowel_count</code> returns the count. <strong>Check</strong> also calls it with <code>'Programming'</code>, <code>'xyz'</code>, and <code>'QUEUE queue'</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Word count</h3>
+<p>Write <code>word_count(text)</code> to return the number of words. A word is a nonempty run of characters separated by ordinary spaces. Allow repeated, leading, and trailing spaces. Print results for <code>red&nbsp;&nbsp;blue</code>, the empty string, and three spaces followed by <code>one</code> and three more spaces. The results must be 2, 0, and 1. Do not use <code>split</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>word_count(text)</code> with one parameter.</li>
+    <li>Do not use <code>split</code>.</li>
+    <li><code>word_count</code> returns the count. <strong>Check</strong> also calls it with <code>'a b c'</code>, three spaces, <code>'one'</code>, and <code>' x  y '</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Interior letter swap</h3>
+<p>Write <code>swap_inside(word, first, second)</code> to return a string with two interior characters exchanged. An interior character is neither the first nor the last character. Assume the word has at least four characters and <code>1 &lt;= first &lt; second &lt;= len(word) - 2</code>. Keep all other characters in place. Print results for <code>('planet', 1, 4)</code> and <code>('abcd', 1, 2)</code>: <code>peanlt</code> and <code>acbd</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>swap_inside(word, first, second)</code> with three parameters.</li>
+    <li><code>swap_inside</code> returns the new string. <strong>Check</strong> also calls it with <code>('python', 2, 3)</code>, <code>('abcdef', 1, 4)</code>, and <code>('letter', 2, 3)</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Solid measurements</h3>
+<p>Write six functions for volume and surface area: <code>sphere_volume(r)</code>, <code>sphere_area(r)</code>, <code>cylinder_volume(r, h)</code>, <code>cylinder_area(r, h)</code>, <code>cone_volume(r, h)</code>, and <code>cone_area(r, h)</code>. Radius <code>r</code> and height <code>h</code> are positive lengths in the same unit. Use <code>math.pi</code>. The formulas are given below; no geometry needs to be derived. Surface areas include all circular bases. Read <code>r</code> and <code>h</code>, then print the six results in the order above, each to two decimal places. With input 2 followed by 3, the lines must be 33.51, 50.27, 37.70, 62.83, 12.57, and 35.22.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Shape</th><th>Volume</th><th>Surface area</th></tr></thead>
+  <tbody>
+    <tr><td>Sphere</td><td>4π<var>r</var><sup>3</sup>/3</td><td>4π<var>r</var><sup>2</sup></td></tr>
+    <tr><td>Cylinder</td><td>π<var>r</var><sup>2</sup><var>h</var></td><td>2π<var>r</var>(<var>r</var> + <var>h</var>)</td></tr>
+    <tr><td>Cone</td><td>π<var>r</var><sup>2</sup><var>h</var>/3</td><td>π<var>r</var>(<var>r</var> + √(<var>r</var><sup>2</sup> + <var>h</var><sup>2</sup>))</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> types 2 and 3, then 1 and 1, 0.5 and 4, and 10 and 2.5.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define the six functions with the parameters shown: <code>r</code> for the sphere, <code>r, h</code> for the cylinder and the cone.</li>
+    <li>Use <code>math.pi</code>.</li>
+    <li>Each function returns its measurement. <strong>Check</strong> also calls each one with <code>r</code> equal to 1 and to 2.5, or with <code>(1.0, 1.0)</code> and <code>(2.0, 3.0)</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p8"></wb-exercise>
+
+<h3>9. Read and return a number</h3>
+<p>Write <code>read_number(message)</code> to display <code>message</code> followed by a space, read a valid decimal number, and return it as a float. Call it with <code>Length:</code> and then <code>Width:</code>, store the two results, and print their product. With input 2.5 followed by 4, the final result is 10.0. The program does not need to recover from invalid text.</p>
+<p><strong>Check</strong> types 2.5 and 4, then 3 and 3, and 0.5 and 0.5. The prompts are part of the output, so the first run prints <code>Length: Width: 10.0</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>read_number(message)</code> with one parameter.</li>
+    <li>Read the number with <code>input()</code> and convert it with <code>float()</code> inside <code>read_number</code>.</li>
+    <li>Call <code>read_number</code> twice: once with <code>Length:</code> and once with <code>Width:</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p9"></wb-exercise>
+
+<h3>10. Pay calculation</h3>
+<p>Write <code>weekly_pay(rate, hours)</code> to return pay for non-negative hours and a positive hourly rate. The first 35 hours use <code>rate</code>; hours beyond 35 use <code>1.5 * rate</code>. Write <code>show_pay(name, amount)</code> to print the name and pay to two decimal places. Read a name, rate, and hours, then call both functions. Cases: <code>Lee</code>, 12, 37 gives <code>Lee: $456.00</code>; <code>Sam</code>, 12, 0 gives <code>Sam: $0.00</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Lee</code>, <code>12</code>, <code>37</code></td><td><code>Lee: $456.00</code></td></tr>
+    <tr><td><code>Sam</code>, <code>12</code>, <code>0</code></td><td><code>Sam: $0.00</code></td></tr>
+    <tr><td><code>Ana</code>, <code>20</code>, <code>35</code></td><td><code>Ana: $700.00</code></td></tr>
+    <tr><td><code>Kim</code>, <code>10</code>, <code>40</code></td><td><code>Kim: $425.00</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>weekly_pay(rate, hours)</code> and <code>show_pay(name, amount)</code> with two parameters each.</li>
+    <li><code>weekly_pay</code> returns the pay. <strong>Check</strong> also calls it with the four cases in the table.</li>
+    <li><code>show_pay</code> prints the name and pay, such as <code>Ana: $3.50</code>, and returns <code>None</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p10"></wb-exercise>
+
+<h3>11. Preparation instructions</h3>
+<p>Write <code>base_steps()</code> to print <code>Fill the container.</code> and <code>Add the mixture.</code> on separate lines. Write <code>finish_steps(warm)</code> to print <code>Warm the mixture.</code> when <code>warm</code> is <code>True</code>, or <code>Leave it cool.</code> otherwise. Read <code>warm</code> or <code>cool</code>, call <code>base_steps()</code>, then pass the comparison <code>choice == 'warm'</code> to <code>finish_steps</code>. Assume the input is one of those two words.</p>
+<p><strong>Check</strong> types <code>warm</code>, then <code>cool</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>base_steps</code> with empty parentheses and <code>finish_steps(warm)</code> with one parameter.</li>
+    <li><code>base_steps</code> prints the two lines and returns <code>None</code>; <code>finish_steps</code> prints the matching instruction for <code>True</code> and for <code>False</code> and returns <code>None</code>.</li>
+    <li>Pass the comparison <code>choice == 'warm'</code> to <code>finish_steps</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p11"></wb-exercise>
+
+<h3>12. Viewing angle</h3>
+<p>A vertical screen has its bottom <code>bottom</code> metres above eye level and height <code>height</code> metres. The viewer is <code>distance</code> metres horizontally from the screen on a level floor. Write <code>view_angle(distance, bottom, height)</code> to return the angle in radians using the supplied formula arctan((<var>bottom</var> + <var>height</var>)/<var>distance</var>) − arctan(<var>bottom</var>/<var>distance</var>). In Python, <code>math.atan(x)</code> computes the inverse tangent in radians. Assume <code>distance &gt; 0</code>, <code>bottom &gt;= 0</code>, and <code>height &gt; 0</code>. Also write <code>standard_angle(distance)</code> for bottom 1 and height 2. Print <code>standard_angle(4)</code> and <code>view_angle(5, 0, 5)</code> to three decimal places: 0.399 and 0.785.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>view_angle(distance, bottom, height)</code> with three parameters and <code>standard_angle(distance)</code> with one.</li>
+    <li>Let <code>standard_angle</code> call <code>view_angle</code> with bottom 1 and height 2.</li>
+    <li>Both functions return the angle. <strong>Check</strong> also calls <code>view_angle</code> with <code>(2, 0.5, 1.5)</code> and <code>(10, 3, 1)</code>, and <code>standard_angle</code> with 1 and 7.5.</li>
+  </ul>
+</div>
+<wb-exercise id="p12"></wb-exercise>
+
+<h3>13. Lens calculation</h3>
+<p>Write <code>focal_length(n, radius1, radius2, thickness)</code> to return <var>f</var> = 1/<var>q</var>, where <var>q</var> = (<var>n</var> − 1)(1/<var>R</var><sub>1</sub> − 1/<var>R</var><sub>2</sub> + (<var>n</var> − 1)<var>d</var>/(<var>n</var><var>R</var><sub>1</sub><var>R</var><sub>2</sub>)). Here <code>n</code> is a dimensionless material value, <code>radius1</code> and <code>radius2</code> are signed radii, and <code>thickness</code> is <var>d</var>. All lengths use the same unit, so <var>f</var> uses that unit too. Assume <code>n &gt; 1</code>, both radii are nonzero, thickness is non-negative, and <var>q</var> is nonzero. Print results for <code>(1.5, 10, -10, 0)</code> and <code>(1.5, 10, -10, 2)</code> to three decimal places: 10.000 and 10.345.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>focal_length(n, radius1, radius2, thickness)</code> with four parameters.</li>
+    <li><code>focal_length</code> returns <var>f</var>. <strong>Check</strong> also calls it with <code>(1.6, 20, -15, 1)</code> and <code>(1.5, 10, 20, 0.5)</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p13"></wb-exercise>
+
+<h3>14. Tapered container</h3>
+<p>An open container has circular bottom radius <code>r1</code>, circular top radius <code>r2</code>, and vertical height <code>h</code>, all positive and in metres. Write <code>container_volume(r1, r2, h)</code> and <code>container_area(r1, r2, h)</code> using <var>V</var> = π<var>h</var>(<var>r</var><sub>1</sub><sup>2</sup> + <var>r</var><sub>2</sub><sup>2</sup> + <var>r</var><sub>1</sub><var>r</var><sub>2</sub>)/3 and <var>A</var> = π(<var>r</var><sub>1</sub> + <var>r</var><sub>2</sub>)√((<var>r</var><sub>2</sub> − <var>r</var><sub>1</sub>)<sup>2</sup> + <var>h</var><sup>2</sup>) + π<var>r</var><sub>1</sub><sup>2</sup>. Area includes the side and bottom, with no lid. Volume is in cubic metres and area is in square metres. Print both results for <code>(1, 1, 2)</code> to three decimal places: 6.283 and 15.708.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>container_volume(r1, r2, h)</code> and <code>container_area(r1, r2, h)</code> with three parameters each.</li>
+    <li>Both functions return their measurement. <strong>Check</strong> also calls them with <code>(1, 2, 3)</code> and <code>(0.5, 1.5, 1)</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p14"></wb-exercise>
+
+<h3>15. Grid border</h3>
+<p>Write <code>print_border_grid(width, height, border)</code> to print a rectangular grid with <code>border</code> around its outside and dots in its interior. Width and height are integers of at least 2; <code>border</code> is one printable character other than a dot or space. The function prints the grid and returns <code>None</code>. Test <code>(5, 3, '#')</code> and <code>(2, 2, '*')</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>print_border_grid(width, height, border)</code> with three parameters.</li>
+    <li><code>print_border_grid</code> prints the grid and returns <code>None</code>. <strong>Check</strong> also calls it with <code>(4, 4, '+')</code>, <code>(3, 2, '@')</code>, and <code>(6, 5, '#')</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p15"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Supplying inputs and receiving a result</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Parameter</td><td>A name in a function definition. Each call gives it the corresponding argument's value.</td></tr>
+    <tr><td>Argument</td><td>A value supplied by a call. Positional arguments match the parameters from left to right.</td></tr>
+    <tr><td>Local parameter</td><td>Assigning to a parameter does not reassign the caller's variable. Our examples use numbers, strings, and Booleans.</td></tr>
+    <tr><td><code>return expression</code></td><td>Computes a value, ends the call, and gives the value to the caller. The value takes the place of the call in the caller's expression.</td></tr>
+    <tr><td>Early return</td><td>Stops the whole function, including any loop that contains it. Later statements in the function do not run on that path.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Document the inputs and the promised result in the docstring. Keep input prompts and display choices with the caller when writing a calculation.</p>
+
+<h3>Output, None, and Boolean results</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td><code>print(value)</code></td><td>Displays output for a person. Printing inside a function does not send that printed value back as its result.</td></tr>
+    <tr><td><code>None</code></td><td>The result of reaching the end without a value-returning <code>return</code>, or executing a bare <code>return</code>. An output function may use this behavior intentionally.</td></tr>
+    <tr><td>Missing return</td><td>A bug when one path provides no result even though the function promises one. Test each path and the boundary between cases.</td></tr>
+    <tr><td>Predicate</td><td>A function whose result is <code>True</code> or <code>False</code>. Use it directly in a condition, such as <code>if is_even(n):</code>.</td></tr>
+    <tr><td>Tests</td><td>Write expected results first. Check ordinary inputs, boundaries, and empty input where relevant. Verify returned values as well as screen output.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 18 Workbook.</p>
+</main>
+</body>
+</html>

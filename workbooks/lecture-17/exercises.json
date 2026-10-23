@@ -1,0 +1,745 @@
+{
+  "id": "lecture-17",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 17 Workbook",
+  "subtitle": "Problem solving with functions: black boxes and decomposition",
+  "exercises": {
+    "cp1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Function name: … Argument: … Result: …",
+      "answer": "VGhlIGZ1bmN0aW9uIG5hbWUgaXMgYGxlbmAuIFRoZSBhcmd1bWVudCBpcyBgImNvZmZlZSJgLCBhbmQgdGhlIHJlc3VsdCBpcyBgNmAuIEl0cyBwcm9taXNlIGlzIHRvIHJldHVybiB0aGUgbnVtYmVyIG9mIGNoYXJhY3RlcnMgaW4gdGhlIHN0cmluZy4gV2UgY2FuIHVzZSB0aGF0IHByb21pc2Ugd2l0aG91dCBrbm93aW5nIGl0cyBpbnRlcm5hbCBpbnN0cnVjdGlvbnMu"
+    },
+    "ex-greet": {
+      "type": "example",
+      "code": "def greet():\n    \"\"\"Display a greeting.\"\"\"\n    print(\"Hello!\")\n\ngreet()\ngreet()",
+      "output": "Hello!\nHello!"
+    },
+    "ex-call": {
+      "type": "example",
+      "code": "def greet():\n    print(\"Hello!\")\n\ngreet()\nprint(\"Back here\")"
+    },
+    "ex-countdown": {
+      "type": "example",
+      "code": "def countdown():\n    for number in range(3, 0, -1):\n        print(number)\n    print(\"Go!\")\n\ncountdown()",
+      "output": "3\n2\n1\nGo!"
+    },
+    "ex-result": {
+      "type": "example",
+      "code": "def show_result():\n    mark = int(input(\"Mark: \"))\n    if mark >= 50:\n        print(\"Pass\")\n    else:\n        print(\"Try again\")\n\nshow_result()"
+    },
+    "ex-order-fail": {
+      "type": "example",
+      "code": "greet()\n\ndef greet():\n    print(\"Hello!\")"
+    },
+    "ex-order-fixed": {
+      "type": "example",
+      "code": "def greet():\n    print(\"Hello!\")\n\ngreet()"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def make_coffee():\n    # Write the docstring and body.\n\n# Add the calls.",
+      "cases": [
+        {
+          "name": "Two calls",
+          "expected": "Grind the beans\nBrew the coffee\nPour into a cup\nGrind the beans\nBrew the coffee\nPour into a cup"
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_f = _fn(\"make_coffee\")\nassert _out(_f) == \"Grind the beans\\nBrew the coffee\\nPour into a cup\\n\", \"make_coffee should print Grind the beans, Brew the coffee, and Pour into a cup, in that order, and nothing else.\"\nassert len(re.findall(r\"\\bmake_coffee\\s*\\(\", __code__)) == 2 + 1, \"Call make_coffee twice.\"\n",
+      "answer": "ZGVmIG1ha2VfY29mZmVlKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBzdGVwcyBmb3Igb25lIGN1cCBvZiBjb2ZmZWUuIiIiCiAgICBwcmludCgiR3JpbmQgdGhlIGJlYW5zIikKICAgIHByaW50KCJCcmV3IHRoZSBjb2ZmZWUiKQogICAgcHJpbnQoIlBvdXIgaW50byBhIGN1cCIpCgptYWtlX2NvZmZlZSgpCm1ha2VfY29mZmVlKCk="
+    },
+    "cp2-predict": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Grind the beans",
+            "'Grind the beans'",
+            "\"Grind the beans\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Grind the beans",
+          "caseSensitive": true
+        },
+        "l2": {
+          "accept": [
+            "Brew the coffee",
+            "'Brew the coffee'",
+            "\"Brew the coffee\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Brew the coffee",
+          "caseSensitive": true
+        },
+        "l3": {
+          "accept": [
+            "Pour into a cup",
+            "'Pour into a cup'",
+            "\"Pour into a cup\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Pour into a cup",
+          "caseSensitive": true
+        },
+        "l4": {
+          "accept": [
+            "Grind the beans",
+            "'Grind the beans'",
+            "\"Grind the beans\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Grind the beans",
+          "caseSensitive": true
+        },
+        "l5": {
+          "accept": [
+            "Brew the coffee",
+            "'Brew the coffee'",
+            "\"Brew the coffee\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Brew the coffee",
+          "caseSensitive": true
+        },
+        "l6": {
+          "accept": [
+            "Pour into a cup",
+            "'Pour into a cup'",
+            "\"Pour into a cup\""
+          ],
+          "placeholder": "output line",
+          "width": "12rem",
+          "show": "Pour into a cup",
+          "caseSensitive": true
+        }
+      }
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def show_grade():\n    # Write the docstring and body.\n\n# Add the call.",
+      "cases": [
+        {
+          "name": "Typed 80",
+          "inputs": [
+            "80"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Excellent\") and not any(_m in __stdout__ for _m in ['Pass', 'Try again']), \"With the mark 80, print Excellent and no other message.\"\n"
+        },
+        {
+          "name": "Typed 50",
+          "inputs": [
+            "50"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Pass\") and not any(_m in __stdout__ for _m in ['Excellent', 'Try again']), \"With the mark 50, print Pass and no other message.\"\n"
+        },
+        {
+          "name": "Typed 49",
+          "inputs": [
+            "49"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Try again\") and not any(_m in __stdout__ for _m in ['Excellent', 'Pass']), \"With the mark 49, print Try again and no other message.\"\n"
+        },
+        {
+          "name": "Typed 100",
+          "inputs": [
+            "100"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Excellent\") and not any(_m in __stdout__ for _m in ['Pass', 'Try again']), \"With the mark 100, print Excellent and no other message.\"\n"
+        },
+        {
+          "name": "Typed 79",
+          "inputs": [
+            "79"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Pass\") and not any(_m in __stdout__ for _m in ['Excellent', 'Try again']), \"With the mark 79, print Pass and no other message.\"\n"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "check": "_lines = __stdout__.rstrip().split(\"\\n\")\nassert _lines[-1].endswith(\"Try again\") and not any(_m in __stdout__ for _m in ['Excellent', 'Pass']), \"With the mark 0, print Try again and no other message.\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_f = _fn(\"show_grade\")\nassert \"input\" in _f.__code__.co_names, \"Read the mark with input() inside the body of show_grade.\"\nassert re.search(r\"^\\s*elif\\b\", __code__, re.M) and re.search(r\"^\\s*else\\s*:\", __code__, re.M), \"Choose the message with if, elif, and else.\"\nassert len(re.findall(r\"\\bshow_grade\\s*\\(\", __code__)) == 1 + 1, \"Call show_grade once.\"\n",
+      "answer": "ZGVmIHNob3dfZ3JhZGUoKToKICAgICIiIlJlYWQgYSBtYXJrIGFuZCBzaG93IGl0cyBncmFkZSBtZXNzYWdlLiIiIgogICAgbWFyayA9IGludChpbnB1dCgiTWFyazogIikpCiAgICBpZiBtYXJrID49IDgwOgogICAgICAgIHByaW50KCJFeGNlbGxlbnQiKQogICAgZWxpZiBtYXJrID49IDUwOgogICAgICAgIHByaW50KCJQYXNzIikKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoIlRyeSBhZ2FpbiIpCgpzaG93X2dyYWRlKCk="
+    },
+    "cp4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "def show_fibonacci():\n    # Write the docstring and body.\n\n# Add the call.",
+      "cases": [
+        {
+          "name": "Typed 7",
+          "inputs": [
+            "7"
+          ],
+          "check": "import re\n_text = '0\\n1\\n1\\n2\\n3\\n5\\n8\\n'\nassert __stdout__.endswith(_text) and not re.search(r\"\\d\\s*$\", __stdout__[:len(__stdout__) - len(_text)]), \"With a count of 7, print 0, 1, 1, 2, 3, 5, 8, one per line.\"\n"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "check": "import re\n_text = ''\nassert __stdout__.endswith(_text) and not re.search(r\"\\d\\s*$\", __stdout__[:len(__stdout__) - len(_text)]), \"With a count of 0, print no numbers.\"\n"
+        },
+        {
+          "name": "Typed 1",
+          "inputs": [
+            "1"
+          ],
+          "check": "import re\n_text = '0\\n'\nassert __stdout__.endswith(_text) and not re.search(r\"\\d\\s*$\", __stdout__[:len(__stdout__) - len(_text)]), \"With a count of 1, print 0.\"\n"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "check": "import re\n_text = '0\\n1\\n'\nassert __stdout__.endswith(_text) and not re.search(r\"\\d\\s*$\", __stdout__[:len(__stdout__) - len(_text)]), \"With a count of 2, print 0, 1, one per line.\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_f = _fn(\"show_fibonacci\")\nassert \"input\" in _f.__code__.co_names, \"Read the count with input() inside the body of show_fibonacci.\"\nassert re.search(r\"^\\s*(for|while)\\b\", __code__, re.M), \"Use a loop to print the numbers.\"\nassert len(re.findall(r\"\\bshow_fibonacci\\s*\\(\", __code__)) == 1 + 1, \"Call show_fibonacci once.\"\n",
+      "answer": "ZGVmIHNob3dfZmlib25hY2NpKCk6CiAgICAiIiJEaXNwbGF5IHRoZSByZXF1ZXN0ZWQgRmlib25hY2NpIG51bWJlcnMuIiIiCiAgICBjb3VudCA9IGludChpbnB1dCgiSG93IG1hbnk/ICIpKQogICAgZmlyc3QgPSAwCiAgICBzZWNvbmQgPSAxCiAgICBmb3IgcG9zaXRpb24gaW4gcmFuZ2UoY291bnQpOgogICAgICAgIHByaW50KGZpcnN0KQogICAgICAgIG5leHRfbnVtYmVyID0gZmlyc3QgKyBzZWNvbmQKICAgICAgICBmaXJzdCA9IHNlY29uZAogICAgICAgIHNlY29uZCA9IG5leHRfbnVtYmVyCgpzaG93X2ZpYm9uYWNjaSgp",
+      "answerNote": "Input `7` gives the output lines `0, 1, 1, 2, 3, 5, 8`. Save the sum in `next_number` before changing either previous value."
+    },
+    "ex-notice": {
+      "type": "example",
+      "code": "def show_heading():\n    print(\"Study session\")\n\ndef show_details():\n    print(\"Room EN-1040, 10:00\")\n\ndef show_reminder():\n    print(\"Bring your workbook.\")\n\nshow_heading()\nshow_details()\nshow_reminder()",
+      "output": "Study session\nRoom EN-1040, 10:00\nBring your workbook."
+    },
+    "cp5": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 6,
+      "placeholder": "function_name: one job (one line for each function)",
+      "answer": "UG9zc2libGUgbmFtZXMgYW5kIGpvYnM6CgpgcmVhZF9tYXJrYDogT2J0YWluIHRoZSBtYXJrIGZyb20gdGhlIHVzZXIuCgpgY2FsY3VsYXRlX2dyYWRlYDogV29yayBvdXQgdGhlIGdyYWRlIGZvciB0aGF0IG1hcmsuCgpgc2hvd19yZXBvcnRgOiBEaXNwbGF5IHRoZSBjb21wbGV0ZWQgcmVwb3J0LgoKRWFjaCBuYW1lIGRlc2NyaWJlcyBvbmUgam9iLiBXZSBjYW4gdGVzdCB0aGUgZ3JhZGluZyBjYWxjdWxhdGlvbiBzZXBhcmF0ZWx5IGFuZCByZXVzZSBpdCB3aGVyZXZlciB0aGUgcHJvZ3JhbSBuZWVkcyBhIGdyYWRlLg=="
+    },
+    "ex-docstring": {
+      "type": "example",
+      "code": "def show_heading():\n    \"\"\"Display the heading for the study session.\"\"\"\n    print(\"Study session\")\n    print(\"=============\")"
+    },
+    "ex-review-coffee": {
+      "type": "example",
+      "code": "def make_coffee():\n    \"\"\"Display the coffee steps.\"\"\"\n    print(\"Grind the beans\")\n    print(\"Brew the coffee\")\n    print(\"Pour into a cup\")\n\nmake_coffee()\nmake_coffee()",
+      "output": "Grind the beans\nBrew the coffee\nPour into a cup\nGrind the beans\nBrew the coffee\nPour into a cup"
+    },
+    "p1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Function: … Information supplied: … Value produced: …",
+      "answer": "VGhlIGZ1bmN0aW9uIGlzIGBsZW5gLiBUaGUgc3VwcGxpZWQgaW5mb3JtYXRpb24gaXMgdGhlIHN0cmluZyBgJ3BhcGVyJ2AuIFRoZSB2YWx1ZSBwcm9kdWNlZCBpcyBgNWAu"
+    },
+    "p2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Open",
+            "'Open'",
+            "\"Open\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Open",
+          "caseSensitive": true
+        },
+        "l2": {
+          "accept": [
+            "Item",
+            "'Item'",
+            "\"Item\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Item",
+          "caseSensitive": true
+        },
+        "l3": {
+          "accept": [
+            "Close",
+            "'Close'",
+            "\"Close\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Close",
+          "caseSensitive": true
+        }
+      }
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "# Define the two functions, then call each one once.",
+      "cases": [
+        {
+          "name": "Your two functions"
+        }
+      ],
+      "check": "import types, re\n_mine = [f for f in list(globals().values()) if isinstance(f, types.FunctionType) and f.__code__.co_filename != \"<check>\"]\nassert len(_mine) >= 2, \"Define two functions with def: one for the report heading and one for the closing reminder.\"\nfor _f in _mine:\n    assert _f.__code__.co_argcount == 0, \"Define \" + _f.__name__ + \" with empty parentheses.\"\n    assert _f.__doc__ and _f.__doc__.strip(), \"Give \" + _f.__name__ + \" a docstring as the first statement of its body.\"\n    assert len(re.findall(r\"\\b\" + _f.__name__ + r\"\\s*\\(\", __code__)) == 2, \"Call \" + _f.__name__ + \" exactly once.\"\nassert len([l for l in __stdout__.split(\"\\n\") if l.strip()]) >= 2, \"Give each function one output statement, so the program prints two lines.\"\n",
+      "answer": "ZGVmIHNob3dfcmVwb3J0X2hlYWRpbmcoKToKICAgICIiIkRpc3BsYXkgdGhlIHJlcG9ydCBoZWFkaW5nLiIiIgogICAgcHJpbnQoJ1JlcG9ydCcpCgpkZWYgc2hvd19jbG9zaW5nKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBjbG9zaW5nIHJlbWluZGVyLiIiIgogICAgcHJpbnQoJ0tlZXAgdGhpcyByZXBvcnQuJykKCnNob3dfcmVwb3J0X2hlYWRpbmcoKQpzaG93X2Nsb3NpbmcoKQ==",
+      "answerNote": "One possible pair of functions. Each docstring describes the output task."
+    },
+    "p4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "false",
+            "f",
+            "no"
+          ],
+          "placeholder": "true / false",
+          "width": "7rem",
+          "show": "False"
+        },
+        "s2": {
+          "accept": [
+            "true",
+            "t",
+            "yes"
+          ],
+          "placeholder": "true / false",
+          "width": "7rem",
+          "show": "True"
+        },
+        "s3": {
+          "accept": [
+            "false",
+            "f",
+            "no"
+          ],
+          "placeholder": "true / false",
+          "width": "7rem",
+          "show": "False"
+        },
+        "s4": {
+          "accept": [
+            "true",
+            "t",
+            "yes"
+          ],
+          "placeholder": "true / false",
+          "width": "7rem",
+          "show": "True"
+        }
+      }
+    },
+    "p4-fix": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Correct statement 1… Correct statement 3…",
+      "answer": "MS4gRmFsc2U6IHRoZSBib2R5IHJ1bnMgd2hlbiBjYWxsZWQuIDIuIFRydWUuIDMuIEZhbHNlOiBhIGZ1bmN0aW9uIGNhbiBwZXJmb3JtIGFub3RoZXIgdGFzaywgc3VjaCBhcyBhIGNhbGN1bGF0aW9uLiA0LiBUcnVlLg=="
+    },
+    "p5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Left",
+            "'Left'",
+            "\"Left\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Left",
+          "caseSensitive": true
+        },
+        "l2": {
+          "accept": [
+            "Right",
+            "'Right'",
+            "\"Right\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Right",
+          "caseSensitive": true
+        },
+        "l3": {
+          "accept": [
+            "Left",
+            "'Left'",
+            "\"Left\""
+          ],
+          "placeholder": "output line",
+          "width": "8rem",
+          "show": "Left",
+          "caseSensitive": true
+        },
+        "left": {
+          "accept": [
+            "2",
+            "twice",
+            "two"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        },
+        "right": {
+          "accept": [
+            "1",
+            "once",
+            "one"
+          ],
+          "placeholder": "value",
+          "width": "4rem"
+        }
+      }
+    },
+    "p6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 18,
+      "starter": "def show_smallest():\n    # Write the docstring here.\n    a = 8\n    b = 3\n    c = 7\n    # Print the smallest value.\n\ndef show_average():\n    # Write the docstring here.\n    a = 8\n    b = 3\n    c = 7\n    # Print the average.\n\nshow_smallest()\nshow_average()",
+      "cases": [
+        {
+          "name": "a = 8, b = 3, c = 7",
+          "expected": "3\n6.0"
+        },
+        {
+          "name": "All three values 4",
+          "expected": "4\n4.0",
+          "rewrite": [
+            [
+              "a = 8",
+              "a = 4"
+            ],
+            [
+              "b = 3",
+              "b = 4"
+            ],
+            [
+              "c = 7",
+              "c = 4"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_smallest\", \"a\", \"b\", \"c\")\n_local(\"show_average\", \"a\", \"b\", \"c\")\n",
+      "answer": "ZGVmIHNob3dfc21hbGxlc3QoKToKICAgICIiIkRpc3BsYXkgdGhlIHNtYWxsZXN0IG9mIHRocmVlIGZpeGVkIHZhbHVlcy4iIiIKICAgIGEgPSA4CiAgICBiID0gMwogICAgYyA9IDcKICAgIHNtYWxsZXN0ID0gYQogICAgaWYgYiA8IHNtYWxsZXN0OgogICAgICAgIHNtYWxsZXN0ID0gYgogICAgaWYgYyA8IHNtYWxsZXN0OgogICAgICAgIHNtYWxsZXN0ID0gYwogICAgcHJpbnQoc21hbGxlc3QpCgpkZWYgc2hvd19hdmVyYWdlKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBhdmVyYWdlIG9mIHRocmVlIGZpeGVkIHZhbHVlcy4iIiIKICAgIGEgPSA4CiAgICBiID0gMwogICAgYyA9IDcKICAgIHByaW50KChhICsgYiArIGMpIC8gMykKCnNob3dfc21hbGxlc3QoKQpzaG93X2F2ZXJhZ2UoKQ==",
+      "answerNote": "Use comparisons to keep the smallest value found so far."
+    },
+    "p7": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "def show_relationships():\n    # Write the docstring here.\n    a = 4\n    b = 4\n    c = 6\n    # Print the three Boolean values.\n\nshow_relationships()",
+      "cases": [
+        {
+          "name": "a = 4, b = 4, c = 6",
+          "expected": "False\nFalse\nTrue"
+        },
+        {
+          "name": "2, 2, 2",
+          "expected": "True\nFalse\nTrue",
+          "rewrite": [
+            [
+              "a = 4",
+              "a = 2"
+            ],
+            [
+              "b = 4",
+              "b = 2"
+            ],
+            [
+              "c = 6",
+              "c = 2"
+            ]
+          ]
+        },
+        {
+          "name": "1, 3, 5",
+          "expected": "False\nTrue\nTrue",
+          "rewrite": [
+            [
+              "a = 4",
+              "a = 1"
+            ],
+            [
+              "b = 4",
+              "b = 3"
+            ],
+            [
+              "c = 6",
+              "c = 5"
+            ]
+          ]
+        },
+        {
+          "name": "5, 3, 1",
+          "expected": "False\nTrue\nFalse",
+          "rewrite": [
+            [
+              "a = 4",
+              "a = 5"
+            ],
+            [
+              "b = 4",
+              "b = 3"
+            ],
+            [
+              "c = 6",
+              "c = 1"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_relationships\", \"a\", \"b\", \"c\")\n",
+      "answer": "ZGVmIHNob3dfcmVsYXRpb25zaGlwcygpOgogICAgIiIiRGlzcGxheSB0aHJlZSByZWxhdGlvbnNoaXBzIGJldHdlZW4gZml4ZWQgdmFsdWVzLiIiIgogICAgYSA9IDQKICAgIGIgPSA0CiAgICBjID0gNgogICAgcHJpbnQoYSA9PSBiIGFuZCBiID09IGMpCiAgICBwcmludChhICE9IGIgYW5kIGEgIT0gYyBhbmQgYiAhPSBjKQogICAgcHJpbnQoYSA8PSBiIGFuZCBiIDw9IGMpCgpzaG93X3JlbGF0aW9uc2hpcHMoKQ==",
+      "answerNote": "Compare each pair needed by the rule."
+    },
+    "p8": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def show_digits():\n    # Write the docstring here.\n    number = 8040\n    # Print the first digit, last digit, and number of digits.\n\nshow_digits()",
+      "cases": [
+        {
+          "name": "number = 8040",
+          "expected": "8\n0\n4"
+        },
+        {
+          "name": "number = 0",
+          "expected": "0\n0\n1",
+          "rewrite": [
+            [
+              "number = 8040",
+              "number = 0"
+            ]
+          ]
+        },
+        {
+          "name": "number = 7",
+          "expected": "7\n7\n1",
+          "rewrite": [
+            [
+              "number = 8040",
+              "number = 7"
+            ]
+          ]
+        },
+        {
+          "name": "number = 123456",
+          "expected": "1\n6\n6",
+          "rewrite": [
+            [
+              "number = 8040",
+              "number = 123456"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_digits\", \"number\")\n",
+      "answer": "ZGVmIHNob3dfZGlnaXRzKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBmaXJzdCBkaWdpdCwgbGFzdCBkaWdpdCwgYW5kIGRpZ2l0IGNvdW50LiIiIgogICAgbnVtYmVyID0gODA0MAogICAgdGV4dCA9IHN0cihudW1iZXIpCiAgICBwcmludCh0ZXh0WzBdKQogICAgcHJpbnQodGV4dFtsZW4odGV4dCkgLSAxXSkKICAgIHByaW50KGxlbih0ZXh0KSkKCnNob3dfZGlnaXRzKCk=",
+      "answerNote": "Convert the nonnegative integer to text, then use indexing and length."
+    },
+    "p9": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "def show_middle():\n    # Write the docstring and body.\n    word = 'planet'\n\nshow_middle()",
+      "cases": [
+        {
+          "name": "word = 'planet'",
+          "expected": "an"
+        },
+        {
+          "name": "word = 'stone'",
+          "expected": "o",
+          "rewrite": [
+            [
+              "word = 'planet'",
+              "word = 'stone'"
+            ]
+          ]
+        },
+        {
+          "name": "word = ''",
+          "expected": "Empty",
+          "rewrite": [
+            [
+              "word = 'planet'",
+              "word = ''"
+            ]
+          ]
+        },
+        {
+          "name": "word = 'a'",
+          "expected": "a",
+          "rewrite": [
+            [
+              "word = 'planet'",
+              "word = 'a'"
+            ]
+          ]
+        },
+        {
+          "name": "word = 'ab'",
+          "expected": "ab",
+          "rewrite": [
+            [
+              "word = 'planet'",
+              "word = 'ab'"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_middle\", \"word\")\n",
+      "answer": "ZGVmIHNob3dfbWlkZGxlKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBjZW50cmFsIGNoYXJhY3RlcnMgb2YgYSBmaXhlZCB3b3JkLiIiIgogICAgd29yZCA9ICdwbGFuZXQnCiAgICBsZW5ndGggPSBsZW4od29yZCkKICAgIGlmIGxlbmd0aCA9PSAwOgogICAgICAgIHByaW50KCdFbXB0eScpCiAgICBlbGlmIGxlbmd0aCAlIDIgPT0gMToKICAgICAgICBwcmludCh3b3JkW2xlbmd0aCAvLyAyXSkKICAgIGVsc2U6CiAgICAgICAgcHJpbnQod29yZFtsZW5ndGggLy8gMiAtIDE6bGVuZ3RoIC8vIDIgKyAxXSkKCnNob3dfbWlkZGxlKCk=",
+      "answerNote": "Check the empty string before choosing an index. The docstring states the task, and one call runs it. The three test outputs are `an`, `o`, and `Empty`."
+    },
+    "p10": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def show_balance():\n    # Write the docstring here.\n    balance = 200.0\n    years = 2\n    # Apply each year's interest, then print the final balance.\n\nshow_balance()",
+      "cases": [
+        {
+          "name": "years = 2",
+          "expected": "212.18"
+        },
+        {
+          "name": "years = 0",
+          "expected": "200.00",
+          "rewrite": [
+            [
+              "years = 2",
+              "years = 0"
+            ]
+          ]
+        },
+        {
+          "name": "years = 10",
+          "expected": "268.78",
+          "rewrite": [
+            [
+              "years = 2",
+              "years = 10"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_balance\", \"balance\", \"years\")\nassert re.search(r\"^\\s*(for|while)\\b\", __code__, re.M), \"Use a loop that applies one year of growth on each pass.\"\nassert re.search(r\"\\b1\\.03\\b\", __code__), \"Multiply the balance by 1.03 for each year.\"\n",
+      "answer": "ZGVmIHNob3dfYmFsYW5jZSgpOgogICAgIiIiRGlzcGxheSBhIGZpeGVkIGJhbGFuY2UgYWZ0ZXIgeWVhcmx5IGludGVyZXN0LiIiIgogICAgYmFsYW5jZSA9IDIwMC4wCiAgICB5ZWFycyA9IDIKICAgIGZvciB5ZWFyIGluIHJhbmdlKHllYXJzKToKICAgICAgICBiYWxhbmNlID0gYmFsYW5jZSAqIDEuMDMKICAgIHByaW50KCclLjJmJyAlIGJhbGFuY2UpCgpzaG93X2JhbGFuY2UoKQ==",
+      "answerNote": "Each repetition applies one year of growth."
+    },
+    "p11": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 20,
+      "starter": "def show_colour():\n    # Write the docstring here.\n    temperature = 25\n    # Find red, green, and blue, then print the combined code.\n\nshow_colour()",
+      "cases": [
+        {
+          "name": "temperature = 25",
+          "expected": "65535"
+        },
+        {
+          "name": "temperature = 0",
+          "expected": "255",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 0"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 50",
+          "expected": "65280",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 50"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 75",
+          "expected": "16776960",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 75"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 100",
+          "expected": "16711680",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 100"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 12.5",
+          "expected": "33023",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 12.5"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 40",
+          "expected": "65382",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 40"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 60",
+          "expected": "6749952",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 60"
+            ]
+          ]
+        },
+        {
+          "name": "temperature = 90",
+          "expected": "16737792",
+          "rewrite": [
+            [
+              "temperature = 25",
+              "temperature = 90"
+            ]
+          ]
+        }
+      ],
+      "check": "import types, io, contextlib, re\ndef _fn(name):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == 0, \"Define \" + name + \" with empty parentheses.\"\n    assert f.__doc__ and f.__doc__.strip() and \"___\" not in f.__doc__, \"Give \" + name + \" a docstring as the first statement of its body.\"\n    return f\ndef _out(f):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        f()\n    return buffer.getvalue()\ndef _local(name, *variables):\n    f = _fn(name)\n    for v in variables:\n        assert v in f.__code__.co_varnames, \"Assign \" + v + \" inside the body of \" + name + \".\"\n_local(\"show_colour\", \"temperature\")\nassert \"round(\" in __code__, \"Round each component with round.\"\n",
+      "answer": "ZGVmIHNob3dfY29sb3VyKCk6CiAgICAiIiJEaXNwbGF5IHRoZSBjb2xvdXIgY29kZSBmb3IgYSBmaXhlZCB0ZW1wZXJhdHVyZS4iIiIKICAgIHRlbXBlcmF0dXJlID0gMjUKICAgIGlmIHRlbXBlcmF0dXJlIDw9IDI1OgogICAgICAgIHJlZCA9IDAKICAgICAgICBncmVlbiA9IHJvdW5kKDI1NSAqIHRlbXBlcmF0dXJlIC8gMjUpCiAgICAgICAgYmx1ZSA9IDI1NQogICAgZWxpZiB0ZW1wZXJhdHVyZSA8PSA1MDoKICAgICAgICByZWQgPSAwCiAgICAgICAgZ3JlZW4gPSAyNTUKICAgICAgICBibHVlID0gcm91bmQoMjU1ICogKDUwIC0gdGVtcGVyYXR1cmUpIC8gMjUpCiAgICBlbGlmIHRlbXBlcmF0dXJlIDw9IDc1OgogICAgICAgIHJlZCA9IHJvdW5kKDI1NSAqICh0ZW1wZXJhdHVyZSAtIDUwKSAvIDI1KQogICAgICAgIGdyZWVuID0gMjU1CiAgICAgICAgYmx1ZSA9IDAKICAgIGVsc2U6CiAgICAgICAgcmVkID0gMjU1CiAgICAgICAgZ3JlZW4gPSByb3VuZCgyNTUgKiAoMTAwIC0gdGVtcGVyYXR1cmUpIC8gMjUpCiAgICAgICAgYmx1ZSA9IDAKICAgIHByaW50KDY1NTM2ICogcmVkICsgMjU2ICogZ3JlZW4gKyBibHVlKQoKc2hvd19jb2xvdXIoKQ==",
+      "answerNote": "The four branches keep one component fixed while another changes."
+    }
+  }
+}
