@@ -1,0 +1,567 @@
+{
+  "id": "lecture-19",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 19 Workbook",
+  "subtitle": "Argument styles, main(), and the call stack",
+  "exercises": {
+    "ex-positional": {
+      "type": "example",
+      "code": "def make_label(text, width, symbol):\n    return symbol * width + \" \" + text\n\nprint(make_label(\"Sale\", 3, \"!\"))",
+      "output": "!!! Sale"
+    },
+    "ex-defaults": {
+      "type": "example",
+      "code": "def make_label(text, width=3, symbol=\"-\"):\n    return symbol * width + \" \" + text"
+    },
+    "ex-label-valid": {
+      "type": "example",
+      "code": "def label(text, width=3):\n    return \"-\" * width + text"
+    },
+    "cp1-predict": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "!!! Go",
+            "\"!!! Go\"",
+            "'!!! Go'"
+          ],
+          "placeholder": "printed line",
+          "width": "8rem",
+          "caseSensitive": true
+        },
+        "l2": {
+          "accept": [
+            "** Hi",
+            "\"** Hi\"",
+            "'** Hi'"
+          ],
+          "placeholder": "printed line",
+          "width": "8rem",
+          "caseSensitive": true
+        },
+        "l3": {
+          "accept": [
+            "==== OK",
+            "\"==== OK\"",
+            "'==== OK'"
+          ],
+          "placeholder": "printed line",
+          "width": "8rem",
+          "caseSensitive": true
+        }
+      }
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def make_label(text, width=3, symbol=\"-\"):\n    return symbol * width + \" \" + text\n\nprint(make_label(\"Go\", symbol=\"!\"))\nprint(make_label(symbol=\"*\", text=\"Hi\", width=2))\nprint(make_label(\"OK\", 4, \"=\"))",
+      "cases": [
+        {
+          "name": "Program output",
+          "expected": "!!! Go\n** Hi\n==== OK"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_calls = [n for n in ast.walk(ast.parse(__source__)) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"make_label\"]\n_ok_calls = [c for c in _calls if any(isinstance(k.value, ast.Constant) and k.value.value == \"OK\" for k in c.keywords)\n             or any(isinstance(a, ast.Constant) and a.value == \"OK\" for a in c.args)]\nassert len(_calls) == 3 and len(_ok_calls) == 1, \"Keep the three print calls. Rewrite only the third one.\"\n_third = _ok_calls[0]\nassert not _third.args and sorted(k.arg for k in _third.keywords) == [\"symbol\", \"text\", \"width\"], \"Rewrite the third call with only keyword arguments: text=, width=, and symbol=.\"\n",
+      "answer": "ZGVmIG1ha2VfbGFiZWwodGV4dCwgd2lkdGg9Mywgc3ltYm9sPSItIik6CiAgICByZXR1cm4gc3ltYm9sICogd2lkdGggKyAiICIgKyB0ZXh0CgpwcmludChtYWtlX2xhYmVsKCJHbyIsIHN5bWJvbD0iISIpKQpwcmludChtYWtlX2xhYmVsKHN5bWJvbD0iKiIsIHRleHQ9IkhpIiwgd2lkdGg9MikpCnByaW50KG1ha2VfbGFiZWwodGV4dD0iT0siLAogICAgICAgICAgICAgICAgIHdpZHRoPTQsCiAgICAgICAgICAgICAgICAgc3ltYm9sPSI9Iikp",
+      "answerNote": "First call: `width` keeps its default, `3`. Second call: every value binds by name, even in a different order. The returned string is still `\"==== OK\"`."
+    },
+    "ex-main": {
+      "type": "example",
+      "code": "def main():\n    print(\"Starting\")\n    for number in range(1, 4):\n        print(number)\n\nmain()",
+      "output": "Starting\n1\n2\n3"
+    },
+    "ex-fahrenheit": {
+      "type": "example",
+      "code": "def to_fahrenheit(celsius):\n    return celsius * 9 / 5 + 32\n\ndef main():\n    temperature = float(input(\"Celsius: \"))\n    converted = to_fahrenheit(temperature)\n    print(converted)\n\nmain()"
+    },
+    "ex-before": {
+      "type": "example",
+      "code": "def main():\n    print(cube_volume(2))\n\ndef cube_volume(side):\n    return side ** 3\n\nmain()"
+    },
+    "ex-demo": {
+      "type": "example",
+      "code": "# demo.py\ndef main():\n    print(\"Ready\")\n\nif __name__ == \"__main__\":\n    main()"
+    },
+    "ex-layout": {
+      "type": "example",
+      "code": "import math\nTAX_RATE = 0.15\n\ndef rounded_total(subtotal):\n    taxed = subtotal * (1 + TAX_RATE)\n    return math.ceil(taxed)\n\ndef main():\n    print(rounded_total(20))\n\nif __name__ == \"__main__\":\n    main()"
+    },
+    "cp2-run": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "run": {
+          "accept": [
+            "4.0"
+          ],
+          "placeholder": "output",
+          "width": "6rem"
+        }
+      }
+    },
+    "cp2": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Run directly: … Import: … Rate: … The guard checks: …",
+      "answer": "UnVuIGRpcmVjdGx5OiBgNC4wYC4gVGhlIGV4cGxpY2l0IGtleXdvcmQgYXJndW1lbnQgdXNlcyBgcmF0ZT0wLjJgLCByZXBsYWNpbmcgdGhlIGRlZmF1bHQgYDAuMWAuCgpJbXBvcnQ6IE5vIGF1dG9tYXRpYyBvdXRwdXQuIFB5dGhvbiBkZWZpbmVzIHRoZSBmdW5jdGlvbnMsIGJ1dCB0aGUgZ3VhcmQgc2tpcHMgdGhlIGNhbGwgdG8gYG1haW4oKWAuCgpUaGUgY29uZGl0aW9uIGNoZWNrcyB3aGV0aGVyIGBfX25hbWVfX2AgZXF1YWxzIGAiX19tYWluX18iYC4="
+    },
+    "ex-share": {
+      "type": "example",
+      "code": "def share(total, people):\n    return total / people\n\ndef show_share(total, people):\n    amount = share(total, people)\n    print(amount)\n\ndef main():\n    show_share(36, 3)\n\nif __name__ == \"__main__\":\n    main()"
+    },
+    "cp3-read": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "type": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "error type",
+          "width": "8rem"
+        },
+        "active": {
+          "accept": [
+            "ratio",
+            "ratio()"
+          ],
+          "placeholder": "function",
+          "width": "8rem"
+        },
+        "bottom": {
+          "accept": [
+            "main",
+            "main()"
+          ],
+          "placeholder": "function",
+          "width": "8rem"
+        },
+        "middle": {
+          "accept": [
+            "print_ratio",
+            "print_ratio()"
+          ],
+          "placeholder": "function",
+          "width": "8rem"
+        },
+        "top": {
+          "accept": [
+            "ratio",
+            "ratio()"
+          ],
+          "placeholder": "function",
+          "width": "8rem"
+        },
+        "fix": {
+          "accept": [
+            "print_ratio(18, 3)",
+            "print_ratio(18,3)",
+            "print_ratio(18.0, 3)",
+            "print_ratio(18.0,3)"
+          ],
+          "placeholder": "corrected call",
+          "width": "11rem"
+        },
+        "output": {
+          "accept": [
+            "6.0"
+          ],
+          "placeholder": "output",
+          "width": "6rem"
+        }
+      }
+    },
+    "cp3": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "The argument that caused the problem, where it entered, and the fix…",
+      "answer": "YFR5cGVFcnJvcmA6IGByYXRpb2AgdHJpZXMgdG8gZGl2aWRlIGEgc3RyaW5nIGJ5IGFuIGludGVnZXIgb24gbGluZSAyLgoKVGhlIHN0cmluZyBgIjE4ImAgZW50ZXJzIG9uIGxpbmUgOCBpbiBgbWFpbmAuIFVzZSBhIG51bWJlcjogYHByaW50X3JhdGlvKDE4LCAzKWAKClRoZSBjb3JyZWN0ZWQgcHJvZ3JhbSBwcmludHMgYDYuMGAuCgpUaGUgZnVuY3Rpb24gZnJhbWVzIGZyb20gYm90dG9tIHRvIHRvcCBhcmUgYG1haW5gLCBgcHJpbnRfcmF0aW9gLCBhbmQgYHJhdGlvYC4gVGhlIGFjdGl2ZSBmdW5jdGlvbiBhdCB0aGUgZmFpbHVyZSBpcyBgcmF0aW9gLg=="
+    },
+    "p1-trace": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 6,
+      "placeholder": "The statements that execute, in order, including each return…",
+      "answer": "YG1haW5gIGNhbGxzIGBjdWJlKDMpYCwgd2hpY2ggcmV0dXJucyBgMjdgOyBgbWFpbmAgc3RvcmVzIGl0IGluIGBzbWFsbGAuIEl0IGNhbGxzIGBjdWJlKDUpYCwgd2hpY2ggcmV0dXJucyBgMTI1YCwgYW5kIHN0b3JlcyBpdCBpbiBgbGFyZ2VgLiBJdCB0aGVuIGV4ZWN1dGVzIHRoZSB0d28gcHJpbnQgY2FsbHMsIGluIG9yZGVyLiBUaGUgb3V0cHV0IGlzOgpgMjdgCmAxMjVg"
+    },
+    "p1-output": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "27"
+          ],
+          "placeholder": "output",
+          "width": "6rem"
+        },
+        "l2": {
+          "accept": [
+            "125"
+          ],
+          "placeholder": "output",
+          "width": "6rem"
+        }
+      }
+    },
+    "p2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "false",
+            "f"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "False"
+        },
+        "s2": {
+          "accept": [
+            "true",
+            "t"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "True"
+        },
+        "s3": {
+          "accept": [
+            "false",
+            "f"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "False"
+        },
+        "s4": {
+          "accept": [
+            "false",
+            "f"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "False"
+        },
+        "s5": {
+          "accept": [
+            "true",
+            "t"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "True"
+        },
+        "s6": {
+          "accept": [
+            "true",
+            "t"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "True"
+        },
+        "s7": {
+          "accept": [
+            "true",
+            "t"
+          ],
+          "placeholder": "true or false",
+          "width": "7rem",
+          "show": "True"
+        }
+      }
+    },
+    "p2-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 60,
+      "rows": 7,
+      "placeholder": "1. … 2. … (one reason for each statement)",
+      "answer": "MS4gRmFsc2UuIEEgZnVuY3Rpb24gY2FuIHJlYWNoIHRoZSBlbmQgb2YgaXRzIGJvZHkgYW5kIHJldHVybiBgTm9uZWAuCjIuIFRydWUuIERpZmZlcmVudCBicmFuY2hlcyBjYW4gY29udGFpbiBkaWZmZXJlbnQgcmV0dXJucy4KMy4gRmFsc2UuIGByZXR1cm5gIGVuZHMgdGhlIGN1cnJlbnQgY2FsbC4KNC4gRmFsc2UuIEZvciBleGFtcGxlLCBhIGZ1bmN0aW9uIGNhbiBjYWxsIGByYW5kb20ucmFuZGludGAgd2l0aG91dCByZWNlaXZpbmcgYSBwYXJhbWV0ZXIuCjUuIFRydWUuIEEgZnVuY3Rpb24gbWF5IGRvIG90aGVyIHdvcmsgb3Igc2ltcGx5IGZpbmlzaCwgcmV0dXJuaW5nIGBOb25lYC4KNi4gVHJ1ZS4gQSBiYXJlIGByZXR1cm5gIGVuZHMgdGhlIGNhbGwgYW5kIHJldHVybnMgYE5vbmVgLgo3LiBUcnVlLiBBIGNhbGwgZm9sbG93cyBvbmUgZXhlY3V0aW9uIHBhdGggYW5kIHJldHVybnMgb25lIG9iamVjdC4="
+    },
+    "p3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "'four'",
+            "\"four\"",
+            "four"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "'four'"
+        },
+        "r2": {
+          "accept": [
+            "'twenty'",
+            "\"twenty\"",
+            "twenty"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "'twenty'"
+        },
+        "r3": {
+          "accept": [
+            "'twenty-three'",
+            "\"twenty-three\"",
+            "twenty-three"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "'twenty-three'"
+        },
+        "r4": {
+          "accept": [
+            "''",
+            "\"\"",
+            "empty",
+            "the empty string",
+            "empty string"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "''"
+        },
+        "r5": {
+          "accept": [
+            "''",
+            "\"\"",
+            "empty",
+            "the empty string",
+            "empty string"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "''"
+        },
+        "r6": {
+          "accept": [
+            "''",
+            "\"\"",
+            "empty",
+            "the empty string",
+            "empty string"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "''"
+        }
+      }
+    },
+    "p3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "For each call: the branch taken and any helper argument…",
+      "answer": "VGhlIHJldHVybmVkIHN0cmluZ3MgYXJlIGAnZm91cidgLCBgJ3R3ZW50eSdgLCBgJ3R3ZW50eS10aHJlZSdgLCBgJydgLCBgJydgLCBhbmQgYCcnYCwgaW4gdGhhdCBvcmRlci4gVGhlIGZpcnN0IGNhbGwgdXNlcyBgc21hbGxfbmFtZSg0KWAuIFRoZSBzZWNvbmQgcmV0dXJucyBkaXJlY3RseS4gVGhlIHRoaXJkIHVzZXMgYHNtYWxsX25hbWUoMylgIGFmdGVyIHN1YnRyYWN0aW5nIDIwLiBUaGUgZmluYWwgdGhyZWUgY2FsbHMgcmVhY2ggdGhlIGxhc3QgcmV0dXJuLg=="
+    },
+    "p4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "-1"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "r2": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "r3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "r4": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "r5": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        }
+      }
+    },
+    "p4-trace": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "The (number, count) pairs after each completed iteration…",
+      "answer": "Rm9yIGAtMmAsIHRoZSBmaXJzdCByZXR1cm4gZ2l2ZXMgYC0xYCBiZWZvcmUgYGNvdW50YCBpcyBjcmVhdGVkLiBGb3IgYDBgIGFuZCBgMWAsIHRoZSBsb29wIGRvZXMgbm90IHJ1biBhbmQgdGhlIHJlc3VsdCBpcyBgMGAuIEZvciBgOGAsIHRoZSBwYWlycyBgKG51bWJlciwgY291bnQpYCBhcmUgYCg0LCAxKWAsIGAoMiwgMilgLCBgKDEsIDMpYCwgc28gdGhlIHJlc3VsdCBpcyBgM2AuIEZvciBgMTJgLCB0aGUgcGFpcnMgYXJlIGAoNiwgMSlgIGFuZCBgKDMsIDIpYDsgdGhlIG9kZCB2YWx1ZSBgM2AgdHJpZ2dlcnMgYSByZXR1cm4gb2YgYDJgLg=="
+    },
+    "p5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "out": {
+          "accept": [
+            "6 9"
+          ],
+          "placeholder": "output",
+          "width": "6rem"
+        }
+      }
+    },
+    "p5-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Explain using the two calls' frames…",
+      "answer": "VGhlIG91dHB1dCBpcyBgNiA5YC4gYGV4Y2hhbmdlYCBjaGFuZ2VzIHRoZSBuYW1lcyBgZmlyc3RgIGFuZCBgc2Vjb25kYCBpbiBpdHMgb3duIGZyYW1lLiBUaGUgbmFtZXMgYGxlZnRgIGFuZCBgcmlnaHRgIGluIHRoZSB3YWl0aW5nIGBtYWluYCBmcmFtZSBzdGlsbCBoYXZlIHRoZSB2YWx1ZXMgYDZgIGFuZCBgOWAu"
+    },
+    "p6": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 32,
+      "starter": "import math\n\n# Define the six helpers here.\n\ndef main():\n    # Read the radius and the height, call all six helpers,\n    # and print the labeled results to two decimal places.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Radius 3 and height 4",
+          "inputs": [
+            "3",
+            "4"
+          ],
+          "check": "_want = ['Sphere volume: 113.10', 'Sphere surface: 113.10', 'Cylinder volume: 113.10', 'Cylinder surface: 131.95', 'Cone volume: 37.70', 'Cone surface: 75.40']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 3 and height 4, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 3 and height 4, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 3 and height 4, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        },
+        {
+          "name": "Radius 1 and height 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "check": "_want = ['Sphere volume: 4.19', 'Sphere surface: 12.57', 'Cylinder volume: 3.14', 'Cylinder surface: 12.57', 'Cone volume: 1.05', 'Cone surface: 7.58']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 1 and height 1, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 1 and height 1, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 1 and height 1, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        },
+        {
+          "name": "Radius 2.5 and height 10",
+          "inputs": [
+            "2.5",
+            "10"
+          ],
+          "check": "_want = ['Sphere volume: 65.45', 'Sphere surface: 78.54', 'Cylinder volume: 196.35', 'Cylinder surface: 196.35', 'Cone volume: 65.45', 'Cone surface: 100.59']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 2.5 and height 10, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 2.5 and height 10, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 2.5 and height 10, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        },
+        {
+          "name": "Radius 0.5 and height 0.2",
+          "inputs": [
+            "0.5",
+            "0.2"
+          ],
+          "check": "_want = ['Sphere volume: 0.52', 'Sphere surface: 3.14', 'Cylinder volume: 0.16', 'Cylinder surface: 2.20', 'Cone volume: 0.05', 'Cone surface: 1.63']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 0.5 and height 0.2, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 0.5 and height 0.2, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 0.5 and height 0.2, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn('sphere_volume', \"radius\")\n_fn('sphere_surface', \"radius\")\n_fn('cylinder_volume', \"radius\", \"height\")\n_fn('cylinder_surface', \"radius\", \"height\")\n_fn('cone_volume', \"radius\", \"height\")\n_fn('cone_surface', \"radius\", \"height\")\n_fn(\"main\")\nassert re.search(r\"\\bmath\\.pi\\b\", __code__), \"Use math.pi.\"\nassert re.search(r\"\\bmath\\.sqrt\\s*\\(\", __code__), \"Use math.sqrt for the slant length s.\"\n_returns('sphere_volume', (1.0,), 4.1887902047863905)\n_returns('sphere_volume', (2.5,), 65.44984694978736)\n_returns('sphere_surface', (1.0,), 12.566370614359172)\n_returns('sphere_surface', (2.5,), 78.53981633974483)\n_returns('cylinder_volume', (1.0, 1.0), 3.141592653589793)\n_returns('cylinder_volume', (2.0, 3.0), 37.69911184307752)\n_returns('cylinder_surface', (1.0, 1.0), 12.566370614359172)\n_returns('cylinder_surface', (2.0, 3.0), 62.83185307179586)\n_returns('cone_volume', (1.0, 1.0), 1.0471975511965976)\n_returns('cone_volume', (2.0, 3.0), 12.566370614359172)\n_returns('cone_surface', (1.0, 1.0), 7.584475591748159)\n_returns('cone_surface', (2.0, 3.0), 35.22071741263713)\n_guard()\n",
+      "answer": "aW1wb3J0IG1hdGgKCmRlZiBzcGhlcmVfdm9sdW1lKHJhZGl1cyk6CiAgICByZXR1cm4gNCAqIG1hdGgucGkgKiByYWRpdXMgKiogMyAvIDMKCmRlZiBzcGhlcmVfc3VyZmFjZShyYWRpdXMpOgogICAgcmV0dXJuIDQgKiBtYXRoLnBpICogcmFkaXVzICoqIDIKCmRlZiBjeWxpbmRlcl92b2x1bWUocmFkaXVzLCBoZWlnaHQpOgogICAgcmV0dXJuIG1hdGgucGkgKiByYWRpdXMgKiogMiAqIGhlaWdodAoKZGVmIGN5bGluZGVyX3N1cmZhY2UocmFkaXVzLCBoZWlnaHQpOgogICAgcmV0dXJuIDIgKiBtYXRoLnBpICogcmFkaXVzICogKHJhZGl1cyArIGhlaWdodCkKCmRlZiBjb25lX3ZvbHVtZShyYWRpdXMsIGhlaWdodCk6CiAgICByZXR1cm4gbWF0aC5waSAqIHJhZGl1cyAqKiAyICogaGVpZ2h0IC8gMwoKZGVmIGNvbmVfc3VyZmFjZShyYWRpdXMsIGhlaWdodCk6CiAgICBzbGFudCA9IG1hdGguc3FydChyYWRpdXMgKiogMiArIGhlaWdodCAqKiAyKQogICAgcmV0dXJuIG1hdGgucGkgKiByYWRpdXMgKiAocmFkaXVzICsgc2xhbnQpCgpkZWYgbWFpbigpOgogICAgcmFkaXVzID0gZmxvYXQoaW5wdXQoJ1JhZGl1czogJykpCiAgICBoZWlnaHQgPSBmbG9hdChpbnB1dCgnSGVpZ2h0OiAnKSkKICAgIHByaW50KGYnU3BoZXJlIHZvbHVtZToge3NwaGVyZV92b2x1bWUocmFkaXVzKTouMmZ9JykKICAgIHByaW50KGYnU3BoZXJlIHN1cmZhY2U6IHtzcGhlcmVfc3VyZmFjZShyYWRpdXMpOi4yZn0nKQogICAgcHJpbnQoZidDeWxpbmRlciB2b2x1bWU6IHtjeWxpbmRlcl92b2x1bWUocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQogICAgcHJpbnQoZidDeWxpbmRlciBzdXJmYWNlOiB7Y3lsaW5kZXJfc3VyZmFjZShyYWRpdXMsIGhlaWdodCk6LjJmfScpCiAgICBwcmludChmJ0NvbmUgdm9sdW1lOiB7Y29uZV92b2x1bWUocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQogICAgcHJpbnQoZidDb25lIHN1cmZhY2U6IHtjb25lX3N1cmZhY2UocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
+      "answerNote": "Each helper returns one calculation. `main` handles input and formatting."
+    },
+    "p7": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 10,
+      "starter": "def read_number(prompt='Value:'):\n    # Read and return a float, using the prompt followed by one space.\n\ndef main():\n    # Read two numbers and print their total to one decimal place.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Typed 2.5 and 4",
+          "inputs": [
+            "2.5",
+            "4"
+          ],
+          "expected": "Value: Next: Total: 6.5"
+        },
+        {
+          "name": "Typed 0 and 0",
+          "inputs": [
+            "0",
+            "0"
+          ],
+          "expected": "Value: Next: Total: 0.0"
+        },
+        {
+          "name": "Typed 1.25 and -3",
+          "inputs": [
+            "1.25",
+            "-3"
+          ],
+          "expected": "Value: Next: Total: -1.8"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_f = _fn(\"read_number\", \"prompt\")\nassert _f.__defaults__ == (\"Value:\",), \"Give read_number the default prompt='Value:'.\"\nassert \"input\" in _f.__code__.co_names and \"float\" in _f.__code__.co_names, \"Read the number with input() and convert it with float() inside read_number.\"\n_fn(\"main\")\n_calls = [n for n in _body(\"main\") if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"read_number\"]\nassert any(not c.args and not c.keywords for c in _calls), \"In main, read the first number with the default prompt: read_number().\"\nassert any(not c.args and [k.arg for k in c.keywords] == [\"prompt\"] and isinstance(c.keywords[0].value, ast.Constant)\n           and c.keywords[0].value.value == \"Next:\" for c in _calls), \"Read the second number with the keyword call read_number(prompt='Next:').\"\n_guard()\n",
+      "answer": "ZGVmIHJlYWRfbnVtYmVyKHByb21wdD0nVmFsdWU6Jyk6CiAgICByZXR1cm4gZmxvYXQoaW5wdXQocHJvbXB0ICsgJyAnKSkKCmRlZiBtYWluKCk6CiAgICBmaXJzdCA9IHJlYWRfbnVtYmVyKCkKICAgIHNlY29uZCA9IHJlYWRfbnVtYmVyKHByb21wdD0nTmV4dDonKQogICAgcHJpbnQoZidUb3RhbDoge2ZpcnN0ICsgc2Vjb25kOi4xZn0nKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
+      "answerNote": "The helper returns the converted input. `main` calls it twice and prints the total."
+    },
+    "p8": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 20,
+      "starter": "def order_credit(total, items):\n    # Return the credit for one order.\n\ndef main():\n    # Read totals until -1, reading the item count only for an order.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Orders (39, 1), (40, 2), (80, 3), (120, 2), then -1",
+          "inputs": [
+            "39",
+            "1",
+            "40",
+            "2",
+            "80",
+            "3",
+            "120",
+            "2",
+            "-1"
+          ],
+          "check": "_want = ['Credit: $3.00', 'Credit: $4.00', 'Credit: $3.00', 'Credit: $0.00']\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        },
+        {
+          "name": "The sentinel -1 first",
+          "inputs": [
+            "-1"
+          ],
+          "check": "_want = []\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        },
+        {
+          "name": "Orders (79.99, 2), (120.01, 3), (0, 0), then -1",
+          "inputs": [
+            "79.99",
+            "2",
+            "120.01",
+            "3",
+            "0",
+            "0",
+            "-1"
+          ],
+          "check": "_want = ['Credit: $4.00', 'Credit: $0.00', 'Credit: $0.00']\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"order_credit\", \"total\", \"items\")\n_fn(\"main\")\n_returns('order_credit', (39.0, 1), 3)\n_returns('order_credit', (40.0, 2), 4)\n_returns('order_credit', (80.0, 3), 3)\n_returns('order_credit', (120.0, 2), 0)\n_returns('order_credit', (0.0, 0), 0)\n_returns('order_credit', (39.99, 4), 12)\n_returns('order_credit', (40.0, 1), 0)\n_returns('order_credit', (79.99, 2), 4)\n_returns('order_credit', (79.99, 1), 0)\n_returns('order_credit', (80.0, 2), 0)\n_returns('order_credit', (120.0, 3), 3)\n_returns('order_credit', (120.01, 3), 0)\n_returns('order_credit', (100.0, 5), 5)\n_returns('order_credit', (150.0, 10), 0)\n_guard()\n",
+      "answer": "ZGVmIG9yZGVyX2NyZWRpdCh0b3RhbCwgaXRlbXMpOgogICAgaWYgdG90YWwgPCA0MDoKICAgICAgICByZXR1cm4gMyAqIGl0ZW1zCiAgICBpZiB0b3RhbCA8IDgwIGFuZCBpdGVtcyA+PSAyOgogICAgICAgIHJldHVybiAyICogaXRlbXMKICAgIGlmIHRvdGFsIDw9IDEyMCBhbmQgaXRlbXMgPj0gMzoKICAgICAgICByZXR1cm4gaXRlbXMKICAgIHJldHVybiAwCgpkZWYgbWFpbigpOgogICAgdG90YWwgPSBmbG9hdChpbnB1dCgnVG90YWwgKC0xIHRvIHN0b3ApOiAnKSkKICAgIHdoaWxlIHRvdGFsICE9IC0xOgogICAgICAgIGl0ZW1zID0gaW50KGlucHV0KCdJdGVtczogJykpCiAgICAgICAgY3JlZGl0ID0gb3JkZXJfY3JlZGl0KHRvdGFsLCBpdGVtcykKICAgICAgICBwcmludChmJ0NyZWRpdDogJHtjcmVkaXQ6LjJmfScpCiAgICAgICAgdG90YWwgPSBmbG9hdChpbnB1dCgnVG90YWwgKC0xIHRvIHN0b3ApOiAnKSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "The report lines for the four orders are `Credit: $3.00`, `Credit: $4.00`, `Credit: $3.00`, and `Credit: $0.00`. With `-1` first, the program prints no credit and does not ask for an item count."
+    }
+  }
+}

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 19 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-19", specs: "./exercises.json" });
+  </script>
+  <style>
+    /* bill.py is shown with its line numbers, as in the printed workbook; the numbers are not part of the copied text. */
+    pre.wb-numbered code { counter-reset: wb-line; }
+    pre.wb-numbered .ln { counter-increment: wb-line; }
+    pre.wb-numbered .ln::before { content: counter(wb-line); display: inline-block; width: 1.5em; margin-right: 1em; text-align: right; color: var(--ink-quiet); user-select: none; }
+  </style>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 19 Workbook</h1>
+    <div class="wb-subtitle">Argument styles, <code>main()</code>, and the call stack</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Use keyword arguments and defaults to call functions, organize a file around <code>main()</code>, and follow calls through stack frames and tracebacks.</p>
+  <p>Reading: §5.2.3</p>
+  <ul>
+    <li>Match positional and keyword arguments to parameters, use defaults, and put required parameters first.</li>
+    <li>Follow the course layout: imports, constants, helpers, <code>main()</code>, then the <code>__name__</code> guard.</li>
+    <li>Explain what runs directly and what runs during import.</li>
+    <li>Trace calls and returns through active and waiting frames.</li>
+    <li>Read a traceback from the error upward to find where the wrong argument entered.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-arguments">Argument styles</p>
+
+<h2 id="s1">1. Positional arguments</h2>
+<p>In a positional call, values match parameters from left to right.</p>
+<wb-example id="ex-positional"></wb-example>
+<p>L18 matched arguments by position. Today we can also name the parameters in a call and let the function supply some default values.</p>
+
+<h2 id="s2">2. Keyword and mixed arguments</h2>
+<pre><code><span class="wb-fn">make_label</span>(<span class="wb-str">"Sale"</span>, 3, <span class="wb-str">"!"</span>)
+<span class="wb-fn">make_label</span>(symbol=<span class="wb-str">"!"</span>, text=<span class="wb-str">"Sale"</span>, width=3)</code></pre>
+<p>Both calls return <code>"!!! Sale"</code>. Keyword order can change. A keyword is the parameter's name, spelled exactly as it appears in the definition.</p>
+
+<h3 id="s2-mixed">Positional arguments come before keywords</h3>
+<pre><code><span class="wb-fn">make_label</span>(<span class="wb-str">"Sale"</span>, 3, symbol=<span class="wb-str">"!"</span>)
+<span class="wb-fn">make_label</span>(<span class="wb-str">"Sale"</span>, width=3, symbol=<span class="wb-str">"!"</span>)</code></pre>
+<p>Both are valid mixed calls. Python fills positional slots first, then named slots.</p>
+<p>A positional value after a keyword causes <code>SyntaxError</code>:</p>
+<pre><code><span class="wb-fn">make_label</span>(text=<span class="wb-str">"Sale"</span>, 3, <span class="wb-str">"!"</span>)</code></pre>
+<p>Giving <code>text</code> two values causes <code>TypeError</code>:</p>
+<pre><code><span class="wb-fn">make_label</span>(<span class="wb-str">"Sale"</span>, text=<span class="wb-str">"Deal"</span>,
+           width=3, symbol=<span class="wb-str">"!"</span>)</code></pre>
+
+<h2 id="s3">3. Defaults and parameter order</h2>
+<p>Defaults supply arguments that the caller omits.</p>
+<wb-example id="ex-defaults"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th><code>width</code></th><th><code>symbol</code></th><th>Returned string</th></tr></thead>
+  <tbody>
+    <tr><td><code>make_label("Sale")</code></td><td>3</td><td><code>"-"</code></td><td><code>"--- Sale"</code></td></tr>
+    <tr><td><code>make_label("Sale", 5)</code></td><td>5</td><td><code>"-"</code></td><td><code>"----- Sale"</code></td></tr>
+    <tr><td><code>make_label("Sale", symbol="*")</code></td><td>3</td><td><code>"*"</code></td><td><code>"*** Sale"</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The final call replaces <code>symbol</code> while keeping the default <code>width</code>. The required <code>text</code> argument still needs a value.</p>
+
+<h3 id="s3-order">Required parameters come before optional ones</h3>
+<p>In these definitions, put required parameters first, then parameters with defaults. A caller can supply the required values and omit optional values at the end.</p>
+<p>Valid definition:</p>
+<wb-example id="ex-label-valid"></wb-example>
+<p><code>SyntaxError</code> in the header:</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">label</span>(width=3, text):
+    <span class="wb-kw">return</span> <span class="wb-str">"-"</span> * width + text</code></pre>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Predict the three printed strings. Then rewrite the third call using only keyword arguments.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">make_label</span>(text, width=3, symbol=<span class="wb-str">"-"</span>):
+    <span class="wb-kw">return</span> symbol * width + <span class="wb-str">" "</span> + text
+
+<span class="wb-fn">print</span>(<span class="wb-fn">make_label</span>(<span class="wb-str">"Go"</span>, symbol=<span class="wb-str">"!"</span>))
+<span class="wb-fn">print</span>(<span class="wb-fn">make_label</span>(symbol=<span class="wb-str">"*"</span>, text=<span class="wb-str">"Hi"</span>, width=2))
+<span class="wb-fn">print</span>(<span class="wb-fn">make_label</span>(<span class="wb-str">"OK"</span>, 4, <span class="wb-str">"="</span>))</code></pre>
+  <wb-table id="cp1-predict">
+    <table>
+      <thead><tr><th>Line</th><th>Printed string</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>The code box below holds the same program. Rewrite its third call so that every argument is a keyword argument, then press <strong>Check</strong>.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Keep the three print calls. Rewrite only the third one.</li>
+      <li>Rewrite the third call with only keyword arguments: <code>text=</code>, <code>width=</code>, and <code>symbol=</code>.</li>
+      <li>The program still prints the same three lines.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-structure">Program structure</p>
+
+<h2 id="s4">4. Main coordinates the program</h2>
+<p><code>main</code> is an ordinary function name chosen by convention. Defining it does not run its body. The call <code>main()</code> starts those steps.</p>
+<wb-example id="ex-main"></wb-example>
+
+<h3 id="s4-helper">Main coordinates input, calculation, and output</h3>
+<wb-example id="ex-fahrenheit"></wb-example>
+<p>The helper computes a result. <code>main</code> chooses where its input comes from and what the user sees. With input <code>20</code>, <code>to_fahrenheit</code> returns <code>68.0</code>, which <code>main</code> prints.</p>
+
+<h2 id="s5">5. Definitions before calls</h2>
+<p>A function must exist when its call runs.</p>
+<wb-example id="ex-before"></wb-example>
+<ol>
+  <li>Python defines <code>main</code>.</li>
+  <li>Python defines <code>cube_volume</code>.</li>
+  <li>The final line calls <code>main</code>.</li>
+  <li>Its body calls the now-defined helper.</li>
+</ol>
+<p>This prints <code>8</code>. A helper can appear below <code>main</code> if Python reaches its definition before the call runs. Calling an undefined function raises <code>NameError</code>.</p>
+
+<h2 id="s6">6. The name guard</h2>
+<wb-example id="ex-demo"></wb-example>
+<p>Run directly: <code>__name__</code> is <code>"__main__"</code>.</p>
+<p>Imported as <code>demo</code>: <code>__name__</code> is <code>"demo"</code>.</p>
+<p>The guard prevents the <code>main()</code> call during import. Other top-level statements would still run, so keep the program's work inside functions.</p>
+
+<h2 id="s7">7. The course program layout</h2>
+<wb-example id="ex-layout"></wb-example>
+<ol>
+  <li>Imports</li>
+  <li>Constants</li>
+  <li>Helper functions</li>
+  <li><code>main()</code></li>
+  <li>The guard</li>
+</ol>
+<p>Output: <code>23</code></p>
+<p>From this lecture onward, end program files with the guard. This layout is our convention. Python still follows the execution order described in Section 5.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>What appears when this file is run directly? What appears automatically when another file imports it? Explain which rate is used and what the guard checks.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">fee</span>(total, rate=0.1):
+    <span class="wb-kw">return</span> total * rate
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    <span class="wb-fn">print</span>(<span class="wb-fn">fee</span>(20, rate=0.2))
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+  <wb-table id="cp2-run">
+    <table>
+      <tbody>
+        <tr><td>Output when the file is run directly</td><td data-blank="run"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <wb-short id="cp2"></wb-short>
+</div>
+
+<p class="wb-part" id="part-frames">Calls and frames</p>
+
+<h2 id="s8">8. Functions calling functions</h2>
+<wb-example id="ex-share"></wb-example>
+<p>Output: <code>12.0</code></p>
+
+<h3 id="s8-order">Nested calls, in time order</h3>
+<p><code>main</code> waits while <code>show_share</code> runs. It, in turn, waits for <code>share</code>.</p>
+<ol>
+  <li><code>main</code> calls <code>show_share(36, 3)</code>.</li>
+  <li><code>show_share</code> calls <code>share(36, 3)</code>.</li>
+  <li><code>share</code> returns <code>12.0</code>.</li>
+  <li><code>show_share</code> prints it and ends, returning <code>None</code> to <code>main</code>.</li>
+</ol>
+
+<h2 id="s9">9. The call stack and frames</h2>
+<p>Each call adds a frame on top. The top frame is active. Frames below it wait for their calls to finish. The file's top-level execution sits below <code>main</code>.</p>
+
+<h3 id="s9-frame">A frame remembers values and where to resume</h3>
+<p>While <code>share</code> runs, the function frames are:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Position</th><th>Function</th><th>Parameter values</th><th>State</th></tr></thead>
+  <tbody>
+    <tr><td>Top</td><td><code>share</code></td><td><code>total=36, people=3</code></td><td>Active</td></tr>
+    <tr><td>Middle</td><td><code>show_share</code></td><td><code>total=36, people=3</code></td><td>Waiting for <code>share</code></td></tr>
+    <tr><td>Bottom</td><td><code>main</code></td><td></td><td>Waiting for <code>show_share</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Each call gets its own frame, with its parameter and local values. Python also remembers where execution must continue after the call.</p>
+<p><code>share</code> is evaluating:</p>
+<pre><code><span class="wb-kw">return</span> total / people</code></pre>
+<p><code>show_share</code> is paused here:</p>
+<pre><code>amount = <span class="wb-fn">share</span>(total, people)</code></pre>
+<p>When the call returns, Python finishes this assignment, then runs <code>print(amount)</code>.</p>
+
+<h3 id="s9-return">Returns remove frames in reverse order</h3>
+<p>The most recent unfinished call returns first. Its frame disappears, and the frame below becomes active again.</p>
+<ol>
+  <li><code>share</code> returns <code>12.0</code>.</li>
+  <li><code>show_share</code> resumes, prints <code>12.0</code>, and returns <code>None</code>.</li>
+  <li><code>main</code> resumes.</li>
+</ol>
+<p><code>main</code> eventually ends too, returning control to the file's top level.</p>
+
+<p class="wb-part" id="part-tracebacks">Tracebacks</p>
+
+<h2 id="s10">10. Reading tracebacks</h2>
+<p><code>bill.py</code></p>
+<pre class="wb-numbered"><code><span class="ln"><span class="wb-kw">def</span> <span class="wb-fn">share</span>(total, people):</span>
+<span class="ln">    <span class="wb-kw">return</span> total / people</span>
+<span class="ln"></span>
+<span class="ln"><span class="wb-kw">def</span> <span class="wb-fn">show_share</span>(total, people):</span>
+<span class="ln">    amount = <span class="wb-fn">share</span>(total, people)</span>
+<span class="ln">    <span class="wb-fn">print</span>(amount)</span>
+<span class="ln"></span>
+<span class="ln"><span class="wb-kw">def</span> <span class="wb-fn">main</span>():</span>
+<span class="ln">    <span class="wb-fn">show_share</span>(36, 0)</span>
+<span class="ln"></span>
+<span class="ln"><span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:</span>
+<span class="ln">    <span class="wb-fn">main</span>()</span></code></pre>
+<pre class="wb-output wb-error">Traceback (most recent call last):
+  File "bill.py", line 12, in &lt;module&gt;
+    main()
+  File "bill.py", line 9, in main
+    show_share(36, 0)
+  File "bill.py", line 5, in show_share
+    amount = share(total, people)
+  File "bill.py", line 2, in share
+    return total / people
+ZeroDivisionError: division by zero</pre>
+<p>Start at the bottom: error type, failing line, then callers above it. The division fails on line 2. The zero entered on line 9 in <code>main</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Read this traceback. Give the error type, the active function, and the three function frames from bottom to top. Find the argument that caused the problem, correct its call, and predict the output after the fix.</p>
+  <p>The program is intended to divide numeric values.</p>
+  <pre class="wb-output wb-error">Traceback (most recent call last):
+  File "ratio_demo.py", line 11, in &lt;module&gt;
+    main()
+  File "ratio_demo.py", line 8, in main
+    print_ratio("18", 3)
+  File "ratio_demo.py", line 5, in print_ratio
+    print(ratio(total, count))
+  File "ratio_demo.py", line 2, in ratio
+    return total / count
+TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
+  <wb-table id="cp3-read">
+    <table>
+      <tbody>
+        <tr><td>Error type</td><td data-blank="type"></td></tr>
+        <tr><td>Active function at the failure</td><td data-blank="active"></td></tr>
+        <tr><td>Bottom function frame</td><td data-blank="bottom"></td></tr>
+        <tr><td>Middle function frame</td><td data-blank="middle"></td></tr>
+        <tr><td>Top function frame</td><td data-blank="top"></td></tr>
+        <tr><td>Corrected call</td><td data-blank="fix"></td></tr>
+        <tr><td>Output after the fix</td><td data-blank="output"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <wb-short id="cp3"></wb-short>
+</div>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values and compares what they return. Programs 6 and 8 accept any prompt. The checker looks only at the report lines. End programs 6, 7, and 8 with the standard guard.</p>
+
+<h3>1. Trace a cube report</h3>
+<p>This program calculates and prints the cubes of 3 and 5. Starting with the first statement in <code>main</code>, list the statements that execute, including each return to the caller. Write the exact output.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">cube</span>(number):
+    <span class="wb-kw">return</span> number ** 3
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    small = <span class="wb-fn">cube</span>(3)
+    large = <span class="wb-fn">cube</span>(5)
+    <span class="wb-fn">print</span>(small)
+    <span class="wb-fn">print</span>(large)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">'__main__'</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+<wb-short id="p1-trace"></wb-short>
+<wb-table id="p1-output">
+  <table>
+    <thead><tr><th>Line</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="l1"></td></tr>
+      <tr><td>2</td><td data-blank="l2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>2. Return behaviour</h3>
+<p>For each statement, write true or false and give a reason.</p>
+<wb-table id="p2">
+  <table>
+    <thead><tr><th>Statement</th><th>True or false</th></tr></thead>
+    <tbody>
+      <tr><td>1. Every function body needs a <code>return</code> statement.</td><td data-blank="s1"></td></tr>
+      <tr><td>2. A function body can contain two different <code>return</code> statements.</td><td data-blank="s2"></td></tr>
+      <tr><td>3. A call continues with the next line in the function after executing <code>return</code>.</td><td data-blank="s3"></td></tr>
+      <tr><td>4. A function with no parameters must return the same result on every call.</td><td data-blank="s4"></td></tr>
+      <tr><td>5. A function can finish without printing anything and without returning a useful value.</td><td data-blank="s5"></td></tr>
+      <tr><td>6. A bare <code>return</code> can end a function without supplying a useful value.</td><td data-blank="s6"></td></tr>
+      <tr><td>7. Each call has one returned object, even if different branches return different results.</td><td data-blank="s7"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p2-why"></wb-short>
+
+<h3>3. Trace number names</h3>
+<p>Trace <code>number_name</code> for <code>4</code>, <code>20</code>, <code>23</code>, <code>0</code>, <code>-3</code>, and <code>25</code>. For each call, write the branch taken, any helper argument, and the returned string. This function names only 1 through 4 and 20 through 24.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">small_name</span>(number):
+    <span class="wb-kw">if</span> number == 1:
+        <span class="wb-kw">return</span> <span class="wb-str">'one'</span>
+    <span class="wb-kw">if</span> number == 2:
+        <span class="wb-kw">return</span> <span class="wb-str">'two'</span>
+    <span class="wb-kw">if</span> number == 3:
+        <span class="wb-kw">return</span> <span class="wb-str">'three'</span>
+    <span class="wb-kw">if</span> number == 4:
+        <span class="wb-kw">return</span> <span class="wb-str">'four'</span>
+    <span class="wb-kw">return</span> <span class="wb-str">''</span>
+
+<span class="wb-kw">def</span> <span class="wb-fn">number_name</span>(number):
+    <span class="wb-kw">if</span> 1 &lt;= number &lt;= 4:
+        <span class="wb-kw">return</span> <span class="wb-fn">small_name</span>(number)
+    <span class="wb-kw">if</span> number == 20:
+        <span class="wb-kw">return</span> <span class="wb-str">'twenty'</span>
+    <span class="wb-kw">if</span> 21 &lt;= number &lt;= 24:
+        <span class="wb-kw">return</span> <span class="wb-str">'twenty-'</span> + <span class="wb-fn">small_name</span>(number - 20)
+    <span class="wb-kw">return</span> <span class="wb-str">''</span></code></pre>
+<wb-table id="p3">
+  <table>
+    <thead><tr><th>Call</th><th>Returned string</th></tr></thead>
+    <tbody>
+      <tr><td><code>number_name(4)</code></td><td data-blank="r1"></td></tr>
+      <tr><td><code>number_name(20)</code></td><td data-blank="r2"></td></tr>
+      <tr><td><code>number_name(23)</code></td><td data-blank="r3"></td></tr>
+      <tr><td><code>number_name(0)</code></td><td data-blank="r4"></td></tr>
+      <tr><td><code>number_name(-3)</code></td><td data-blank="r5"></td></tr>
+      <tr><td><code>number_name(25)</code></td><td data-blank="r6"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p3-why"></wb-short>
+
+<h3>4. Trace a loop with returns</h3>
+<p>Trace <code>count_halvings</code> for <code>-2</code>, <code>0</code>, <code>1</code>, <code>8</code>, and <code>12</code>. Record the values of <code>number</code> and <code>count</code> after each completed loop iteration, then the returned value.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">count_halvings</span>(number):
+    <span class="wb-kw">if</span> number &lt; 0:
+        <span class="wb-kw">return</span> -1
+    count = 0
+    <span class="wb-kw">while</span> number &gt; 1:
+        <span class="wb-kw">if</span> number % 2 != 0:
+            <span class="wb-kw">return</span> count
+        number = number // 2
+        count = count + 1
+    <span class="wb-kw">return</span> count</code></pre>
+<wb-short id="p4-trace"></wb-short>
+<wb-table id="p4">
+  <table>
+    <thead><tr><th>Call</th><th>Returned value</th></tr></thead>
+    <tbody>
+      <tr><td><code>count_halvings(-2)</code></td><td data-blank="r1"></td></tr>
+      <tr><td><code>count_halvings(0)</code></td><td data-blank="r2"></td></tr>
+      <tr><td><code>count_halvings(1)</code></td><td data-blank="r3"></td></tr>
+      <tr><td><code>count_halvings(8)</code></td><td data-blank="r4"></td></tr>
+      <tr><td><code>count_halvings(12)</code></td><td data-blank="r5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<h3>5. Separate call frames</h3>
+<p>This program calls a helper that exchanges its own parameter values, then prints the two values in <code>main</code>. Predict the output. Explain your answer using the two calls' frames.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">exchange</span>(first, second):
+    saved = first
+    first = second
+    second = saved
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    left = 6
+    right = 9
+    <span class="wb-fn">exchange</span>(left, right)
+    <span class="wb-fn">print</span>(left, right)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">'__main__'</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+<wb-table id="p5">
+  <table>
+    <tbody>
+      <tr><td>Output</td><td data-blank="out"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p5-why"></wb-short>
+
+<h3>6. Geometry helpers</h3>
+<p>Write six helpers that return the volume and total surface area of a sphere, a cylinder, and a cone. Each receives a positive radius <code>radius</code>; the cylinder and cone also receive a positive height <code>height</code>. Read both numbers in <code>main</code>, call all six helpers, and print labeled results to two decimal places. End the file with the standard guard.</p>
+<p>Use these formulas, with radius <var>r</var>, height <var>h</var>, and <var>s</var> = √(<var>r</var><sup>2</sup> + <var>h</var><sup>2</sup>):</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Shape</th><th>Volume</th><th>Total surface area</th></tr></thead>
+  <tbody>
+    <tr><td>Sphere</td><td>4π<var>r</var><sup>3</sup>/3</td><td>4π<var>r</var><sup>2</sup></td></tr>
+    <tr><td>Cylinder</td><td>π<var>r</var><sup>2</sup><var>h</var></td><td>2π<var>r</var>(<var>r</var> + <var>h</var>)</td></tr>
+    <tr><td>Cone</td><td>π<var>r</var><sup>2</sup><var>h</var>/3</td><td>π<var>r</var>(<var>r</var> + <var>s</var>)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use <code>math.pi</code> and <code>math.sqrt</code>. Test with radius 3 and height 4. The six report lines must be:</p>
+<pre class="wb-output">Sphere volume: 113.10
+Sphere surface: 113.10
+Cylinder volume: 113.10
+Cylinder surface: 131.95
+Cone volume: 37.70
+Cone surface: 75.40</pre>
+<p><strong>Check</strong> types 3 and 4, then 1 and 1, 2.5 and 10, and 0.5 and 0.2.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>sphere_volume(radius)</code>, <code>sphere_surface(radius)</code>, <code>cylinder_volume(radius, height)</code>, <code>cylinder_surface(radius, height)</code>, <code>cone_volume(radius, height)</code>, and <code>cone_surface(radius, height)</code>.</li>
+    <li>Use <code>math.pi</code>, and <code>math.sqrt</code> for the slant length <var>s</var>.</li>
+    <li>Each helper returns its measurement. <strong>Check</strong> also calls each one with <code>radius</code> equal to 1 and to 2.5, or with <code>(1.0, 1.0)</code> and <code>(2.0, 3.0)</code>.</li>
+    <li>Print the six report lines in the order and with the labels shown above.</li>
+    <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Read a number</h3>
+<p>This program reads two numbers and prints their total to one decimal place. Write an input helper and a complete program.</p>
+<ol>
+  <li>Define <code>read_number(prompt='Value:')</code>. It reads and returns a float, using the prompt followed by one space.</li>
+  <li>In <code>main</code>, read one number with the default prompt and one with the keyword call <code>read_number(prompt='Next:')</code>. Print their total to one decimal place as <code>Total: ...</code>. End the file with the standard guard.</li>
+  <li>Use valid numeric input. Test <code>2.5</code> and <code>4</code>, then <code>0</code> and <code>0</code>. The report lines must be <code>Total: 6.5</code> and <code>Total: 0.0</code>, respectively.</li>
+</ol>
+<p><strong>Check</strong> types 2.5 and 4, then 0 and 0, and 1.25 and -3. The prompts are part of the output, so the first run prints <code>Value: Next: Total: 6.5</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Give <code>read_number</code> one parameter with the default <code>prompt='Value:'</code>.</li>
+    <li>Read the number with <code>input()</code> and convert it with <code>float()</code> inside <code>read_number</code>.</li>
+    <li>In <code>main</code>, read the first number with <code>read_number()</code> and the second with <code>read_number(prompt='Next:')</code>.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Order credit</h3>
+<p>A shop uses the following credit rule for this exercise. A credit is an amount returned to a customer.</p>
+<ul>
+  <li>A total below $40 earns $3 per item.</li>
+  <li>A total from $40 up to, but not including, $80 earns $2 per item when there are at least two items.</li>
+  <li>A total from $80 through $120 earns $1 per item when there are at least three items.</li>
+  <li>All other orders earn no credit.</li>
+</ul>
+<p>Write <code>order_credit(total, items)</code> to return the credit. In <code>main</code>, read order totals until <code>-1</code> is entered. Read the item count only for an order, then print <code>Credit: $...</code> to two decimal places. Valid totals are nonnegative, and item counts are nonnegative integers. The sentinel is not an order. End the file with the standard guard.</p>
+<p>Test orders <code>(39, 1)</code>, <code>(40, 2)</code>, <code>(80, 3)</code>, and <code>(120, 2)</code>, followed by the sentinel. Also test the sentinel as the first input.</p>
+<p><strong>Check</strong> types these two sequences, then the orders <code>(79.99, 2)</code>, <code>(120.01, 3)</code>, and <code>(0, 0)</code> followed by <code>-1</code>. A program that asks for an item count after the sentinel asks for more input than the case provides.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>order_credit(total, items)</code> with two parameters.</li>
+    <li><code>order_credit</code> returns the credit. <strong>Check</strong> also calls it with boundary totals such as <code>(39.99, 4)</code>, <code>(40.0, 1)</code>, <code>(80.0, 2)</code>, <code>(120.0, 3)</code>, and <code>(120.01, 3)</code>.</li>
+    <li>Print one <code>Credit: $...</code> line for each order.</li>
+    <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="p8"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Argument styles and program structure</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Positional</td><td>Values match parameters from left to right.</td></tr>
+    <tr><td>Keyword</td><td><code>width=3</code> names the parameter in the call. Keywords may change order. Positional values come first, and each parameter gets one value.</td></tr>
+    <tr><td>Default</td><td><code>def label(text, width=3):</code> lets a call omit <code>width</code>. Explicit arguments replace defaults. Required parameters come first.</td></tr>
+    <tr><td><code>main()</code></td><td>An ordinary function that coordinates the program. Its body runs only when called. Define every helper before execution reaches its call.</td></tr>
+    <tr><td>Guard</td><td><code>if __name__ == "__main__":</code> followed by an indented <code>main()</code> starts the program when run directly and skips that call on import.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>File layout: imports, constants, helpers, <code>main</code>, then the guard.</p>
+
+<h3>Calls, frames, and tracebacks</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Call stack</td><td>The unfinished calls, with the current call on top. A new call adds a frame. Its caller pauses.</td></tr>
+    <tr><td>Frame</td><td>Keeps the call's parameter and local values. Python remembers where the caller should resume. Each call gets a fresh frame.</td></tr>
+    <tr><td>Return</td><td>Gives a value to the caller and removes the current frame. The caller continues at its paused call. Reaching the end returns <code>None</code>.</td></tr>
+    <tr><td>Traceback</td><td>Lists the path from the file's top level to the failing function. The most recent call appears last, just above the error message.</td></tr>
+    <tr><td>Reading an error</td><td>Read the final error type and message, then the failing source line. Work upward through callers to find where the wrong value or decision entered. The cause may be earlier than the failure.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 19 Workbook.</p>
+</main>
+</body>
+</html>

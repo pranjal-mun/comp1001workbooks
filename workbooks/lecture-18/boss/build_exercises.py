@@ -160,6 +160,7 @@ E["middle"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 11,
     "starter": "def middle_value(a, b, c):\n    # Return the middle value on every path.\n\n# Read three integers and print the returned result.\n",
     "cases": input_cases(middle, ("Example 1: typed 14, 3, 8", ["14", "3", "8"]), ("Example 2: typed 5, 5, 9", ["5", "5", "9"]),
                          ("Typed 9, 5, 5", ["9", "5", "5"]), ("Typed 7, 7, 7", ["7", "7", "7"]), ("Typed 2, 1, 3", ["2", "1", "3"]),
+                         ("Typed 3, 2, 1", ["3", "2", "1"]), ("Typed -1, -1, -2", ["-1", "-1", "-2"]),
                          ("Typed -1000000, 1000000, 0", ["-1000000", "1000000", "0"])),
     "check": FN + f'''_fn("middle_value", "a", "b", "c")
 assert not re.search(r"\\b(sorted|sort|list|min|max)\\b|\\[", __code__), "Do not use sorting, lists, min, or max. Compare the values instead."

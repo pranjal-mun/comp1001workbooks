@@ -100,8 +100,12 @@ export function describeRunFailure(error) {
  */
 export function renderOutcome(outcome, { markErrorLine } = {}) {
   const single = outcome.cases.length === 1;
+  const typed = outcome.cases.filter((c) => !c.shared);
+  const checks = outcome.cases.length - typed.length;
+  const summary = `✗ ${typed.filter((c) => c.pass).length} of ${typed.length} cases pass`
+    + (checks ? `, but ${checks === 1 ? "a check" : checks + " checks"} on your code failed` : "");
   const nodes = [h("div", { class: "wb-result-summary " + (outcome.pass ? "is-good" : "is-bad") },
-    outcome.pass ? "✓ Correct!" : single ? "✗ Not yet" : `✗ ${outcome.cases.filter((c) => c.pass).length} of ${outcome.cases.length} cases pass`)];
+    outcome.pass ? "✓ Correct!" : single ? "✗ Not yet" : summary)];
   for (const c of outcome.cases) {
     const box = h("div", { class: "wb-result-case " + (c.pass ? "is-good" : "is-bad") });
     if (!single) box.append(h("div", { class: "wb-result-case-title" }, (c.pass ? "✓ " : "✗ ") + c.name));

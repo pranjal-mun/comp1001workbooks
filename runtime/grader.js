@@ -73,7 +73,29 @@ export async function runCases(spec, source, files = []) {
     }
     results.push(outcome);
   }
-  return { pass: results.every((r) => r.pass), cases: results };
+  const pass = results.every((r) => r.pass);
+  return { pass, cases: collapseSharedChecks(results) };
+}
+
+/**
+ * A spec-level check runs with every case, so one failing rule or direct
+ * function call would repeat under each typed case, even cases whose output
+ * is right. A check message shared by every case that ran (at least two) is
+ * taken off those cases and reported once, first, as its own row marked
+ * `shared`. The overall pass is decided before this and does not change.
+ */
+function collapseSharedChecks(results) {
+  const ran = results.filter((r) => !r.error);
+  if (ran.length < 2) return results;
+  const shared = [...new Set(ran.map((r) => r.checkMessage))]
+    .filter((message) => message && ran.every((r) => r.checkMessage === message));
+  if (!shared.length) return results;
+  for (const r of ran) {
+    delete r.checkMessage;
+    r.pass = r.comparison?.pass ?? true;
+  }
+  const rows = shared.map((message) => ({ name: "Checks on your code", pass: false, shared: true, inputs: [], checkMessage: message }));
+  return [...rows, ...results];
 }
 
 /** Normalize a typed answer for comparison with accepted answers. */

@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 20 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-20", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 20 Workbook</h1>
+    <div class="wb-subtitle">Stepwise refinement and variable scope</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Read and reuse a range-checking helper, refine a cinema-booking program from <code>main()</code>, and trace local and global names through function calls.</p>
+  <p>Reading: §5.6, §5.7, §5.8</p>
+  <ul>
+    <li>Turn repeated range checks into a helper with parameters.</li>
+    <li>Refine tasks from <code>main()</code> and test helpers at their boundaries.</li>
+    <li>Trace parameters, local variables, and assignment paths.</li>
+    <li>Explain global reads, shadowing, and <code>UnboundLocalError</code>.</li>
+    <li>Keep changing values local and use fixed constants at global scope.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-reusable">Reusable functions</p>
+
+<h2 id="s1">1. Repeated work and reusable functions</h2>
+<p>Both pieces read an integer and keep asking until it is in range.</p>
+<wb-example id="ex-age"></wb-example>
+<wb-example id="ex-tickets"></wb-example>
+<p>The task stays the same. The prompt and the lower and upper limits vary, so they can become parameters.</p>
+<p>For these examples, assume the user types integers. We are checking their range.</p>
+<wb-example id="ex-reader"></wb-example>
+<p>The limits are inclusive. The helper returns the accepted integer. Calls are shown here; in the full program they belong inside <code>main()</code>.</p>
+
+<h2 id="s2">2. Parameters expose a calculation's inputs</h2>
+<p>Inputs hidden outside the function:</p>
+<wb-example id="ex-hidden"></wb-example>
+<p>The header gives no clue that <code>price</code> and <code>quantity</code> are needed.</p>
+<p>Inputs supplied by the caller:</p>
+<wb-example id="ex-supplied"></wb-example>
+<p><code>line_total(12, 3)</code> returns <code>36</code>. <code>line_total(5, 2)</code> returns <code>10</code>. The second calculation can be tested and reused with new values. Input/output helpers have a different job: prompting or displaying is part of their stated task.</p>
+
+<p class="wb-part" id="part-refinement">Stepwise refinement</p>
+
+<h2 id="s3">3. Stepwise refinement and top-down design</h2>
+<p>Our example: read an age and ticket count, calculate the cost, and show the booking.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Price a cinema booking</th><th>Smaller steps</th></tr></thead>
+  <tbody>
+    <tr><td>Read the input</td><td>Ask for age; ask for ticket count; check both ranges.</td></tr>
+    <tr><td>Calculate the total</td><td>Choose a unit price; multiply by the count.</td></tr>
+    <tr><td>Show the booking</td><td>Print the ticket count; print the total.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Refine each unclear step until you can write its statements. The range-checking helper can handle both inputs.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    age = <span class="wb-fn">read_int_between</span>(<span class="wb-str">"Age: "</span>, 0, 120)
+    quantity = <span class="wb-fn">read_int_between</span>(
+        <span class="wb-str">"Tickets: "</span>, 1, 10)
+    total = <span class="wb-fn">ticket_total</span>(age, quantity)
+    <span class="wb-fn">show_booking</span>(quantity, total)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+<p>Each call names a task and shows how information moves between tasks. The calculation returns <code>total</code>. The display helper receives it explicitly. Write this outline before all the helpers. Then implement and test them one at a time. All helpers must be defined before execution reaches their calls.</p>
+
+<h2 id="s4">4. Refining and testing the helpers</h2>
+<p>Example prices: 8 per ticket for ages under 13, otherwise 12.</p>
+<wb-example id="ex-ticket-total"></wb-example>
+<p>Test the boundary: <code>ticket_total(12, 2)</code> returns <code>16</code>; <code>ticket_total(13, 2)</code> returns <code>24</code>.</p>
+<wb-example id="ex-show-booking"></wb-example>
+<p>Output:</p>
+<pre class="wb-output">Tickets: 2
+Total: 16</pre>
+<p>Output for <code>show_booking(2, 16)</code>. This helper has one clear job and needs only two print statements. The range checker needs a loop. The price calculation needs a decision. Each is still a manageable task. Stop when you can write and check the body directly. A separate function for every multiplication or addition usually adds names without making the design clearer.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>A parcel program reads an integer weight from 1 to 20 kg, retrying if it is outside that range. The fee is 5 for up to 2 kg, then 2 for each extra kg. Sketch <code>main()</code> using <code>read_int_between</code>, and write <code>shipping_fee(weight)</code>. Check weights 1, 2, and 3.</p>
+  <p>Assume the user types integers. Reuse the input helper from earlier. Keep the fee calculation separate from prompting and printing.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">read_int_between</span>(prompt, low, high):
+    value = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>(prompt))
+    <span class="wb-kw">while</span> value &lt; low <span class="wb-kw">or</span> value &gt; high:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Out of range"</span>)
+        value = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>(prompt))
+    <span class="wb-kw">return</span> value</code></pre>
+  <p>The code box below starts with this helper, followed by the starter for <code>shipping_fee</code> and <code>main</code>. Any prompt is accepted. <strong>Check</strong> types the weight 1, then 3, then 0, 21, and 3, then 20, and looks at the last line your program prints.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Keep <code>read_int_between(prompt, low, high)</code> as given.</li>
+      <li>Define <code>shipping_fee(weight)</code> with one parameter. It returns the fee and does not prompt or print. <strong>Check</strong> calls it with every weight from 1 to 20.</li>
+      <li>In <code>main</code>, read the weight with <code>read_int_between</code> and the limits 1 and 20, then print the fee that <code>shipping_fee</code> returns. The last line printed ends with the fee.</li>
+      <li>End the file with the standard guard.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+  <wb-table id="cp1-fees">
+    <table>
+      <thead><tr><th>Weight</th><th>Expected fee</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="f1"></td></tr>
+        <tr><td>2</td><td data-blank="f2"></td></tr>
+        <tr><td>3</td><td data-blank="f3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-local">Local names</p>
+
+<h2 id="s5">5. Local names and returned values</h2>
+<p>Scope is the region of a program where a name is visible.</p>
+<wb-example id="ex-area"></wb-example>
+<p>The parameters <code>width</code>, <code>height</code>, and the local variable <code>area</code> belong to the helper. After it returns, <code>main</code> stores the value <code>12</code> in its own <code>result</code>.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">compute</span>():
+    temp = 42
+    <span class="wb-kw">return</span> temp
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    result = <span class="wb-fn">compute</span>()
+    <span class="wb-fn">print</span>(result)
+    <span class="wb-fn">print</span>(temp)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+<p><code>42</code> prints first. The next print raises <code>NameError</code>: <code>main</code> cannot use the helper's <code>temp</code>. When the helper's call ends, its local bindings end. The returned value can remain available through the caller's name.</p>
+
+<h2 id="s6">6. Separate calls and assignment paths</h2>
+<wb-example id="ex-double-square"></wb-example>
+<p>Output: <code>6 9</code></p>
+<p><code>double</code> finishes before <code>square</code> starts. Each call has its own <code>temp</code>, with no interference.</p>
+<wb-example id="ex-loop-scope"></wb-example>
+<p>An <code>if</code> or loop does not create a separate local scope. The assignments have run, so these names have values. If the loop ran zero times, those assignments would not happen. An <code>if</code> also needs its assignment path to run before a new local can be read.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Predict the first printed line. Explain why the final print fails. List the names local to each function, and fix the final print so it shows the returned value.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">increase</span>(number):
+    amount = number + 2
+    <span class="wb-kw">return</span> amount
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    amount = 5
+    answer = <span class="wb-fn">increase</span>(amount)
+    <span class="wb-fn">print</span>(amount, answer)
+    <span class="wb-fn">print</span>(number)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+  <wb-table id="cp2-first">
+    <table>
+      <tbody>
+        <tr><td>First printed line</td><td data-blank="line"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <wb-short id="cp2-why"></wb-short>
+  <wb-table id="cp2-locals">
+    <table>
+      <thead><tr><th>Function</th><th>Local names</th></tr></thead>
+      <tbody>
+        <tr><td><code>increase</code></td><td data-blank="inc"></td></tr>
+        <tr><td><code>main</code></td><td data-blank="main"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>The code box below holds the same program. Fix the final print so it shows the returned value, then press <strong>Check</strong>.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Do not use the name <code>number</code> in <code>main</code>.</li>
+      <li>Replace the final print with a print of the returned value.</li>
+      <li>The program prints <code>5 7</code>, then the returned value.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-globals">Globals and shadowing</p>
+
+<h2 id="s7">7. Reading a global name</h2>
+<wb-example id="ex-discount"></wb-example>
+<p>Output: <code>18.0</code></p>
+<p>A name assigned at the file's top level is global. The helper reads it when it has no local binding for that name. Changing it can change the result without changing the call.</p>
+
+<h2 id="s8">8. Shadowing and assignment</h2>
+<wb-example id="ex-shadow"></wb-example>
+<p>Output: <code>5</code>, then <code>100</code>.</p>
+<p>Inside <code>show_total</code>, the parameter hides the global name. It does not change the global value. The two bindings are separate.</p>
+<pre><code>count = 0
+
+<span class="wb-kw">def</span> <span class="wb-fn">increment</span>():
+    count = count + 1
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    <span class="wb-fn">increment</span>()
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+<pre class="wb-output wb-error">UnboundLocalError</pre>
+<p>The assignment makes <code>count</code> local to <code>increment</code> throughout its body. The right-hand side tries to read that local before it has a value. Python does not fall back to the global zero. Scope tells us which binding a name refers to. A local value is usable only after an assignment has actually run, or after an argument has supplied a parameter's value.</p>
+
+<h2 id="s9">9. Explicit input and a return</h2>
+<wb-example id="ex-explicit"></wb-example>
+<p>Output: <code>1</code></p>
+<p><code>main</code> calls <code>increment(0)</code>, which returns <code>1</code>. <code>main</code> owns its changing count and stores the returned value. The helper can also be tested directly: <code>increment(10)</code> returns <code>11</code>.</p>
+
+<h2 id="s10">10. Fixed constants</h2>
+<wb-example id="ex-seconds"></wb-example>
+<p>Output: <code>180</code></p>
+<p>Use uppercase names for values assigned once and kept fixed. Examples: <code>SECONDS_PER_MINUTE</code>, <code>MAX_ATTEMPTS</code>. Uppercase is a convention, not protection: Python still permits reassignment. The course permits genuine constants at global scope and keeps changing program state local.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Predict both printed lines. Why does the helper use a quantity of 2? Rewrite the helper and its call so main chooses the quantity. Which top-level name is suitable to keep as a constant?</p>
+  <pre><code>TICKET_PRICE = 8
+quantity = 2
+
+<span class="wb-kw">def</span> <span class="wb-fn">booking_total</span>():
+    <span class="wb-kw">return</span> quantity * TICKET_PRICE
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    quantity = 4
+    <span class="wb-fn">print</span>(<span class="wb-fn">booking_total</span>())
+    <span class="wb-fn">print</span>(quantity)
+
+<span class="wb-kw">if</span> __name__ == <span class="wb-str">"__main__"</span>:
+    <span class="wb-fn">main</span>()</code></pre>
+  <wb-table id="cp3-predict">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <wb-short id="cp3-why"></wb-short>
+  <p>The code box below holds the same program. Rewrite the helper and its call so <code>main</code> chooses the quantity, then press <strong>Check</strong>.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>booking_total(quantity)</code> with one parameter. <strong>Check</strong> also calls it with quantities such as 0, 3, and 10.</li>
+      <li>Remove the changing global <code>quantity</code> and keep the constant <code>TICKET_PRICE = 8</code>.</li>
+      <li>In <code>main</code>, pass the quantity to the helper.</li>
+      <li>The program prints the new total, then <code>main</code>'s quantity.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+  <wb-table id="cp3-constant">
+    <table>
+      <tbody>
+        <tr><td>Top-level name to keep as a constant</td><td data-blank="name"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values and compares what they return. Programs 6, 8, 9, and 11 accept any prompt: the checker looks only at the values or messages each task asks for.</p>
+
+<h3>1. Scope trace</h3>
+<p>Read this program, then answer the questions.</p>
+<p>This program calls <code>shifted</code> and prints its result, then prints <code>value</code>.</p>
+<pre><code>value = 12
+
+<span class="wb-kw">def</span> <span class="wb-fn">shifted</span>(value):
+    result = value + 3
+    <span class="wb-kw">return</span> result
+
+<span class="wb-fn">print</span>(<span class="wb-fn">shifted</span>(5))
+<span class="wb-fn">print</span>(value)</code></pre>
+<ol>
+  <li>Write the two output lines.</li>
+  <li>Classify each use of <code>value</code> as global or parameter, and state its scope. Classify <code>result</code> and state its scope.</li>
+</ol>
+<wb-table id="p1-output">
+  <table>
+    <thead><tr><th>Line</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="l1"></td></tr>
+      <tr><td>2</td><td data-blank="l2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p1"></wb-short>
+
+<h3>2. Refine a word report</h3>
+<p>A program reads words one at a time and ends at a blank line. It prints the number of words and the length of the longest word. With no words, both results are zero. Write high-level steps, then refine the step that processes one word. State what happens when the first line is blank.</p>
+<wb-short id="p2"></wb-short>
+
+<h3>3. Parameter reassignment</h3>
+<p>Predict what this program prints. Explain why changing the parameters does or does not change the caller's variables.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">exchange</span>(left, right):
+    saved = left
+    left = right
+    right = saved
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    first = 6
+    second = 9
+    <span class="wb-fn">exchange</span>(first, second)
+    <span class="wb-fn">print</span>(first, second)
+
+<span class="wb-fn">main</span>()</code></pre>
+<wb-table id="p3-output">
+  <table>
+    <tbody>
+      <tr><td>Output</td><td data-blank="out"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p3"></wb-short>
+
+<h3>4. Leap-year helper</h3>
+<p>Write <code>is_leap_year(year)</code> using separate <code>if</code> statements and early returns. For this task, a year divisible by 400 is a leap year; otherwise a year divisible by 100 is not; otherwise a year divisible by 4 is; all remaining years are not. The input is a positive whole-number year. Print the results for 2400, 2100, 2028, and 2027, in that order.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>is_leap_year(year)</code> with one parameter.</li>
+    <li>Use separate <code>if</code> statements, one for each divisibility rule, and early returns.</li>
+    <li><code>is_leap_year</code> returns <code>True</code> or <code>False</code>. <strong>Check</strong> also calls it with years such as 1900, 2000, 2001, and 2024.</li>
+    <li>Print the four results in the order given.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Reusable numeral helper</h3>
+<p>Write <code>roman_digit(digit, one, five, ten)</code> for one decimal digit from 0 through 9. Its strings name the symbols for one, five, and ten in that position. Use these rules: 0 gives an empty string; 1 through 3 repeat <code>one</code>; 4 gives <code>one + five</code>; 5 gives <code>five</code>; 6 through 8 give <code>five</code> followed by repeated <code>one</code>; 9 gives <code>one + ten</code>. Write <code>roman_number(number)</code> for whole numbers from 1 through 99 by calling the helper for the tens and ones positions. Use X, L, C for tens and I, V, X for ones. Print the results for 44, 9, and 80.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>roman_digit(digit, one, five, ten)</code> and <code>roman_number(number)</code>.</li>
+    <li><code>roman_number</code> calls <code>roman_digit</code> for the tens and the ones.</li>
+    <li>Each function returns its string. <strong>Check</strong> calls <code>roman_digit</code> with every digit and both sets of symbols, and <code>roman_number</code> with every number from 1 through 99.</li>
+    <li>Print the three results in the order given.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Pay report</h3>
+<p>For this exercise, a shop pays the usual hourly rate for the first 35 hours and twice that rate for later hours. Read a worker's name, hourly rate, and hours worked, one per line. Rate and hours are nonnegative numbers. Print the name and pay to two decimal places. Refine the program into a pay calculation, a display helper, and <code>main</code>. Test with the name Sam, rate 12, and 38 hours; also test zero hours.</p>
+<p><strong>Check</strong> types Sam, 12, and 38, then Sam, 12, and 0, then three more workers. For Sam and 38 hours, the pay is <code>492.00</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>main</code> and at least two other functions.</li>
+    <li>Write a pay calculation that returns the pay without reading input or printing.</li>
+    <li>Write a display helper that prints the name and the pay.</li>
+    <li>The output contains the worker's name and the pay to two decimal places.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<h3>7. Digit-bar report</h3>
+<p>Encode a five-digit string using the table below. A <code>|</code> is a tall bar and a <code>.</code> is a short bar. A check digit is an extra digit that makes the sum of all six digits a multiple of 10. Add one tall frame bar at each end. Write <code>digit_bars(digit)</code>, <code>check_digit(code)</code>, and <code>encode(code)</code>. Return strings from the encoding helpers and an integer from <code>check_digit</code>. Preserve leading zeros. Print the encoding for 00000 and 12345.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Digit</th><th>Bars</th><th>Digit</th><th>Bars</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td><code>||...</code></td><td>5</td><td><code>.|.|.</code></td></tr>
+    <tr><td>1</td><td><code>...||</code></td><td>6</td><td><code>.||..</code></td></tr>
+    <tr><td>2</td><td><code>..|.|</code></td><td>7</td><td><code>|...|</code></td></tr>
+    <tr><td>3</td><td><code>..||.</code></td><td>8</td><td><code>|..|.</code></td></tr>
+    <tr><td>4</td><td><code>.|..|</code></td><td>9</td><td><code>|.|..</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>digit_bars(digit)</code>, <code>check_digit(code)</code>, and <code>encode(code)</code> with one parameter each.</li>
+    <li><code>encode</code> calls <code>digit_bars</code> for each digit.</li>
+    <li><code>digit_bars</code> and <code>encode</code> return strings; <code>check_digit</code> returns an integer. <strong>Check</strong> calls <code>digit_bars</code> with every digit and the other two with codes such as <code>'99999'</code>, <code>'01234'</code>, and <code>'00019'</code>.</li>
+    <li>Print the two encodings in the order given.</li>
+  </ul>
+</div>
+<wb-exercise id="p7"></wb-exercise>
+
+<h3>8. Grant calculation</h3>
+<p>Use this exercise's grant rules. For income below 18000, the grant is 1200 per child. For income from 18000 up to but excluding 28000, it is 900 per child if there are at least two children. For income from 28000 through 36000, it is 500 per child if there are at least three children. Otherwise it is zero. Write <code>grant(income, children)</code>. In <code>main</code>, read an income; -1 ends input immediately. For each other nonnegative income, read a nonnegative whole-number child count and print the grant to two decimal places. Test incomes 17000, 18000, 28000, and 36001 with three children each, then -1.</p>
+<p><strong>Check</strong> types this sequence, then <code>-1</code> alone, then incomes 27999 with 1 child, 27999 with 2, and 36000 with 4, followed by <code>-1</code>. A program that asks for a child count after <code>-1</code> asks for more input than the case provides.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>grant(income, children)</code> with two parameters, and <code>main</code>.</li>
+    <li><code>grant</code> returns the grant. <strong>Check</strong> also calls it with boundary values such as <code>(17999, 1)</code>, <code>(18000, 1)</code>, <code>(27999, 2)</code>, <code>(36000, 3)</code>, and <code>(36001, 3)</code>.</li>
+    <li>Print one grant to two decimal places for each income before <code>-1</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p8"></wb-exercise>
+
+<h3>9. Password confirmation</h3>
+<p>For this exercise, a password passes when it has at least 9 characters, an uppercase letter A through Z, a lowercase letter a through z, and a digit 0 through 9. Read a password and a confirmation, one per line. Repeat both entries until they match and the password passes. Print <code>Try again.</code> after each rejected pair and <code>Accepted.</code> after success. Write a Boolean helper for the rules. Test the pair abc and abc, followed by Abcdefgh2 and Abcdefgh2.</p>
+<p><strong>Check</strong> types this test, then three more sequences of pairs, including a pair that does not match.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>main</code> and a Boolean helper with one parameter. <strong>Check</strong> calls the helper with passwords such as <code>'abc'</code>, <code>'Abcdefgh2'</code>, <code>'abcdefgh2'</code>, and <code>'Abcdefg2'</code>.</li>
+    <li>Print <code>Try again.</code> after each rejected pair and <code>Accepted.</code> after success.</li>
+  </ul>
+</div>
+<wb-exercise id="p9"></wb-exercise>
+
+<h3>10. Wire calculation</h3>
+<p>A wire's gauge <code>n</code> is a whole number from 0 through 36. Its diameter in millimetres is <var>d</var> = 0.127 × 92<sup>(36 − <var>n</var>)/39</sup>. Divide by 1000 to convert the diameter to metres. Resistance in ohms is <var>R</var> = 4<var>ρL</var>/(π<var>d</var><sup>2</sup>), where <var>L</var> is length in metres, <var>d</var> is diameter in metres, and <var>ρ</var> is a material constant called resistivity. Use 1.678 × 10<sup>−8</sup> for copper and 2.82 × 10<sup>−8</sup> for aluminium. Write <code>diameter_metres(gauge)</code> and a reusable <code>resistance(length, gauge, resistivity)</code>. Add <code>copper_resistance</code> and <code>aluminium_resistance</code> functions that use named constants and call the reusable calculation. Print both resistances to six decimal places for a 3-metre wire of gauge 18. Length is nonnegative.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>diameter_metres(gauge)</code> and <code>resistance(length, gauge, resistivity)</code>. <strong>Check</strong> calls them with gauges such as 0, 18, and 36.</li>
+    <li>Define <code>copper_resistance</code> and <code>aluminium_resistance</code>, each calling <code>resistance</code>.</li>
+    <li>Store both resistivities in named constants with uppercase names.</li>
+    <li>Print the copper resistance, then the aluminium resistance, to six decimal places.</li>
+  </ul>
+</div>
+<wb-exercise id="p10"></wb-exercise>
+
+<h3>11. Drag-power report</h3>
+<p>For this exercise, use air density <var>ρ</var> = 1.2 kilograms per cubic metre, area <var>A</var> = 2.0 square metres, and drag coefficient <var>C</var> = 0.3. These are fixed inputs to a model. Convert nonnegative speed from miles per hour to metres per second with <var>v</var> = 0.447<var>s</var>. Compute force in newtons with <var>F</var> = 0.5<var>ρv</var><sup>2</sup><var>AC</var>, power in watts with <var>P</var> = <var>Fv</var>, and horsepower with <var>H</var> = <var>P</var>/746. Write separate conversion, force, and power helpers, then a <code>main</code> that reads speed and prints watts and horsepower to three decimal places. Use named constants for the fixed model inputs. Test 20 and 0 miles per hour.</p>
+<p><strong>Check</strong> types 20, then 0, 55, and 12.5. For 20 miles per hour, the two values are <code>257.226</code> and <code>0.345</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>main</code> and separate conversion, force, and power helpers.</li>
+    <li>Store the air density, area, and drag coefficient in named constants with uppercase names.</li>
+    <li>Print the watts, then the horsepower, to three decimal places.</li>
+  </ul>
+</div>
+<wb-exercise id="p11"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Reuse and stepwise refinement</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Reusable function</td><td>Extract repeated work. Make values that vary into parameters, such as a prompt and its allowed range.</td></tr>
+    <tr><td>Clear inputs</td><td>Supply changing data as arguments. Calculation helpers return results. Make prompting or printing an explicit input/output helper's job.</td></tr>
+    <tr><td>Refinement</td><td>Break the problem into tasks. Refine each unclear task into smaller steps until its implementation is straightforward.</td></tr>
+    <tr><td>Top-down design</td><td>Sketch <code>main()</code> using meaningful helper calls first. Decide what each helper receives and produces, then implement the helpers.</td></tr>
+    <tr><td>Stopping and tests</td><td>Stop at a coherent task with a clear body. Test each helper independently, including boundaries, then check the complete program.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Scope, shadowing, and globals</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Local names</td><td>Parameters and names assigned in a function belong to that call. Other functions cannot read them just because they called it.</td></tr>
+    <tr><td>Scope and values</td><td>A local binding applies throughout the function. Read its value only after it has been assigned. An <code>if</code> or loop does not create a separate local scope.</td></tr>
+    <tr><td>Global names</td><td>Assigned at the file's top level. A function can read them if it has no local binding of that name. Avoid changing globals as hidden inputs.</td></tr>
+    <tr><td>Shadowing</td><td>A parameter or local name can hide a global. Assignment makes a name local even on the right-hand side, which can cause <code>UnboundLocalError</code>.</td></tr>
+    <tr><td>Constants</td><td>Fixed global values are allowed. Name them in uppercase and keep them unchanged. Uppercase does not enforce the rule.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 20 Workbook.</p>
+</main>
+</body>
+</html>

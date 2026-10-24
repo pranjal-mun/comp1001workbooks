@@ -1,0 +1,288 @@
+{
+  "id": "lecture-20-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 20 Boss Problems",
+  "short": "L20 bosses",
+  "subtitle": "Stepwise refinement and variable scope",
+  "exercises": {
+    "fare": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 16,
+      "starter": "BASE_FARE = 3.50\nRATE_PER_SEGMENT = 0.40\nMETRES_PER_SEGMENT = 200\n\ndef fare(kilometres):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 1.5",
+          "inputs": [
+            "1.5"
+          ],
+          "expected": "Fare: $6.50"
+        },
+        {
+          "name": "Example 2: typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Fare: $3.50"
+        },
+        {
+          "name": "Typed 0.1",
+          "inputs": [
+            "0.1"
+          ],
+          "expected": "Fare: $3.70"
+        },
+        {
+          "name": "Typed 2.35",
+          "inputs": [
+            "2.35"
+          ],
+          "expected": "Fare: $8.20"
+        },
+        {
+          "name": "Typed 12.75",
+          "inputs": [
+            "12.75"
+          ],
+          "expected": "Fare: $29.00"
+        },
+        {
+          "name": "Typed 1000",
+          "inputs": [
+            "1000"
+          ],
+          "expected": "Fare: $2003.50"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls(name, attr):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and\n            ((isinstance(n.func, ast.Attribute) and n.func.attr == attr) or (isinstance(n.func, ast.Name) and n.func.id == attr))]\n_f = _fn(\"fare\", \"kilometres\")\n_fn(\"main\")\nassert globals().get(\"BASE_FARE\") == 3.5 and globals().get(\"RATE_PER_SEGMENT\") == 0.4 and globals().get(\"METRES_PER_SEGMENT\") == 200, \"Keep the three constants from the starter: BASE_FARE = 3.50, RATE_PER_SEGMENT = 0.40, METRES_PER_SEGMENT = 200.\"\nfor _c in (\"BASE_FARE\", \"RATE_PER_SEGMENT\", \"METRES_PER_SEGMENT\"):\n    assert _c in _f.__code__.co_names, \"Use \" + _c + \" in fare instead of writing its value again.\"\n_local_state()\n_returns('fare', (0,), 3.5)\n_returns('fare', (1.5,), 6.5)\n_returns('fare', (0.2,), 3.9)\n_returns('fare', (0.1,), 3.7)\n_returns('fare', (1,), 5.5)\n_returns('fare', (2.35,), 8.2)\n_returns('fare', (12.75,), 29.0)\n_returns('fare', (1000,), 2003.5)\n_guard()\n",
+      "hints": [
+        "Inside `fare`, convert the distance first: `metres = kilometres * 1000`. For 1.5 kilometres that is 1500 metres.",
+        "`metres / METRES_PER_SEGMENT` is the number of 200-metre segments, including a fraction. For 1500 metres it is 7.5, and 7.5 times 0.40 is 3.00.",
+        "Return `BASE_FARE + metres / METRES_PER_SEGMENT * RATE_PER_SEGMENT`. In `main`, read the distance with `float(input())`, call `fare`, and print `f'Fare: ${amount:.2f}'`."
+      ],
+      "answer": "QkFTRV9GQVJFID0gMy41MApSQVRFX1BFUl9TRUdNRU5UID0gMC40MApNRVRSRVNfUEVSX1NFR01FTlQgPSAyMDAKCmRlZiBmYXJlKGtpbG9tZXRyZXMpOgogICAgbWV0cmVzID0ga2lsb21ldHJlcyAqIDEwMDAKICAgIHJldHVybiBCQVNFX0ZBUkUgKyBtZXRyZXMgLyBNRVRSRVNfUEVSX1NFR01FTlQgKiBSQVRFX1BFUl9TRUdNRU5UCgpkZWYgbWFpbigpOgogICAga2lsb21ldHJlcyA9IGZsb2F0KGlucHV0KCkpCiAgICBhbW91bnQgPSBmYXJlKGtpbG9tZXRyZXMpCiAgICBwcmludChmJ0ZhcmU6ICR7YW1vdW50Oi4yZn0nKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
+      "answerNote": "The constants express this program's fixed pricing rule. The only changing input to the calculation is its parameter."
+    },
+    "measure": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 24,
+      "starter": "TABLESPOONS_PER_CUP = 16\nTEASPOONS_PER_TABLESPOON = 3\nTEASPOONS_PER_CUP = TABLESPOONS_PER_CUP * TEASPOONS_PER_TABLESPOON\n\ndef to_teaspoons(quantity, unit):\n    pass\n\ndef describe(total):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 70 and teaspoon",
+          "inputs": [
+            "70",
+            "teaspoon"
+          ],
+          "expected": "1 cups, 7 tablespoons, 1 teaspoons"
+        },
+        {
+          "name": "Example 2: typed 0 and cup",
+          "inputs": [
+            "0",
+            "cup"
+          ],
+          "expected": "0 cups, 0 tablespoons, 0 teaspoons"
+        },
+        {
+          "name": "Example 3: typed 20 and tablespoon",
+          "inputs": [
+            "20",
+            "tablespoon"
+          ],
+          "expected": "1 cups, 4 tablespoons, 0 teaspoons"
+        },
+        {
+          "name": "Typed 1 and cup",
+          "inputs": [
+            "1",
+            "cup"
+          ],
+          "expected": "1 cups, 0 tablespoons, 0 teaspoons"
+        },
+        {
+          "name": "Typed 2 and tablespoon",
+          "inputs": [
+            "2",
+            "tablespoon"
+          ],
+          "expected": "0 cups, 2 tablespoons, 0 teaspoons"
+        },
+        {
+          "name": "Typed 47 and teaspoon",
+          "inputs": [
+            "47",
+            "teaspoon"
+          ],
+          "expected": "0 cups, 15 tablespoons, 2 teaspoons"
+        },
+        {
+          "name": "Typed 10000 and tablespoon",
+          "inputs": [
+            "10000",
+            "tablespoon"
+          ],
+          "expected": "625 cups, 0 tablespoons, 0 teaspoons"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls(name, attr):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and\n            ((isinstance(n.func, ast.Attribute) and n.func.attr == attr) or (isinstance(n.func, ast.Name) and n.func.id == attr))]\n_fn(\"to_teaspoons\", \"quantity\", \"unit\")\n_fn(\"describe\", \"total\")\n_fn(\"main\")\nassert (globals().get(\"TABLESPOONS_PER_CUP\"), globals().get(\"TEASPOONS_PER_TABLESPOON\"), globals().get(\"TEASPOONS_PER_CUP\")) == (16, 3, 48), \"Keep the three unit constants from the starter.\"\n_ops = [type(n.op) for n in _body(\"describe\") if isinstance(n, ast.BinOp)]\nassert ast.FloorDiv in _ops and ast.Mod in _ops, \"In describe, use integer division // and remainder % to split the teaspoons into larger units.\"\n_local_state()\n_returns('to_teaspoons', (0, 'cup'), 0)\n_returns('to_teaspoons', (1, 'cup'), 48)\n_returns('to_teaspoons', (2, 'cup'), 96)\n_returns('to_teaspoons', (7, 'cup'), 336)\n_returns('to_teaspoons', (10000, 'cup'), 480000)\n_returns('to_teaspoons', (0, 'tablespoon'), 0)\n_returns('to_teaspoons', (1, 'tablespoon'), 3)\n_returns('to_teaspoons', (2, 'tablespoon'), 6)\n_returns('to_teaspoons', (7, 'tablespoon'), 21)\n_returns('to_teaspoons', (10000, 'tablespoon'), 30000)\n_returns('to_teaspoons', (0, 'teaspoon'), 0)\n_returns('to_teaspoons', (1, 'teaspoon'), 1)\n_returns('to_teaspoons', (2, 'teaspoon'), 2)\n_returns('to_teaspoons', (7, 'teaspoon'), 7)\n_returns('to_teaspoons', (10000, 'teaspoon'), 10000)\n_returns('describe', (0,), '0 cups, 0 tablespoons, 0 teaspoons')\n_returns('describe', (1,), '0 cups, 0 tablespoons, 1 teaspoons')\n_returns('describe', (2,), '0 cups, 0 tablespoons, 2 teaspoons')\n_returns('describe', (3,), '0 cups, 1 tablespoons, 0 teaspoons')\n_returns('describe', (47,), '0 cups, 15 tablespoons, 2 teaspoons')\n_returns('describe', (48,), '1 cups, 0 tablespoons, 0 teaspoons')\n_returns('describe', (49,), '1 cups, 0 tablespoons, 1 teaspoons')\n_returns('describe', (70,), '1 cups, 7 tablespoons, 1 teaspoons')\n_returns('describe', (96,), '2 cups, 0 tablespoons, 0 teaspoons')\n_returns('describe', (100,), '2 cups, 1 tablespoons, 1 teaspoons')\n_returns('describe', (30000,), '625 cups, 0 tablespoons, 0 teaspoons')\n_guard()\n",
+      "hints": [
+        "`to_teaspoons` multiplies by `TEASPOONS_PER_CUP` for `'cup'` and by `TEASPOONS_PER_TABLESPOON` for `'tablespoon'`, and returns a teaspoon quantity unchanged. For 20 tablespoons it returns 60.",
+        "In `describe`, `total // TEASPOONS_PER_CUP` is the number of cups and `total % TEASPOONS_PER_CUP` is what is left. For 70 teaspoons that is 1 cup and 22 teaspoons left.",
+        "Divide the remainder the same way with `TEASPOONS_PER_TABLESPOON`: 22 gives 7 tablespoons and 1 teaspoon. Return `f'{cups} cups, {tablespoons} tablespoons, {teaspoons} teaspoons'`."
+      ],
+      "answer": "VEFCTEVTUE9PTlNfUEVSX0NVUCA9IDE2ClRFQVNQT09OU19QRVJfVEFCTEVTUE9PTiA9IDMKVEVBU1BPT05TX1BFUl9DVVAgPSBUQUJMRVNQT09OU19QRVJfQ1VQICogVEVBU1BPT05TX1BFUl9UQUJMRVNQT09OCgpkZWYgdG9fdGVhc3Bvb25zKHF1YW50aXR5LCB1bml0KToKICAgIGlmIHVuaXQgPT0gJ2N1cCc6CiAgICAgICAgcmV0dXJuIHF1YW50aXR5ICogVEVBU1BPT05TX1BFUl9DVVAKICAgIGlmIHVuaXQgPT0gJ3RhYmxlc3Bvb24nOgogICAgICAgIHJldHVybiBxdWFudGl0eSAqIFRFQVNQT09OU19QRVJfVEFCTEVTUE9PTgogICAgcmV0dXJuIHF1YW50aXR5CgpkZWYgZGVzY3JpYmUodG90YWwpOgogICAgY3VwcyA9IHRvdGFsIC8vIFRFQVNQT09OU19QRVJfQ1VQCiAgICByZW1haW5pbmcgPSB0b3RhbCAlIFRFQVNQT09OU19QRVJfQ1VQCiAgICB0YWJsZXNwb29ucyA9IHJlbWFpbmluZyAvLyBURUFTUE9PTlNfUEVSX1RBQkxFU1BPT04KICAgIHRlYXNwb29ucyA9IHJlbWFpbmluZyAlIFRFQVNQT09OU19QRVJfVEFCTEVTUE9PTgogICAgcmV0dXJuIGYne2N1cHN9IGN1cHMsIHt0YWJsZXNwb29uc30gdGFibGVzcG9vbnMsIHt0ZWFzcG9vbnN9IHRlYXNwb29ucycKCmRlZiBtYWluKCk6CiAgICBxdWFudGl0eSA9IGludChpbnB1dCgpKQogICAgdW5pdCA9IGlucHV0KCkKICAgIHRvdGFsID0gdG9fdGVhc3Bvb25zKHF1YW50aXR5LCB1bml0KQogICAgcHJpbnQoZGVzY3JpYmUodG90YWwpKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
+      "answerNote": "Converting the input to teaspoons lets `describe` use one unit for every input. Each division uses the amount left after removing the larger units."
+    },
+    "password": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 32,
+      "starter": "import random\n\nALLOWED = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\n\ndef generate_password():\n    pass\n\ndef is_good_password(password):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Password: EPyYngFb51\nAttempts: 2"
+        },
+        {
+          "name": "Example 2: typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Password: W4Acq9GFz6\nAttempts: 1"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Password: ZU3G8xI7CG\nAttempts: 3"
+        },
+        {
+          "name": "Typed 42",
+          "inputs": [
+            "42"
+          ],
+          "expected": "Password: 2wMqZcUDI\nAttempts: 7"
+        },
+        {
+          "name": "Typed 2026",
+          "inputs": [
+            "2026"
+          ],
+          "expected": "Password: J1UXXFWXLCp\nAttempts: 3"
+        },
+        {
+          "name": "Typed 1000000",
+          "inputs": [
+            "1000000"
+          ],
+          "expected": "Password: kH1CBsCXp\nAttempts: 4"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls(name, attr):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and\n            ((isinstance(n.func, ast.Attribute) and n.func.attr == attr) or (isinstance(n.func, ast.Name) and n.func.id == attr))]\nimport random as _random\n_fn(\"generate_password\")\n_fn(\"is_good_password\", \"password\")\n_fn(\"main\")\nassert globals().get(\"ALLOWED\") == 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', \"Keep the ALLOWED string exactly as the starter gives it.\"\nassert _calls(\"generate_password\", \"randint\"), \"In generate_password, choose the length with random.randint(7, 11).\"\nassert _calls(\"generate_password\", \"choice\"), \"In generate_password, choose each character with random.choice(ALLOWED).\"\n_seeds = [n for n in ast.walk(ast.parse(__source__)) if isinstance(n, ast.Call) and\n          ((isinstance(n.func, ast.Attribute) and n.func.attr == \"seed\") or (isinstance(n.func, ast.Name) and n.func.id == \"seed\"))]\nassert len(_seeds) == 1 and _calls(\"main\", \"seed\"), \"Call random.seed once, in main.\"\nassert not any(isinstance(n, (ast.For, ast.While)) and any(m in _seeds for m in ast.walk(n)) for n in _body(\"main\")), \"Set the seed once, before the search loop.\"\n_local_state()\n_random.seed(5)\nfor _i in range(200):\n    _value, _ = _call(\"generate_password\")\n    assert isinstance(_value, str) and 7 <= len(_value) <= 11 and all(c in ALLOWED for c in _value), \"generate_password() should return 7 to 11 characters from ALLOWED, not \" + repr(_value) + \".\"\n_returns('is_good_password', ('',), False)\n_returns('is_good_password', ('abc',), False)\n_returns('is_good_password', ('Abcdefgh2',), True)\n_returns('is_good_password', ('abcdefgh2',), False)\n_returns('is_good_password', ('ABCDEFGH2',), False)\n_returns('is_good_password', ('Abcdefghi',), False)\n_returns('is_good_password', ('Abcdefg2',), False)\n_returns('is_good_password', ('A1bcdefgh',), True)\n_returns('is_good_password', ('123456789aB',), True)\n_returns('is_good_password', ('EPyYngFb51',), True)\n_returns('is_good_password', ('W4Acq9GFz6',), True)\n_returns('is_good_password', ('zzzzzzzzA',), False)\n_returns('is_good_password', ('zZ0zzzzzz',), True)\n_returns('is_good_password', ('Zz9',), False)\n_returns('is_good_password', ('99999999aZ',), True)\n_guard()\n",
+      "hints": [
+        "In `generate_password`, call `random.randint(7, 11)` once for the length. Then start with `password = ''` and add `random.choice(ALLOWED)` once per position in a `for` loop.",
+        "In `is_good_password`, start three flags at `False` and loop over the characters. `'A' <= ch <= 'Z'` sets the uppercase flag; the lowercase and digit tests work the same way. Return `len(password) >= 9 and upper and lower and digit`.",
+        "In `main`, read the seed and call `random.seed(seed)` once. Set `attempts = 1` and generate the first candidate, then repeat `while not is_good_password(password):`, generating a new candidate and adding 1 to `attempts`. For seed 1 the loop runs once and the program prints `Password: EPyYngFb51` and `Attempts: 2`."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQoKQUxMT1dFRCA9ICdhYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ekFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaMDEyMzQ1Njc4OScKCmRlZiBnZW5lcmF0ZV9wYXNzd29yZCgpOgogICAgIiIiUmV0dXJuIGEgY2FuZGlkYXRlIHVzaW5nIEFMTE9XRUQgYW5kIHRoZSBjdXJyZW50IHJhbmRvbSBzdGF0ZS4iIiIKICAgIGxlbmd0aCA9IHJhbmRvbS5yYW5kaW50KDcsIDExKQogICAgcGFzc3dvcmQgPSAnJwogICAgZm9yIHBvc2l0aW9uIGluIHJhbmdlKGxlbmd0aCk6CiAgICAgICAgcGFzc3dvcmQgPSBwYXNzd29yZCArIHJhbmRvbS5jaG9pY2UoQUxMT1dFRCkKICAgIHJldHVybiBwYXNzd29yZAoKZGVmIGlzX2dvb2RfcGFzc3dvcmQocGFzc3dvcmQpOgogICAgdXBwZXIgPSBGYWxzZQogICAgbG93ZXIgPSBGYWxzZQogICAgZGlnaXQgPSBGYWxzZQogICAgZm9yIGNoIGluIHBhc3N3b3JkOgogICAgICAgIGlmICdBJyA8PSBjaCA8PSAnWic6CiAgICAgICAgICAgIHVwcGVyID0gVHJ1ZQogICAgICAgIGlmICdhJyA8PSBjaCA8PSAneic6CiAgICAgICAgICAgIGxvd2VyID0gVHJ1ZQogICAgICAgIGlmICcwJyA8PSBjaCA8PSAnOSc6CiAgICAgICAgICAgIGRpZ2l0ID0gVHJ1ZQogICAgcmV0dXJuIGxlbihwYXNzd29yZCkgPj0gOSBhbmQgdXBwZXIgYW5kIGxvd2VyIGFuZCBkaWdpdAoKZGVmIG1haW4oKToKICAgIHNlZWQgPSBpbnQoaW5wdXQoKSkKICAgIHJhbmRvbS5zZWVkKHNlZWQpCiAgICBhdHRlbXB0cyA9IDEKICAgIHBhc3N3b3JkID0gZ2VuZXJhdGVfcGFzc3dvcmQoKQogICAgd2hpbGUgbm90IGlzX2dvb2RfcGFzc3dvcmQocGFzc3dvcmQpOgogICAgICAgIHBhc3N3b3JkID0gZ2VuZXJhdGVfcGFzc3dvcmQoKQogICAgICAgIGF0dGVtcHRzID0gYXR0ZW1wdHMgKyAxCiAgICBwcmludCgnUGFzc3dvcmQ6JywgcGFzc3dvcmQpCiAgICBwcmludCgnQXR0ZW1wdHM6JywgYXR0ZW1wdHMpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "`main` controls the search and counts candidates. The checker can be tested with supplied strings. The generator intentionally uses the random module's state; its seed is set once by `main`. No attempt count or candidate is stored globally."
+    },
+    "base": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 34,
+      "starter": "DIGITS = '0123456789ABCDEF'\n\ndef digit_value(ch):\n    pass\n\ndef to_decimal(text, base):\n    pass\n\ndef from_decimal(number, base):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 12, 5, and 2A",
+          "inputs": [
+            "12",
+            "5",
+            "2A"
+          ],
+          "expected": "114"
+        },
+        {
+          "name": "Example 2: typed 16, 2, and 000",
+          "inputs": [
+            "16",
+            "2",
+            "000"
+          ],
+          "expected": "0"
+        },
+        {
+          "name": "Example 3: typed 1 and 10",
+          "inputs": [
+            "1",
+            "10"
+          ],
+          "expected": "Invalid base."
+        },
+        {
+          "name": "Typed 10, 16, and 255",
+          "inputs": [
+            "10",
+            "16",
+            "255"
+          ],
+          "expected": "FF"
+        },
+        {
+          "name": "Typed 2, 10, and 101101",
+          "inputs": [
+            "2",
+            "10",
+            "101101"
+          ],
+          "expected": "45"
+        },
+        {
+          "name": "Typed 16, 16, and 0FF",
+          "inputs": [
+            "16",
+            "16",
+            "0FF"
+          ],
+          "expected": "FF"
+        },
+        {
+          "name": "Typed 10, 17",
+          "inputs": [
+            "10",
+            "17"
+          ],
+          "expected": "Invalid base."
+        },
+        {
+          "name": "Typed 16, 10, and FFFFFFFFFFFF",
+          "inputs": [
+            "16",
+            "10",
+            "FFFFFFFFFFFF"
+          ],
+          "expected": "281474976710655"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls(name, attr):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and\n            ((isinstance(n.func, ast.Attribute) and n.func.attr == attr) or (isinstance(n.func, ast.Name) and n.func.id == attr))]\n_fn(\"digit_value\", \"ch\")\n_fn(\"to_decimal\", \"text\", \"base\")\n_fn(\"from_decimal\", \"number\", \"base\")\n_fn(\"main\")\nassert globals().get(\"DIGITS\") == \"0123456789ABCDEF\", \"Keep the constant DIGITS = '0123456789ABCDEF'.\"\n_tree = ast.parse(__source__)\nfor _n in ast.walk(_tree):\n    if isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name):\n        assert _n.func.id not in (\"bin\", \"oct\", \"hex\"), \"Convert by repeated integer division; do not use \" + _n.func.id + \".\"\n        assert not (_n.func.id == \"int\" and len(_n.args) + len(_n.keywords) >= 2), \"Convert by place-value accumulation; do not use int(text, base).\"\nassert \"digit_value\" in globals()[\"to_decimal\"].__code__.co_names, \"In to_decimal, use digit_value for each character.\"\n_local_state()\n_returns('digit_value', ('0',), 0)\n_returns('digit_value', ('1',), 1)\n_returns('digit_value', ('2',), 2)\n_returns('digit_value', ('3',), 3)\n_returns('digit_value', ('4',), 4)\n_returns('digit_value', ('5',), 5)\n_returns('digit_value', ('6',), 6)\n_returns('digit_value', ('7',), 7)\n_returns('digit_value', ('8',), 8)\n_returns('digit_value', ('9',), 9)\n_returns('digit_value', ('A',), 10)\n_returns('digit_value', ('B',), 11)\n_returns('digit_value', ('C',), 12)\n_returns('digit_value', ('D',), 13)\n_returns('digit_value', ('E',), 14)\n_returns('digit_value', ('F',), 15)\n_returns('to_decimal', ('0', 2), 0)\n_returns('to_decimal', ('000', 16), 0)\n_returns('to_decimal', ('2A', 12), 34)\n_returns('to_decimal', ('101101', 2), 45)\n_returns('to_decimal', ('FF', 16), 255)\n_returns('to_decimal', ('777', 8), 511)\n_returns('to_decimal', ('114', 5), 34)\n_returns('to_decimal', ('FFFFFFFFFFFF', 16), 281474976710655)\n_returns('to_decimal', ('10', 3), 3)\n_returns('from_decimal', (0, 2), '0')\n_returns('from_decimal', (34, 5), '114')\n_returns('from_decimal', (255, 16), 'FF')\n_returns('from_decimal', (45, 2), '101101')\n_returns('from_decimal', (281474976710655, 16), 'FFFFFFFFFFFF')\n_returns('from_decimal', (9, 3), '100')\n_returns('from_decimal', (15, 16), 'F')\n_returns('from_decimal', (16, 16), '10')\n_returns('from_decimal', (1, 2), '1')\n_guard()\n",
+      "hints": [
+        "`digit_value` finds the position of `ch` in `DIGITS`: start `value` at 0 and add 1 while `DIGITS[value] != ch`. For `'A'` it returns 10.",
+        "`to_decimal` starts `number` at 0 and, for each character from left to right, sets `number = number * base + digit_value(ch)`. For `2A` in base 12 that gives 2, then 2 * 12 + 10, which is 34.",
+        "`from_decimal` returns `'0'` for zero. Otherwise, while `number > 0`, put `DIGITS[number % base]` at the front of `text` and set `number = number // base`. For 34 in base 5 the remainders are 4, 1, 1, so the result is `114`.",
+        "In `main`, read both bases first. If either is below 2 or above 16, print `Invalid base.` and `return` before reading the number text. Otherwise read the text and print `from_decimal(to_decimal(text, source_base), target_base)`."
+      ],
+      "answer": "RElHSVRTID0gJzAxMjM0NTY3ODlBQkNERUYnCgpkZWYgZGlnaXRfdmFsdWUoY2gpOgogICAgdmFsdWUgPSAwCiAgICB3aGlsZSBESUdJVFNbdmFsdWVdICE9IGNoOgogICAgICAgIHZhbHVlID0gdmFsdWUgKyAxCiAgICByZXR1cm4gdmFsdWUKCmRlZiB0b19kZWNpbWFsKHRleHQsIGJhc2UpOgogICAgbnVtYmVyID0gMAogICAgZm9yIGNoIGluIHRleHQ6CiAgICAgICAgbnVtYmVyID0gbnVtYmVyICogYmFzZSArIGRpZ2l0X3ZhbHVlKGNoKQogICAgcmV0dXJuIG51bWJlcgoKZGVmIGZyb21fZGVjaW1hbChudW1iZXIsIGJhc2UpOgogICAgaWYgbnVtYmVyID09IDA6CiAgICAgICAgcmV0dXJuICcwJwogICAgdGV4dCA9ICcnCiAgICB3aGlsZSBudW1iZXIgPiAwOgogICAgICAgIGRpZ2l0ID0gbnVtYmVyICUgYmFzZQogICAgICAgIHRleHQgPSBESUdJVFNbZGlnaXRdICsgdGV4dAogICAgICAgIG51bWJlciA9IG51bWJlciAvLyBiYXNlCiAgICByZXR1cm4gdGV4dAoKZGVmIG1haW4oKToKICAgIHNvdXJjZV9iYXNlID0gaW50KGlucHV0KCkpCiAgICB0YXJnZXRfYmFzZSA9IGludChpbnB1dCgpKQogICAgaWYgc291cmNlX2Jhc2UgPCAyIG9yIHNvdXJjZV9iYXNlID4gMTYgb3IgdGFyZ2V0X2Jhc2UgPCAyIG9yIHRhcmdldF9iYXNlID4gMTY6CiAgICAgICAgcHJpbnQoJ0ludmFsaWQgYmFzZS4nKQogICAgICAgIHJldHVybgogICAgdGV4dCA9IGlucHV0KCkKICAgIG51bWJlciA9IHRvX2RlY2ltYWwodGV4dCwgc291cmNlX2Jhc2UpCiAgICBwcmludChmcm9tX2RlY2ltYWwobnVtYmVyLCB0YXJnZXRfYmFzZSkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "The first conversion accumulates place values from left to right. The second repeatedly removes the last digit and places it at the front of the result. The zero case needs a separate return because the division loop would otherwise produce an empty string."
+    }
+  }
+}

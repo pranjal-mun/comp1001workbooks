@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 19 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-19-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 19 Boss Problems</h1>
+    <div class="wb-subtitle">Argument styles, <code>main()</code>, and the call stack</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the argument styles and the program layout from Lecture 19: default parameter values, keyword calls, helper functions called from <code>main()</code>, and the standard guard at the end of the file. They use only what Lectures 4 to 19 covered: <code>input()</code> with <code>int()</code>, arithmetic, comparisons combined with <code>and</code> and <code>or</code>, <code>if</code> statements, <code>while</code> and <code>for</code> loops, string indexing, <code>random.randint</code>, and functions that return values. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Problems 1 and 4 read their values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them: <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. Problems 2 and 3 read no keyboard input. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="center" data-toc-title="👹 Centered text">👹 Boss 1: Centered text</h2>
+<p>Given a line of text and a nonnegative integer width, produce the text with leading spaces so it is centered within that width. When the spare space is odd, put the smaller half before the text. Add no trailing spaces. If the text is at least as wide as the width, return it unchanged. Define <code>center_text(text, width=24)</code> to return the result. In <code>main</code>, read the text and width on separate lines, call the helper with <code>width</code> as a keyword argument, and print the result between two <code>|</code> characters so spaces are visible.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+Hi
+9
+Output:
+|   Hi|
+Explanation:
+There are seven spare positions, so three spaces go before Hi.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+wide
+0
+Output:
+|wide|
+Explanation:
+The width is zero, so the text is returned unchanged.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+
+4
+Output:
+|  |
+Explanation:
+The text is empty, so the returned string contains two spaces.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The text contains 0 through 80 characters, each occupying one position.</li>
+    <li>The width is an integer from 0 through 80.</li>
+    <li>Use the default width 24, a keyword call in <code>main</code>, and the standard guard.</li>
+    <li>Also test the helper with its width argument omitted.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Hi</code>, <code>9</code></td><td><code>|&nbsp;&nbsp;&nbsp;Hi|</code></td></tr>
+    <tr><td><code>wide</code>, <code>0</code></td><td><code>|wide|</code></td></tr>
+    <tr><td>an empty line, <code>4</code></td><td><code>|&nbsp;&nbsp;|</code></td></tr>
+    <tr><td><code>abc</code>, <code>3</code></td><td><code>|abc|</code></td></tr>
+    <tr><td><code>ab</code>, <code>5</code></td><td><code>|&nbsp;ab|</code></td></tr>
+    <tr><td><code>ab</code>, <code>6</code></td><td><code>|&nbsp;&nbsp;ab|</code></td></tr>
+    <tr><td><code>Centered text</code>, <code>24</code></td><td><code>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Centered text|</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>center_text(text, width=24)</code> with two parameters and the default width 24.</li>
+    <li><code>center_text</code> returns the centered text. <strong>Check</strong> also calls it with <code>('Hi')</code>, which uses the default width, and with values such as <code>('abc', 4)</code>, <code>('long text', 4)</code>, <code>('', 0)</code>, and an 80-character text with width 80.</li>
+    <li>In <code>main</code>, call <code>center_text</code> with <code>width</code> as a keyword argument.</li>
+    <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>text = input()</code> and <code>width = int(input())</code> unchanged. The checker will type the other lines.</p>
+<wb-exercise id="center"></wb-exercise>
+
+<h2 id="ordinal" data-toc-title="👾 Ordinal words">👾 Boss 2: Ordinal words</h2>
+<p>Given an integer, produce its English ordinal word for values 1 through 12. An ordinal word names a position: first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, or twelfth. Define <code>ordinal_word(number)</code> to return that word, or the empty string for any other integer. In <code>main</code>, use a loop to print each integer from 1 through 12 followed by its ordinal word. This program reads no keyboard input.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+Run main; no keyboard input.
+Output:
+1 first
+2 second
+3 third
+4 fourth
+5 fifth
+6 sixth
+7 seventh
+8 eighth
+9 ninth
+10 tenth
+11 eleventh
+12 twelfth
+Explanation:
+The loop prints one integer and its word on each line.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+print('|' + ordinal_word(0) + '|')
+Output:
+||
+Explanation:
+Zero is outside 1 through 12, so the function returns an empty string.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The helper accepts an integer from -100 through 100.</li>
+    <li>Only values 1 through 12 have nonempty results.</li>
+    <li>Use a loop in <code>main</code> and end the file with the standard guard.</li>
+    <li>Check both outside boundaries, 0 and 13.</li>
+  </ul>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>ordinal_word(number)</code> with one parameter.</li>
+    <li><code>ordinal_word</code> returns the word, or the empty string. <strong>Check</strong> calls it with every integer from -100 through 100, including 0 and 13.</li>
+    <li>Use a loop in <code>main</code> to print the twelve lines of Example 1.</li>
+    <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="ordinal"></wb-exercise>
+
+<h2 id="plate" data-toc-title="🐉 Random plate codes">🐉 Boss 3: Random plate codes</h2>
+<p>Given a request for a random plate code, produce either two uppercase letters followed by four digits, or three digits followed by three uppercase letters. Choose each format with probability one half. Letters and digits may repeat, and digit groups may begin with zero. Define <code>random_letters(count=2)</code> and <code>random_digits(count=4)</code> to return random strings. Have <code>make_plate()</code> call them, using keyword arguments when it needs different counts. <code>main</code> prints one code and reads no keyboard input.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+No keyboard input.
+Random choices: format 0, letter indexes 0 and 25,
+then digits 0, 4, 0, 7.
+Output:
+AZ0407
+Explanation:
+Format 0 uses two letters followed by four digits.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+No keyboard input.
+Random choices: format 1, digits 0, 0, 0,
+then letter indexes 1, 1, 1.
+Output:
+000BBB
+Explanation:
+Format 1 uses three digits followed by three letters.
+Leading zeros and repeated characters are allowed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each generated plate has six characters and uses only <code>A</code> through <code>Z</code> and <code>0</code> through <code>9</code>.</li>
+    <li>Helper counts are integers from 0 through 6. A count of zero returns the empty string.</li>
+    <li>Use <code>random.randint(a, b)</code>, which can return either endpoint as well as any integer between them.</li>
+    <li>Use loops, string indexing, default parameter values, keyword calls, <code>main</code>, and the standard guard.</li>
+    <li>The random choices shown in the examples describe particular runs. Other valid runs can print different codes.</li>
+  </ul>
+</div>
+<p>For the two examples, <strong>Check</strong> replaces <code>random.randint</code> while <code>make_plate()</code> runs. Each call <code>random.randint(a, b)</code> then returns <code>a</code> plus the next choice the example lists, in the order the example lists them: the format first, then the characters from left to right.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>random_letters(count=2)</code> and <code>random_digits(count=4)</code> with one parameter each and these defaults, and <code>make_plate</code> and <code>main</code> with empty parentheses.</li>
+    <li>Use <code>random.randint(a, b)</code> for every random choice.</li>
+    <li>Use a loop in each helper. <code>random_letters(count)</code> returns <code>count</code> uppercase letters and <code>random_digits(count)</code> returns <code>count</code> digits, for every count from 0 through 6.</li>
+    <li>In <code>make_plate</code>, call the helpers with no arguments for format 0 and with keyword arguments such as <code>count=3</code> for format 1.</li>
+    <li>With the choices of Example 1, <code>make_plate()</code> returns <code>AZ0407</code>; with those of Example 2, it returns <code>000BBB</code>.</li>
+    <li>In 200 calls, <code>make_plate()</code> returns six-character codes in both formats.</li>
+    <li><code>main</code> prints one code. End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="plate"></wb-exercise>
+
+<h2 id="magic" data-toc-title="💀 Magic date search">💀 Boss 4: Magic date search</h2>
+<p>Given an inclusive range of years, produce every valid magic date in that range, in year, month, and day order. Here a magic date has <code>day * month == year % 100</code>; the remainder gives the final two digits of the year. Read the start and end years on separate lines. Print the year, month, and day as integers separated by single spaces. If there are no matches, print nothing. Define <code>is_leap_year(year)</code>, <code>days_in_month(month, year)</code>, and <code>is_magic_date(day, month, year)</code>. The magic-date helper must reject invalid dates and use <code>days_in_month</code>; the month helper must use <code>is_leap_year</code> for February. Put the nested search loops in <code>main</code>.</p>
+<p>February has 29 days in a leap year and 28 otherwise. A leap year is divisible by 400, or divisible by 4 without being divisible by 100. April, June, September, and November have 30 days; the other months have 31. Use these rules as the calendar model for this exercise.</p>
+<p>After writing the program, trace the function frames from bottom to top while <code>is_leap_year</code> runs inside <code>is_magic_date(2, 2, 2004)</code>, called by the search in <code>main</code>. State where each waiting function resumes.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2004
+2004
+Output:
+2004 1 4
+2004 2 2
+2004 4 1
+Explanation:
+The valid month-day products equal 4, the final two digits of 2004.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+2000
+2000
+Output:
+
+Explanation:
+A positive month and day cannot have a product of zero.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The start and end years satisfy <code>2000 &lt;= start &lt;= end &lt;= 2099</code>.</li>
+    <li>Each helper receives integer arguments. <code>is_magic_date</code> must return <code>False</code> for an invalid month or day.</li>
+    <li>Call <code>days_in_month</code> only after checking that the month is from 1 through 12.</li>
+    <li>Test February in 2000 and 2001, an invalid day such as February 30, and an invalid month such as 13.</li>
+    <li>Use the required helper chain, nested loops in <code>main</code>, and the standard guard.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2004</code>, <code>2004</code></td><td><code>2004 1 4</code>, <code>2004 2 2</code>, <code>2004 4 1</code></td></tr>
+    <tr><td><code>2000</code>, <code>2000</code></td><td>nothing</td></tr>
+    <tr><td><code>2001</code>, <code>2001</code></td><td><code>2001 1 1</code></td></tr>
+    <tr><td><code>2024</code>, <code>2025</code></td><td>15 dates, from <code>2024 1 24</code> to <code>2025 5 5</code></td></tr>
+    <tr><td><code>2099</code>, <code>2099</code></td><td><code>2099 9 11</code>, <code>2099 11 9</code></td></tr>
+    <tr><td><code>2000</code>, <code>2099</code></td><td>212 dates</td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>is_leap_year(year)</code>, <code>days_in_month(month, year)</code>, <code>is_magic_date(day, month, year)</code>, and <code>main</code> with empty parentheses.</li>
+    <li><code>days_in_month</code> uses <code>is_leap_year</code>, and <code>is_magic_date</code> uses <code>days_in_month</code>.</li>
+    <li>Each helper returns the right value. <strong>Check</strong> calls <code>is_leap_year</code> with years such as 1900, 2000, 2001, and 2100, <code>days_in_month</code> with every month of 2000, 2001, 2004, and 2100, and <code>is_magic_date</code> with dates such as <code>(30, 2, 2004)</code>, <code>(29, 2, 2001)</code>, and <code>(1, 13, 2013)</code>.</li>
+    <li><code>is_magic_date</code> calls <code>days_in_month</code> only for a month from 1 through 12.</li>
+    <li>Put the nested search loops in <code>main</code> and end the file with the standard guard.</li>
+  </ul>
+</div>
+<p class="wb-meta">Keep the lines <code>start = int(input())</code> and <code>end = int(input())</code> unchanged. The checker will type the other years.</p>
+<wb-exercise id="magic"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">The frame trace</div>
+  <p>Trace the function frames while <code>is_leap_year</code> runs inside <code>is_magic_date(2, 2, 2004)</code>. <strong>Check</strong> does not grade this part.</p>
+  <details class="wb-answer"><summary>Show the answer</summary>
+    <p>During the requested call, the function frames from bottom to top are <code>main</code>, <code>is_magic_date</code>, <code>days_in_month</code>, and <code>is_leap_year</code>. The module frame is below them. <code>days_in_month</code> resumes at its leap-year condition and returns <code>29</code>. <code>is_magic_date</code> resumes at its day check, then returns <code>True</code> because <code>2 * 2 == 2004 % 100</code>. <code>main</code> resumes at its magic-date condition and prints <code>2004 2 2</code>.</p>
+  </details>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 19 Boss Problems.</p>
+</main>
+</body>
+</html>

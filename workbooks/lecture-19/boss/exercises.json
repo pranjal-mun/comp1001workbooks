@@ -1,0 +1,202 @@
+{
+  "id": "lecture-19-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 19 Boss Problems",
+  "short": "L19 bosses",
+  "subtitle": "Argument styles, main(), and the call stack",
+  "exercises": {
+    "center": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 12,
+      "starter": "def center_text(text, width=24):\n    # Return the text with the required leading spaces.\n\ndef main():\n    text = input()\n    width = int(input())\n    # Print the helper's result between | characters.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed Hi and 9",
+          "inputs": [
+            "Hi",
+            "9"
+          ],
+          "expected": "|   Hi|"
+        },
+        {
+          "name": "Example 2: typed wide and 0",
+          "inputs": [
+            "wide",
+            "0"
+          ],
+          "expected": "|wide|"
+        },
+        {
+          "name": "Example 3: typed an empty line and 4",
+          "inputs": [
+            "",
+            "4"
+          ],
+          "expected": "|  |"
+        },
+        {
+          "name": "Typed abc and 3",
+          "inputs": [
+            "abc",
+            "3"
+          ],
+          "expected": "|abc|"
+        },
+        {
+          "name": "Typed ab and 5",
+          "inputs": [
+            "ab",
+            "5"
+          ],
+          "expected": "| ab|"
+        },
+        {
+          "name": "Typed ab and 6",
+          "inputs": [
+            "ab",
+            "6"
+          ],
+          "expected": "|  ab|"
+        },
+        {
+          "name": "Typed Centered text and 24",
+          "inputs": [
+            "Centered text",
+            "24"
+          ],
+          "expected": "|     Centered text|"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args, **kwargs):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args, **kwargs)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\n_f = _fn(\"center_text\", \"text\", \"width\")\nassert _f.__defaults__ == (24,), \"Give center_text the default width=24.\"\n_fn(\"main\")\n_c = _calls_in(\"main\", \"center_text\")\nassert _c and all([k.arg for k in c.keywords] == [\"width\"] for c in _c), \"In main, call center_text with width as a keyword argument: center_text(text, width=width).\"\n_value, _ = _call(\"center_text\", \"Hi\")\nassert _value == \" \" * 11 + \"Hi\", \"center_text('Hi') uses the default width 24 and should return 11 spaces followed by Hi, not \" + repr(_value) + \".\"\n_returns('center_text', ('Hi', 9), '   Hi')\n_returns('center_text', ('wide', 0), 'wide')\n_returns('center_text', ('', 4), '  ')\n_returns('center_text', ('abc', 3), 'abc')\n_returns('center_text', ('abc', 4), 'abc')\n_returns('center_text', ('ab', 5), ' ab')\n_returns('center_text', ('ab', 6), '  ab')\n_returns('center_text', ('x', 1), 'x')\n_returns('center_text', ('long text', 4), 'long text')\n_returns('center_text', ('', 0), '')\n_returns('center_text', ('', 1), '')\n_returns('center_text', ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 80), 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')\n_returns('center_text', ('odd', 80), '                                      odd')\n_guard()\n",
+      "hints": [
+        "If `len(text) >= width`, there is no spare space, so return `text` unchanged. For `wide` and width 0 this returns `wide`.",
+        "Otherwise the spare space is `width - len(text)`. Integer division by 2 gives the smaller half: for `Hi` and 9 the spare space is 7 and `7 // 2` is 3.",
+        "Return `' ' * spaces + text`, with no spaces after the text. In `main`, print `'|' + center_text(text, width=width) + '|'`."
+      ],
+      "answer": "ZGVmIGNlbnRlcl90ZXh0KHRleHQsIHdpZHRoPTI0KToKICAgIGlmIGxlbih0ZXh0KSA+PSB3aWR0aDoKICAgICAgICByZXR1cm4gdGV4dAogICAgc3BhY2VzID0gKHdpZHRoIC0gbGVuKHRleHQpKSAvLyAyCiAgICByZXR1cm4gJyAnICogc3BhY2VzICsgdGV4dAoKZGVmIG1haW4oKToKICAgIHRleHQgPSBpbnB1dCgpCiAgICB3aWR0aCA9IGludChpbnB1dCgpKQogICAgcHJpbnQoJ3wnICsgY2VudGVyX3RleHQodGV4dCwgd2lkdGg9d2lkdGgpICsgJ3wnKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
+      "answerNote": "The length check handles text that fills or exceeds the width. Integer division chooses the smaller half of any spare space. `center_text('Hi')` returns eleven spaces followed by `Hi`."
+    },
+    "ordinal": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 30,
+      "starter": "def ordinal_word(number):\n    # Return a word or the empty string.\n\ndef main():\n    # Print the twelve integer-word pairs.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: run main",
+          "expected": "1 first\n2 second\n3 third\n4 fourth\n5 fifth\n6 sixth\n7 seventh\n8 eighth\n9 ninth\n10 tenth\n11 eleventh\n12 twelfth"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args, **kwargs):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args, **kwargs)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\n_fn(\"ordinal_word\", \"number\")\n_fn(\"main\")\nassert any(isinstance(n, (ast.For, ast.While)) for n in _body(\"main\")), \"Use a loop in main to print the twelve pairs.\"\n_value, _ = _call(\"ordinal_word\", 0)\nassert _value == \"\", \"Example 2: ordinal_word(0) should return the empty string, so '|' + ordinal_word(0) + '|' prints ||.\"\n_words = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth']\nfor _n in range(-100, 101):\n    _returns(\"ordinal_word\", (_n,), _words[_n - 1] if 1 <= _n <= 12 else \"\")\n_guard()\n",
+      "hints": [
+        "Compare `number` with each value from 1 to 12 and return the matching word at once: `if number == 1:` returns `'first'`.",
+        "After the twelve tests, a final `return ''` handles every other integer, including the boundaries 0 and 13.",
+        "In `main`, loop with `for number in range(1, 13):` and print `number, ordinal_word(number)`. The first line is `1 first`."
+      ],
+      "answer": "ZGVmIG9yZGluYWxfd29yZChudW1iZXIpOgogICAgaWYgbnVtYmVyID09IDE6CiAgICAgICAgcmV0dXJuICdmaXJzdCcKICAgIGlmIG51bWJlciA9PSAyOgogICAgICAgIHJldHVybiAnc2Vjb25kJwogICAgaWYgbnVtYmVyID09IDM6CiAgICAgICAgcmV0dXJuICd0aGlyZCcKICAgIGlmIG51bWJlciA9PSA0OgogICAgICAgIHJldHVybiAnZm91cnRoJwogICAgaWYgbnVtYmVyID09IDU6CiAgICAgICAgcmV0dXJuICdmaWZ0aCcKICAgIGlmIG51bWJlciA9PSA2OgogICAgICAgIHJldHVybiAnc2l4dGgnCiAgICBpZiBudW1iZXIgPT0gNzoKICAgICAgICByZXR1cm4gJ3NldmVudGgnCiAgICBpZiBudW1iZXIgPT0gODoKICAgICAgICByZXR1cm4gJ2VpZ2h0aCcKICAgIGlmIG51bWJlciA9PSA5OgogICAgICAgIHJldHVybiAnbmludGgnCiAgICBpZiBudW1iZXIgPT0gMTA6CiAgICAgICAgcmV0dXJuICd0ZW50aCcKICAgIGlmIG51bWJlciA9PSAxMToKICAgICAgICByZXR1cm4gJ2VsZXZlbnRoJwogICAgaWYgbnVtYmVyID09IDEyOgogICAgICAgIHJldHVybiAndHdlbGZ0aCcKICAgIHJldHVybiAnJwoKZGVmIG1haW4oKToKICAgIGZvciBudW1iZXIgaW4gcmFuZ2UoMSwgMTMpOgogICAgICAgIHByaW50KG51bWJlciwgb3JkaW5hbF93b3JkKG51bWJlcikpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "Each matching branch returns immediately. The final return handles every integer outside the supported range."
+    },
+    "plate": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 24,
+      "starter": "import random\n\ndef random_letters(count=2):\n    # Build and return count random letters.\n\ndef random_digits(count=4):\n    # Build and return count random digits.\n\ndef make_plate():\n    # Choose a format and call the helpers.\n\ndef main():\n    # Print one plate code.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: format 0, letters 0 and 25, digits 0, 4, 0, 7",
+          "check": "import random as _random\ndef _scripted(name, choices):\n    _queue = list(choices)\n    _real = _random.randint\n    _f = globals().get(name)\n    _g = _f.__globals__\n    _had = \"randint\" in _g\n    _old = _g.get(\"randint\")\n    def _fake(a, b):\n        assert _queue, name + \"() asked random.randint for more choices than the example lists.\"\n        return a + _queue.pop(0)\n    _random.randint = _fake\n    if _had:\n        _g[\"randint\"] = _fake\n    try:\n        _value, _ = _call(name)\n    finally:\n        _random.randint = _real\n        if _had:\n            _g[\"randint\"] = _old\n    return _value\n_value = _scripted(\"make_plate\", [0, 0, 25, 0, 4, 0, 7])\nassert _value == \"AZ0407\", \"Example 1: with the choices format 0, letter indexes 0 and 25, then digits 0, 4, 0, 7, make_plate() should return 'AZ0407', not \" + repr(_value) + \".\"\n"
+        },
+        {
+          "name": "Example 2: format 1, digits 0, 0, 0, letters 1, 1, 1",
+          "check": "import random as _random\ndef _scripted(name, choices):\n    _queue = list(choices)\n    _real = _random.randint\n    _f = globals().get(name)\n    _g = _f.__globals__\n    _had = \"randint\" in _g\n    _old = _g.get(\"randint\")\n    def _fake(a, b):\n        assert _queue, name + \"() asked random.randint for more choices than the example lists.\"\n        return a + _queue.pop(0)\n    _random.randint = _fake\n    if _had:\n        _g[\"randint\"] = _fake\n    try:\n        _value, _ = _call(name)\n    finally:\n        _random.randint = _real\n        if _had:\n            _g[\"randint\"] = _old\n    return _value\n_value = _scripted(\"make_plate\", [1, 0, 0, 0, 1, 1, 1])\nassert _value == \"000BBB\", \"Example 2: with the choices format 1, digits 0, 0, 0, then letter indexes 1, 1, 1, make_plate() should return '000BBB', not \" + repr(_value) + \".\"\n"
+        },
+        {
+          "name": "main prints one plate code",
+          "check": "_lines = __stdout__.rstrip(\"\\n\").split(\"\\n\")\nassert len(_lines) == 1 and re.match(r\"^([A-Z]{2}[0-9]{4}|[0-9]{3}[A-Z]{3})$\", _lines[0]), \"main should print one plate code: two letters and four digits, or three digits and three letters. It printed \" + repr(__stdout__.rstrip()) + \".\"\n"
+        },
+        {
+          "name": "200 calls to make_plate()",
+          "check": "_seen = set()\nfor _i in range(200):\n    _value, _ = _call(\"make_plate\")\n    assert isinstance(_value, str) and re.match(r\"^([A-Z]{2}[0-9]{4}|[0-9]{3}[A-Z]{3})$\", _value), \"make_plate() should return two uppercase letters and four digits, or three digits and three uppercase letters, not \" + repr(_value) + \".\"\n    _seen.add(_value[0].isalpha())\nassert _seen == {True, False}, \"In 200 calls make_plate() should produce both formats. Choose the format with random.randint(0, 1).\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args, **kwargs):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args, **kwargs)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\n_l = _fn(\"random_letters\", \"count\")\n_d = _fn(\"random_digits\", \"count\")\n_fn(\"make_plate\")\n_fn(\"main\")\nassert _l.__defaults__ == (2,), \"Give random_letters the default count=2.\"\nassert _d.__defaults__ == (4,), \"Give random_digits the default count=4.\"\nassert re.search(r\"\\brandint\\s*\\(\", __code__), \"Use random.randint(a, b) for every random choice.\"\nfor _name, _kind in ((\"random_letters\", str.isupper), (\"random_digits\", str.isdigit)):\n    assert any(isinstance(n, (ast.For, ast.While)) for n in _body(_name)), \"Use a loop in \" + _name + \" to build the string one character at a time.\"\n    for _count in range(0, 7):\n        _value, _ = _call(_name, _count)\n        assert isinstance(_value, str) and len(_value) == _count and (_count == 0 or (_kind(_value) and _value.isascii())), _name + \"(\" + str(_count) + \") should return a string of \" + str(_count) + \" random characters, not \" + repr(_value) + \".\"\n_kw = [c for name in (\"random_letters\", \"random_digits\") for c in _calls_in(\"make_plate\", name)]\nassert any([k.arg for k in c.keywords] == [\"count\"] and not c.args for c in _kw), \"In make_plate, use keyword calls such as random_digits(count=3) for the counts that differ from the defaults.\"\nassert any(not c.args and not c.keywords for c in _kw), \"In make_plate, let the defaults supply the counts for format 0: random_letters() and random_digits().\"\nassert _calls_in(\"main\", \"make_plate\"), \"Call make_plate() in main and print its result.\"\n_guard()\n",
+      "hints": [
+        "Each helper starts with `result = ''` and loops `for position in range(count):`. A count of 0 makes the loop run zero times, so the empty string is returned.",
+        "In `random_letters`, `index = random.randint(0, 25)` chooses a position in `'ABCDEFGHIJKLMNOPQRSTUVWXYZ'`; index 25 is `Z`. In `random_digits`, add `str(random.randint(0, 9))`.",
+        "In `make_plate`, the first choice is the format: `if random.randint(0, 1) == 0:` returns `random_letters() + random_digits()`. Otherwise return `random_digits(count=3) + random_letters(count=3)`."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQoKZGVmIHJhbmRvbV9sZXR0ZXJzKGNvdW50PTIpOgogICAgbGV0dGVycyA9ICdBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWicKICAgIHJlc3VsdCA9ICcnCiAgICBmb3IgcG9zaXRpb24gaW4gcmFuZ2UoY291bnQpOgogICAgICAgIGluZGV4ID0gcmFuZG9tLnJhbmRpbnQoMCwgMjUpCiAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgbGV0dGVyc1tpbmRleF0KICAgIHJldHVybiByZXN1bHQKCmRlZiByYW5kb21fZGlnaXRzKGNvdW50PTQpOgogICAgcmVzdWx0ID0gJycKICAgIGZvciBwb3NpdGlvbiBpbiByYW5nZShjb3VudCk6CiAgICAgICAgcmVzdWx0ID0gcmVzdWx0ICsgc3RyKHJhbmRvbS5yYW5kaW50KDAsIDkpKQogICAgcmV0dXJuIHJlc3VsdAoKZGVmIG1ha2VfcGxhdGUoKToKICAgIGlmIHJhbmRvbS5yYW5kaW50KDAsIDEpID09IDA6CiAgICAgICAgcmV0dXJuIHJhbmRvbV9sZXR0ZXJzKCkgKyByYW5kb21fZGlnaXRzKCkKICAgIHJldHVybiByYW5kb21fZGlnaXRzKGNvdW50PTMpICsgcmFuZG9tX2xldHRlcnMoY291bnQ9MykKCmRlZiBtYWluKCk6CiAgICBwcmludChtYWtlX3BsYXRlKCkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "The first random choice selects the format. The helper defaults supply the counts for format 0; keyword calls supply the counts for format 1. A zero count makes the loop run zero times, leaving the returned string empty."
+    },
+    "magic": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 28,
+      "starter": "def is_leap_year(year):\n    # Return a Boolean value.\n\ndef days_in_month(month, year):\n    # Return the month's length.\n\ndef is_magic_date(day, month, year):\n    # Check the date and return a Boolean value.\n\ndef main():\n    start = int(input())\n    end = int(input())\n    # Search years, months, and days in order.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 2004 and 2004",
+          "inputs": [
+            "2004",
+            "2004"
+          ],
+          "expected": "2004 1 4\n2004 2 2\n2004 4 1"
+        },
+        {
+          "name": "Example 2: typed 2000 and 2000",
+          "inputs": [
+            "2000",
+            "2000"
+          ],
+          "expected": ""
+        },
+        {
+          "name": "Typed 2001 and 2001",
+          "inputs": [
+            "2001",
+            "2001"
+          ],
+          "expected": "2001 1 1"
+        },
+        {
+          "name": "Typed 2024 and 2025",
+          "inputs": [
+            "2024",
+            "2025"
+          ],
+          "expected": "2024 1 24\n2024 2 12\n2024 3 8\n2024 4 6\n2024 6 4\n2024 8 3\n2024 12 2\n2025 1 25\n2025 5 5"
+        },
+        {
+          "name": "Typed 2099 and 2099",
+          "inputs": [
+            "2099",
+            "2099"
+          ],
+          "expected": "2099 9 11\n2099 11 9"
+        },
+        {
+          "name": "Typed 2000 and 2099",
+          "inputs": [
+            "2000",
+            "2099"
+          ],
+          "expected": "2001 1 1\n2002 1 2\n2002 2 1\n2003 1 3\n2003 3 1\n2004 1 4\n2004 2 2\n2004 4 1\n2005 1 5\n2005 5 1\n2006 1 6\n2006 2 3\n2006 3 2\n2006 6 1\n2007 1 7\n2007 7 1\n2008 1 8\n2008 2 4\n2008 4 2\n2008 8 1\n2009 1 9\n2009 3 3\n2009 9 1\n2010 1 10\n2010 2 5\n2010 5 2\n2010 10 1\n2011 1 11\n2011 11 1\n2012 1 12\n2012 2 6\n2012 3 4\n2012 4 3\n2012 6 2\n2012 12 1\n2013 1 13\n2014 1 14\n2014 2 7\n2014 7 2\n2015 1 15\n2015 3 5\n2015 5 3\n2016 1 16\n2016 2 8\n2016 4 4\n2016 8 2\n2017 1 17\n2018 1 18\n2018 2 9\n2018 3 6\n2018 6 3\n2018 9 2\n2019 1 19\n2020 1 20\n2020 2 10\n2020 4 5\n2020 5 4\n2020 10 2\n2021 1 21\n2021 3 7\n2021 7 3\n2022 1 22\n2022 2 11\n2022 11 2\n2023 1 23\n2024 1 24\n2024 2 12\n2024 3 8\n2024 4 6\n2024 6 4\n2024 8 3\n2024 12 2\n2025 1 25\n2025 5 5\n2026 1 26\n2026 2 13\n2027 1 27\n2027 3 9\n2027 9 3\n2028 1 28\n2028 2 14\n2028 4 7\n2028 7 4\n2029 1 29\n2030 1 30\n2030 2 15\n2030 3 10\n2030 5 6\n2030 6 5\n2030 10 3\n2031 1 31\n2032 2 16\n2032 4 8\n2032 8 4\n2033 3 11\n2033 11 3\n2034 2 17\n2035 5 7\n2035 7 5\n2036 2 18\n2036 3 12\n2036 4 9\n2036 6 6\n2036 9 4\n2036 12 3\n2038 2 19\n2039 3 13\n2040 2 20\n2040 4 10\n2040 5 8\n2040 8 5\n2040 10 4\n2042 2 21\n2042 3 14\n2042 6 7\n2042 7 6\n2044 2 22\n2044 4 11\n2044 11 4\n2045 3 15\n2045 5 9\n2045 9 5\n2046 2 23\n2048 2 24\n2048 3 16\n2048 4 12\n2048 6 8\n2048 8 6\n2048 12 4\n2049 7 7\n2050 2 25\n2050 5 10\n2050 10 5\n2051 3 17\n2052 2 26\n2052 4 13\n2054 2 27\n2054 3 18\n2054 6 9\n2054 9 6\n2055 5 11\n2055 11 5\n2056 2 28\n2056 4 14\n2056 7 8\n2056 8 7\n2057 3 19\n2060 3 20\n2060 4 15\n2060 5 12\n2060 6 10\n2060 10 6\n2060 12 5\n2063 3 21\n2063 7 9\n2063 9 7\n2064 4 16\n2064 8 8\n2065 5 13\n2066 3 22\n2066 6 11\n2066 11 6\n2068 4 17\n2069 3 23\n2070 5 14\n2070 7 10\n2070 10 7\n2072 3 24\n2072 4 18\n2072 6 12\n2072 8 9\n2072 9 8\n2072 12 6\n2075 3 25\n2075 5 15\n2076 4 19\n2077 7 11\n2077 11 7\n2078 3 26\n2078 6 13\n2080 4 20\n2080 5 16\n2080 8 10\n2080 10 8\n2081 3 27\n2081 9 9\n2084 3 28\n2084 4 21\n2084 6 14\n2084 7 12\n2084 12 7\n2085 5 17\n2087 3 29\n2088 4 22\n2088 8 11\n2088 11 8\n2090 3 30\n2090 5 18\n2090 6 15\n2090 9 10\n2090 10 9\n2091 7 13\n2092 4 23\n2093 3 31\n2095 5 19\n2096 4 24\n2096 6 16\n2096 8 12\n2096 12 8\n2098 7 14\n2099 9 11\n2099 11 9"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args, **kwargs):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args, **kwargs)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\n_fn(\"is_leap_year\", \"year\")\n_fn(\"days_in_month\", \"month\", \"year\")\n_m = _fn(\"is_magic_date\", \"day\", \"month\", \"year\")\n_fn(\"main\")\nassert \"days_in_month\" in _m.__code__.co_names, \"is_magic_date must use days_in_month to reject a day past the end of the month.\"\nassert \"is_leap_year\" in globals()[\"days_in_month\"].__code__.co_names, \"days_in_month must use is_leap_year for February.\"\n_loops = [n for n in _body(\"main\") if isinstance(n, (ast.For, ast.While))]\nassert any(any(isinstance(m, (ast.For, ast.While)) and m is not n for m in ast.walk(n)) for n in _loops), \"Put the nested search loops in main: years, then months, then days.\"\n_returns('is_leap_year', (1900,), False)\n_returns('is_leap_year', (2000,), True)\n_returns('is_leap_year', (2001,), False)\n_returns('is_leap_year', (2004,), True)\n_returns('is_leap_year', (2024,), True)\n_returns('is_leap_year', (2100,), False)\n_returns('is_leap_year', (2400,), True)\n_returns('days_in_month', (1, 2000), 31)\n_returns('days_in_month', (2, 2000), 29)\n_returns('days_in_month', (3, 2000), 31)\n_returns('days_in_month', (4, 2000), 30)\n_returns('days_in_month', (5, 2000), 31)\n_returns('days_in_month', (6, 2000), 30)\n_returns('days_in_month', (7, 2000), 31)\n_returns('days_in_month', (8, 2000), 31)\n_returns('days_in_month', (9, 2000), 30)\n_returns('days_in_month', (10, 2000), 31)\n_returns('days_in_month', (11, 2000), 30)\n_returns('days_in_month', (12, 2000), 31)\n_returns('days_in_month', (1, 2001), 31)\n_returns('days_in_month', (2, 2001), 28)\n_returns('days_in_month', (3, 2001), 31)\n_returns('days_in_month', (4, 2001), 30)\n_returns('days_in_month', (5, 2001), 31)\n_returns('days_in_month', (6, 2001), 30)\n_returns('days_in_month', (7, 2001), 31)\n_returns('days_in_month', (8, 2001), 31)\n_returns('days_in_month', (9, 2001), 30)\n_returns('days_in_month', (10, 2001), 31)\n_returns('days_in_month', (11, 2001), 30)\n_returns('days_in_month', (12, 2001), 31)\n_returns('days_in_month', (1, 2004), 31)\n_returns('days_in_month', (2, 2004), 29)\n_returns('days_in_month', (3, 2004), 31)\n_returns('days_in_month', (4, 2004), 30)\n_returns('days_in_month', (5, 2004), 31)\n_returns('days_in_month', (6, 2004), 30)\n_returns('days_in_month', (7, 2004), 31)\n_returns('days_in_month', (8, 2004), 31)\n_returns('days_in_month', (9, 2004), 30)\n_returns('days_in_month', (10, 2004), 31)\n_returns('days_in_month', (11, 2004), 30)\n_returns('days_in_month', (12, 2004), 31)\n_returns('days_in_month', (1, 2100), 31)\n_returns('days_in_month', (2, 2100), 28)\n_returns('days_in_month', (3, 2100), 31)\n_returns('days_in_month', (4, 2100), 30)\n_returns('days_in_month', (5, 2100), 31)\n_returns('days_in_month', (6, 2100), 30)\n_returns('days_in_month', (7, 2100), 31)\n_returns('days_in_month', (8, 2100), 31)\n_returns('days_in_month', (9, 2100), 30)\n_returns('days_in_month', (10, 2100), 31)\n_returns('days_in_month', (11, 2100), 30)\n_returns('days_in_month', (12, 2100), 31)\n_returns('is_magic_date', (2, 2, 2004), True)\n_returns('is_magic_date', (1, 4, 2004), True)\n_returns('is_magic_date', (4, 1, 2004), True)\n_returns('is_magic_date', (30, 2, 2004), False)\n_returns('is_magic_date', (29, 2, 2001), False)\n_returns('is_magic_date', (29, 2, 2000), False)\n_returns('is_magic_date', (1, 13, 2013), False)\n_returns('is_magic_date', (1, 0, 2000), False)\n_returns('is_magic_date', (0, 5, 2000), False)\n_returns('is_magic_date', (31, 4, 2024), False)\n_returns('is_magic_date', (12, 2, 2024), True)\n_returns('is_magic_date', (3, 3, 2009), True)\n_returns('is_magic_date', (32, 1, 2032), False)\n_returns('is_magic_date', (11, 9, 2099), True)\n_returns('is_magic_date', (9, 11, 2099), True)\n_returns('is_magic_date', (1, 1, 2000), False)\n_dim = globals()[\"days_in_month\"]\n_g = globals()[\"is_magic_date\"].__globals__\ndef _guarded(month, year):\n    assert 1 <= month <= 12, \"is_magic_date called days_in_month(\" + str(month) + \", \" + str(year) + \"). Check that the month is from 1 through 12 first.\"\n    return _dim(month, year)\n_g[\"days_in_month\"] = _guarded\ntry:\n    for _args in ((1, 13, 2013), (1, 0, 2000), (5, -1, 2005), (1, 14, 2014)):\n        _returns(\"is_magic_date\", _args, False)\nfinally:\n    _g[\"days_in_month\"] = _dim\n_guard()\n",
+      "hints": [
+        "`is_leap_year` returns one Boolean expression: `year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)`. It is `True` for 2000 and 2004 and `False` for 2001.",
+        "`days_in_month` returns 29 or 28 for February, depending on `is_leap_year(year)`, then 30 for months 4, 6, 9, and 11, and 31 for the rest.",
+        "`is_magic_date` returns `False` if the month is outside 1 through 12, then `False` if `day < 1 or day > days_in_month(month, year)`. Only then does it return `day * month == year % 100`.",
+        "In `main`, loop `for year in range(start, end + 1):`, then over months 1 to 12, then over days 1 to `days_in_month(month, year)`, and print `year, month, day` when `is_magic_date` is true. For 2004 the first match is `2004 1 4`."
+      ],
+      "answer": "ZGVmIGlzX2xlYXBfeWVhcih5ZWFyKToKICAgIHJldHVybiB5ZWFyICUgNDAwID09IDAgb3IgKHllYXIgJSA0ID09IDAgYW5kIHllYXIgJSAxMDAgIT0gMCkKCmRlZiBkYXlzX2luX21vbnRoKG1vbnRoLCB5ZWFyKToKICAgIGlmIG1vbnRoID09IDI6CiAgICAgICAgaWYgaXNfbGVhcF95ZWFyKHllYXIpOgogICAgICAgICAgICByZXR1cm4gMjkKICAgICAgICByZXR1cm4gMjgKICAgIGlmIG1vbnRoID09IDQgb3IgbW9udGggPT0gNiBvciBtb250aCA9PSA5IG9yIG1vbnRoID09IDExOgogICAgICAgIHJldHVybiAzMAogICAgcmV0dXJuIDMxCgpkZWYgaXNfbWFnaWNfZGF0ZShkYXksIG1vbnRoLCB5ZWFyKToKICAgIGlmIG1vbnRoIDwgMSBvciBtb250aCA+IDEyOgogICAgICAgIHJldHVybiBGYWxzZQogICAgaWYgZGF5IDwgMSBvciBkYXkgPiBkYXlzX2luX21vbnRoKG1vbnRoLCB5ZWFyKToKICAgICAgICByZXR1cm4gRmFsc2UKICAgIHJldHVybiBkYXkgKiBtb250aCA9PSB5ZWFyICUgMTAwCgpkZWYgbWFpbigpOgogICAgc3RhcnQgPSBpbnQoaW5wdXQoKSkKICAgIGVuZCA9IGludChpbnB1dCgpKQogICAgZm9yIHllYXIgaW4gcmFuZ2Uoc3RhcnQsIGVuZCArIDEpOgogICAgICAgIGZvciBtb250aCBpbiByYW5nZSgxLCAxMyk6CiAgICAgICAgICAgIGZvciBkYXkgaW4gcmFuZ2UoMSwgZGF5c19pbl9tb250aChtb250aCwgeWVhcikgKyAxKToKICAgICAgICAgICAgICAgIGlmIGlzX21hZ2ljX2RhdGUoZGF5LCBtb250aCwgeWVhcik6CiAgICAgICAgICAgICAgICAgICAgcHJpbnQoeWVhciwgbW9udGgsIGRheSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "The month check protects the month-length call. The day check rejects dates outside that month. Only valid dates reach the product test."
+    }
+  }
+}
