@@ -380,7 +380,8 @@ function setUpLayout() {
 /** Where a workbook's files live relative to this page. */
 function workbookFolder(workbookId) {
   const m = /^(lecture-\d+)-boss$/.exec(workbookId);
-  return m ? `../workbooks/${m[1]}/boss/` : `../workbooks/${workbookId}/`;
+  const bank = /^bank-([a-z0-9]+)$/.exec(workbookId);
+  return m ? `../workbooks/${m[1]}/boss/` : bank ? `../workbooks/question-bank/${bank[1]}/` : `../workbooks/${workbookId}/`;
 }
 
 /**
@@ -394,6 +395,8 @@ async function loadBoss() {
   const m = /^([a-z0-9-]+)\/([a-z0-9-]+)$/i.exec(param ?? "");
   if (!m) return null;
   const [, workbookId, exerciseId] = m;
+  // Question bank workbooks are for the instructor only; anyone else gets a plain PyLab session.
+  if (workbookId.startsWith("bank-") && !isInstructor()) return null;
   const folder = workbookFolder(workbookId);
   let data, spec, statement = null, title = "";
   try {
@@ -434,7 +437,7 @@ function nextBoss() {
 /** The lecture workbook a boss workbook belongs to, relative to this page. */
 function lectureUrl(workbookId) {
   const m = /^(lecture-\d+)-boss$/.exec(workbookId);
-  return m ? `../workbooks/${m[1]}/index.html` : `../workbooks/${workbookId}/index.html`;
+  return m ? `../workbooks/${m[1]}/index.html` : `${workbookFolder(workbookId)}index.html`;
 }
 
 function bossUrl(exerciseId) {
