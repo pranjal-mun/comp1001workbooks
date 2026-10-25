@@ -36,6 +36,7 @@
     .wb-lec-prog { font-size: 0.72rem; color: var(--ink-quiet); font-variant-numeric: tabular-nums; }
     .wb-lec-prog.is-done { color: var(--good-ink); font-weight: 700; }
     .wb-lec-foot .wb-boss { margin: -0.15rem -0.15rem -0.25rem 0; }
+    .wb-bank + .wb-bank { margin-top: 0.85rem; }
     .wb-bank-bosses { gap: 0.2rem 0.35rem; }
     .wb-bank-bosses .wb-boss { font-size: 1.45rem; }
     .wb-lec.is-soon, .wb-lec.is-locked { color: var(--ink-quiet); }
@@ -268,17 +269,18 @@
       const label = next ? `Boss ${b.k} of ${bosses.length}` : "All bosses defeated";
       document.querySelector(`.wb-lec[data-id="${id}"] .wb-lec-foot`).append(h(`<a class="wb-boss${b.beaten ? " is-beaten" : ""}" href="./lab/index.html?boss=${bossId(l.n)}/${b.eid}" title="${label}" aria-label="${label}"><span class="wb-boss-icon" aria-hidden="true">${b.icon}</span></a>`));
     }));
-    // Question bank (instructor only): every question as a boss that opens in PyLab, easiest first.
-    if (instructor) {
+    // Question bank (instructor only): each module's questions as bosses that open in PyLab, easiest first.
+    if (instructor) await Promise.all([...document.querySelectorAll("#bank [data-bank]")].map(async (bank) => {
+      const name = bank.dataset.bank;
       let specs = {};
-      try { specs = (await (await fetch("./workbooks/question-bank/functions/exercises.json")).json()).exercises; } catch {}
-      const saved = read("pylab-workbooks:progress:bank-functions")?.exercises ?? {};
+      try { specs = (await (await fetch(`./workbooks/question-bank/${name}/exercises.json`)).json()).exercises; } catch {}
+      const saved = read(`pylab-workbooks:progress:bank-${name}`)?.exercises ?? {};
       const ids = Object.keys(specs).filter((eid) => specs[eid].boss);
-      document.querySelector("#bank-bosses").append(...ids.map((eid, i) => {
+      bank.querySelector(".wb-bank-bosses").append(...ids.map((eid, i) => {
         const label = `Question ${i + 1} of ${ids.length}`;
-        return h(`<a class="wb-boss${saved[eid]?.passed ? " is-beaten" : ""}" href="./lab/index.html?boss=bank-functions/${eid}" title="${label}" aria-label="${label}"><span class="wb-boss-icon" aria-hidden="true">${specs[eid].boss}</span></a>`);
+        return h(`<a class="wb-boss${saved[eid]?.passed ? " is-beaten" : ""}" href="./lab/index.html?boss=bank-${name}/${eid}" title="${label}" aria-label="${label}"><span class="wb-boss-icon" aria-hidden="true">${specs[eid].boss}</span></a>`);
       }));
-    }
+    }));
     document.querySelector("#done").textContent = `${done} / ${total}`;
     document.querySelector("#fill").style.width = total ? `${Math.round(100 * done / total)}%` : "0";
     document.querySelector("#touched").textContent = touched
@@ -335,9 +337,15 @@
 
       <section class="wb-panel" id="bank" aria-labelledby="bank-h" hidden>
         <h2 id="bank-h">Question bank</h2>
-        <a class="wb-big" href="./workbooks/question-bank/functions/index.html">Functions</a>
-        <p class="wb-quiet">Instructor only. Part 2 style questions for term tests and the final exam. Each boss opens its question in PyLab; the title opens all of them with the marking rubrics.</p>
-        <div class="wb-boss-strip wb-bank-bosses" id="bank-bosses"></div>
+        <p class="wb-quiet">Instructor only. Part 2 style questions for term tests and the final exam. Each boss opens its question in PyLab; a title opens all of that module's questions with the marking rubrics.</p>
+        <div class="wb-bank" data-bank="loops">
+          <a class="wb-big" href="./workbooks/question-bank/loops/index.html">Loops</a>
+          <div class="wb-boss-strip wb-bank-bosses"></div>
+        </div>
+        <div class="wb-bank" data-bank="functions">
+          <a class="wb-big" href="./workbooks/question-bank/functions/index.html">Functions</a>
+          <div class="wb-boss-strip wb-bank-bosses"></div>
+        </div>
       </section>
 
       <section class="wb-panel" aria-labelledby="tools-h">

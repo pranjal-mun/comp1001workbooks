@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>COMP 1001 – Question Bank: Loops</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    // Instructor only: anyone else is sent back to the workbooks page.
+    import { initInstructor, isInstructor } from "../../../runtime/instructor.js";
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initInstructor();
+    if (isInstructor()) initWorkbook({ id: "bank-loops", specs: "./exercises.json" });
+    else location.replace("../../../index.html");
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Question Bank: Loops</h1>
+    <div class="wb-subtitle">Unit 4, Lectures 12 to 16, with earlier material</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="about" data-toc-title="About this bank">About this bank</h2>
+  <p>10 programming questions in the style of Part 2 of a term test, each worth 10 points, for term tests and the final exam. Each one asks for a complete program
+  written as top-level code, as in the Unit 4 boss problems: <code>while</code> loops with sentinels and input validation, <code>for</code> loops over <code>range</code>,
+  nested loops, <code>break</code>, running totals and best-so-far values, and one seeded <code>random</code> simulation. Decisions and strings from earlier units
+  are used freely. Nothing needs functions, lists, exceptions or files.</p>
+  <p>The questions are in order of difficulty, from 👹 to 💀: 2 at 2, 3 at 3, 3 at 4, 2 at 5. Each one has the statement, two examples, the constraints, the rules the checker enforces,
+  and, after the editor, a marking rubric and the common mistakes. <strong>Check</strong> runs the program on the examples and more inputs, and also checks the kind
+  of loop it uses. <strong>Open in PyLab</strong> shows the question beside a full-screen editor.</p>
+  <p>Programs here read values with a plain <code>input()</code> that shows no prompt, so the examples show only what the program prints. On a test paper, add prompts and sample runs.</p>
+  <p class="wb-meta">This page opens only in instructor mode. It is not linked for students.</p>
+</section>
+<hr>
+
+<h2 id="ferry" data-toc-title="👹 Bell Island ferry">👹 Question 1: Bell Island ferry</h2>
+<p class="wb-meta">10 points · Difficulty 2 of 5 · Lecture 14; also 8 to 11</p>
+<p>The ferry between Portugal Cove and Bell Island carries at most 150 passengers. Given the number of crossings in a day and the number of passengers on each crossing, print the total number of passengers, the average per crossing to 1 decimal place, the busiest crossing and how many crossings were full.</p><p>Crossings are numbered from 1. When two crossings tie for the most passengers, report the earlier one.</p>
+<p>Read <code>crossings</code> with <code>int(input())</code>, then one passenger count per crossing, and print four lines.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: crossings = 5, passengers = 120, 150, 98, 150, 143
+Output:
+Passengers: 661
+Average per crossing: 132.2
+Busiest crossing: 2 with 150
+Full crossings: 2
+Explanation: 661 passengers over 5 crossings is 132.2 each. Crossings 2 and 4 both carried 150; crossing 2 came first.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: crossings = 1, passengers = 0
+Output:
+Passengers: 0
+Average per crossing: 0.0
+Busiest crossing: 1 with 0
+Full crossings: 0
+Explanation: One empty crossing: the total and the average are 0, and crossing 1 is the busiest with 0.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>1 &lt;= crossings &lt;= 30</code></li><li><code>0 &lt;= passengers &lt;= 150</code> on every crossing</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4, 30, 60, 90, 120</code></td><td><code>Passengers: 300</code> then <code>Average per crossing: 75.0</code> then <code>Busiest crossing: 4 with 120</code> then <code>Full crossings: 0</code></td></tr>
+    <tr><td><code>3, 150, 150, 150</code></td><td><code>Passengers: 450</code> then <code>Average per crossing: 150.0</code> then <code>Busiest crossing: 1 with 150</code> then <code>Full crossings: 3</code></td></tr>
+    <tr><td><code>6, 75, 140, 149, 150, 12, 150</code></td><td><code>Passengers: 676</code> then <code>Average per crossing: 112.7</code> then <code>Busiest crossing: 4 with 150</code> then <code>Full crossings: 2</code></td></tr>
+    <tr><td><code>3, 149, 20, 148</code></td><td><code>Passengers: 317</code> then <code>Average per crossing: 105.7</code> then <code>Busiest crossing: 1 with 149</code> then <code>Full crossings: 0</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Keep the capacity in the constant <code>CAPACITY = 150</code>.</li><li>Read the passenger counts inside a <code>for</code> loop over <code>range(...)</code>, one count per pass.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="ferry"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td><code>for</code> loop over <code>range</code> runs exactly <code>crossings</code> times and reads one count per pass</td><td>3</td></tr><tr><td>Running total and average with <code>:.1f</code></td><td>2</td></tr><tr><td>Busiest crossing: best-so-far count and its crossing number, earlier crossing kept on a tie</td><td>3</td></tr><tr><td>Full crossings counted against <code>CAPACITY</code>; output matches the examples</td><td>2</td></tr></tbody></table>
+  <p>Common mistakes: Starting the best-so-far count at 150 or at the first count without reading it in the loop. Using <code>&gt;=</code>, which reports the later of two tied crossings. Numbering crossings from 0. Dividing by a counter that was never increased.</p>
+</div>
+<hr>
+
+<h2 id="steps" data-toc-title="👹 Step challenge">👹 Question 2: Step challenge</h2>
+<p class="wb-meta">10 points · Difficulty 2 of 5 · Lectures 12 and 13; also 8 to 11</p>
+<p>The Department of Computer Science runs a step challenge. Given a daily step goal and then the step count for each day, print one line per day: <code>goal met</code> when the count reaches the goal, otherwise how many steps short it was. A blank line ends the days. Then print on how many days the goal was met.</p><p>When no days are entered, print <code>No days entered</code> instead of the summary.</p>
+<p>Read <code>goal</code> with <code>int(input())</code>, then one count per line until a blank line.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: goal = 8000, counts = 9500, 7200, 8000, blank
+Output:
+Day 1: goal met
+Day 2: 800 short
+Day 3: goal met
+Goal met on 2 of 3 days
+Explanation: Day 2 is 800 short of 8000. Day 3 is exactly 8000, which counts as met.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: goal = 10000, counts = blank
+Output: No days entered
+Explanation: The first count is a blank line, so there are no days.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>1 &lt;= goal &lt;= 50000</code></li><li><code>0 &lt;= count &lt;= 100000</code> on each day</li><li>The last line is blank.</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>5000, 4999, 0, 12000, blank</code></td><td><code>Day 1: 1 short</code> then <code>Day 2: 5000 short</code> then <code>Day 3: goal met</code> then <code>Goal met on 1 of 3 days</code></td></tr>
+    <tr><td><code>6000, 6000, blank</code></td><td><code>Day 1: goal met</code> then <code>Goal met on 1 of 1 days</code></td></tr>
+    <tr><td><code>7500, 7400, 7600, 7499, 7501, blank</code></td><td><code>Day 1: 100 short</code> then <code>Day 2: goal met</code> then <code>Day 3: 1 short</code> then <code>Day 4: goal met</code> then <code>Goal met on 2 of 4 days</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Read the counts with a <code>while</code> loop that stops at the blank line (a sentinel loop).</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="steps"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Sentinel loop: reads before the loop and again at the end of the body, stops at the blank line</td><td>3</td></tr><tr><td>Converts each count only after the blank-line test</td><td>1</td></tr><tr><td>Correct day numbers and the met / short lines, with exactly the goal counting as met</td><td>3</td></tr><tr><td>Counts the days met and prints the summary, or <code>No days entered</code></td><td>2</td></tr><tr><td>Output matches the examples</td><td>1</td></tr></tbody></table>
+  <p>Common mistakes: Calling <code>int(input())</code> before testing for the blank line, which fails on the sentinel. Forgetting the read at the end of the loop body, so the loop never ends. Printing the shortfall as <code>count - goal</code>. Treating exactly the goal as short.</p>
+</div>
+<hr>
+
+<h2 id="digitroot" data-toc-title="👾 Digital root">👾 Question 3: Digital root</h2>
+<p class="wb-meta">10 points · Difficulty 3 of 5 · Lectures 12 and 15</p>
+<p>The digital root of a whole number is found by adding up its digits, then adding up the digits of that sum, and so on, until one digit is left. Given a number, print every number in the chain separated by <code> -&gt; </code>, then the digital root and how many digit sums it took.</p><p>A number that already has one digit is its own digital root after 0 steps. Write <code>1 step</code> but <code>2 steps</code>.</p>
+<p>Read <code>number</code> with <code>int(input())</code> and print two lines.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: number = 9875
+Output:
+9875 -&gt; 29 -&gt; 11 -&gt; 2
+Digital root: 2 after 3 steps
+Explanation: 9 + 8 + 7 + 5 = 29, then 2 + 9 = 11, then 1 + 1 = 2: three digit sums.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: number = 7
+Output:
+7
+Digital root: 7 after 0 steps
+Explanation: 7 already has one digit, so the chain is just 7 and no sums are needed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>0 &lt;= number &lt;= 10<sup>15</sup></code></li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>10</code></td><td><code>10 -&gt; 1</code> then <code>Digital root: 1 after 1 step</code></td></tr>
+    <tr><td><code>19</code></td><td><code>19 -&gt; 10 -&gt; 1</code> then <code>Digital root: 1 after 2 steps</code></td></tr>
+    <tr><td><code>0</code></td><td><code>0</code> then <code>Digital root: 0 after 0 steps</code></td></tr>
+    <tr><td><code>999999999999</code></td><td><code>999999999999 -&gt; 108 -&gt; 9</code> then <code>Digital root: 9 after 2 steps</code></td></tr>
+    <tr><td><code>1000000</code></td><td><code>1000000 -&gt; 1</code> then <code>Digital root: 1 after 1 step</code></td></tr>
+    <tr><td><code>38</code></td><td><code>38 -&gt; 11 -&gt; 2</code> then <code>Digital root: 2 after 2 steps</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Find each digit sum with <code>%</code> and <code>//</code> in a <code>while</code> loop, not by indexing a string.</li><li>Put that loop inside another <code>while</code> loop that repeats until one digit is left.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="digitroot"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Outer <code>while</code> loop that repeats while the number has two or more digits</td><td>2</td></tr><tr><td>Inner loop: <code>% 10</code> takes the last digit, <code>// 10</code> drops it, total starts at 0 for each sum</td><td>3</td></tr><tr><td>The sum becomes the new number; the chain text grows with <code> -&gt; </code></td><td>2</td></tr><tr><td>Counts the sums and prints step or steps correctly</td><td>2</td></tr><tr><td>Output matches the examples, including a one-digit number</td><td>1</td></tr></tbody></table>
+  <p>Common mistakes: Resetting the digit total once, before the outer loop, so each sum adds to the last. Using <code>while number &gt; 10</code>, which stops at 10. Losing the original number because the inner loop reduced it to 0 before it was printed.</p>
+</div>
+<hr>
+
+<h2 id="coldstreak" data-toc-title="👾 Freezing streak">👾 Question 4: Freezing streak</h2>
+<p class="wb-meta">10 points · Difficulty 3 of 5 · Lectures 13 and 16; also 8 to 11</p>
+<p>Given the daily high temperature in St. John's for a run of days, one per line and ended by a blank line, print the number of days, the number of freezing days (a high below 0), and the longest streak of freezing days in a row with its first and last day.</p><p>Days are numbered from 1. When two streaks are equally long, report the earlier one. A high of exactly 0 is not freezing. Write <code>1 day, day 3</code> for a one-day streak and <code>No freezing streak</code> when there is none.</p>
+<p>Read one high per line with <code>input()</code> until a blank line, and print three lines.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: highs = -3.5, -1, 2, -0.5, -4, -7, -2, 1, blank
+Output:
+Days: 8
+Freezing days: 6
+Longest freezing streak: 4 days, day 4 to day 7
+Explanation: Days 1 and 2 freeze, day 3 thaws, then days 4 to 7 freeze: a streak of 4.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: highs = 1.5, 0, 3, blank
+Output:
+Days: 3
+Freezing days: 0
+No freezing streak
+Explanation: No high is below 0; the 0 on day 2 does not count.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>0 &lt;= days &lt;= 60</code></li><li><code>-30 &lt;= high &lt;= 30</code>, with at most 1 decimal place</li><li>The last line is blank.</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>blank</code></td><td><code>Days: 0</code> then <code>Freezing days: 0</code> then <code>No freezing streak</code></td></tr>
+    <tr><td><code>-1, 2, -3, blank</code></td><td><code>Days: 3</code> then <code>Freezing days: 2</code> then <code>Longest freezing streak: 1 day, day 1</code></td></tr>
+    <tr><td><code>-2, -2, 5, -1, -1, blank</code></td><td><code>Days: 5</code> then <code>Freezing days: 4</code> then <code>Longest freezing streak: 2 days, day 1 to day 2</code></td></tr>
+    <tr><td><code>4, -10, -12, -8, blank</code></td><td><code>Days: 4</code> then <code>Freezing days: 3</code> then <code>Longest freezing streak: 3 days, day 2 to day 4</code></td></tr>
+    <tr><td><code>-1, 0, -1, -1, blank</code></td><td><code>Days: 4</code> then <code>Freezing days: 3</code> then <code>Longest freezing streak: 2 days, day 3 to day 4</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Read the highs with a <code>while</code> loop that stops at the blank line.</li><li>Track the current streak and the longest one with counters; do not store the highs.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="coldstreak"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Sentinel loop that reads every high and stops at the blank line</td><td>2</td></tr><tr><td>Counts the days and the freezing days, with 0 not freezing</td><td>2</td></tr><tr><td>Current streak grows on a freezing day and resets to 0 on any other day</td><td>2</td></tr><tr><td>Longest streak and its first day updated only on a strictly longer streak</td><td>2</td></tr><tr><td>Correct first and last day; prints the three cases of the last line</td><td>2</td></tr></tbody></table>
+  <p>Common mistakes: Comparing the streak with the longest only when a thaw ends it, which misses a streak that runs to the last day. Using <code>&gt;=</code>, which reports the later of two equal streaks. Saving the day number at the end of the streak as its first day. Testing <code>high &lt;= 0</code>.</p>
+</div>
+<hr>
+
+<h2 id="rug" data-toc-title="👾 Hooked rug">👾 Question 5: Hooked rug pattern</h2>
+<p class="wb-meta">10 points · Difficulty 3 of 5 · Lectures 13 to 15; also 8 to 11</p>
+<p>A hooked rug pattern is drawn on a square grid. Given its size <code>n</code>, print <code>n</code> rows of <code>n</code> characters: <code>#</code> on the border, <code>O</code> in the very centre, <code>X</code> on the two diagonals inside the border, and <code>.</code> everywhere else.</p><p>The size must be an odd whole number from 3 to 15. Until it is, print <code>Size must be an odd number from 3 to 15.</code> and read it again.</p>
+<p>Read <code>size</code> with <code>input()</code>, again after each invalid value, and print the pattern.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: size = 7
+Output:
+#######
+#X...X#
+#.X.X.#
+#..O..#
+#.X.X.#
+#X...X#
+#######
+Explanation: Rows and columns 0 and 6 are the border. Row 3, column 3 is the centre. The rest of the two diagonals are X.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: size = 4, twenty, 17, 5
+Output:
+Size must be an odd number from 3 to 15.
+Size must be an odd number from 3 to 15.
+Size must be an odd number from 3 to 15.
+#####
+#X.X#
+#.O.#
+#X.X#
+#####
+Explanation: 4 is even, twenty is not a number and 17 is too big, so the size is asked for three more times.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>size</code> is any text; a valid size has only digits.</li><li>At most 10 invalid sizes are typed.</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code></td><td><code>###</code> then <code>#O#</code> then <code>###</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Validate the size with a <code>while</code> loop.</li><li>Draw the grid with a <code>for</code> loop over the columns inside a <code>for</code> loop over the rows.</li><li>Build each row one character at a time; do not use <code>*</code> on a string.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="rug"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Validation loop: tests digits before <code>int()</code>, odd and in range, prints the message and reads again</td><td>3</td></tr><tr><td>Nested <code>for</code> loops over <code>range(n)</code> for rows and columns</td><td>2</td></tr><tr><td>Border, centre and both diagonals tested in the right order</td><td>3</td></tr><tr><td>Builds one row per pass of the outer loop and prints it once</td><td>1</td></tr><tr><td>Output matches the examples</td><td>1</td></tr></tbody></table>
+  <p>Common mistakes: Calling <code>int(size)</code> before checking <code>isdigit()</code>, which crashes on <code>twenty</code>. Testing the diagonals before the border or the centre, so the corners or the centre come out as X. Using <code>row + col == n</code> for the second diagonal. Printing inside the inner loop.</p>
+</div>
+<hr>
+
+<h2 id="collatz" data-toc-title="🐉 Hailstone chains">🐉 Question 6: Hailstone chains</h2>
+<p class="wb-meta">10 points · Difficulty 4 of 5 · Lectures 14 to 16; also 8 to 11</p>
+<p>A hailstone chain starts at a whole number. While the number is not 1, an even number is halved and an odd number <code>n</code> becomes <code>3n + 1</code>; each change is one step. The chain from 6 is 6, 3, 10, 5, 16, 8, 4, 2, 1: 8 steps, and its highest value is 16.</p><p>Given <code>low</code> and <code>high</code>, look at the chain of every start from <code>low</code> to <code>high</code>, inclusive. Print the start whose chain takes the most steps, and the highest value any chain reaches with the first start that reaches it. On a tie, report the smaller start. The start itself counts as a value of its chain.</p>
+<p>Read <code>low</code> and then <code>high</code> with <code>int(input())</code>, and print two lines.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: low = 1, high = 10
+Output:
+Longest chain: 9 takes 19 steps
+Highest value: 52, reached from 7
+Explanation: 9 takes 19 steps, more than any other start up to 10. Both 7 and 9 climb to 52; 7 is the smaller start.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: low = 27, high = 27
+Output:
+Longest chain: 27 takes 111 steps
+Highest value: 9232, reached from 27
+Explanation: Only one start: 27 takes 111 steps and climbs as high as 9232.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>1 &lt;= low &lt;= high &lt;= 5000</code></li><li><code>high - low &lt;= 1000</code></li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1, 1</code></td><td><code>Longest chain: 1 takes 0 steps</code> then <code>Highest value: 1, reached from 1</code></td></tr>
+    <tr><td><code>2, 5</code></td><td><code>Longest chain: 3 takes 7 steps</code> then <code>Highest value: 16, reached from 3</code></td></tr>
+    <tr><td><code>100, 200</code></td><td><code>Longest chain: 171 takes 124 steps</code> then <code>Highest value: 9232, reached from 103</code></td></tr>
+    <tr><td><code>4000, 5000</code></td><td><code>Longest chain: 4379 takes 214 steps</code> then <code>Highest value: 8153620, reached from 4591</code></td></tr>
+    <tr><td><code>6, 8</code></td><td><code>Longest chain: 7 takes 16 steps</code> then <code>Highest value: 52, reached from 7</code></td></tr>
+    <tr><td><code>12, 13</code></td><td><code>Longest chain: 12 takes 9 steps</code> then <code>Highest value: 40, reached from 13</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Use a <code>for</code> loop over <code>range(...)</code> for the starts and a <code>while</code> loop inside it for each chain.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="collatz"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td><code>for</code> loop covers <code>low</code> to <code>high</code> inclusive; <code>while</code> loop inside it runs one chain</td><td>3</td></tr><tr><td>Halve or <code>3n + 1</code> rule correct, with <code>//</code> so the values stay whole; steps counted, reset for each start</td><td>2</td></tr><tr><td>Longest chain tracked with its start; the smaller start kept on a tie</td><td>2</td></tr><tr><td>Highest value tracked over every value, including the start, with the first start that reaches it</td><td>2</td></tr><tr><td>Output matches the examples</td><td>1</td></tr></tbody></table>
+  <p>Common mistakes: Changing the loop variable itself instead of a copy, so the starts skip around. <code>range(low, high)</code>, which leaves out <code>high</code>. Using <code>n / 2</code>, which gives floats such as <code>52.0</code>. Not resetting <code>steps</code> for each start.</p>
+</div>
+<hr>
+
+<h2 id="words" data-toc-title="🐉 Sentence statistics">🐉 Question 7: Sentence statistics</h2>
+<p class="wb-meta">10 points · Difficulty 4 of 5 · Lectures 14 and 16; also 6 and 7</p>
+<p>Given a sentence, print how many words it has, its longest word with that word's length, and the average word length to 1 decimal place. A word is a run of characters other than spaces, so punctuation is part of a word. Words may be separated by more than one space, and the sentence may start or end with spaces.</p><p>When two words are equally long, report the first. When there are no words, print <code>No words</code>.</p>
+<p>Read <code>sentence</code> with <code>input()</code> and print three lines, or one.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: sentence = "  The ferry  to Bell Island leaves at noon "
+Output:
+Words: 8
+Longest word: Island (6 characters)
+Average length: 4.0
+Explanation: 8 words with 32 characters in all, so 4.0 on average. Island and leaves both have 6; Island comes first.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: sentence = "   "
+Output: No words
+Explanation: Only spaces, so there are no words.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>0 &lt;= len(sentence) &lt;= 200</code></li><li><code>sentence</code> has letters, digits, punctuation and spaces, but no tabs.</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>blank</code></td><td><code>No words</code></td></tr>
+    <tr><td><code>Go</code></td><td><code>Words: 1</code> then <code>Longest word: Go (2 characters)</code> then <code>Average length: 2.0</code></td></tr>
+    <tr><td><code>St. John's is foggy, again!</code></td><td><code>Words: 5</code> then <code>Longest word: John's (6 characters)</code> then <code>Average length: 4.6</code></td></tr>
+    <tr><td><code>a bb ccc bb ddd a</code></td><td><code>Words: 6</code> then <code>Longest word: ccc (3 characters)</code> then <code>Average length: 2.0</code></td></tr>
+    <tr><td><code>Memorial University of Newfoundland</code></td><td><code>Words: 4</code> then <code>Longest word: Newfoundland (12 characters)</code> then <code>Average length: 8.0</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Go through the sentence one character at a time with <code>for i in range(len(sentence))</code>.</li><li>Do not use <code>split()</code>, <code>strip()</code> or a list. Build the current word in a string.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="words"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td><code>for</code> loop over the indexes; builds the current word one character at a time</td><td>2</td></tr><tr><td>A word ends at a space only when the current word is not empty, so extra spaces do not count</td><td>2</td></tr><tr><td>The last word, with no space after it, is counted after the loop</td><td>2</td></tr><tr><td>Longest word kept with <code>&gt;</code> so the first of equal words stays; total length for the average</td><td>2</td></tr><tr><td>Prints <code>No words</code> or the three lines with <code>:.1f</code>; output matches the examples</td><td>2</td></tr></tbody></table>
+  <p>Common mistakes: Counting spaces plus one, which is wrong when there are extra spaces. Forgetting the last word. Counting the average as characters in the sentence divided by words, which includes the spaces. Dividing by 0 when there are no words.</p>
+</div>
+<hr>
+
+<h2 id="guess" data-toc-title="🐉 Guess my number">🐉 Question 8: Guess my number</h2>
+<p class="wb-meta">10 points · Difficulty 4 of 5 · Lectures 13 and 15; also 8 to 11</p>
+<p>The user thinks of a whole number from 1 to <code>top</code> and the program guesses it. Each guess is the middle of the numbers still possible, <code>(low + high) // 2</code>. After each guess the user types <code>h</code> if their number is higher, <code>l</code> if it is lower, or <code>c</code> if the guess is correct, in either case and with any spaces around it.</p><p>Any other answer prints <code>Type h, l or c.</code> and is read again without a new guess. If the answers leave no number possible, print <code>Those answers do not add up.</code> and stop.</p>
+<p>Read <code>top</code> with <code>int(input())</code>, then one answer after each guess.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: top = 100, answers = h, l, x, h, c
+Output:
+Guess 1: 50
+Guess 2: 75
+Guess 3: 62
+Type h, l or c.
+Guess 4: 68
+Got it on guess 4.
+Explanation: 50, then 75, then 62. x is not an answer, so the answer about 62 is read again. Higher than 62 and lower than 75 leaves 63 to 74, so the next guess is 68.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: top = 10, answers = l, l, l
+Output:
+Guess 1: 5
+Guess 2: 2
+Guess 3: 1
+Those answers do not add up.
+Explanation: Lower than 5, 2 and 1 leaves nothing from 1 to 10.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>1 &lt;= top &lt;= 1000</code></li><li>The answers end as soon as the program stops.</li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1, c</code></td><td><code>Guess 1: 1</code> then <code>Got it on guess 1.</code></td></tr>
+    <tr><td><code>20, maybe, blank, C</code></td><td><code>Guess 1: 10</code> then <code>Type h, l or c.</code> then <code>Type h, l or c.</code> then <code>Got it on guess 1.</code></td></tr>
+    <tr><td><code>3, h, h</code></td><td><code>Guess 1: 2</code> then <code>Guess 2: 3</code> then <code>Those answers do not add up.</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Keep guessing in a <code>while</code> loop and leave it with <code>break</code>.</li><li>Validate each answer with a <code>while</code> loop inside it.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="guess"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Outer <code>while</code> loop with <code>break</code> on a correct guess and when no number is left</td><td>3</td></tr><tr><td>Guess is <code>(low + high) // 2</code>; <code>h</code> and <code>l</code> move <code>low</code> or <code>high</code> past the guess</td><td>3</td></tr><tr><td>Inner validation loop; answers are stripped and lower-cased; an invalid answer does not count as a guess</td><td>2</td></tr><tr><td>Guess numbers and messages; output matches the examples</td><td>2</td></tr></tbody></table>
+  <p>Common mistakes: Moving <code>low</code> to <code>middle</code> instead of <code>middle + 1</code>, which repeats the same guess forever. Counting an invalid answer as a guess. Testing <code>answer != 'h' or answer != 'l'</code>, which is always true. Never checking <code>low &gt; high</code>, so the program guesses outside the range.</p>
+</div>
+<hr>
+
+<h2 id="mirror" data-toc-title="💀 Longest mirror run">💀 Question 9: Longest mirror run</h2>
+<p class="wb-meta">10 points · Difficulty 5 of 5 · Lectures 14 and 15; also 6 and 7</p>
+<p>A mirror run is a part of a text, at least 2 characters long, that reads the same forwards and backwards. Capital and small letters count as the same, and spaces and punctuation are characters like any other. Given a text, print its longest mirror run as typed, and the position and length of that run.</p><p>Positions count from 0, as indexes do. When two runs are equally long, report the one that starts first. When there is none, print <code>No mirror run</code>.</p>
+<p>Read <code>text</code> with <code>input()</code> and print two lines, or one.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: text = Kayak on Quidi Vidi
+Output:
+Longest mirror run: Kayak
+Position 0, length 5
+Explanation: Kayak reads the same both ways once case is ignored, and no longer run exists. It starts at position 0.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: text = COMP 1001
+Output:
+Longest mirror run: 1001
+Position 5, length 4
+Explanation: 1001 is the longest run, at position 5. The single characters do not count.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>0 &lt;= len(text) &lt;= 60</code></li></ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>abc</code></td><td><code>No mirror run</code></td></tr>
+    <tr><td><code>blank</code></td><td><code>No mirror run</code></td></tr>
+    <tr><td><code>abba deed</code></td><td><code>Longest mirror run: abba</code> then <code>Position 0, length 4</code></td></tr>
+    <tr><td><code>Noon</code></td><td><code>Longest mirror run: Noon</code> then <code>Position 0, length 4</code></td></tr>
+    <tr><td><code>xyz level</code></td><td><code>Longest mirror run: level</code> then <code>Position 4, length 5</code></td></tr>
+    <tr><td><code>a</code></td><td><code>No mirror run</code></td></tr>
+    <tr><td><code>Step on no pets!</code></td><td><code>Longest mirror run: Step on no pets</code> then <code>Position 0, length 15</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Try every start and end with a <code>for</code> loop inside a <code>for</code> loop.</li><li>Test each run by comparing characters from both ends inward in a loop, leaving it with <code>break</code> at the first mismatch.</li><li>Do not reverse a string with a slice such as <code>[::-1]</code>; slices are fine for printing the answer.</li><li>No lists, <code>split()</code>, <code>join()</code> or <code>count()</code>; no import is needed.</li></ul>
+</div>
+<wb-exercise id="mirror"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Nested <code>for</code> loops cover every run of 2 or more characters, including the last character</td><td>3</td></tr><tr><td>Inner loop compares from both ends inward, ignoring case, with <code>break</code> at a mismatch</td><td>3</td></tr><tr><td>Best run kept with <code>&gt;</code> so the first of equal runs stays</td><td>2</td></tr><tr><td>Prints the run as typed, its position and length, or <code>No mirror run</code></td><td>2</td></tr></tbody></table>
+  <p>Common mistakes: <code>range(start + 1, len(text))</code> for the end, which misses runs that finish on the last character. Comparing the lower-case copy but printing it, so the run is not shown as typed. Counting single characters as runs. A flag that is not reset for each run.</p>
+</div>
+<hr>
+
+<h2 id="pig" data-toc-title="💀 Pig">💀 Question 10: The dice game Pig</h2>
+<p class="wb-meta">10 points · Difficulty 5 of 5 · Lectures 15 and 16; also 8 to 11</p>
+<p>Two players, A and B, play Pig with one die; A goes first and they take turns. On a turn the player rolls again and again, adding each roll to a turn total. Rolling a 1 is a bust: the turn ends and its total is lost. Otherwise the player stops and adds the turn total to their score as soon as the turn total reaches <code>hold</code>, or as soon as their score plus the turn total reaches <code>target</code>. The first player whose score reaches <code>target</code> wins.</p><p>Given <code>seed</code>, <code>target</code> and <code>hold</code>, simulate the game with <code>random.seed(seed)</code> and <code>random.randint(1, 6)</code> for every roll. Print one line per turn with its rolls, the result and the player's score, then the winner.</p>
+<p>Read <code>seed</code>, <code>target</code> and <code>hold</code> with <code>int(input())</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input: seed = 7, target = 20, hold = 10
+Output:
+Turn 1, A: 3 2 4 6, hold 15, score 15
+Turn 2, B: 1, bust, score 0
+Turn 3, A: 1, bust, score 15
+Turn 4, B: 5 1, bust, score 0
+Turn 5, A: 3 5, hold 8, score 23
+A wins 23 to 0 on turn 5
+Explanation: A rolls 3, 2, 4 and 6, passing hold 10 with 15, and holds. Turns 2 to 4 all end on a 1. On turn 5, A stops after 3 and 5 because 15 + 8 reaches 20.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input: seed = 6, target = 12, hold = 100
+Output:
+Turn 1, A: 5 1, bust, score 0
+Turn 2, B: 4 3 1, bust, score 0
+Turn 3, A: 1, bust, score 0
+Turn 4, B: 2 6 5, hold 13, score 13
+B wins 13 to 0 on turn 4
+Explanation: With hold 100, each player keeps rolling until a 1 or until the score reaches 12. Three turns bust; on turn 4, B reaches 13 and wins.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul><li><code>0 &lt;= seed &lt;= 10000</code></li><li><code>10 &lt;= target &lt;= 50</code></li><li><code>1 &lt;= hold &lt;= 100</code></li></ul>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul><li>Call <code>random.seed(seed)</code> once, before the first roll, and roll only with <code>random.randint(1, 6)</code>, so the rolls match the examples.</li><li>Play the turns in a <code>while</code> loop and the rolls of one turn in a <code>while</code> loop inside it.</li><li>No lists or <code>split()</code>; the only import is <code>random</code>.</li></ul>
+</div>
+<wb-exercise id="pig"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Marking rubric (10 points)</div>
+  <table><thead><tr><th>What we look for</th><th>Points</th></tr></thead><tbody><tr><td>Outer loop runs until a score reaches the target and switches players each turn</td><td>2</td></tr><tr><td>Inner loop rolls while the turn total is below <code>hold</code> and the score plus turn total is below <code>target</code></td><td>3</td></tr><tr><td>A 1 ends the turn with <code>break</code> and loses the turn total; otherwise the total is added to the right player</td><td>2</td></tr><tr><td>Seeded once, one <code>randint(1, 6)</code> per roll, so the turn lines match</td><td>2</td></tr><tr><td>Winner line with both scores and the number of turns</td><td>1</td></tr></tbody></table>
+  <p>Common mistakes: Seeding inside the loop, which repeats the same rolls every turn. Adding the 1 to the turn total. Keeping the turn total after a bust. Testing only <code>hold</code>, so a player rolls past the target. Updating the wrong player's score.</p>
+</div>
+
+</main>
+</body>
+</html>

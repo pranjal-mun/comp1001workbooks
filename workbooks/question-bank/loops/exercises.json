@@ -1,0 +1,779 @@
+{
+  "id": "bank-loops",
+  "course": "COMP 1001",
+  "title": "Question Bank: Loops",
+  "subtitle": "Unit 4, Lectures 12 to 16",
+  "exercises": {
+    "ferry": {
+      "type": "code",
+      "xp": 25,
+      "boss": "👹",
+      "minLines": 20,
+      "starter": "CAPACITY = 150\n\ncrossings = int(input())\n# Read one passenger count per crossing.\n",
+      "cases": [
+        {
+          "name": "Example 1: 5 crossings",
+          "inputs": [
+            "5",
+            "120",
+            "150",
+            "98",
+            "150",
+            "143"
+          ],
+          "expected": "Passengers: 661\nAverage per crossing: 132.2\nBusiest crossing: 2 with 150\nFull crossings: 2"
+        },
+        {
+          "name": "Example 2: one empty crossing",
+          "inputs": [
+            "1",
+            "0"
+          ],
+          "expected": "Passengers: 0\nAverage per crossing: 0.0\nBusiest crossing: 1 with 0\nFull crossings: 0"
+        },
+        {
+          "name": "Typed 4 rising counts",
+          "inputs": [
+            "4",
+            "30",
+            "60",
+            "90",
+            "120"
+          ],
+          "expected": "Passengers: 300\nAverage per crossing: 75.0\nBusiest crossing: 4 with 120\nFull crossings: 0"
+        },
+        {
+          "name": "Typed 3 full crossings",
+          "inputs": [
+            "3",
+            "150",
+            "150",
+            "150"
+          ],
+          "expected": "Passengers: 450\nAverage per crossing: 150.0\nBusiest crossing: 1 with 150\nFull crossings: 3"
+        },
+        {
+          "name": "Typed 6 crossings",
+          "inputs": [
+            "6",
+            "75",
+            "140",
+            "149",
+            "150",
+            "12",
+            "150"
+          ],
+          "expected": "Passengers: 676\nAverage per crossing: 112.7\nBusiest crossing: 4 with 150\nFull crossings: 2"
+        },
+        {
+          "name": "Typed a busy first crossing",
+          "inputs": [
+            "3",
+            "149",
+            "20",
+            "148"
+          ],
+          "expected": "Passengers: 317\nAverage per crossing: 105.7\nBusiest crossing: 1 with 149\nFull crossings: 0"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\nassert globals().get(\"CAPACITY\") == 150, \"Define the constant CAPACITY = 150 and compare with it.\"\n_for_range(\"Read the counts inside a for loop over range(...), one count per crossing.\")\n_plain(())\n",
+      "hints": [
+        "Start <code>total</code> and <code>full</code> at 0 before the loop, and the best-so-far count below any real count, such as -1.",
+        "Loop with <code>for crossing in range(1, crossings + 1):</code> so <code>crossing</code> is already the crossing number.",
+        "Inside the loop, read the count, add it to the total, and replace the best only when the new count is strictly larger."
+      ],
+      "answer": "Q0FQQUNJVFkgPSAxNTAKCmNyb3NzaW5ncyA9IGludChpbnB1dCgpKQp0b3RhbCA9IDAKYnVzaWVzdCA9IDAKYnVzaWVzdF9jb3VudCA9IC0xCmZ1bGwgPSAwCmZvciBjcm9zc2luZyBpbiByYW5nZSgxLCBjcm9zc2luZ3MgKyAxKToKICAgIHBhc3NlbmdlcnMgPSBpbnQoaW5wdXQoKSkKICAgIHRvdGFsID0gdG90YWwgKyBwYXNzZW5nZXJzCiAgICBpZiBwYXNzZW5nZXJzID4gYnVzaWVzdF9jb3VudDoKICAgICAgICBidXNpZXN0ID0gY3Jvc3NpbmcKICAgICAgICBidXNpZXN0X2NvdW50ID0gcGFzc2VuZ2VycwogICAgaWYgcGFzc2VuZ2VycyA9PSBDQVBBQ0lUWToKICAgICAgICBmdWxsID0gZnVsbCArIDEKcHJpbnQoZidQYXNzZW5nZXJzOiB7dG90YWx9JykKcHJpbnQoZidBdmVyYWdlIHBlciBjcm9zc2luZzoge3RvdGFsIC8gY3Jvc3NpbmdzOi4xZn0nKQpwcmludChmJ0J1c2llc3QgY3Jvc3Npbmc6IHtidXNpZXN0fSB3aXRoIHtidXNpZXN0X2NvdW50fScpCnByaW50KGYnRnVsbCBjcm9zc2luZ3M6IHtmdWxsfScp",
+      "answerNote": "The best-so-far starts at -1 so the first crossing always replaces it. Reading the first count before the loop also works."
+    },
+    "steps": {
+      "type": "code",
+      "xp": 25,
+      "boss": "👹",
+      "minLines": 20,
+      "starter": "goal = int(input())\n# Read one count per line until a blank line.\n",
+      "cases": [
+        {
+          "name": "Example 1: goal 8000",
+          "inputs": [
+            "8000",
+            "9500",
+            "7200",
+            "8000",
+            ""
+          ],
+          "expected": "Day 1: goal met\nDay 2: 800 short\nDay 3: goal met\nGoal met on 2 of 3 days"
+        },
+        {
+          "name": "Example 2: no days",
+          "inputs": [
+            "10000",
+            ""
+          ],
+          "expected": "No days entered"
+        },
+        {
+          "name": "Typed goal 5000, 3 days",
+          "inputs": [
+            "5000",
+            "4999",
+            "0",
+            "12000",
+            ""
+          ],
+          "expected": "Day 1: 1 short\nDay 2: 5000 short\nDay 3: goal met\nGoal met on 1 of 3 days"
+        },
+        {
+          "name": "Typed goal 6000, 1 day",
+          "inputs": [
+            "6000",
+            "6000",
+            ""
+          ],
+          "expected": "Day 1: goal met\nGoal met on 1 of 1 days"
+        },
+        {
+          "name": "Typed goal 7500, 4 days",
+          "inputs": [
+            "7500",
+            "7400",
+            "7600",
+            "7499",
+            "7501",
+            ""
+          ],
+          "expected": "Day 1: 100 short\nDay 2: goal met\nDay 3: 1 short\nDay 4: goal met\nGoal met on 2 of 4 days"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_loop(\"while\", \"Read the counts with a while loop that stops at the blank line.\")\n_plain(())\n",
+      "hints": [
+        "Read the first line before the loop, and test <code>line != ''</code> in the <code>while</code> header.",
+        "Convert with <code>int(line)</code> inside the loop, after the test, and read the next line as the last step of the body.",
+        "Keep two counters, one for the days and one for the days met; after the loop, test whether any days were read."
+      ],
+      "answer": "Z29hbCA9IGludChpbnB1dCgpKQpkYXkgPSAwCm1ldCA9IDAKbGluZSA9IGlucHV0KCkKd2hpbGUgbGluZSAhPSAnJzoKICAgIGRheSA9IGRheSArIDEKICAgIGNvdW50ID0gaW50KGxpbmUpCiAgICBpZiBjb3VudCA+PSBnb2FsOgogICAgICAgIHByaW50KGYnRGF5IHtkYXl9OiBnb2FsIG1ldCcpCiAgICAgICAgbWV0ID0gbWV0ICsgMQogICAgZWxzZToKICAgICAgICBwcmludChmJ0RheSB7ZGF5fToge2dvYWwgLSBjb3VudH0gc2hvcnQnKQogICAgbGluZSA9IGlucHV0KCkKaWYgZGF5ID09IDA6CiAgICBwcmludCgnTm8gZGF5cyBlbnRlcmVkJykKZWxzZToKICAgIHByaW50KGYnR29hbCBtZXQgb24ge21ldH0gb2Yge2RheX0gZGF5cycp",
+      "answerNote": "A classic sentinel loop: the read before the loop and the read at the end of the body are the same statement."
+    },
+    "digitroot": {
+      "type": "code",
+      "xp": 25,
+      "boss": "👾",
+      "minLines": 20,
+      "starter": "number = int(input())\nchain = str(number)\nsteps = 0\n# Add up the digits until one digit is left.\n",
+      "cases": [
+        {
+          "name": "Example 1: 9875",
+          "inputs": [
+            "9875"
+          ],
+          "expected": "9875 -> 29 -> 11 -> 2\nDigital root: 2 after 3 steps"
+        },
+        {
+          "name": "Example 2: 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "7\nDigital root: 7 after 0 steps"
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "10 -> 1\nDigital root: 1 after 1 step"
+        },
+        {
+          "name": "Typed 19",
+          "inputs": [
+            "19"
+          ],
+          "expected": "19 -> 10 -> 1\nDigital root: 1 after 2 steps"
+        },
+        {
+          "name": "Typed 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "0\nDigital root: 0 after 0 steps"
+        },
+        {
+          "name": "Typed 999999999999",
+          "inputs": [
+            "999999999999"
+          ],
+          "expected": "999999999999 -> 108 -> 9\nDigital root: 9 after 2 steps"
+        },
+        {
+          "name": "Typed 1000000",
+          "inputs": [
+            "1000000"
+          ],
+          "expected": "1000000 -> 1\nDigital root: 1 after 1 step"
+        },
+        {
+          "name": "Typed 38",
+          "inputs": [
+            "38"
+          ],
+          "expected": "38 -> 11 -> 2\nDigital root: 2 after 2 steps"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_nested(\"while\", \"while\", \"Put the digit-sum while loop inside a while loop that repeats until one digit is left.\")\nassert \"%\" in __code__ and \"//\" in __code__, \"Take the last digit with % 10 and drop it with // 10.\"\nassert not any(isinstance(n, ast.Subscript) for n in _NODES), \"Find the digits with % and //, not by indexing a string.\"\n_plain(())\n",
+      "hints": [
+        "The outer loop runs <code>while number &gt;= 10</code>.",
+        "Inside it, start <code>total = 0</code>, then loop <code>while number &gt; 0</code>, adding <code>number % 10</code> and doing <code>number = number // 10</code>.",
+        "After the inner loop, set <code>number = total</code>, add <code>' -&gt; ' + str(number)</code> to the chain and count one step."
+      ],
+      "answer": "bnVtYmVyID0gaW50KGlucHV0KCkpCmNoYWluID0gc3RyKG51bWJlcikKc3RlcHMgPSAwCndoaWxlIG51bWJlciA+PSAxMDoKICAgIHRvdGFsID0gMAogICAgd2hpbGUgbnVtYmVyID4gMDoKICAgICAgICB0b3RhbCA9IHRvdGFsICsgbnVtYmVyICUgMTAKICAgICAgICBudW1iZXIgPSBudW1iZXIgLy8gMTAKICAgIG51bWJlciA9IHRvdGFsCiAgICBjaGFpbiA9IGNoYWluICsgJyAtPiAnICsgc3RyKG51bWJlcikKICAgIHN0ZXBzID0gc3RlcHMgKyAxCnByaW50KGNoYWluKQppZiBzdGVwcyA9PSAxOgogICAgcHJpbnQoZidEaWdpdGFsIHJvb3Q6IHtudW1iZXJ9IGFmdGVyIDEgc3RlcCcpCmVsc2U6CiAgICBwcmludChmJ0RpZ2l0YWwgcm9vdDoge251bWJlcn0gYWZ0ZXIge3N0ZXBzfSBzdGVwcycp",
+      "answerNote": "The chain starts as the text of the original number, so it is printed correctly even after the inner loop changes number."
+    },
+    "coldstreak": {
+      "type": "code",
+      "xp": 25,
+      "boss": "👾",
+      "minLines": 20,
+      "starter": "day = 0\nline = input()\n# Read one high per line until a blank line.\n",
+      "cases": [
+        {
+          "name": "Example 1: 8 days",
+          "inputs": [
+            "-3.5",
+            "-1",
+            "2",
+            "-0.5",
+            "-4",
+            "-7",
+            "-2",
+            "1",
+            ""
+          ],
+          "expected": "Days: 8\nFreezing days: 6\nLongest freezing streak: 4 days, day 4 to day 7"
+        },
+        {
+          "name": "Example 2: no freezing",
+          "inputs": [
+            "1.5",
+            "0",
+            "3",
+            ""
+          ],
+          "expected": "Days: 3\nFreezing days: 0\nNo freezing streak"
+        },
+        {
+          "name": "Typed no days",
+          "inputs": [
+            ""
+          ],
+          "expected": "Days: 0\nFreezing days: 0\nNo freezing streak"
+        },
+        {
+          "name": "Typed one-day streaks",
+          "inputs": [
+            "-1",
+            "2",
+            "-3",
+            ""
+          ],
+          "expected": "Days: 3\nFreezing days: 2\nLongest freezing streak: 1 day, day 1"
+        },
+        {
+          "name": "Typed two equal streaks",
+          "inputs": [
+            "-2",
+            "-2",
+            "5",
+            "-1",
+            "-1",
+            ""
+          ],
+          "expected": "Days: 5\nFreezing days: 4\nLongest freezing streak: 2 days, day 1 to day 2"
+        },
+        {
+          "name": "Typed a streak to the end",
+          "inputs": [
+            "4",
+            "-10",
+            "-12",
+            "-8",
+            ""
+          ],
+          "expected": "Days: 4\nFreezing days: 3\nLongest freezing streak: 3 days, day 2 to day 4"
+        },
+        {
+          "name": "Typed 0 between frosts",
+          "inputs": [
+            "-1",
+            "0",
+            "-1",
+            "-1",
+            ""
+          ],
+          "expected": "Days: 4\nFreezing days: 3\nLongest freezing streak: 2 days, day 3 to day 4"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_loop(\"while\", \"Read the highs with a while loop that stops at the blank line.\")\n_plain(())\n",
+      "hints": [
+        "Keep <code>run</code>, the length of the streak that ends today, and <code>longest</code>, the best streak so far.",
+        "On a freezing day add 1 to <code>run</code>; on any other day set it back to 0.",
+        "Right after <code>run</code> grows, test <code>run &gt; longest</code>; when it is, save it and its first day, <code>day - run + 1</code>."
+      ],
+      "answer": "ZGF5ID0gMApmcmVlemluZyA9IDAKcnVuID0gMApsb25nZXN0ID0gMApzdGFydCA9IDAKbGluZSA9IGlucHV0KCkKd2hpbGUgbGluZSAhPSAnJzoKICAgIGRheSA9IGRheSArIDEKICAgIGhpZ2ggPSBmbG9hdChsaW5lKQogICAgaWYgaGlnaCA8IDA6CiAgICAgICAgZnJlZXppbmcgPSBmcmVlemluZyArIDEKICAgICAgICBydW4gPSBydW4gKyAxCiAgICAgICAgaWYgcnVuID4gbG9uZ2VzdDoKICAgICAgICAgICAgbG9uZ2VzdCA9IHJ1bgogICAgICAgICAgICBzdGFydCA9IGRheSAtIHJ1biArIDEKICAgIGVsc2U6CiAgICAgICAgcnVuID0gMAogICAgbGluZSA9IGlucHV0KCkKcHJpbnQoZidEYXlzOiB7ZGF5fScpCnByaW50KGYnRnJlZXppbmcgZGF5czoge2ZyZWV6aW5nfScpCmlmIGxvbmdlc3QgPT0gMDoKICAgIHByaW50KCdObyBmcmVlemluZyBzdHJlYWsnKQplbGlmIGxvbmdlc3QgPT0gMToKICAgIHByaW50KGYnTG9uZ2VzdCBmcmVlemluZyBzdHJlYWs6IDEgZGF5LCBkYXkge3N0YXJ0fScpCmVsc2U6CiAgICBwcmludChmJ0xvbmdlc3QgZnJlZXppbmcgc3RyZWFrOiB7bG9uZ2VzdH0gZGF5cywgZGF5IHtzdGFydH0gdG8gZGF5IHtzdGFydCArIGxvbmdlc3QgLSAxfScp",
+      "answerNote": "Testing the streak every time it grows handles a streak that is still going on the last day."
+    },
+    "rug": {
+      "type": "code",
+      "xp": 25,
+      "boss": "👾",
+      "minLines": 20,
+      "starter": "size = input()\n# Ask again until the size is valid, then draw the rug.\n",
+      "cases": [
+        {
+          "name": "Example 1: 7",
+          "inputs": [
+            "7"
+          ],
+          "expected": "#######\n#X...X#\n#.X.X.#\n#..O..#\n#.X.X.#\n#X...X#\n#######"
+        },
+        {
+          "name": "Example 2: three bad sizes",
+          "inputs": [
+            "4",
+            "twenty",
+            "17",
+            "5"
+          ],
+          "expected": "Size must be an odd number from 3 to 15.\nSize must be an odd number from 3 to 15.\nSize must be an odd number from 3 to 15.\n#####\n#X.X#\n#.O.#\n#X.X#\n#####"
+        },
+        {
+          "name": "Typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "###\n#O#\n###"
+        },
+        {
+          "name": "Typed 15",
+          "inputs": [
+            "15"
+          ],
+          "expected": "###############\n#X...........X#\n#.X.........X.#\n#..X.......X..#\n#...X.....X...#\n#....X...X....#\n#.....X.X.....#\n#......O......#\n#.....X.X.....#\n#....X...X....#\n#...X.....X...#\n#..X.......X..#\n#.X.........X.#\n#X...........X#\n###############"
+        },
+        {
+          "name": "Typed -5, 0, 9",
+          "inputs": [
+            "-5",
+            "0",
+            "9"
+          ],
+          "expected": "Size must be an odd number from 3 to 15.\nSize must be an odd number from 3 to 15.\n#########\n#X.....X#\n#.X...X.#\n#..X.X..#\n#...O...#\n#..X.X..#\n#.X...X.#\n#X.....X#\n#########"
+        },
+        {
+          "name": "Typed 1, 2.5, 11",
+          "inputs": [
+            "1",
+            "2.5",
+            "11"
+          ],
+          "expected": "Size must be an odd number from 3 to 15.\nSize must be an odd number from 3 to 15.\n###########\n#X.......X#\n#.X.....X.#\n#..X...X..#\n#...X.X...#\n#....O....#\n#...X.X...#\n#..X...X..#\n#.X.....X.#\n#X.......X#\n###########"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_loop(\"while\", \"Validate the size with a while loop that asks again.\")\n_nested(\"for\", \"for\", \"Draw the rug with a for loop over the columns inside a for loop over the rows.\")\n_no_repeat()\n_plain(())\n",
+      "hints": [
+        "Test <code>size.isdigit()</code> first and combine the tests with <code>and</code>, so <code>int(size)</code> only runs on digits.",
+        "For each row, start <code>line = ''</code>, loop over the columns adding one character, then print the line after the inner loop.",
+        "Test the border first, then the centre <code>n // 2</code>, then the diagonals <code>row == col</code> and <code>row + col == n - 1</code>."
+      ],
+      "answer": "c2l6ZSA9IGlucHV0KCkKd2hpbGUgbm90IChzaXplLmlzZGlnaXQoKSBhbmQgMyA8PSBpbnQoc2l6ZSkgPD0gMTUgYW5kIGludChzaXplKSAlIDIgPT0gMSk6CiAgICBwcmludCgnU2l6ZSBtdXN0IGJlIGFuIG9kZCBudW1iZXIgZnJvbSAzIHRvIDE1LicpCiAgICBzaXplID0gaW5wdXQoKQpuID0gaW50KHNpemUpCmZvciByb3cgaW4gcmFuZ2Uobik6CiAgICBsaW5lID0gJycKICAgIGZvciBjb2wgaW4gcmFuZ2Uobik6CiAgICAgICAgaWYgcm93ID09IDAgb3Igcm93ID09IG4gLSAxIG9yIGNvbCA9PSAwIG9yIGNvbCA9PSBuIC0gMToKICAgICAgICAgICAgbGluZSA9IGxpbmUgKyAnIycKICAgICAgICBlbGlmIHJvdyA9PSBuIC8vIDIgYW5kIGNvbCA9PSBuIC8vIDI6CiAgICAgICAgICAgIGxpbmUgPSBsaW5lICsgJ08nCiAgICAgICAgZWxpZiByb3cgPT0gY29sIG9yIHJvdyArIGNvbCA9PSBuIC0gMToKICAgICAgICAgICAgbGluZSA9IGxpbmUgKyAnWCcKICAgICAgICBlbHNlOgogICAgICAgICAgICBsaW5lID0gbGluZSArICcuJwogICAgcHJpbnQobGluZSk=",
+      "answerNote": "The order of the if/elif chain is what keeps the corners as # and the centre as O."
+    },
+    "collatz": {
+      "type": "code",
+      "xp": 25,
+      "boss": "🐉",
+      "minLines": 20,
+      "starter": "low = int(input())\nhigh = int(input())\n# Follow the chain of every start from low to high.\n",
+      "cases": [
+        {
+          "name": "Example 1: 1 to 10",
+          "inputs": [
+            "1",
+            "10"
+          ],
+          "expected": "Longest chain: 9 takes 19 steps\nHighest value: 52, reached from 7"
+        },
+        {
+          "name": "Example 2: 27 only",
+          "inputs": [
+            "27",
+            "27"
+          ],
+          "expected": "Longest chain: 27 takes 111 steps\nHighest value: 9232, reached from 27"
+        },
+        {
+          "name": "Typed 1 to 1",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "expected": "Longest chain: 1 takes 0 steps\nHighest value: 1, reached from 1"
+        },
+        {
+          "name": "Typed 2 to 5",
+          "inputs": [
+            "2",
+            "5"
+          ],
+          "expected": "Longest chain: 3 takes 7 steps\nHighest value: 16, reached from 3"
+        },
+        {
+          "name": "Typed 100 to 200",
+          "inputs": [
+            "100",
+            "200"
+          ],
+          "expected": "Longest chain: 171 takes 124 steps\nHighest value: 9232, reached from 103"
+        },
+        {
+          "name": "Typed 4000 to 5000",
+          "inputs": [
+            "4000",
+            "5000"
+          ],
+          "expected": "Longest chain: 4379 takes 214 steps\nHighest value: 8153620, reached from 4591"
+        },
+        {
+          "name": "Typed 6 to 8",
+          "inputs": [
+            "6",
+            "8"
+          ],
+          "expected": "Longest chain: 7 takes 16 steps\nHighest value: 52, reached from 7"
+        },
+        {
+          "name": "Typed 12 to 13, a tie",
+          "inputs": [
+            "12",
+            "13"
+          ],
+          "expected": "Longest chain: 12 takes 9 steps\nHighest value: 40, reached from 13"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_for_range(\"Loop over the starts with a for loop over range(...).\")\n_nested(\"for\", \"while\", \"Follow each chain with a while loop inside the for loop over the starts.\")\n_plain(())\n",
+      "hints": [
+        "Copy the loop variable, <code>n = start</code>, and change only the copy in the <code>while n != 1</code> loop.",
+        "Before each change, compare <code>n</code> with the highest value so far; after the loop, compare the final 1 as well.",
+        "After the chain, compare its steps with the best so far using <code>&gt;</code>, so a later start never replaces an equal one."
+      ],
+      "answer": "bG93ID0gaW50KGlucHV0KCkpCmhpZ2ggPSBpbnQoaW5wdXQoKSkKYmVzdCA9IGxvdwpiZXN0X3N0ZXBzID0gLTEKcGVhayA9IDAKcGVha19zdGFydCA9IGxvdwpmb3Igc3RhcnQgaW4gcmFuZ2UobG93LCBoaWdoICsgMSk6CiAgICBuID0gc3RhcnQKICAgIHN0ZXBzID0gMAogICAgd2hpbGUgbiAhPSAxOgogICAgICAgIGlmIG4gPiBwZWFrOgogICAgICAgICAgICBwZWFrID0gbgogICAgICAgICAgICBwZWFrX3N0YXJ0ID0gc3RhcnQKICAgICAgICBpZiBuICUgMiA9PSAwOgogICAgICAgICAgICBuID0gbiAvLyAyCiAgICAgICAgZWxzZToKICAgICAgICAgICAgbiA9IDMgKiBuICsgMQogICAgICAgIHN0ZXBzID0gc3RlcHMgKyAxCiAgICBpZiBuID4gcGVhazoKICAgICAgICBwZWFrID0gbgogICAgICAgIHBlYWtfc3RhcnQgPSBzdGFydAogICAgaWYgc3RlcHMgPiBiZXN0X3N0ZXBzOgogICAgICAgIGJlc3QgPSBzdGFydAogICAgICAgIGJlc3Rfc3RlcHMgPSBzdGVwcwpwcmludChmJ0xvbmdlc3QgY2hhaW46IHtiZXN0fSB0YWtlcyB7YmVzdF9zdGVwc30gc3RlcHMnKQpwcmludChmJ0hpZ2hlc3QgdmFsdWU6IHtwZWFrfSwgcmVhY2hlZCBmcm9tIHtwZWFrX3N0YXJ0fScp",
+      "answerNote": "Checking the peak before each step means the start itself is counted. A single start of 1 has no steps, so the check after the loop catches it."
+    },
+    "words": {
+      "type": "code",
+      "xp": 25,
+      "boss": "🐉",
+      "minLines": 20,
+      "starter": "sentence = input()\n# Go through the sentence one character at a time.\n",
+      "cases": [
+        {
+          "name": "Example 1: the ferry",
+          "inputs": [
+            "  The ferry  to Bell Island leaves at noon "
+          ],
+          "expected": "Words: 8\nLongest word: Island (6 characters)\nAverage length: 4.0"
+        },
+        {
+          "name": "Example 2: only spaces",
+          "inputs": [
+            "   "
+          ],
+          "expected": "No words"
+        },
+        {
+          "name": "Typed an empty line",
+          "inputs": [
+            ""
+          ],
+          "expected": "No words"
+        },
+        {
+          "name": "Typed one word",
+          "inputs": [
+            "Go"
+          ],
+          "expected": "Words: 1\nLongest word: Go (2 characters)\nAverage length: 2.0"
+        },
+        {
+          "name": "Typed punctuation",
+          "inputs": [
+            "St. John's is foggy, again!"
+          ],
+          "expected": "Words: 5\nLongest word: John's (6 characters)\nAverage length: 4.6"
+        },
+        {
+          "name": "Typed equal lengths",
+          "inputs": [
+            "a bb ccc bb ddd a"
+          ],
+          "expected": "Words: 6\nLongest word: ccc (3 characters)\nAverage length: 2.0"
+        },
+        {
+          "name": "Typed Memorial University of Newfoundland",
+          "inputs": [
+            "Memorial University of Newfoundland"
+          ],
+          "expected": "Words: 4\nLongest word: Newfoundland (12 characters)\nAverage length: 8.0"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_for_range(\"Go through the sentence with for i in range(len(sentence)).\")\nassert not _called(\"strip\"), \"Do not use strip(). Skip the extra spaces with the test inside the loop.\"\n_plain(())\n",
+      "hints": [
+        "Keep the word being read in <code>current</code>. A character that is not a space is added to it.",
+        "At a space, if <code>current</code> is not empty, a word has just ended: count it, add its length, compare it with the longest, and empty <code>current</code>.",
+        "After the loop, <code>current</code> may still hold the last word; handle it the same way."
+      ],
+      "answer": "c2VudGVuY2UgPSBpbnB1dCgpCmNvdW50ID0gMApsZXR0ZXJzID0gMApsb25nZXN0ID0gJycKY3VycmVudCA9ICcnCmZvciBpIGluIHJhbmdlKGxlbihzZW50ZW5jZSkpOgogICAgaWYgc2VudGVuY2VbaV0gIT0gJyAnOgogICAgICAgIGN1cnJlbnQgPSBjdXJyZW50ICsgc2VudGVuY2VbaV0KICAgIGVsaWYgY3VycmVudCAhPSAnJzoKICAgICAgICBjb3VudCA9IGNvdW50ICsgMQogICAgICAgIGxldHRlcnMgPSBsZXR0ZXJzICsgbGVuKGN1cnJlbnQpCiAgICAgICAgaWYgbGVuKGN1cnJlbnQpID4gbGVuKGxvbmdlc3QpOgogICAgICAgICAgICBsb25nZXN0ID0gY3VycmVudAogICAgICAgIGN1cnJlbnQgPSAnJwppZiBjdXJyZW50ICE9ICcnOgogICAgY291bnQgPSBjb3VudCArIDEKICAgIGxldHRlcnMgPSBsZXR0ZXJzICsgbGVuKGN1cnJlbnQpCiAgICBpZiBsZW4oY3VycmVudCkgPiBsZW4obG9uZ2VzdCk6CiAgICAgICAgbG9uZ2VzdCA9IGN1cnJlbnQKaWYgY291bnQgPT0gMDoKICAgIHByaW50KCdObyB3b3JkcycpCmVsc2U6CiAgICBwcmludChmJ1dvcmRzOiB7Y291bnR9JykKICAgIHByaW50KGYnTG9uZ2VzdCB3b3JkOiB7bG9uZ2VzdH0gKHtsZW4obG9uZ2VzdCl9IGNoYXJhY3RlcnMpJykKICAgIHByaW50KGYnQXZlcmFnZSBsZW5ndGg6IHtsZXR0ZXJzIC8gY291bnQ6LjFmfScp",
+      "answerNote": "The end-of-word code appears twice, once at a space and once after the loop; with functions from Unit 5 it would be one function."
+    },
+    "guess": {
+      "type": "code",
+      "xp": 25,
+      "boss": "🐉",
+      "minLines": 20,
+      "starter": "top = int(input())\nlow = 1\nhigh = top\nguesses = 0\n# Guess the middle until the answer is c.\n",
+      "cases": [
+        {
+          "name": "Example 1: 100 and a typo",
+          "inputs": [
+            "100",
+            "h",
+            "l",
+            "x",
+            "h",
+            "c"
+          ],
+          "expected": "Guess 1: 50\nGuess 2: 75\nGuess 3: 62\nType h, l or c.\nGuess 4: 68\nGot it on guess 4."
+        },
+        {
+          "name": "Example 2: inconsistent answers",
+          "inputs": [
+            "10",
+            "l",
+            "l",
+            "l"
+          ],
+          "expected": "Guess 1: 5\nGuess 2: 2\nGuess 3: 1\nThose answers do not add up."
+        },
+        {
+          "name": "Typed 1 and c",
+          "inputs": [
+            "1",
+            "c"
+          ],
+          "expected": "Guess 1: 1\nGot it on guess 1."
+        },
+        {
+          "name": "Typed 100, always higher",
+          "inputs": [
+            "100",
+            "H",
+            " h",
+            "h ",
+            "H",
+            "h",
+            "h",
+            "c"
+          ],
+          "expected": "Guess 1: 50\nGuess 2: 75\nGuess 3: 88\nGuess 4: 94\nGuess 5: 97\nGuess 6: 99\nGuess 7: 100\nGot it on guess 7."
+        },
+        {
+          "name": "Typed 20 and two bad answers",
+          "inputs": [
+            "20",
+            "maybe",
+            "",
+            "C"
+          ],
+          "expected": "Guess 1: 10\nType h, l or c.\nType h, l or c.\nGot it on guess 1."
+        },
+        {
+          "name": "Typed 1000, lower then higher",
+          "inputs": [
+            "1000",
+            "l",
+            "h",
+            "l",
+            "h",
+            "c"
+          ],
+          "expected": "Guess 1: 500\nGuess 2: 250\nGuess 3: 375\nGuess 4: 312\nGuess 5: 343\nGot it on guess 5."
+        },
+        {
+          "name": "Typed 3, higher past the top",
+          "inputs": [
+            "3",
+            "h",
+            "h"
+          ],
+          "expected": "Guess 1: 2\nGuess 2: 3\nThose answers do not add up."
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_loop(\"while\", \"Keep guessing in a while loop.\")\nassert \"break\" in __code__, \"Leave the guessing loop with break when the guess is correct or no number is left.\"\n_nested(\"while\", \"while\", \"Read the answer again in a while loop inside the guessing loop until it is h, l or c.\")\n_plain(())\n",
+      "hints": [
+        "Keep <code>low</code> and <code>high</code>, the smallest and largest numbers still possible; start them at 1 and <code>top</code>.",
+        "At the top of <code>while True:</code>, stop with a message if <code>low &gt; high</code>; otherwise print the next guess and read an answer.",
+        "Repeat the read <code>while answer != 'h' and answer != 'l' and answer != 'c'</code>, then <code>break</code> on c or move <code>low</code> to <code>middle + 1</code> or <code>high</code> to <code>middle - 1</code>."
+      ],
+      "answer": "dG9wID0gaW50KGlucHV0KCkpCmxvdyA9IDEKaGlnaCA9IHRvcApndWVzc2VzID0gMAp3aGlsZSBUcnVlOgogICAgaWYgbG93ID4gaGlnaDoKICAgICAgICBwcmludCgnVGhvc2UgYW5zd2VycyBkbyBub3QgYWRkIHVwLicpCiAgICAgICAgYnJlYWsKICAgIG1pZGRsZSA9IChsb3cgKyBoaWdoKSAvLyAyCiAgICBndWVzc2VzID0gZ3Vlc3NlcyArIDEKICAgIHByaW50KGYnR3Vlc3Mge2d1ZXNzZXN9OiB7bWlkZGxlfScpCiAgICBhbnN3ZXIgPSBpbnB1dCgpLnN0cmlwKCkubG93ZXIoKQogICAgd2hpbGUgYW5zd2VyICE9ICdoJyBhbmQgYW5zd2VyICE9ICdsJyBhbmQgYW5zd2VyICE9ICdjJzoKICAgICAgICBwcmludCgnVHlwZSBoLCBsIG9yIGMuJykKICAgICAgICBhbnN3ZXIgPSBpbnB1dCgpLnN0cmlwKCkubG93ZXIoKQogICAgaWYgYW5zd2VyID09ICdjJzoKICAgICAgICBwcmludChmJ0dvdCBpdCBvbiBndWVzcyB7Z3Vlc3Nlc30uJykKICAgICAgICBicmVhawogICAgZWxpZiBhbnN3ZXIgPT0gJ2gnOgogICAgICAgIGxvdyA9IG1pZGRsZSArIDEKICAgIGVsc2U6CiAgICAgICAgaGlnaCA9IG1pZGRsZSAtIDE=",
+      "answerNote": "This is binary search: each answer halves the numbers left, so 100 needs at most 7 guesses."
+    },
+    "mirror": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 20,
+      "starter": "text = input()\n# Try every run of at least 2 characters.\n",
+      "cases": [
+        {
+          "name": "Example 1: Kayak on Quidi Vidi",
+          "inputs": [
+            "Kayak on Quidi Vidi"
+          ],
+          "expected": "Longest mirror run: Kayak\nPosition 0, length 5"
+        },
+        {
+          "name": "Example 2: COMP 1001",
+          "inputs": [
+            "COMP 1001"
+          ],
+          "expected": "Longest mirror run: 1001\nPosition 5, length 4"
+        },
+        {
+          "name": "Typed abc",
+          "inputs": [
+            "abc"
+          ],
+          "expected": "No mirror run"
+        },
+        {
+          "name": "Typed an empty line",
+          "inputs": [
+            ""
+          ],
+          "expected": "No mirror run"
+        },
+        {
+          "name": "Typed abba deed",
+          "inputs": [
+            "abba deed"
+          ],
+          "expected": "Longest mirror run: abba\nPosition 0, length 4"
+        },
+        {
+          "name": "Typed Noon",
+          "inputs": [
+            "Noon"
+          ],
+          "expected": "Longest mirror run: Noon\nPosition 0, length 4"
+        },
+        {
+          "name": "Typed a run at the end",
+          "inputs": [
+            "xyz level"
+          ],
+          "expected": "Longest mirror run: level\nPosition 4, length 5"
+        },
+        {
+          "name": "Typed one character",
+          "inputs": [
+            "a"
+          ],
+          "expected": "No mirror run"
+        },
+        {
+          "name": "Typed a run with spaces",
+          "inputs": [
+            "Step on no pets!"
+          ],
+          "expected": "Longest mirror run: Step on no pets\nPosition 0, length 15"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_nested(\"for\", \"for\", \"Try every start and end with a for loop inside a for loop.\")\nassert \"break\" in __code__, \"Stop comparing a run with break at its first mismatch.\"\nassert not re.search(r\"\\[[^\\]]*:[^\\]]*:\\s*-\", __code__), \"Compare characters from both ends in a loop instead of reversing with [::-1].\"\n_plain(())\n",
+      "hints": [
+        "Let <code>start</code> run over every index and <code>end</code> from <code>start + 2</code> to <code>len(text)</code>, so the run is <code>text[start:end]</code>.",
+        "To test a run, set <code>left = start</code>, <code>right = end - 1</code> and move them toward each other <code>while left &lt; right</code>, comparing lower-case characters.",
+        "Keep a flag that starts <code>True</code> for each run and becomes <code>False</code> at a mismatch, then <code>break</code>."
+      ],
+      "answer": "dGV4dCA9IGlucHV0KCkKbG93ZXIgPSB0ZXh0Lmxvd2VyKCkKYmVzdF9zdGFydCA9IDAKYmVzdF9sZW5ndGggPSAwCmZvciBzdGFydCBpbiByYW5nZShsZW4odGV4dCkpOgogICAgZm9yIGVuZCBpbiByYW5nZShzdGFydCArIDIsIGxlbih0ZXh0KSArIDEpOgogICAgICAgIGxlZnQgPSBzdGFydAogICAgICAgIHJpZ2h0ID0gZW5kIC0gMQogICAgICAgIHNhbWUgPSBUcnVlCiAgICAgICAgd2hpbGUgbGVmdCA8IHJpZ2h0OgogICAgICAgICAgICBpZiBsb3dlcltsZWZ0XSAhPSBsb3dlcltyaWdodF06CiAgICAgICAgICAgICAgICBzYW1lID0gRmFsc2UKICAgICAgICAgICAgICAgIGJyZWFrCiAgICAgICAgICAgIGxlZnQgPSBsZWZ0ICsgMQogICAgICAgICAgICByaWdodCA9IHJpZ2h0IC0gMQogICAgICAgIGlmIHNhbWUgYW5kIGVuZCAtIHN0YXJ0ID4gYmVzdF9sZW5ndGg6CiAgICAgICAgICAgIGJlc3Rfc3RhcnQgPSBzdGFydAogICAgICAgICAgICBiZXN0X2xlbmd0aCA9IGVuZCAtIHN0YXJ0CmlmIGJlc3RfbGVuZ3RoID09IDA6CiAgICBwcmludCgnTm8gbWlycm9yIHJ1bicpCmVsc2U6CiAgICBwcmludChmJ0xvbmdlc3QgbWlycm9yIHJ1bjoge3RleHRbYmVzdF9zdGFydDpiZXN0X3N0YXJ0ICsgYmVzdF9sZW5ndGhdfScpCiAgICBwcmludChmJ1Bvc2l0aW9uIHtiZXN0X3N0YXJ0fSwgbGVuZ3RoIHtiZXN0X2xlbmd0aH0nKQ==",
+      "answerNote": "About len(text) cubed comparisons in the worst case, which is fine for 60 characters."
+    },
+    "pig": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 20,
+      "starter": "import random\n\nseed = int(input())\ntarget = int(input())\nhold = int(input())\nrandom.seed(seed)\n# Play turns until someone reaches the target.\n",
+      "cases": [
+        {
+          "name": "Example 1: seed 7, target 20, hold 10",
+          "inputs": [
+            "7",
+            "20",
+            "10"
+          ],
+          "expected": "Turn 1, A: 3 2 4 6, hold 15, score 15\nTurn 2, B: 1, bust, score 0\nTurn 3, A: 1, bust, score 15\nTurn 4, B: 5 1, bust, score 0\nTurn 5, A: 3 5, hold 8, score 23\nA wins 23 to 0 on turn 5"
+        },
+        {
+          "name": "Example 2: seed 6, target 12, hold 100",
+          "inputs": [
+            "6",
+            "12",
+            "100"
+          ],
+          "expected": "Turn 1, A: 5 1, bust, score 0\nTurn 2, B: 4 3 1, bust, score 0\nTurn 3, A: 1, bust, score 0\nTurn 4, B: 2 6 5, hold 13, score 13\nB wins 13 to 0 on turn 4"
+        },
+        {
+          "name": "Typed seed 1, target 30, hold 15",
+          "inputs": [
+            "1",
+            "30",
+            "15"
+          ],
+          "expected": "Turn 1, A: 2 5 1, bust, score 0\nTurn 2, B: 3 1, bust, score 0\nTurn 3, A: 4 4 4 6, hold 18, score 18\nTurn 4, B: 4 2 1, bust, score 0\nTurn 5, A: 4 1, bust, score 18\nTurn 6, B: 4 4 5 1, bust, score 0\nTurn 7, A: 6 4 3, hold 13, score 31\nA wins 31 to 0 on turn 7"
+        },
+        {
+          "name": "Typed seed 42, target 25, hold 8",
+          "inputs": [
+            "42",
+            "25",
+            "8"
+          ],
+          "expected": "Turn 1, A: 6 1, bust, score 0\nTurn 2, B: 1, bust, score 0\nTurn 3, A: 6 3, hold 9, score 9\nTurn 4, B: 2 2 2 6, hold 12, score 12\nTurn 5, A: 1, bust, score 9\nTurn 6, B: 6 6, hold 12, score 24\nTurn 7, A: 5 1, bust, score 9\nTurn 8, B: 5, hold 5, score 29\nB wins 29 to 9 on turn 8"
+        },
+        {
+          "name": "Typed seed 2026, target 50, hold 20",
+          "inputs": [
+            "2026",
+            "50",
+            "20"
+          ],
+          "expected": "Turn 1, A: 1, bust, score 0\nTurn 2, B: 3 5 5 6 1, bust, score 0\nTurn 3, A: 2 5 5 5 4, hold 21, score 21\nTurn 4, B: 5 5 6 4, hold 20, score 20\nTurn 5, A: 5 4 2 1, bust, score 21\nTurn 6, B: 5 1, bust, score 20\nTurn 7, A: 1, bust, score 21\nTurn 8, B: 3 1, bust, score 20\nTurn 9, A: 4 1, bust, score 21\nTurn 10, B: 6 4 6 3 2, hold 21, score 41\nTurn 11, A: 4 3 3 3 4 6, hold 23, score 44\nTurn 12, B: 5 6, hold 11, score 52\nB wins 52 to 44 on turn 12"
+        },
+        {
+          "name": "Typed seed 0, target 10, hold 1",
+          "inputs": [
+            "0",
+            "10",
+            "1"
+          ],
+          "expected": "Turn 1, A: 4, hold 4, score 4\nTurn 2, B: 4, hold 4, score 4\nTurn 3, A: 1, bust, score 4\nTurn 4, B: 3, hold 3, score 7\nTurn 5, A: 5, hold 5, score 9\nTurn 6, B: 4, hold 4, score 11\nB wins 11 to 9 on turn 6"
+        }
+      ],
+      "check": "import ast, re\n_NODES = list(ast.walk(ast.parse(__source__)))\n_KIND = {\"while\": ast.While, \"for\": ast.For}\ndef _loop(kind, message):\n    assert any(isinstance(n, _KIND[kind]) for n in _NODES), message\ndef _for_range(message):\n    assert any(isinstance(n, ast.For) and isinstance(n.iter, ast.Call) and isinstance(n.iter.func, ast.Name)\n               and n.iter.func.id == \"range\" for n in _NODES), message\ndef _nested(outer, inner, message):\n    assert any(isinstance(n, _KIND[outer]) and any(isinstance(m, _KIND[inner]) for b in n.body for m in ast.walk(b))\n               for n in _NODES), message\ndef _called(name):\n    for n in _NODES:\n        if isinstance(n, ast.Call):\n            f = n.func\n            if (f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else \"\") == name:\n                return True\n    return False\ndef _plain(allowed=()):\n    assert not any(isinstance(n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)) for n in _NODES), \\\n        \"Solve it without lists, dictionaries or sets. Keep a running total or a best-so-far value instead.\"\n    for _name in (\"split\", \"join\", \"list\", \"sorted\", \"reversed\", \"count\", \"replace\"):\n        assert not _called(_name), \"Do not use \" + _name + \"() here. Work through the values one at a time with a loop.\"\n    for n in _NODES:\n        if isinstance(n, (ast.Import, ast.ImportFrom)):\n            _mods = [a.name for a in n.names] if isinstance(n, ast.Import) else [n.module]\n            assert all(m in allowed for m in _mods), \"No import is needed here\" + (\", except import \" + allowed[0] if allowed else \"\") + \".\"\ndef _no_repeat():\n    for n in _NODES:\n        if isinstance(n, ast.BinOp) and isinstance(n.op, ast.Mult):\n            assert not any(isinstance(s, ast.Constant) and isinstance(s.value, str) for s in (n.left, n.right)), \\\n                \"Build each row one character at a time inside the inner loop, not with * on a string.\"\n_nested(\"while\", \"while\", \"Roll the dice of one turn in a while loop inside the loop over the turns.\")\nassert \"break\" in __code__, \"End a turn with break when the roll is a 1.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first roll.\"\nassert re.search(r\"random\\.randint\\(\\s*1\\s*,\\s*6\\s*\\)\", __code__), \"Roll the die with random.randint(1, 6).\"\nassert __code__.count(\"random.seed(\") == 1, \"Seed the generator once, before the game, not once per turn.\"\n_plain(('random',))\n",
+      "hints": [
+        "Copy the current player's score into <code>score</code> at the start of the turn and write it back at the end, so one inner loop serves both players.",
+        "Roll <code>while turn_total &lt; hold and score + turn_total &lt; target</code>; build the rolls into a string as you go.",
+        "On a 1, set a <code>bust</code> flag and <code>break</code>; after the inner loop, add the turn total only when there was no bust, print the line and switch players."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQoKc2VlZCA9IGludChpbnB1dCgpKQp0YXJnZXQgPSBpbnQoaW5wdXQoKSkKaG9sZCA9IGludChpbnB1dCgpKQpyYW5kb20uc2VlZChzZWVkKQpzY29yZV9hID0gMApzY29yZV9iID0gMApwbGF5ZXIgPSAnQScKdHVybnMgPSAwCndoaWxlIHNjb3JlX2EgPCB0YXJnZXQgYW5kIHNjb3JlX2IgPCB0YXJnZXQ6CiAgICB0dXJucyA9IHR1cm5zICsgMQogICAgaWYgcGxheWVyID09ICdBJzoKICAgICAgICBzY29yZSA9IHNjb3JlX2EKICAgIGVsc2U6CiAgICAgICAgc2NvcmUgPSBzY29yZV9iCiAgICB0dXJuX3RvdGFsID0gMAogICAgcm9sbHMgPSAnJwogICAgYnVzdCA9IEZhbHNlCiAgICB3aGlsZSB0dXJuX3RvdGFsIDwgaG9sZCBhbmQgc2NvcmUgKyB0dXJuX3RvdGFsIDwgdGFyZ2V0OgogICAgICAgIHJvbGwgPSByYW5kb20ucmFuZGludCgxLCA2KQogICAgICAgIHJvbGxzID0gcm9sbHMgKyAnICcgKyBzdHIocm9sbCkKICAgICAgICBpZiByb2xsID09IDE6CiAgICAgICAgICAgIGJ1c3QgPSBUcnVlCiAgICAgICAgICAgIGJyZWFrCiAgICAgICAgdHVybl90b3RhbCA9IHR1cm5fdG90YWwgKyByb2xsCiAgICBpZiBidXN0OgogICAgICAgIHJlc3VsdCA9ICdidXN0JwogICAgZWxzZToKICAgICAgICBzY29yZSA9IHNjb3JlICsgdHVybl90b3RhbAogICAgICAgIHJlc3VsdCA9IGYnaG9sZCB7dHVybl90b3RhbH0nCiAgICBwcmludChmJ1R1cm4ge3R1cm5zfSwge3BsYXllcn06e3JvbGxzfSwge3Jlc3VsdH0sIHNjb3JlIHtzY29yZX0nKQogICAgaWYgcGxheWVyID09ICdBJzoKICAgICAgICBzY29yZV9hID0gc2NvcmUKICAgICAgICBwbGF5ZXIgPSAnQicKICAgIGVsc2U6CiAgICAgICAgc2NvcmVfYiA9IHNjb3JlCiAgICAgICAgcGxheWVyID0gJ0EnCmlmIHNjb3JlX2EgPj0gdGFyZ2V0OgogICAgcHJpbnQoZidBIHdpbnMge3Njb3JlX2F9IHRvIHtzY29yZV9ifSBvbiB0dXJuIHt0dXJuc30nKQplbHNlOgogICAgcHJpbnQoZidCIHdpbnMge3Njb3JlX2J9IHRvIHtzY29yZV9hfSBvbiB0dXJuIHt0dXJuc30nKQ==",
+      "answerNote": "The score copy keeps the turn code the same for both players; with functions it would be a play_turn function."
+    }
+  }
+}
