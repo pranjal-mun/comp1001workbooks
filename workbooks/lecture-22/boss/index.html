@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 22 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-22-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 22 Boss Problems</h1>
+    <div class="wb-subtitle">Tracing recursion and recursive helpers</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use recursion from Lectures 21 and 22:</p>
+  <ul>
+    <li>a base case that stops the calls</li>
+    <li>output printed before or after the smaller call</li>
+    <li>helpers that carry their progress in parameters</li>
+    <li>several recursive choices joined with <code>or</code></li>
+  </ul>
+  <p>They use only what Lectures 4 to 22 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code></li>
+    <li>arithmetic, comparisons, and <code>if</code> statements</li>
+    <li>strings, indexing, and slicing</li>
+    <li>functions and recursion</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return or print. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 🐉 and are worth 10, 15, and 20 XP.</p>
+</section>
+<hr>
+
+<h2 id="song" data-toc-title="👹 Twelve days of shop supplies">👹 Boss 1: Twelve days of shop supplies</h2>
+<p>Write <code>show_song(days)</code> and the supporting functions below. A song has one verse for each day of a twelve-day delivery. A verse has a heading and the supplies delivered that day. It includes the new gift and every gift from earlier days. The functions print the song and return no useful value.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>Print verses in increasing day order, from day 1 through <code>days</code>.</li>
+  <li>Begin each verse with <code>Day</code> followed by its day number.</li>
+  <li>Print that day's gift first, followed by earlier gifts in decreasing day order.</li>
+  <li>Print each gift on its own line, using the wording in the table.</li>
+  <li>Do not print blank lines between verses.</li>
+  <li>Each gift's text must appear only once in your Python code.</li>
+</ul>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Day</th><th>Gift line</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>1 paper bag</code></td></tr>
+    <tr><td>2</td><td><code>2 pencils</code></td></tr>
+    <tr><td>3</td><td><code>3 notebooks</code></td></tr>
+    <tr><td>4</td><td><code>4 erasers</code></td></tr>
+    <tr><td>5</td><td><code>5 rulers</code></td></tr>
+    <tr><td>6</td><td><code>6 folders</code></td></tr>
+    <tr><td>7</td><td><code>7 markers</code></td></tr>
+    <tr><td>8</td><td><code>8 glue sticks</code></td></tr>
+    <tr><td>9</td><td><code>9 labels</code></td></tr>
+    <tr><td>10</td><td><code>10 brushes</code></td></tr>
+    <tr><td>11</td><td><code>11 stamps</code></td></tr>
+    <tr><td>12</td><td><code>12 cards</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Write these functions:</p>
+<ol>
+  <li><code>show_gift(day)</code> prints just the gift for that day. Use an <code>if</code>/<code>elif</code> chain.</li>
+  <li><code>show_gifts(day)</code> recursively prints the gifts for one verse.</li>
+  <li><code>show_verse(day)</code> prints one heading and calls <code>show_gifts</code>.</li>
+  <li><code>show_song(days)</code> recursively prints every required verse.</li>
+  <li><code>main()</code> reads the number of days and calls <code>show_song</code>.</li>
+</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3
+Output:
+Day 1
+1 paper bag
+Day 2
+2 pencils
+1 paper bag
+Day 3
+3 notebooks
+2 pencils
+1 paper bag
+Explanation:
+The third verse includes gifts from days 3, 2, and 1.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1
+Output:
+Day 1
+1 paper bag
+Explanation:
+The shortest song has one heading and one gift line.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The input is an integer from 1 through 12.</li>
+    <li>Use the five required functions and the standard guard.</li>
+    <li>Use recursion in both <code>show_gifts</code> and <code>show_song</code>.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code></td><td>Example 1</td></tr>
+    <tr><td><code>1</code></td><td>Example 2</td></tr>
+    <tr><td><code>2</code></td><td>the first two verses of Example 1</td></tr>
+    <tr><td><code>6</code></td><td>six verses, the last one from <code>6 folders</code> down to <code>1 paper bag</code></td></tr>
+    <tr><td><code>12</code></td><td>twelve verses, the last one from <code>12 cards</code> down to <code>1 paper bag</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_gift(day)</code>, <code>show_gifts(day)</code>, <code>show_verse(day)</code>, <code>show_song(days)</code>, and <code>main()</code>.</li>
+    <li><code>show_gift</code> uses an <code>if</code>/<code>elif</code> chain. Each gift's text appears only once in your code.</li>
+    <li><code>show_gifts</code> and <code>show_song</code> each call themselves. <code>show_verse</code> calls <code>show_gifts</code>, and <code>main</code> calls <code>show_song</code>.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+    <li><strong>Check</strong> also calls each function directly with days from 1 to 12 and compares what it prints.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="song"></wb-exercise>
+
+<h2 id="encode" data-toc-title="👾 Encode repeated letters">👾 Boss 2: Encode repeated letters</h2>
+<p>Write <code>encode(text)</code> and a recursive helper. The function takes a string and returns its run-length encoding as a string. A <em>run</em> is a group of consecutive copies of the same character. Run-length encoding replaces each run with its letter followed by its length.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>Preserve the order of the runs.</li>
+  <li>Include every run length, including 1.</li>
+  <li>Write lengths with ordinary decimal digits. A length may need more than one digit.</li>
+  <li>Treat uppercase and lowercase letters as different characters.</li>
+  <li>Return <code>""</code> for empty input.</li>
+  <li>The encoding functions return strings and do not print.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>run_length(text, index, count)</code> returns the length of the first run in nonempty <code>text</code>. It starts with <code>index = 0</code> and <code>count = 0</code>. The parameters track the next position to check and the number of matching letters already checked.</li>
+  <li><code>encode(text)</code> uses the helper and recursion to encode the full string.</li>
+  <li><code>main()</code> reads one line and prints <code>Encoded:</code> followed by the encoded string in double quotation marks.</li>
+</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+AAAAAAAAAAAABBBBAAAAAAB
+Output:
+Encoded: "A12B4A6B1"
+Explanation:
+The run lengths are 12, 4, 6, and 1, in that order.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Encoded: ""
+Explanation:
+The empty string has no runs.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The input has 0 through 80 English letters.</li>
+    <li>Use all three required functions and the standard guard.</li>
+    <li>Use recursion in both <code>run_length</code> and <code>encode</code>.</li>
+    <li>Pass the count through helper calls. Do not store it outside the function.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>AAAAAAAAAAAABBBBAAAAAAB</code></td><td><code>Encoded: "A12B4A6B1"</code></td></tr>
+    <tr><td>a blank line</td><td><code>Encoded: ""</code></td></tr>
+    <tr><td><code>A</code></td><td><code>Encoded: "A1"</code></td></tr>
+    <tr><td><code>AaAA</code></td><td><code>Encoded: "A1a1A2"</code></td></tr>
+    <tr><td>80 copies of <code>z</code></td><td><code>Encoded: "z80"</code></td></tr>
+    <tr><td><code>Mississippi</code></td><td><code>Encoded: "M1i1s2i1s2i1p2i1"</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>run_length(text, index, count)</code>, <code>encode(text)</code>, and <code>main()</code>.</li>
+    <li><code>run_length</code> and <code>encode</code> each call themselves, and <code>encode</code> calls <code>run_length</code>.</li>
+    <li>Both encoding functions return strings or numbers and print nothing. <strong>Check</strong> also calls them directly with other text.</li>
+    <li>Keep the count in parameters: do not use <code>global</code>, and assign no variables at the top level.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="encode"></wb-exercise>
+
+<h2 id="coins" data-toc-title="🐉 Exact coin total">🐉 Boss 3: Exact coin total</h2>
+<p>Write <code>possible_change(dollars, coins)</code> and a recursive helper. The function returns whether a dollar amount can be formed using exactly the stated number of coins. Return a Boolean value.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>A quarter is worth 25 cents.</li>
+  <li>A dime is worth 10 cents.</li>
+  <li>A nickel is worth 5 cents.</li>
+  <li>A penny is worth 1 cent.</li>
+  <li>Any number of each coin type is available.</li>
+  <li>Use exactly <code>coins</code> coins. Do not leave any unused.</li>
+  <li>Zero dollars can be formed with zero coins.</li>
+  <li>Zero dollars cannot be formed with a positive number of coins.</li>
+  <li>A positive amount cannot be formed with zero coins.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>possible_change(dollars, coins)</code> converts dollars to integer cents with <code>int(round(dollars * 100))</code>. It returns the helper's answer.</li>
+  <li><code>change_helper(cents, coins)</code> returns whether the remaining amount can use exactly the remaining number of coins. Each recursive choice tries one of the four coin types.</li>
+  <li><code>main()</code> reads dollars, then a coin count, on separate lines. It prints <code>Possible:</code> followed by the Boolean answer.</li>
+</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+1.00
+4
+Output:
+Possible: True
+Explanation:
+Four quarters have a total value of one dollar.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1.00
+5
+Output:
+Possible: False
+Explanation:
+No choice of exactly five allowed coins totals one dollar.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+0.00
+0
+Output:
+Possible: True
+Explanation:
+Using no coins forms an amount of zero.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The dollar amount is from 0.00 through 2.00, with at most two decimal places.</li>
+    <li>The coin count is an integer from 0 through 8.</li>
+    <li>Use the three required functions and the standard guard.</li>
+    <li>Use integer cents in every helper call.</li>
+    <li>Join the four recursive choices with <code>or</code>.</li>
+    <li>Stop impossible branches before making more calls.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1.00</code>, <code>4</code></td><td><code>Possible: True</code></td></tr>
+    <tr><td><code>1.00</code>, <code>5</code></td><td><code>Possible: False</code></td></tr>
+    <tr><td><code>0.00</code>, <code>0</code></td><td><code>Possible: True</code></td></tr>
+    <tr><td><code>2.00</code>, <code>8</code></td><td><code>Possible: True</code></td></tr>
+    <tr><td><code>0.29</code>, <code>5</code></td><td><code>Possible: True</code></td></tr>
+    <tr><td><code>0.29</code>, <code>2</code></td><td><code>Possible: False</code></td></tr>
+    <tr><td><code>1.99</code>, <code>8</code></td><td><code>Possible: False</code></td></tr>
+    <tr><td><code>0.08</code>, <code>8</code></td><td><code>Possible: True</code></td></tr>
+    <tr><td><code>0.50</code>, <code>1</code></td><td><code>Possible: False</code></td></tr>
+    <tr><td><code>0.00</code>, <code>3</code></td><td><code>Possible: False</code></td></tr>
+    <tr><td><code>0.05</code>, <code>0</code></td><td><code>Possible: False</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>possible_change(dollars, coins)</code>, <code>change_helper(cents, coins)</code>, and <code>main()</code>.</li>
+    <li><code>possible_change</code> converts with <code>round</code> and returns the answer from <code>change_helper</code>.</li>
+    <li>Join four calls to <code>change_helper</code> with <code>or</code>.</li>
+    <li><strong>Check</strong> watches every call to <code>change_helper</code>. Each one gets an integer number of cents. A call with negative cents or no coins left returns without calling <code>change_helper</code> again.</li>
+    <li>Both functions return <code>True</code> or <code>False</code>. <strong>Check</strong> also calls them directly with other amounts and coin counts.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="coins"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 22 Boss Problems.</p>
+</main>
+</body>
+</html>

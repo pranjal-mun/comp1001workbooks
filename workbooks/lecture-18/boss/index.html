@@ -27,14 +27,31 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>These problems use the parameters and return values from Lecture 18: the caller supplies the values as arguments, the function returns its result, and the caller prints it. They use only what Lectures 4 to 18 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic, f-string formatting, comparisons combined with <code>and</code> and <code>or</code>, <code>if</code> statements, <code>while</code> and <code>for</code> loops, and string indexing and slicing. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your function directly with more values and compares what it returns. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
-  <p>Every problem here reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them: <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p>These problems use the parameters and return values from Lecture 18:</p>
+  <ul>
+    <li>the caller supplies the values as arguments</li>
+    <li>the function returns its result</li>
+    <li>the caller prints it</li>
+  </ul>
+  <p>They use only what Lectures 4 to 18 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code></li>
+    <li>arithmetic and f-string formatting</li>
+    <li>comparisons combined with <code>and</code> and <code>or</code></li>
+    <li><code>if</code> statements, <code>while</code> and <code>for</code> loops</li>
+    <li>string indexing and slicing</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your function directly with more values and compares what it returns. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem here reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. Keep the input lines exactly as the starter shows them. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
 </section>
 <hr>
 
 <h2 id="diagonal" data-toc-title="👹 Diagonal length">👹 Boss 1: Diagonal length</h2>
-<p>Given the positive horizontal and vertical side lengths of a rectangle, produce its diagonal length to two decimal places. The diagonal joins opposite corners. Write <code>diagonal(width, height)</code> to return (<var>width</var><sup>2</sup> + <var>height</var><sup>2</sup>)<sup>0.5</sup>. Read the two lengths on separate lines and print the returned result in the caller.</p>
+<p>The diagonal of a rectangle is the line that joins two opposite corners. Write a program that reads the width and the height of a rectangle and prints the length of its diagonal with two decimal places.</p>
+<p>Write the function <code>diagonal(width, height)</code>. It returns (<var>width</var><sup>2</sup> + <var>height</var><sup>2</sup>)<sup>0.5</sup>.</p>
+<p>The program reads the two lengths on separate lines. Both are positive. Print the result in the caller, the code that calls <code>diagonal</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -64,7 +81,7 @@ Equal unit sides give the square root of 2, rounded for display.</pre>
   <ul>
     <li>Both inputs are numbers greater than 0 and at most 10000.</li>
     <li>Both lengths use the same unit.</li>
-    <li>Use two parameters and return a numeric value; print only in the caller.</li>
+    <li>Use two parameters and return a numeric value. Print only in the caller.</li>
   </ul>
 </div>
 <table>
@@ -90,7 +107,9 @@ Equal unit sides give the square root of 2, rounded for display.</pre>
 <wb-exercise id="diagonal"></wb-exercise>
 
 <h2 id="triangle" data-toc-title="👾 Triangle check">👾 Boss 2: Triangle check</h2>
-<p>Given three positive segment lengths, produce <code>True</code> if they can make a triangle and <code>False</code> otherwise. A triangle needs each pair of lengths to have a sum strictly greater than the remaining length. Write <code>can_form_triangle(a, b, c)</code> with a single Boolean return expression. Read the lengths on separate lines and print the result.</p>
+<p>Three lengths can make a triangle only when each pair of lengths adds up to more than the third length. Equal is not enough: the sum must be strictly greater.</p>
+<p>Write the function <code>can_form_triangle(a, b, c)</code>. It returns <code>True</code> when the lengths <code>a</code>, <code>b</code> and <code>c</code> can make a triangle, and <code>False</code> otherwise. Its body is one <code>return</code> statement with one Boolean expression.</p>
+<p>The program reads three positive lengths on separate lines and prints the result.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -149,7 +168,9 @@ The first two lengths sum to 7; equality cannot form a triangle.</pre>
 <wb-exercise id="triangle"></wb-exercise>
 
 <h2 id="middle" data-toc-title="🐉 Middle of three">🐉 Boss 3: Middle of three</h2>
-<p>Given three integers, produce the middle value when the three are placed in ascending order. Equal values keep their repeated positions; the middle of 5, 5, and 9 is 5. Write <code>middle_value(a, b, c)</code> using comparisons and several return statements. Read three integers on separate lines and print the result.</p>
+<p>Write the function <code>middle_value(a, b, c)</code>. It returns the middle value of three integers: the one in the middle when they are sorted from smallest to largest.</p>
+<p>Equal values count separately. For example, the middle of 5, 5 and 9 is 5.</p>
+<p>Use comparisons and several <code>return</code> statements in the function. The program reads three integers on separate lines and prints the result.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -181,7 +202,7 @@ The repeated value occupies the first two positions.</pre>
   <ul>
     <li>Each integer is between -1000000 and 1000000 inclusive.</li>
     <li>Repeated values are allowed.</li>
-    <li>Use comparisons and several returns; do not use sorting, lists, min, or max.</li>
+    <li>Use comparisons and several returns. Do not use sorting, lists, min, or max.</li>
   </ul>
 </div>
 <p>The program reads the three integers with <code>int(input())</code> and no prompt.</p>
@@ -210,7 +231,13 @@ The repeated value occupies the first two positions.</pre>
 <wb-exercise id="middle"></wb-exercise>
 
 <h2 id="integer" data-toc-title="💀 Integer text check">💀 Boss 4: Integer text check</h2>
-<p>Given one line of text, produce <code>True</code> if it represents an integer under these rules, or <code>False</code> otherwise. Ignore ordinary spaces at the beginning and end. The remaining text must contain one or more digits from 0 through 9, with an optional single <code>+</code> or <code>-</code> before them. Spaces between digits are invalid. Write <code>is_integer_text(text)</code> with several return paths, then read a line and print its result. Do not convert the text with <code>int</code> or <code>float</code>.</p>
+<p>Write the function <code>is_integer_text(text)</code>. It returns <code>True</code> when the text is a whole number, and <code>False</code> otherwise. The text is a whole number when it follows these rules:</p>
+<ul>
+  <li>Spaces at the start and at the end are ignored.</li>
+  <li>What remains may start with one <code>+</code> or one <code>-</code>. The sign is optional.</li>
+  <li>After the sign there are one or more digits (0 to 9) and nothing else. A space between digits makes the text invalid.</li>
+</ul>
+<p>Use several <code>return</code> statements. Do not use <code>int</code> or <code>float</code> to convert the text. The program reads one line and prints the result.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <p>The input has two spaces before <code>-42</code> and two spaces after it.</p>
@@ -251,7 +278,7 @@ An empty line contains no digits.</pre>
     <li>The input line contains 0 to 80 characters.</li>
     <li>Characters may be ordinary spaces, ASCII letters, digits, punctuation, or signs.</li>
     <li>Use string indexing, slicing, loops, and several return paths.</li>
-    <li>Return a Boolean on every path; avoid converting the input to a number.</li>
+    <li>Return a Boolean on every path. Avoid converting the input to a number.</li>
   </ul>
 </div>
 <table>

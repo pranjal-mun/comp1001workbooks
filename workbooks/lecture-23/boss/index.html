@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 23 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-23-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 23 Boss Problems</h1>
+    <div class="wb-subtitle">Recursion versus iteration and Towers of Hanoi</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems compare loops and recursion from Lecture 23:</p>
+  <ul>
+    <li>a loop that updates a few values in one function frame</li>
+    <li>a recursive function that solves a smaller version of the same task</li>
+    <li>the cost of unfinished calls and of repeated smaller problems</li>
+  </ul>
+  <p>They use only what Lectures 4 to 23 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code>, and blank input lines</li>
+    <li>arithmetic, including <code>//</code> and <code>%</code></li>
+    <li>strings, <code>len</code>, <code>str</code>, indexing, and slices</li>
+    <li><code>while</code> loops and <code>if</code> statements</li>
+    <li>functions, recursion, <code>main()</code>, and the <code>__name__</code> guard</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show.</p>
+  <p>Each problem also asks you to compare or trace your functions. Those parts are under the code box. <strong>Check</strong> grades only the program.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 👾 and are worth 10 and 15 XP.</p>
+</section>
+<hr>
+
+<h2 id="binary" data-toc-title="👹 Binary, two ways">👹 Boss 1: Binary, two ways</h2>
+<p>Write <code>binary_rec(n)</code> and <code>binary_loop(n)</code>. Each function converts a nonnegative integer to a binary string. Binary uses the digits 0 and 1. Its place values from right to left are 1, 2, 4, 8, and successive powers of 2. You have already written a loop for base conversion. Write both versions here, then compare them.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>Return a string with no leading zeros for a positive input.</li>
+  <li>Return <code>"0"</code> for zero.</li>
+  <li>The conversion functions return strings and do not print.</li>
+  <li>Read one integer in <code>main()</code>.</li>
+  <li>For a negative integer, print <code>Error: enter a nonnegative integer</code>.</li>
+  <li>Otherwise, print both results with the labels shown in the examples.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>binary_rec(n)</code> uses recursion to return the binary string.</li>
+  <li><code>binary_loop(n)</code> uses a loop to return the binary string.</li>
+  <li><code>main()</code> reads the input and prints the required output.</li>
+</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+13
+Output:
+Recursive: 1101
+Loop: 1101
+Explanation:
+The digits represent 8 + 4 + 1, which is 13.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+Recursive: 0
+Loop: 0
+Explanation:
+Both functions return the one-character string "0".</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+-1
+Output:
+Error: enter a nonnegative integer
+Explanation:
+The program rejects the negative input before conversion.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The entered integer is from −1 through 65,535.</li>
+    <li>Each conversion function accepts only nonnegative integers.</li>
+    <li>Use recursion with no loop in <code>binary_rec</code>.</li>
+    <li>Use a loop with no recursion in <code>binary_loop</code>.</li>
+    <li>Do not use <code>bin()</code>, formatting codes for binary, lists, or dictionaries.</li>
+    <li>Use the three required functions and the standard guard.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>13</code></td><td><code>Recursive: 1101</code>, <code>Loop: 1101</code></td></tr>
+    <tr><td><code>0</code></td><td><code>Recursive: 0</code>, <code>Loop: 0</code></td></tr>
+    <tr><td><code>-1</code></td><td><code>Error: enter a nonnegative integer</code></td></tr>
+    <tr><td><code>1</code></td><td><code>Recursive: 1</code>, <code>Loop: 1</code></td></tr>
+    <tr><td><code>2</code></td><td><code>Recursive: 10</code>, <code>Loop: 10</code></td></tr>
+    <tr><td><code>255</code></td><td><code>Recursive: 11111111</code>, <code>Loop: 11111111</code></td></tr>
+    <tr><td><code>256</code></td><td><code>Recursive: 100000000</code>, <code>Loop: 100000000</code></td></tr>
+    <tr><td><code>1000</code></td><td><code>Recursive: 1111101000</code>, <code>Loop: 1111101000</code></td></tr>
+    <tr><td><code>65535</code></td><td><code>Recursive: 1111111111111111</code>, <code>Loop: 1111111111111111</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>binary_rec(n)</code> and <code>binary_loop(n)</code> with one parameter each, and <code>main</code> with empty parentheses.</li>
+    <li>Use recursion in <code>binary_rec</code>: call <code>binary_rec</code> inside its own body. Use no loop in it, and do not call <code>binary_loop</code> from it.</li>
+    <li>Use a <code>for</code> or <code>while</code> loop in <code>binary_loop</code>. Do not call <code>binary_loop</code> or <code>binary_rec</code> from it.</li>
+    <li>Do not use <code>bin()</code>, <code>format()</code>, or a binary format code such as <code>:b</code>.</li>
+    <li>Do not use lists, dictionaries, global variables, or imports.</li>
+    <li>The conversion functions return strings and do not print. <strong>Check</strong> also calls both of them with every value up to 300, and with values such as 512, 1023, and 40000.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="binary"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Compare the two versions</div>
+  <p>Which version do you prefer for this task? Give one reason about clarity and one about unfinished calls.</p>
+  <wb-short id="binary-why"></wb-short>
+</div>
+
+<h2 id="edits" data-toc-title="👾 The fewest edits">👾 Boss 2: The fewest edits</h2>
+<p>Write <code>edit_distance(s, t)</code>. It returns the smallest number of single-character edits needed to change string <code>s</code> into string <code>t</code>. An edit is one of these operations:</p>
+<ul>
+  <li>Insert one character.</li>
+  <li>Delete one character.</li>
+  <li>Substitute one character for another.</li>
+</ul>
+<p>Each edit costs 1. Matching characters need no edit. For example, changing <code>"at"</code> to <code>"cat"</code> needs one insertion.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>If one string is empty, count the characters in the other string.</li>
+  <li>For two nonempty strings, make three recursive calls.</li>
+  <li>One call removes the last character from <code>s</code> only.</li>
+  <li>One call removes the last character from <code>t</code> only.</li>
+  <li>One call removes the last character from both strings.</li>
+  <li>Include each operation's cost when comparing the three answers.</li>
+  <li>You may use <code>min(a, b, c)</code>, which returns the smallest of its three arguments.</li>
+  <li>Do not save earlier answers for reuse across calls.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>edit_distance(s, t)</code> returns the distance using recursion.</li>
+  <li><code>main()</code> reads two lines and prints <code>Distance:</code> followed by the distance.</li>
+</ol>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+at
+cat
+Output:
+Distance: 1
+Explanation:
+Insert c at the start of at to get cat.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+go
+Output:
+Distance: 2
+Explanation:
+Insert g and o into the empty string.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+ab
+ac
+Output:
+Distance: 1
+Explanation:
+Substitute c for b. The first character already matches.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each input has 0 through 4 lowercase English letters.</li>
+    <li>A blank line is an empty string.</li>
+    <li>Use three recursive calls in every call with two nonempty strings.</li>
+    <li>Use no loops, lists, or dictionaries.</li>
+    <li>Use the two required functions and the standard guard.</li>
+  </ul>
+</div>
+<p>In Example 2 the first line is blank: press Enter without typing anything. The program reads both lines with no prompt.</p>
+<pre class="wb-shell"><span class="wb-typed"></span>
+<span class="wb-typed">go</span>
+Distance: 2</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>at</code>, <code>cat</code></td><td><code>Distance: 1</code></td></tr>
+    <tr><td>blank, <code>go</code></td><td><code>Distance: 2</code></td></tr>
+    <tr><td><code>ab</code>, <code>ac</code></td><td><code>Distance: 1</code></td></tr>
+    <tr><td>blank, blank</td><td><code>Distance: 0</code></td></tr>
+    <tr><td><code>abcd</code>, blank</td><td><code>Distance: 4</code></td></tr>
+    <tr><td><code>cat</code>, <code>act</code></td><td><code>Distance: 2</code></td></tr>
+    <tr><td><code>same</code>, <code>same</code></td><td><code>Distance: 0</code></td></tr>
+    <tr><td><code>abcd</code>, <code>dcba</code></td><td><code>Distance: 4</code></td></tr>
+    <tr><td><code>kite</code>, <code>bit</code></td><td><code>Distance: 2</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>edit_distance(s, t)</code> with two parameters and <code>main</code> with empty parentheses.</li>
+    <li>Make three recursive calls: call <code>edit_distance</code> three times inside its own body.</li>
+    <li>Stop only when a string is empty, and do not save earlier answers. <strong>Check</strong> counts the calls. For example, <code>edit_distance("ab", "ac")</code> must make 19 calls in all.</li>
+    <li>Use no loops. Do not use lists, dictionaries, global variables, or imports.</li>
+    <li><code>edit_distance</code> returns its answer and does not print. <strong>Check</strong> also calls it with pairs such as <code>("dog", "god")</code>, <code>("star", "rats")</code>, and <code>("a", "aaaa")</code>.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="edits"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Trace and explain</div>
+  <p>Trace enough of <code>edit_distance("ab", "ac")</code> to find one repeated pair of string arguments. Write two call paths that reach that pair. State the distance returned for the pair.</p>
+  <wb-short id="edits-trace"></wb-short>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 23 Boss Problems.</p>
+</main>
+</body>
+</html>

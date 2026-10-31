@@ -27,14 +27,32 @@
 
 <section class="wb-outcomes">
   <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
-  <p>These problems use stepwise refinement and the scope rules from Lecture 20: a <code>main()</code> that calls named helpers, helpers that receive their inputs as parameters and return one value, fixed values in uppercase global constants, and changing data kept local to functions. They use only what Lectures 4 to 20 covered: <code>input()</code> with <code>int()</code> and <code>float()</code>, arithmetic including <code>//</code> and <code>%</code>, comparisons, <code>if</code> statements, <code>while</code> and <code>for</code> loops, strings, the <code>random</code> module, and functions. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
-  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times, typing a different sequence of answers each time, and every run must print exactly what the examples show. In Problem 3 the seed makes the random choices repeatable, so a given seed always produces the same password. Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p>These problems use stepwise refinement and the scope rules from Lecture 20:</p>
+  <ul>
+    <li>a <code>main()</code> that calls named helpers</li>
+    <li>helpers that receive their inputs as parameters and return one value</li>
+    <li>fixed values in uppercase global constants</li>
+    <li>changing data kept local to functions</li>
+  </ul>
+  <p>They use only what Lectures 4 to 20 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code></li>
+    <li>arithmetic, including <code>//</code> and <code>%</code></li>
+    <li>comparisons, <code>if</code> statements, <code>while</code> and <code>for</code> loops</li>
+    <li>strings and the <code>random</code> module</li>
+    <li>functions</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show. In Problem 3 the seed makes the random choices repeatable, so a given seed always produces the same password.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
   <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
 </section>
 <hr>
 
 <h2 id="fare" data-toc-title="👹 Distance fare">👹 Boss 1: Distance fare</h2>
-<p>Given a trip distance in kilometres, produce the fare for a taxi using this exercise's pricing rule. The fare is a base amount of $3.50 plus $0.40 per 200 metres. Charge in direct proportion to the distance, including a fraction of 200 metres. One kilometre is 1000 metres. Read one distance and print the fare as shown. Write <code>fare(kilometres)</code> with one parameter and one return value. Store the three fixed pricing values in global constants; keep the distance and calculated fare local to functions.</p>
+<p>A taxi charges a base fare of $3.50 plus $0.40 for every 200 metres. A part of 200 metres is charged in proportion, so 100 metres costs $0.20. One kilometre is 1000 metres.</p>
+<p>Write a program that reads a trip distance in kilometres and prints the fare as shown in the examples. Write the function <code>fare(kilometres)</code>. It takes the distance and returns the fare.</p>
+<p>Store the three fixed pricing values in global constants. Keep the distance and the calculated fare in local variables inside functions.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -84,7 +102,14 @@ A zero-distance trip has only the base amount.</pre>
 <wb-exercise id="fare"></wb-exercise>
 
 <h2 id="measure" data-toc-title="👾 Measure description">👾 Boss 2: Measure description</h2>
-<p>Given a nonnegative whole-number quantity and a unit, produce the same volume in cups, tablespoons, and teaspoons, using as many of each larger unit as possible. For this exercise, one cup is 16 tablespoons and one tablespoon is 3 teaspoons. Read the quantity on the first line and the unit on the second. The unit is <code>cup</code>, <code>tablespoon</code>, or <code>teaspoon</code>. Always print all three amounts, using the plural labels shown even when an amount is 1. Refine the program into <code>to_teaspoons(quantity, unit)</code>, which returns the total teaspoons, and <code>describe(total)</code>, which returns the output string. Use global constants for the unit relationships.</p>
+<p>For this exercise, 1 cup is 16 tablespoons and 1 tablespoon is 3 teaspoons.</p>
+<p>Write a program that reads a whole-number quantity (0 or more) on the first line and a unit on the second line. The unit is <code>cup</code>, <code>tablespoon</code> or <code>teaspoon</code>. The program prints the same volume with as many cups as possible, then as many tablespoons as possible, then the teaspoons that are left.</p>
+<p>Always print all three amounts in the format shown in the examples. Keep the plural labels (<code>cups</code>, <code>tablespoons</code>, <code>teaspoons</code>) even when an amount is 1. Write these functions:</p>
+<ol>
+  <li><code>to_teaspoons(quantity, unit)</code> returns the total number of teaspoons.</li>
+  <li><code>describe(total)</code> takes a number of teaspoons and returns the output line as a string.</li>
+</ol>
+<p>Store the unit relationships in global constants.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -121,7 +146,7 @@ Sixteen tablespoons fill one cup and four tablespoons remain.</pre>
     <li>The quantity is a whole number from 0 through 10000.</li>
     <li>The unit is exactly one of the three words listed above.</li>
     <li>Use <code>to_teaspoons</code>, <code>describe</code>, <code>main</code>, and the <code>__name__</code> guard.</li>
-    <li>Use integer division and remainder; return one value from each calculation helper.</li>
+    <li>Use integer division and remainder. Return one value from each calculation helper.</li>
   </ul>
 </div>
 <table>
@@ -149,7 +174,26 @@ Sixteen tablespoons fill one cup and four tablespoons remain.</pre>
 <wb-exercise id="measure"></wb-exercise>
 
 <h2 id="password" data-toc-title="🐉 Password search">🐉 Boss 3: Password search</h2>
-<p>Given a whole-number random seed, produce the first generated password that passes the rules below and the number of generation attempts. A seed starts the random generator from a repeatable state. A passing password has at least 9 characters and includes a letter from A through Z, a letter from a through z, and a digit from 0 through 9. Each attempt chooses a length from 7 through 11 with <code>random.randint</code>, then chooses that many characters with <code>random.choice</code> from <code>ALLOWED</code>, in the exact order given in the starter code. Read the seed, set it once in <code>main</code>, and count every generated candidate, including the successful one. Refine the program into <code>generate_password()</code> and <code>is_good_password(password)</code>, called from <code>main</code>. Use a local attempt counter.</p>
+<p>A seed is a number that starts the random generator from a repeatable state. The same seed always gives the same random choices.</p>
+<p>Write a program that reads a whole-number seed and generates passwords until one is good. It prints the first good password and the number of attempts. A good password has:</p>
+<ul>
+  <li>at least 9 characters</li>
+  <li>at least one uppercase letter (A to Z)</li>
+  <li>at least one lowercase letter (a to z)</li>
+  <li>at least one digit (0 to 9)</li>
+</ul>
+<p>Each attempt makes one password in two steps:</p>
+<ol>
+  <li>Choose a length from 7 through 11 with <code>random.randint</code>.</li>
+  <li>Choose that many characters, one at a time, with <code>random.choice</code> from <code>ALLOWED</code>. Keep <code>ALLOWED</code> exactly as it is in the starter code.</li>
+</ol>
+<p>Write these functions:</p>
+<ol>
+  <li><code>generate_password()</code> makes one password and returns it.</li>
+  <li><code>is_good_password(password)</code> returns <code>True</code> when the password is good.</li>
+  <li><code>main()</code> reads the seed and sets it once. It then generates passwords until one is good.</li>
+</ol>
+<p>Count every password you generate, including the good one. Keep the counter in a local variable.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -177,7 +221,7 @@ The first candidate passes, so the attempt count is 1.</pre>
     <li>Use the exact <code>ALLOWED</code> string in the starter code.</li>
     <li>Generate length before characters on every attempt. Stop at the first passing candidate.</li>
     <li>Use loops, character comparisons, Boolean flags, functions, and the <code>__name__</code> guard.</li>
-    <li>Use <code>random.seed</code> once in <code>main</code>; use no changing global variables.</li>
+    <li>Use <code>random.seed</code> once in <code>main</code>. Use no changing global variables.</li>
   </ul>
 </div>
 <table>
@@ -205,7 +249,23 @@ The first candidate passes, so the attempt count is 1.</pre>
 <wb-exercise id="password"></wb-exercise>
 
 <h2 id="base" data-toc-title="💀 Base conversion">💀 Boss 4: Base conversion</h2>
-<p>Given a source base, a target base, and a nonnegative integer written in the source base, produce its representation in the target base. A base gives the number of digit values: base 2 uses 0 and 1; base 16 uses 0 through 9 followed by A through F. The rightmost place has value 1. In any base, each digit's place value is the base times the place value to its right. Read the source base, target base, and number text, one per line. Support bases 2 through 16. If either base is outside that range, print <code>Invalid base.</code> and stop after reading the two bases. For supported bases, the number text is guaranteed valid. Print the converted number without leading zeros, except that zero prints <code>0</code>. Refine the work into <code>digit_value(ch)</code>, <code>to_decimal(text, base)</code>, <code>from_decimal(number, base)</code>, and <code>main</code>. Store the digit symbols in the constant <code>DIGITS</code>.</p>
+<p>A base is the number of digit values a number system uses. Base 2 uses the digits 0 and 1. Base 16 uses 0 to 9 and then A to F, where A is 10 and F is 15.</p>
+<p>The rightmost digit has place value 1. Each place to the left has a place value equal to the base times the place value on its right. For example, the place values in base 2 are 1, 2, 4, 8, and so on.</p>
+<p>Write a program that reads three lines: the source base, the target base, and a number (0 or more) written in the source base. It prints the same number written in the target base.</p>
+<ul>
+  <li>Support bases 2 through 16.</li>
+  <li>If either base is outside that range, print <code>Invalid base.</code> and stop. Do not read the number.</li>
+  <li>When both bases are supported, the number text is always valid.</li>
+  <li>Print the result without leading zeros. Zero prints as <code>0</code>.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>digit_value(ch)</code> returns the value of one digit symbol, for example 10 for <code>A</code>.</li>
+  <li><code>to_decimal(text, base)</code> returns the value of the number text as an integer.</li>
+  <li><code>from_decimal(number, base)</code> returns the number written in the given base, as a string.</li>
+  <li><code>main()</code> reads the input and prints the result.</li>
+</ol>
+<p>Store the digit symbols in the constant <code>DIGITS</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Example 1</div>
   <pre class="wb-output">Input:
@@ -244,7 +304,7 @@ Base 1 is outside the supported range; no number text is read.</pre>
     <li>Each base is a whole number. Supported bases are 2 through 16 inclusive.</li>
     <li>For supported bases, the number has 1 through 12 characters from <code>DIGITS[:source_base]</code>. Use uppercase letters.</li>
     <li>Use the named helpers, loops, and the <code>__name__</code> guard.</li>
-    <li>Convert by place-value accumulation and repeated integer division; do not use <code>int(text, base)</code>, <code>bin</code>, <code>oct</code>, or <code>hex</code>.</li>
+    <li>Convert by place-value accumulation and repeated integer division. Do not use <code>int(text, base)</code>, <code>bin</code>, <code>oct</code>, or <code>hex</code>.</li>
     <li>Every helper returns one value. Keep changing data local.</li>
   </ul>
 </div>

@@ -1,0 +1,300 @@
+{
+  "id": "lecture-23",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 23 Workbook",
+  "subtitle": "Recursion versus iteration and Towers of Hanoi",
+  "exercises": {
+    "ex-factorial-rec": {
+      "type": "example",
+      "code": "def factorial_rec(n):\n    if n == 0:\n        return 1\n    return n * factorial_rec(n - 1)"
+    },
+    "ex-factorial-loop": {
+      "type": "example",
+      "code": "def factorial_loop(n):\n    result = 1\n    for i in range(1, n + 1):\n        result = result * i\n    return result"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def squares_rec(n):\n    pass\n\ndef squares_loop(n):\n    pass",
+      "cases": [
+        {
+          "name": "squares_rec(0) returns 0",
+          "check": "_returns('squares_rec', (0,), 0)\n"
+        },
+        {
+          "name": "squares_rec(3) returns 14",
+          "check": "_returns('squares_rec', (3,), 14)\n"
+        },
+        {
+          "name": "squares_loop(0) returns 0",
+          "check": "_returns('squares_loop', (0,), 0)\n"
+        },
+        {
+          "name": "squares_loop(3) returns 14",
+          "check": "_returns('squares_loop', (3,), 14)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"squares_rec\", \"n\")\n_fn(\"squares_loop\", \"n\")\n_recursive(\"squares_rec\")\n_no_loops(\"squares_rec\")\nassert not _calls_in(\"squares_rec\", \"squares_loop\"), \"Use recursion in squares_rec. Do not call squares_loop from it.\"\n_loop_only(\"squares_loop\")\n_plain()\n_returns('squares_rec', (0,), 0)\n_returns('squares_rec', (1,), 1)\n_returns('squares_rec', (2,), 5)\n_returns('squares_rec', (3,), 14)\n_returns('squares_rec', (4,), 30)\n_returns('squares_rec', (5,), 55)\n_returns('squares_rec', (6,), 91)\n_returns('squares_rec', (7,), 140)\n_returns('squares_rec', (8,), 204)\n_returns('squares_rec', (9,), 285)\n_returns('squares_rec', (10,), 385)\n_returns('squares_rec', (11,), 506)\n_returns('squares_rec', (12,), 650)\n_returns('squares_rec', (13,), 819)\n_returns('squares_rec', (14,), 1015)\n_returns('squares_rec', (15,), 1240)\n_returns('squares_rec', (16,), 1496)\n_returns('squares_rec', (17,), 1785)\n_returns('squares_rec', (18,), 2109)\n_returns('squares_rec', (19,), 2470)\n_returns('squares_rec', (20,), 2870)\n_returns('squares_loop', (0,), 0)\n_returns('squares_loop', (1,), 1)\n_returns('squares_loop', (2,), 5)\n_returns('squares_loop', (3,), 14)\n_returns('squares_loop', (4,), 30)\n_returns('squares_loop', (5,), 55)\n_returns('squares_loop', (6,), 91)\n_returns('squares_loop', (7,), 140)\n_returns('squares_loop', (8,), 204)\n_returns('squares_loop', (9,), 285)\n_returns('squares_loop', (10,), 385)\n_returns('squares_loop', (11,), 506)\n_returns('squares_loop', (12,), 650)\n_returns('squares_loop', (13,), 819)\n_returns('squares_loop', (14,), 1015)\n_returns('squares_loop', (15,), 1240)\n_returns('squares_loop', (16,), 1496)\n_returns('squares_loop', (17,), 1785)\n_returns('squares_loop', (18,), 2109)\n_returns('squares_loop', (19,), 2470)\n_returns('squares_loop', (20,), 2870)\n",
+      "answer": "ZGVmIHNxdWFyZXNfcmVjKG4pOgogICAgaWYgbiA9PSAwOgogICAgICAgIHJldHVybiAwCiAgICBzbWFsbGVyID0gc3F1YXJlc19yZWMobiAtIDEpCiAgICByZXR1cm4gbiAqIG4gKyBzbWFsbGVyCgpkZWYgc3F1YXJlc19sb29wKG4pOgogICAgdG90YWwgPSAwCiAgICBmb3IgaSBpbiByYW5nZSgxLCBuICsgMSk6CiAgICAgICAgdG90YWwgPSB0b3RhbCArIGkgKiBpCiAgICByZXR1cm4gdG90YWw=",
+      "answerNote": "Both return 0 for 0 and 14 for 3."
+    },
+    "cp1-choice": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Which version for a large input, and why…",
+      "answer": "Q2hvb3NlIHRoZSBsb29wIGZvciBhIGxhcmdlIGlucHV0LiBJdCB1c2VzIG9uZSBmdW5jdGlvbiBmcmFtZS4gVGhlIHJlY3Vyc2l2ZSB2ZXJzaW9uIHJlYWNoZXMgZGVwdGggbiArIDEu"
+    },
+    "ex-fib": {
+      "type": "example",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    left = fib(n - 1)\n    right = fib(n - 2)\n    return left + right"
+    },
+    "ex-fib-trace": {
+      "type": "example",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    left = fib(n - 1)\n    right = fib(n - 2)\n    return left + right\n\nprint(fib(4))"
+    },
+    "ex-fib-counts": {
+      "type": "example",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    left = fib(n - 1)\n    right = fib(n - 2)\n    return left + right"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def fib_loop(n):\n    pass",
+      "cases": [
+        {
+          "name": "fib_loop(0) returns 0",
+          "check": "_returns('fib_loop', (0,), 0)\n"
+        },
+        {
+          "name": "fib_loop(1) returns 1",
+          "check": "_returns('fib_loop', (1,), 1)\n"
+        },
+        {
+          "name": "fib_loop(5) returns 5",
+          "check": "_returns('fib_loop', (5,), 5)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"fib_loop\", \"n\")\n_loop_only(\"fib_loop\")\n_plain()\n_returns('fib_loop', (0,), 0)\n_returns('fib_loop', (1,), 1)\n_returns('fib_loop', (2,), 1)\n_returns('fib_loop', (3,), 2)\n_returns('fib_loop', (4,), 3)\n_returns('fib_loop', (5,), 5)\n_returns('fib_loop', (6,), 8)\n_returns('fib_loop', (7,), 13)\n_returns('fib_loop', (8,), 21)\n_returns('fib_loop', (9,), 34)\n_returns('fib_loop', (10,), 55)\n_returns('fib_loop', (11,), 89)\n_returns('fib_loop', (12,), 144)\n_returns('fib_loop', (13,), 233)\n_returns('fib_loop', (14,), 377)\n_returns('fib_loop', (15,), 610)\n_returns('fib_loop', (16,), 987)\n_returns('fib_loop', (17,), 1597)\n_returns('fib_loop', (18,), 2584)\n_returns('fib_loop', (19,), 4181)\n_returns('fib_loop', (20,), 6765)\n_returns('fib_loop', (21,), 10946)\n_returns('fib_loop', (22,), 17711)\n_returns('fib_loop', (23,), 28657)\n_returns('fib_loop', (24,), 46368)\n_returns('fib_loop', (25,), 75025)\n_returns('fib_loop', (26,), 121393)\n_returns('fib_loop', (27,), 196418)\n_returns('fib_loop', (28,), 317811)\n_returns('fib_loop', (29,), 514229)\n_returns('fib_loop', (30,), 832040)\n_returns('fib_loop', (100,), 354224848179261915075)\n",
+      "answer": "ZGVmIGZpYl9sb29wKG4pOgogICAgYSA9IDAKICAgIGIgPSAxCiAgICBmb3IgaSBpbiByYW5nZShuKToKICAgICAgICBuZXh0X3ZhbHVlID0gYSArIGIKICAgICAgICBhID0gYgogICAgICAgIGIgPSBuZXh0X3ZhbHVlCiAgICByZXR1cm4gYQ==",
+      "answerNote": "The table follows one call, fib_loop(5). It returns 5 after five additions. Inputs 0 and 1 return 0 and 1. The loop uses one function frame."
+    },
+    "ex-hanoi": {
+      "type": "example",
+      "code": "def hanoi(n, source, target, spare):\n    if n == 0:\n        return\n    hanoi(n - 1, source, spare, target)\n    print(\"Move\", n, source,\n          \"to\", target)\n    hanoi(n - 1, spare, target, source)\n\nhanoi(3, \"A\", \"C\", \"B\")",
+      "output": "Move 1 A to C\nMove 2 A to B\nMove 1 C to B\nMove 3 A to C\nMove 1 B to A\nMove 2 B to C\nMove 1 A to C"
+    },
+    "ex-hanoi-trace": {
+      "type": "example",
+      "code": "def hanoi(n, source, target, spare):\n    if n == 0:\n        return\n    hanoi(n - 1,\n          source, spare, target)\n    print(\"Move\", n, source,\n          \"to\", target)\n    hanoi(n - 1,\n          spare, target, source)"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def hanoi_moves(n):\n    pass",
+      "cases": [
+        {
+          "name": "hanoi_moves(0) returns 0",
+          "check": "_returns('hanoi_moves', (0,), 0)\n"
+        },
+        {
+          "name": "hanoi_moves(3) returns 7",
+          "check": "_returns('hanoi_moves', (3,), 7)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"hanoi_moves\", \"n\")\n_recursive(\"hanoi_moves\", 1)\n_no_loops(\"hanoi_moves\")\nassert not _calls_in(\"hanoi_moves\", \"print\"), \"hanoi_moves returns a number. It does not print the moves.\"\nassert not any(isinstance(_n, ast.Pow) for _n in _body(\"hanoi_moves\")), \"Build the count from the smaller count with 2 * smaller + 1. Do not use **.\"\n_plain()\n_returns('hanoi_moves', (0,), 0)\n_returns('hanoi_moves', (1,), 1)\n_returns('hanoi_moves', (2,), 3)\n_returns('hanoi_moves', (3,), 7)\n_returns('hanoi_moves', (4,), 15)\n_returns('hanoi_moves', (5,), 31)\n_returns('hanoi_moves', (6,), 63)\n_returns('hanoi_moves', (7,), 127)\n_returns('hanoi_moves', (8,), 255)\n_returns('hanoi_moves', (9,), 511)\n_returns('hanoi_moves', (10,), 1023)\n_returns('hanoi_moves', (11,), 2047)\n_returns('hanoi_moves', (12,), 4095)\n_returns('hanoi_moves', (13,), 8191)\n_returns('hanoi_moves', (14,), 16383)\n_returns('hanoi_moves', (15,), 32767)\n_returns('hanoi_moves', (16,), 65535)\n_returns('hanoi_moves', (17,), 131071)\n_returns('hanoi_moves', (18,), 262143)\n_returns('hanoi_moves', (19,), 524287)\n_returns('hanoi_moves', (20,), 1048575)\n_f = globals()[\"hanoi_moves\"]\n_g = _f.__globals__\n_box = [0]\ndef _counting(n):\n    _box[0] += 1\n    return _f(n)\nfor _n in (3, 10):\n    _box[0] = 0\n    _g[\"hanoi_moves\"] = _counting\n    try:\n        with contextlib.redirect_stdout(io.StringIO()):\n            _counting(_n)\n    finally:\n        _g[\"hanoi_moves\"] = _f\n    assert _box[0] == _n + 1, \"hanoi_moves(\" + str(_n) + \") made \" + str(_box[0]) + \" calls, not \" + str(_n + 1) + \". Each call with n above 0 calls hanoi_moves(n - 1) once.\"\n",
+      "answer": "ZGVmIGhhbm9pX21vdmVzKG4pOgogICAgaWYgbiA9PSAwOgogICAgICAgIHJldHVybiAwCiAgICBzbWFsbGVyID0gaGFub2lfbW92ZXMobiAtIDEpCiAgICByZXR1cm4gMiAqIHNtYWxsZXIgKyAx",
+      "answerNote": "hanoi_moves(3) makes four calls and returns 7. Counting the moves needs far less work than printing all seven moves."
+    },
+    "cp3-calls": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 10,
+      "rows": 3,
+      "placeholder": "How many calls for hanoi_moves(3)…",
+      "answer": "aGFub2lfbW92ZXMoMykgbWFrZXMgZm91ciBjYWxscyBhbmQgcmV0dXJucyA3LiBDb3VudGluZyB0aGUgbW92ZXMgbmVlZHMgZmFyIGxlc3Mgd29yayB0aGFuIHByaW50aW5nIGFsbCBzZXZlbiBtb3Zlcy4="
+    },
+    "ex-alternate-rec": {
+      "type": "example",
+      "code": "def alternate_rec(text):\n    if text == \"\":\n        return \"\"\n    return text[0] + alternate_rec(text[2:])"
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def alternate_loop(text):\n    pass",
+      "cases": [
+        {
+          "name": "alternate_loop('abcdef') returns 'ace'",
+          "check": "_returns('alternate_loop', ('abcdef',), 'ace')\n"
+        },
+        {
+          "name": "alternate_loop('x') returns 'x'",
+          "check": "_returns('alternate_loop', ('x',), 'x')\n"
+        },
+        {
+          "name": "alternate_loop('') returns ''",
+          "check": "_returns('alternate_loop', ('',), '')\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"alternate_loop\", \"text\")\n_loop_only(\"alternate_loop\")\nassert not _calls_in(\"alternate_loop\", \"alternate_rec\"), \"Use a loop with no recursion in alternate_loop. Do not call alternate_rec from it.\"\nassert not any(isinstance(_n, ast.Slice) and _n.step is not None for _n in _body(\"alternate_loop\")), \"Do not use a slice with a step. Build the answer one character at a time.\"\n_plain()\n_returns('alternate_loop', ('abcdef',), 'ace')\n_returns('alternate_loop', ('x',), 'x')\n_returns('alternate_loop', ('',), '')\n_returns('alternate_loop', ('ab',), 'a')\n_returns('alternate_loop', ('abc',), 'ac')\n_returns('alternate_loop', ('abcdefg',), 'aceg')\n_returns('alternate_loop', ('hello world',), 'hlowrd')\n_returns('alternate_loop', ('0123456789',), '02468')\n",
+      "answer": "ZGVmIGFsdGVybmF0ZV9sb29wKHRleHQpOgogICAgcmVzdWx0ID0gIiIKICAgIGZvciBpbmRleCBpbiByYW5nZSgwLCBsZW4odGV4dCksIDIpOgogICAgICAgIHJlc3VsdCA9IHJlc3VsdCArIHRleHRbaW5kZXhdCiAgICByZXR1cm4gcmVzdWx0",
+      "answerNote": "The loop visits every even position once. For empty input, the loop makes no updates and the function returns the empty string."
+    },
+    "ex-reduce": {
+      "type": "example",
+      "code": "def reduce_reading(n):\n    if n <= 10:\n        return n\n    return reduce_reading(n // 3)"
+    },
+    "p2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r0": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "reading",
+          "width": "5rem"
+        },
+        "c0": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "calls",
+          "width": "5rem"
+        },
+        "r10": {
+          "accept": [
+            "10"
+          ],
+          "placeholder": "reading",
+          "width": "5rem"
+        },
+        "c10": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "calls",
+          "width": "5rem"
+        },
+        "r11": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "reading",
+          "width": "5rem"
+        },
+        "c11": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "calls",
+          "width": "5rem"
+        },
+        "r100": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "reading",
+          "width": "5rem"
+        },
+        "c100": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "calls",
+          "width": "5rem"
+        }
+      }
+    },
+    "p2-trace": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "The inputs in call order and each returned value…",
+      "answer": "VGhlIGlucHV0cyBhcmUgMTAwLCAzMywgMTEsIGFuZCAzLiBFYWNoIGNhbGwgcmV0dXJucyB0aGUgcmVkdWNlZCByZWFkaW5nIDMu"
+    },
+    "p2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def reading_calls(n):\n    pass",
+      "cases": [
+        {
+          "name": "reading_calls(0) returns 1",
+          "check": "_returns('reading_calls', (0,), 1)\n"
+        },
+        {
+          "name": "reading_calls(10) returns 1",
+          "check": "_returns('reading_calls', (10,), 1)\n"
+        },
+        {
+          "name": "reading_calls(11) returns 2",
+          "check": "_returns('reading_calls', (11,), 2)\n"
+        },
+        {
+          "name": "reading_calls(100) returns 4",
+          "check": "_returns('reading_calls', (100,), 4)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"reading_calls\", \"n\")\n_recursive(\"reading_calls\")\n_no_loops(\"reading_calls\")\nassert not _calls_in(\"reading_calls\", \"reduce_reading\"), \"Do not call reduce_reading from reading_calls. Count the calls with reading_calls itself.\"\n_plain()\n_returns('reading_calls', (0,), 1)\n_returns('reading_calls', (1,), 1)\n_returns('reading_calls', (9,), 1)\n_returns('reading_calls', (10,), 1)\n_returns('reading_calls', (11,), 2)\n_returns('reading_calls', (32,), 2)\n_returns('reading_calls', (33,), 3)\n_returns('reading_calls', (34,), 3)\n_returns('reading_calls', (99,), 4)\n_returns('reading_calls', (100,), 4)\n_returns('reading_calls', (101,), 4)\n_returns('reading_calls', (1000,), 6)\n_returns('reading_calls', (1000000,), 12)\n_returns('reading_calls', (1000000000000,), 24)\n",
+      "answer": "ZGVmIHJlYWRpbmdfY2FsbHMobik6CiAgICBpZiBuIDw9IDEwOgogICAgICAgIHJldHVybiAxCiAgICByZXR1cm4gMSArIHJlYWRpbmdfY2FsbHMobiAvLyAzKQ==",
+      "answerNote": "The count function returns 1, 2, 3, and 4 as its calls finish. Each call includes itself in the returned count."
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def tower_within(budget):\n    pass",
+      "cases": [
+        {
+          "name": "tower_within(0) returns 0",
+          "check": "_returns('tower_within', (0,), 0)\n"
+        },
+        {
+          "name": "tower_within(6) returns 2",
+          "check": "_returns('tower_within', (6,), 2)\n"
+        },
+        {
+          "name": "tower_within(7) returns 3",
+          "check": "_returns('tower_within', (7,), 3)\n"
+        },
+        {
+          "name": "tower_within(31) returns 5",
+          "check": "_returns('tower_within', (31,), 5)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"tower_within\", \"budget\")\n_loop_only(\"tower_within\")\nassert not any(isinstance(_n, ast.BinOp) and isinstance(_n.op, ast.Pow) for _n in ast.walk(_TREE)), \"Do not use **. Build each move count from the one before.\"\nassert not _calls_in(\"tower_within\", \"pow\"), \"Do not use pow. Build each move count from the one before.\"\n_plain()\n_returns('tower_within', (0,), 0)\n_returns('tower_within', (1,), 1)\n_returns('tower_within', (2,), 1)\n_returns('tower_within', (3,), 2)\n_returns('tower_within', (4,), 2)\n_returns('tower_within', (5,), 2)\n_returns('tower_within', (6,), 2)\n_returns('tower_within', (7,), 3)\n_returns('tower_within', (8,), 3)\n_returns('tower_within', (9,), 3)\n_returns('tower_within', (10,), 3)\n_returns('tower_within', (11,), 3)\n_returns('tower_within', (12,), 3)\n_returns('tower_within', (13,), 3)\n_returns('tower_within', (14,), 3)\n_returns('tower_within', (15,), 4)\n_returns('tower_within', (16,), 4)\n_returns('tower_within', (17,), 4)\n_returns('tower_within', (18,), 4)\n_returns('tower_within', (19,), 4)\n_returns('tower_within', (20,), 4)\n_returns('tower_within', (21,), 4)\n_returns('tower_within', (22,), 4)\n_returns('tower_within', (23,), 4)\n_returns('tower_within', (24,), 4)\n_returns('tower_within', (25,), 4)\n_returns('tower_within', (26,), 4)\n_returns('tower_within', (27,), 4)\n_returns('tower_within', (28,), 4)\n_returns('tower_within', (29,), 4)\n_returns('tower_within', (30,), 4)\n_returns('tower_within', (31,), 5)\n_returns('tower_within', (32,), 5)\n_returns('tower_within', (33,), 5)\n_returns('tower_within', (34,), 5)\n_returns('tower_within', (35,), 5)\n_returns('tower_within', (36,), 5)\n_returns('tower_within', (37,), 5)\n_returns('tower_within', (38,), 5)\n_returns('tower_within', (39,), 5)\n_returns('tower_within', (40,), 5)\n_returns('tower_within', (41,), 5)\n_returns('tower_within', (42,), 5)\n_returns('tower_within', (43,), 5)\n_returns('tower_within', (44,), 5)\n_returns('tower_within', (45,), 5)\n_returns('tower_within', (46,), 5)\n_returns('tower_within', (47,), 5)\n_returns('tower_within', (48,), 5)\n_returns('tower_within', (49,), 5)\n_returns('tower_within', (50,), 5)\n_returns('tower_within', (51,), 5)\n_returns('tower_within', (52,), 5)\n_returns('tower_within', (53,), 5)\n_returns('tower_within', (54,), 5)\n_returns('tower_within', (55,), 5)\n_returns('tower_within', (56,), 5)\n_returns('tower_within', (57,), 5)\n_returns('tower_within', (58,), 5)\n_returns('tower_within', (59,), 5)\n_returns('tower_within', (60,), 5)\n_returns('tower_within', (61,), 5)\n_returns('tower_within', (62,), 5)\n_returns('tower_within', (63,), 6)\n_returns('tower_within', (64,), 6)\n_returns('tower_within', (65,), 6)\n_returns('tower_within', (66,), 6)\n_returns('tower_within', (67,), 6)\n_returns('tower_within', (68,), 6)\n_returns('tower_within', (69,), 6)\n_returns('tower_within', (127,), 7)\n_returns('tower_within', (128,), 7)\n_returns('tower_within', (1000,), 9)\n_returns('tower_within', (1023,), 10)\n_returns('tower_within', (1024,), 10)\n_returns('tower_within', (1000000,), 19)\n_returns('tower_within', (1099511627775,), 40)\n_returns('tower_within', (1099511627776,), 40)\n",
+      "answer": "ZGVmIHRvd2VyX3dpdGhpbihidWRnZXQpOgogICAgZGlzY3MgPSAwCiAgICBtb3ZlcyA9IDAKICAgIHdoaWxlIDIgKiBtb3ZlcyArIDEgPD0gYnVkZ2V0OgogICAgICAgIG1vdmVzID0gMiAqIG1vdmVzICsgMQogICAgICAgIGRpc2NzID0gZGlzY3MgKyAxCiAgICByZXR1cm4gZGlzY3M=",
+      "answerNote": "The loop adds one disc to the count only if the required moves fit within the budget. For a budget of 6, two discs need 3 moves. Three discs need 7 moves and exceed that budget."
+    },
+    "p4": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 14,
+      "starter": "def hanoi_move(n, step, source, target, spare):\n    pass",
+      "cases": [
+        {
+          "name": "hanoi_move(1, 1, 'A', 'C', 'B') returns 'Move 1 A to C'",
+          "check": "_returns('hanoi_move', (1, 1, 'A', 'C', 'B'), 'Move 1 A to C')\n"
+        },
+        {
+          "name": "hanoi_move(3, 4, 'A', 'C', 'B') returns 'Move 3 A to C'",
+          "check": "_returns('hanoi_move', (3, 4, 'A', 'C', 'B'), 'Move 3 A to C')\n"
+        },
+        {
+          "name": "hanoi_move(3, 6, 'A', 'C', 'B') returns 'Move 2 B to C'",
+          "check": "_returns('hanoi_move', (3, 6, 'A', 'C', 'B'), 'Move 2 B to C')\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\", \"four parameters\", \"five parameters\"]\n_TREE = ast.parse(__source__)\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check the base case and that every recursive call moves toward it.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, int):\n        ok = isinstance(value, int) and not isinstance(value, bool) and value == want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _node(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return None\ndef _body(name):\n    node = _node(name)\n    return list(ast.walk(node)) if node else []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defined():\n    return [n.name for n in _TREE.body if isinstance(n, ast.FunctionDef)]\ndef _has_loop(name):\n    return any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name))\ndef _recursive(name, count=None):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Use recursion in \" + name + \": call \" + name + \" inside its own body with a smaller input.\"\n    if count == 1:\n        assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops(name):\n    assert not _has_loop(name), \"Use recursion and no loops in \" + name + \". Remove the for or while loop.\"\ndef _loop_only(name):\n    assert _has_loop(name), \"Use a loop in \" + name + \": a for or while loop.\"\n    _other = [c for c in _defined() if _calls_in(name, c)]\n    assert not _other, \"Use a loop with no recursion in \" + name + \". Do not call \" + _other[0] + \" from it.\"\ndef _plain():\n    for _n in ast.walk(_TREE):\n        assert not isinstance(_n, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)), \"Do not use lists, dictionaries, or sets.\"\n        assert not (isinstance(_n, ast.Call) and isinstance(_n.func, ast.Name) and _n.func.id in (\"list\", \"dict\", \"set\")), \"Do not use lists, dictionaries, or sets.\"\n        assert not isinstance(_n, (ast.Global, ast.Nonlocal)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n        assert not isinstance(_n, (ast.Import, ast.ImportFrom)), \"Do not import modules. Use only the operations in the statement.\"\n        assert not (isinstance(_n, ast.FunctionDef) and _n.decorator_list), \"Do not put a decorator on a function. Do not save earlier answers.\"\n_fn(\"hanoi_move\", \"n\", \"step\", \"source\", \"target\", \"spare\")\n_recursive(\"hanoi_move\")\nassert not _calls_in(\"hanoi_move\", \"print\"), \"hanoi_move returns one move as a string. Do not print the moves.\"\n_plain()\n_returns('hanoi_move', (1, 1, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (2, 1, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (2, 2, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (2, 3, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (3, 1, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (3, 2, 'A', 'C', 'B'), 'Move 2 A to B')\n_returns('hanoi_move', (3, 3, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (3, 4, 'A', 'C', 'B'), 'Move 3 A to C')\n_returns('hanoi_move', (3, 5, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (3, 6, 'A', 'C', 'B'), 'Move 2 B to C')\n_returns('hanoi_move', (3, 7, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (4, 1, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (4, 2, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (4, 3, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (4, 4, 'A', 'C', 'B'), 'Move 3 A to B')\n_returns('hanoi_move', (4, 5, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (4, 6, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (4, 7, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (4, 8, 'A', 'C', 'B'), 'Move 4 A to C')\n_returns('hanoi_move', (4, 9, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (4, 10, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (4, 11, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (4, 12, 'A', 'C', 'B'), 'Move 3 B to C')\n_returns('hanoi_move', (4, 13, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (4, 14, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (4, 15, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (5, 1, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (5, 2, 'A', 'C', 'B'), 'Move 2 A to B')\n_returns('hanoi_move', (5, 3, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (5, 4, 'A', 'C', 'B'), 'Move 3 A to C')\n_returns('hanoi_move', (5, 5, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (5, 6, 'A', 'C', 'B'), 'Move 2 B to C')\n_returns('hanoi_move', (5, 7, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (5, 8, 'A', 'C', 'B'), 'Move 4 A to B')\n_returns('hanoi_move', (5, 9, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (5, 10, 'A', 'C', 'B'), 'Move 2 C to A')\n_returns('hanoi_move', (5, 11, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (5, 12, 'A', 'C', 'B'), 'Move 3 C to B')\n_returns('hanoi_move', (5, 13, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (5, 14, 'A', 'C', 'B'), 'Move 2 A to B')\n_returns('hanoi_move', (5, 15, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (5, 16, 'A', 'C', 'B'), 'Move 5 A to C')\n_returns('hanoi_move', (5, 17, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (5, 18, 'A', 'C', 'B'), 'Move 2 B to C')\n_returns('hanoi_move', (5, 19, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (5, 20, 'A', 'C', 'B'), 'Move 3 B to A')\n_returns('hanoi_move', (5, 21, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (5, 22, 'A', 'C', 'B'), 'Move 2 C to A')\n_returns('hanoi_move', (5, 23, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (5, 24, 'A', 'C', 'B'), 'Move 4 B to C')\n_returns('hanoi_move', (5, 25, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (5, 26, 'A', 'C', 'B'), 'Move 2 A to B')\n_returns('hanoi_move', (5, 27, 'A', 'C', 'B'), 'Move 1 C to B')\n_returns('hanoi_move', (5, 28, 'A', 'C', 'B'), 'Move 3 A to C')\n_returns('hanoi_move', (5, 29, 'A', 'C', 'B'), 'Move 1 B to A')\n_returns('hanoi_move', (5, 30, 'A', 'C', 'B'), 'Move 2 B to C')\n_returns('hanoi_move', (5, 31, 'A', 'C', 'B'), 'Move 1 A to C')\n_returns('hanoi_move', (6, 1, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 2, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 3, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 4, 'A', 'C', 'B'), 'Move 3 A to B')\n_returns('hanoi_move', (6, 5, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 6, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (6, 7, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 8, 'A', 'C', 'B'), 'Move 4 A to C')\n_returns('hanoi_move', (6, 9, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 10, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (6, 11, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 12, 'A', 'C', 'B'), 'Move 3 B to C')\n_returns('hanoi_move', (6, 13, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 14, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 15, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 16, 'A', 'C', 'B'), 'Move 5 A to B')\n_returns('hanoi_move', (6, 17, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 18, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (6, 19, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 20, 'A', 'C', 'B'), 'Move 3 C to A')\n_returns('hanoi_move', (6, 21, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 22, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (6, 23, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 24, 'A', 'C', 'B'), 'Move 4 C to B')\n_returns('hanoi_move', (6, 25, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 26, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 27, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 28, 'A', 'C', 'B'), 'Move 3 A to B')\n_returns('hanoi_move', (6, 29, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 30, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (6, 31, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 32, 'A', 'C', 'B'), 'Move 6 A to C')\n_returns('hanoi_move', (6, 33, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 34, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (6, 35, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 36, 'A', 'C', 'B'), 'Move 3 B to C')\n_returns('hanoi_move', (6, 37, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 38, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 39, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 40, 'A', 'C', 'B'), 'Move 4 B to A')\n_returns('hanoi_move', (6, 41, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 42, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (6, 43, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 44, 'A', 'C', 'B'), 'Move 3 C to A')\n_returns('hanoi_move', (6, 45, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 46, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (6, 47, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 48, 'A', 'C', 'B'), 'Move 5 B to C')\n_returns('hanoi_move', (6, 49, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 50, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 51, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 52, 'A', 'C', 'B'), 'Move 3 A to B')\n_returns('hanoi_move', (6, 53, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 54, 'A', 'C', 'B'), 'Move 2 C to B')\n_returns('hanoi_move', (6, 55, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 56, 'A', 'C', 'B'), 'Move 4 A to C')\n_returns('hanoi_move', (6, 57, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (6, 58, 'A', 'C', 'B'), 'Move 2 B to A')\n_returns('hanoi_move', (6, 59, 'A', 'C', 'B'), 'Move 1 C to A')\n_returns('hanoi_move', (6, 60, 'A', 'C', 'B'), 'Move 3 B to C')\n_returns('hanoi_move', (6, 61, 'A', 'C', 'B'), 'Move 1 A to B')\n_returns('hanoi_move', (6, 62, 'A', 'C', 'B'), 'Move 2 A to C')\n_returns('hanoi_move', (6, 63, 'A', 'C', 'B'), 'Move 1 B to C')\n_returns('hanoi_move', (2, 1, 'P', 'Q', 'R'), 'Move 1 P to R')\n_returns('hanoi_move', (2, 2, 'P', 'Q', 'R'), 'Move 2 P to Q')\n_returns('hanoi_move', (2, 3, 'P', 'Q', 'R'), 'Move 1 R to Q')\n_returns('hanoi_move', (4, 1, 'P', 'Q', 'R'), 'Move 1 P to R')\n_returns('hanoi_move', (4, 8, 'P', 'Q', 'R'), 'Move 4 P to Q')\n_returns('hanoi_move', (4, 15, 'P', 'Q', 'R'), 'Move 1 R to Q')\n_returns('hanoi_move', (6, 1, 'P', 'Q', 'R'), 'Move 1 P to R')\n_returns('hanoi_move', (6, 32, 'P', 'Q', 'R'), 'Move 6 P to Q')\n_returns('hanoi_move', (6, 63, 'P', 'Q', 'R'), 'Move 1 R to Q')\ndef _count_calls(name, args):\n    _f = globals()[name]\n    _g = _f.__globals__\n    _box = [0]\n    def _counting(*a):\n        _box[0] += 1\n        return _f(*a)\n    _g[name] = _counting\n    try:\n        with contextlib.redirect_stdout(io.StringIO()):\n            _counting(*args)\n    finally:\n        _g[name] = _f\n    return _box[0]\nfor _args in [(6, 1, \"A\", \"C\", \"B\"), (6, 33, \"A\", \"C\", \"B\"), (6, 63, \"A\", \"C\", \"B\"), (5, 22, \"A\", \"C\", \"B\")]:\n    _c = _count_calls(\"hanoi_move\", _args)\n    assert _c <= _args[0], _shown(\"hanoi_move\", _args) + \" made \" + str(_c) + \" calls. Follow only the smaller transfer that contains the move: at most \" + str(_args[0]) + \" calls.\"\n",
+      "answer": "ZGVmIGhhbm9pX21vdmUobiwgc3RlcCwgc291cmNlLCB0YXJnZXQsIHNwYXJlKToKICAgIHNtYWxsZXJfbW92ZXMgPSAyICoqIChuIC0gMSkgLSAxCiAgICBpZiBzdGVwIDw9IHNtYWxsZXJfbW92ZXM6CiAgICAgICAgcmV0dXJuIGhhbm9pX21vdmUoCiAgICAgICAgICAgIG4gLSAxLCBzdGVwLCBzb3VyY2UsIHNwYXJlLCB0YXJnZXQpCiAgICBpZiBzdGVwID09IHNtYWxsZXJfbW92ZXMgKyAxOgogICAgICAgIHJldHVybiAiTW92ZSAiICsgc3RyKG4pICsgIiAiICsgc291cmNlICsgIiB0byAiICsgdGFyZ2V0CiAgICByZXR1cm4gaGFub2lfbW92ZSgKICAgICAgICBuIC0gMSwgc3RlcCAtIHNtYWxsZXJfbW92ZXMgLSAxLAogICAgICAgIHNwYXJlLCB0YXJnZXQsIHNvdXJjZSk=",
+      "answerNote": "The first smaller transfer occupies the first smaller_moves positions. The largest disc moves next. A position in the second transfer must be adjusted to start counting there at 1."
+    }
+  }
+}

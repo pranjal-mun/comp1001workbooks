@@ -184,111 +184,6 @@
       "placeholder": "The argument that caused the problem, where it entered, and the fix…",
       "answer": "YFR5cGVFcnJvcmA6IGByYXRpb2AgdHJpZXMgdG8gZGl2aWRlIGEgc3RyaW5nIGJ5IGFuIGludGVnZXIgb24gbGluZSAyLgoKVGhlIHN0cmluZyBgIjE4ImAgZW50ZXJzIG9uIGxpbmUgOCBpbiBgbWFpbmAuIFVzZSBhIG51bWJlcjogYHByaW50X3JhdGlvKDE4LCAzKWAKClRoZSBjb3JyZWN0ZWQgcHJvZ3JhbSBwcmludHMgYDYuMGAuCgpUaGUgZnVuY3Rpb24gZnJhbWVzIGZyb20gYm90dG9tIHRvIHRvcCBhcmUgYG1haW5gLCBgcHJpbnRfcmF0aW9gLCBhbmQgYHJhdGlvYC4gVGhlIGFjdGl2ZSBmdW5jdGlvbiBhdCB0aGUgZmFpbHVyZSBpcyBgcmF0aW9gLg=="
     },
-    "p1-trace": {
-      "type": "short",
-      "xp": 2,
-      "minChars": 40,
-      "rows": 6,
-      "placeholder": "The statements that execute, in order, including each return…",
-      "answer": "YG1haW5gIGNhbGxzIGBjdWJlKDMpYCwgd2hpY2ggcmV0dXJucyBgMjdgOyBgbWFpbmAgc3RvcmVzIGl0IGluIGBzbWFsbGAuIEl0IGNhbGxzIGBjdWJlKDUpYCwgd2hpY2ggcmV0dXJucyBgMTI1YCwgYW5kIHN0b3JlcyBpdCBpbiBgbGFyZ2VgLiBJdCB0aGVuIGV4ZWN1dGVzIHRoZSB0d28gcHJpbnQgY2FsbHMsIGluIG9yZGVyLiBUaGUgb3V0cHV0IGlzOgpgMjdgCmAxMjVg"
-    },
-    "p1-output": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "l1": {
-          "accept": [
-            "27"
-          ],
-          "placeholder": "output",
-          "width": "6rem"
-        },
-        "l2": {
-          "accept": [
-            "125"
-          ],
-          "placeholder": "output",
-          "width": "6rem"
-        }
-      }
-    },
-    "p2": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "s1": {
-          "accept": [
-            "false",
-            "f"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "False"
-        },
-        "s2": {
-          "accept": [
-            "true",
-            "t"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "True"
-        },
-        "s3": {
-          "accept": [
-            "false",
-            "f"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "False"
-        },
-        "s4": {
-          "accept": [
-            "false",
-            "f"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "False"
-        },
-        "s5": {
-          "accept": [
-            "true",
-            "t"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "True"
-        },
-        "s6": {
-          "accept": [
-            "true",
-            "t"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "True"
-        },
-        "s7": {
-          "accept": [
-            "true",
-            "t"
-          ],
-          "placeholder": "true or false",
-          "width": "7rem",
-          "show": "True"
-        }
-      }
-    },
-    "p2-why": {
-      "type": "short",
-      "xp": 2,
-      "minChars": 60,
-      "rows": 7,
-      "placeholder": "1. … 2. … (one reason for each statement)",
-      "answer": "MS4gRmFsc2UuIEEgZnVuY3Rpb24gY2FuIHJlYWNoIHRoZSBlbmQgb2YgaXRzIGJvZHkgYW5kIHJldHVybiBgTm9uZWAuCjIuIFRydWUuIERpZmZlcmVudCBicmFuY2hlcyBjYW4gY29udGFpbiBkaWZmZXJlbnQgcmV0dXJucy4KMy4gRmFsc2UuIGByZXR1cm5gIGVuZHMgdGhlIGN1cnJlbnQgY2FsbC4KNC4gRmFsc2UuIEZvciBleGFtcGxlLCBhIGZ1bmN0aW9uIGNhbiBjYWxsIGByYW5kb20ucmFuZGludGAgd2l0aG91dCByZWNlaXZpbmcgYSBwYXJhbWV0ZXIuCjUuIFRydWUuIEEgZnVuY3Rpb24gbWF5IGRvIG90aGVyIHdvcmsgb3Igc2ltcGx5IGZpbmlzaCwgcmV0dXJuaW5nIGBOb25lYC4KNi4gVHJ1ZS4gQSBiYXJlIGByZXR1cm5gIGVuZHMgdGhlIGNhbGwgYW5kIHJldHVybnMgYE5vbmVgLgo3LiBUcnVlLiBBIGNhbGwgZm9sbG93cyBvbmUgZXhlY3V0aW9uIHBhdGggYW5kIHJldHVybnMgb25lIG9iamVjdC4="
-    },
     "p3": {
       "type": "table",
       "xp": 1,
@@ -439,129 +334,129 @@
       "placeholder": "Explain using the two calls' frames…",
       "answer": "VGhlIG91dHB1dCBpcyBgNiA5YC4gYGV4Y2hhbmdlYCBjaGFuZ2VzIHRoZSBuYW1lcyBgZmlyc3RgIGFuZCBgc2Vjb25kYCBpbiBpdHMgb3duIGZyYW1lLiBUaGUgbmFtZXMgYGxlZnRgIGFuZCBgcmlnaHRgIGluIHRoZSB3YWl0aW5nIGBtYWluYCBmcmFtZSBzdGlsbCBoYXZlIHRoZSB2YWx1ZXMgYDZgIGFuZCBgOWAu"
     },
-    "p6": {
+    "p-prime": {
       "type": "code",
       "xp": 10,
-      "minLines": 32,
-      "starter": "import math\n\n# Define the six helpers here.\n\ndef main():\n    # Read the radius and the height, call all six helpers,\n    # and print the labeled results to two decimal places.\n\nif __name__ == '__main__':\n    main()",
+      "minLines": 16,
+      "starter": "def is_prime(number):\n    # Return True when number is prime, and False otherwise.\n\ndef next_prime(number):\n    # Return the smallest prime larger than number. Use is_prime.\n\ndef main():\n    # Read a whole number and print the result.\n\nif __name__ == '__main__':\n    main()",
       "cases": [
         {
-          "name": "Radius 3 and height 4",
+          "name": "Typed 13",
           "inputs": [
-            "3",
-            "4"
+            "13"
           ],
-          "check": "_want = ['Sphere volume: 113.10', 'Sphere surface: 113.10', 'Cylinder volume: 113.10', 'Cylinder surface: 131.95', 'Cone volume: 37.70', 'Cone surface: 75.40']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 3 and height 4, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 3 and height 4, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 3 and height 4, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Next prime: 17'\n_got = [_l[_l.index('Next prime:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Next prime:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Next prime:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         },
         {
-          "name": "Radius 1 and height 1",
+          "name": "Typed 1",
           "inputs": [
-            "1",
             "1"
           ],
-          "check": "_want = ['Sphere volume: 4.19', 'Sphere surface: 12.57', 'Cylinder volume: 3.14', 'Cylinder surface: 12.57', 'Cone volume: 1.05', 'Cone surface: 7.58']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 1 and height 1, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 1 and height 1, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 1 and height 1, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Next prime: 2'\n_got = [_l[_l.index('Next prime:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Next prime:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Next prime:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         },
         {
-          "name": "Radius 2.5 and height 10",
+          "name": "Typed 24",
           "inputs": [
-            "2.5",
-            "10"
+            "24"
           ],
-          "check": "_want = ['Sphere volume: 65.45', 'Sphere surface: 78.54', 'Cylinder volume: 196.35', 'Cylinder surface: 196.35', 'Cone volume: 65.45', 'Cone surface: 100.59']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 2.5 and height 10, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 2.5 and height 10, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 2.5 and height 10, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Next prime: 29'\n_got = [_l[_l.index('Next prime:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Next prime:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Next prime:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         },
         {
-          "name": "Radius 0.5 and height 0.2",
+          "name": "Typed 89",
           "inputs": [
-            "0.5",
-            "0.2"
+            "89"
           ],
-          "check": "_want = ['Sphere volume: 0.52', 'Sphere surface: 3.14', 'Cylinder volume: 0.16', 'Cylinder surface: 2.20', 'Cone volume: 0.05', 'Cone surface: 1.63']\n_got = [line.rstrip() for line in __stdout__.rstrip(\"\\n\").split(\"\\n\")]\nassert len(_got) == len(_want), \"For radius 0.5 and height 0.2, print exactly six report lines, one per measurement.\"\nassert _got[0].endswith(_want[0]), \"For radius 0.5 and height 0.2, the first report line should end with \" + repr(_want[0]) + \".\"\nfor _i in range(1, len(_want)):\n    assert _got[_i] == _want[_i], \"For radius 0.5 and height 0.2, line \" + str(_i + 1) + \" should be \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Next prime: 97'\n_got = [_l[_l.index('Next prime:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Next prime:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Next prime:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         }
       ],
-      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn('sphere_volume', \"radius\")\n_fn('sphere_surface', \"radius\")\n_fn('cylinder_volume', \"radius\", \"height\")\n_fn('cylinder_surface', \"radius\", \"height\")\n_fn('cone_volume', \"radius\", \"height\")\n_fn('cone_surface', \"radius\", \"height\")\n_fn(\"main\")\nassert re.search(r\"\\bmath\\.pi\\b\", __code__), \"Use math.pi.\"\nassert re.search(r\"\\bmath\\.sqrt\\s*\\(\", __code__), \"Use math.sqrt for the slant length s.\"\n_returns('sphere_volume', (1.0,), 4.1887902047863905)\n_returns('sphere_volume', (2.5,), 65.44984694978736)\n_returns('sphere_surface', (1.0,), 12.566370614359172)\n_returns('sphere_surface', (2.5,), 78.53981633974483)\n_returns('cylinder_volume', (1.0, 1.0), 3.141592653589793)\n_returns('cylinder_volume', (2.0, 3.0), 37.69911184307752)\n_returns('cylinder_surface', (1.0, 1.0), 12.566370614359172)\n_returns('cylinder_surface', (2.0, 3.0), 62.83185307179586)\n_returns('cone_volume', (1.0, 1.0), 1.0471975511965976)\n_returns('cone_volume', (2.0, 3.0), 12.566370614359172)\n_returns('cone_surface', (1.0, 1.0), 7.584475591748159)\n_returns('cone_surface', (2.0, 3.0), 35.22071741263713)\n_guard()\n",
-      "answer": "aW1wb3J0IG1hdGgKCmRlZiBzcGhlcmVfdm9sdW1lKHJhZGl1cyk6CiAgICByZXR1cm4gNCAqIG1hdGgucGkgKiByYWRpdXMgKiogMyAvIDMKCmRlZiBzcGhlcmVfc3VyZmFjZShyYWRpdXMpOgogICAgcmV0dXJuIDQgKiBtYXRoLnBpICogcmFkaXVzICoqIDIKCmRlZiBjeWxpbmRlcl92b2x1bWUocmFkaXVzLCBoZWlnaHQpOgogICAgcmV0dXJuIG1hdGgucGkgKiByYWRpdXMgKiogMiAqIGhlaWdodAoKZGVmIGN5bGluZGVyX3N1cmZhY2UocmFkaXVzLCBoZWlnaHQpOgogICAgcmV0dXJuIDIgKiBtYXRoLnBpICogcmFkaXVzICogKHJhZGl1cyArIGhlaWdodCkKCmRlZiBjb25lX3ZvbHVtZShyYWRpdXMsIGhlaWdodCk6CiAgICByZXR1cm4gbWF0aC5waSAqIHJhZGl1cyAqKiAyICogaGVpZ2h0IC8gMwoKZGVmIGNvbmVfc3VyZmFjZShyYWRpdXMsIGhlaWdodCk6CiAgICBzbGFudCA9IG1hdGguc3FydChyYWRpdXMgKiogMiArIGhlaWdodCAqKiAyKQogICAgcmV0dXJuIG1hdGgucGkgKiByYWRpdXMgKiAocmFkaXVzICsgc2xhbnQpCgpkZWYgbWFpbigpOgogICAgcmFkaXVzID0gZmxvYXQoaW5wdXQoJ1JhZGl1czogJykpCiAgICBoZWlnaHQgPSBmbG9hdChpbnB1dCgnSGVpZ2h0OiAnKSkKICAgIHByaW50KGYnU3BoZXJlIHZvbHVtZToge3NwaGVyZV92b2x1bWUocmFkaXVzKTouMmZ9JykKICAgIHByaW50KGYnU3BoZXJlIHN1cmZhY2U6IHtzcGhlcmVfc3VyZmFjZShyYWRpdXMpOi4yZn0nKQogICAgcHJpbnQoZidDeWxpbmRlciB2b2x1bWU6IHtjeWxpbmRlcl92b2x1bWUocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQogICAgcHJpbnQoZidDeWxpbmRlciBzdXJmYWNlOiB7Y3lsaW5kZXJfc3VyZmFjZShyYWRpdXMsIGhlaWdodCk6LjJmfScpCiAgICBwcmludChmJ0NvbmUgdm9sdW1lOiB7Y29uZV92b2x1bWUocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQogICAgcHJpbnQoZidDb25lIHN1cmZhY2U6IHtjb25lX3N1cmZhY2UocmFkaXVzLCBoZWlnaHQpOi4yZn0nKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
-      "answerNote": "Each helper returns one calculation. `main` handles input and formatting."
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"is_prime\", \"number\")\n_fn(\"next_prime\", \"number\")\n_fn(\"main\")\nassert \"is_prime\" in globals()[\"next_prime\"].__code__.co_names, \"next_prime should call is_prime to test each candidate.\"\n_returns('is_prime', (0,), False)\n_returns('is_prime', (1,), False)\n_returns('is_prime', (2,), True)\n_returns('is_prime', (3,), True)\n_returns('is_prime', (4,), False)\n_returns('is_prime', (9,), False)\n_returns('is_prime', (25,), False)\n_returns('is_prime', (49,), False)\n_returns('is_prime', (97,), True)\n_returns('is_prime', (100,), False)\n_returns('next_prime', (0,), 2)\n_returns('next_prime', (2,), 3)\n_returns('next_prime', (7,), 11)\n_returns('next_prime', (13,), 17)\n_returns('next_prime', (14,), 17)\n_returns('next_prime', (90,), 97)\n_guard()\n",
+      "answer": "ZGVmIGlzX3ByaW1lKG51bWJlcik6CiAgICBpZiBudW1iZXIgPCAyOgogICAgICAgIHJldHVybiBGYWxzZQogICAgZm9yIGRpdmlzb3IgaW4gcmFuZ2UoMiwgbnVtYmVyKToKICAgICAgICBpZiBudW1iZXIgJSBkaXZpc29yID09IDA6CiAgICAgICAgICAgIHJldHVybiBGYWxzZQogICAgcmV0dXJuIFRydWUKCmRlZiBuZXh0X3ByaW1lKG51bWJlcik6CiAgICBjYW5kaWRhdGUgPSBudW1iZXIgKyAxCiAgICB3aGlsZSBub3QgaXNfcHJpbWUoY2FuZGlkYXRlKToKICAgICAgICBjYW5kaWRhdGUgPSBjYW5kaWRhdGUgKyAxCiAgICByZXR1cm4gY2FuZGlkYXRlCgpkZWYgbWFpbigpOgogICAgbnVtYmVyID0gaW50KGlucHV0KCkpCiAgICBwcmludCgnTmV4dCBwcmltZTonLCBuZXh0X3ByaW1lKG51bWJlcikpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "`next_prime` keeps asking `is_prime` about the next candidate until the answer is `True`. While `is_prime` runs, the stack holds `main`, `next_prime`, and `is_prime`."
     },
-    "p7": {
+    "p-precedence": {
       "type": "code",
       "xp": 10,
-      "minLines": 10,
-      "starter": "def read_number(prompt='Value:'):\n    # Read and return a float, using the prompt followed by one space.\n\ndef main():\n    # Read two numbers and print their total to one decimal place.\n\nif __name__ == '__main__':\n    main()",
+      "minLines": 16,
+      "starter": "def precedence(operator):\n    # Return 1, 2, 3, or -1.\n\ndef main():\n    # Read one operator and print its precedence or the message.\n\nif __name__ == '__main__':\n    main()",
       "cases": [
         {
-          "name": "Typed 2.5 and 4",
+          "name": "Typed *",
           "inputs": [
-            "2.5",
-            "4"
+            "*"
           ],
-          "expected": "Value: Next: Total: 6.5"
+          "check": "_want = 'Precedence: 2'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"For '*', the last line should be \" + repr(_want) + \".\"\n"
         },
         {
-          "name": "Typed 0 and 0",
+          "name": "Typed ^",
           "inputs": [
-            "0",
-            "0"
+            "^"
           ],
-          "expected": "Value: Next: Total: 0.0"
+          "check": "_want = 'Precedence: 3'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"For '^', the last line should be \" + repr(_want) + \".\"\n"
         },
         {
-          "name": "Typed 1.25 and -3",
+          "name": "Typed %",
           "inputs": [
-            "1.25",
-            "-3"
+            "%"
           ],
-          "expected": "Value: Next: Total: -1.8"
+          "check": "_want = 'Not an operator'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"For '%', the last line should be \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "Typed +",
+          "inputs": [
+            "+"
+          ],
+          "check": "_want = 'Precedence: 1'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"For '+', the last line should be \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "Typed **",
+          "inputs": [
+            "**"
+          ],
+          "check": "_want = 'Not an operator'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"For '**', the last line should be \" + repr(_want) + \".\"\n"
         }
       ],
-      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_f = _fn(\"read_number\", \"prompt\")\nassert _f.__defaults__ == (\"Value:\",), \"Give read_number the default prompt='Value:'.\"\nassert \"input\" in _f.__code__.co_names and \"float\" in _f.__code__.co_names, \"Read the number with input() and convert it with float() inside read_number.\"\n_fn(\"main\")\n_calls = [n for n in _body(\"main\") if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"read_number\"]\nassert any(not c.args and not c.keywords for c in _calls), \"In main, read the first number with the default prompt: read_number().\"\nassert any(not c.args and [k.arg for k in c.keywords] == [\"prompt\"] and isinstance(c.keywords[0].value, ast.Constant)\n           and c.keywords[0].value.value == \"Next:\" for c in _calls), \"Read the second number with the keyword call read_number(prompt='Next:').\"\n_guard()\n",
-      "answer": "ZGVmIHJlYWRfbnVtYmVyKHByb21wdD0nVmFsdWU6Jyk6CiAgICByZXR1cm4gZmxvYXQoaW5wdXQocHJvbXB0ICsgJyAnKSkKCmRlZiBtYWluKCk6CiAgICBmaXJzdCA9IHJlYWRfbnVtYmVyKCkKICAgIHNlY29uZCA9IHJlYWRfbnVtYmVyKHByb21wdD0nTmV4dDonKQogICAgcHJpbnQoZidUb3RhbDoge2ZpcnN0ICsgc2Vjb25kOi4xZn0nKQoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQ==",
-      "answerNote": "The helper returns the converted input. `main` calls it twice and prints the total."
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"precedence\", \"operator\")\n_fn(\"main\")\n_returns('precedence', ('+',), 1)\n_returns('precedence', ('-',), 1)\n_returns('precedence', ('*',), 2)\n_returns('precedence', ('/',), 2)\n_returns('precedence', ('^',), 3)\n_returns('precedence', ('%',), -1)\n_returns('precedence', ('**',), -1)\n_returns('precedence', ('',), -1)\n_returns('precedence', ('x',), -1)\n_guard()\n",
+      "answer": "ZGVmIHByZWNlZGVuY2Uob3BlcmF0b3IpOgogICAgaWYgb3BlcmF0b3IgPT0gJysnIG9yIG9wZXJhdG9yID09ICctJzoKICAgICAgICByZXR1cm4gMQogICAgaWYgb3BlcmF0b3IgPT0gJyonIG9yIG9wZXJhdG9yID09ICcvJzoKICAgICAgICByZXR1cm4gMgogICAgaWYgb3BlcmF0b3IgPT0gJ14nOgogICAgICAgIHJldHVybiAzCiAgICByZXR1cm4gLTEKCmRlZiBtYWluKCk6CiAgICBvcGVyYXRvciA9IGlucHV0KCkKICAgIGxldmVsID0gcHJlY2VkZW5jZShvcGVyYXRvcikKICAgIGlmIGxldmVsID09IC0xOgogICAgICAgIHByaW50KCdOb3QgYW4gb3BlcmF0b3InKQogICAgZWxzZToKICAgICAgICBwcmludCgnUHJlY2VkZW5jZTonLCBsZXZlbCkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "`precedence` only returns a number. `main` decides what to print. Because of the guard, another program can import `precedence` without running `main`."
     },
-    "p8": {
+    "p-roman": {
       "type": "code",
       "xp": 10,
-      "minLines": 20,
-      "starter": "def order_credit(total, items):\n    # Return the credit for one order.\n\ndef main():\n    # Read totals until -1, reading the item count only for an order.\n\nif __name__ == '__main__':\n    main()",
+      "minLines": 26,
+      "starter": "def letter_value(letter):\n    # Return the value of one Roman letter.\n\ndef roman_value(text):\n    # Return the value of a whole Roman numeral. Use letter_value.\n\ndef main():\n    # Read a numeral and print its value.\n\nif __name__ == '__main__':\n    main()",
       "cases": [
         {
-          "name": "Orders (39, 1), (40, 2), (80, 3), (120, 2), then -1",
+          "name": "Typed MCMLXXVIII",
           "inputs": [
-            "39",
-            "1",
-            "40",
-            "2",
-            "80",
-            "3",
-            "120",
-            "2",
-            "-1"
+            "MCMLXXVIII"
           ],
-          "check": "_want = ['Credit: $3.00', 'Credit: $4.00', 'Credit: $3.00', 'Credit: $0.00']\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Value: 1978'\n_got = [_l[_l.index('Value:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Value:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Value:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         },
         {
-          "name": "The sentinel -1 first",
+          "name": "Typed XLIV",
           "inputs": [
-            "-1"
+            "XLIV"
           ],
-          "check": "_want = []\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Value: 44'\n_got = [_l[_l.index('Value:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Value:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Value:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         },
         {
-          "name": "Orders (79.99, 2), (120.01, 3), (0, 0), then -1",
+          "name": "Typed IX",
           "inputs": [
-            "79.99",
-            "2",
-            "120.01",
-            "3",
-            "0",
-            "0",
-            "-1"
+            "IX"
           ],
-          "check": "_want = ['Credit: $4.00', 'Credit: $0.00', 'Credit: $0.00']\n_got = re.findall(r\"Credit: \\$\\S*\", __stdout__)\nassert len(_got) == len(_want), \"Print one Credit line for each order: \" + str(len(_want)) + \" here, not \" + str(len(_got)) + \".\"\nfor _i in range(len(_want)):\n    assert _got[_i] == _want[_i], \"Order \" + str(_i + 1) + \" should print \" + repr(_want[_i]) + \", not \" + repr(_got[_i]) + \".\"\n"
+          "check": "_want = 'Value: 9'\n_got = [_l[_l.index('Value:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Value:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Value:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
+        },
+        {
+          "name": "Typed MMXXVI",
+          "inputs": [
+            "MMXXVI"
+          ],
+          "check": "_want = 'Value: 2026'\n_got = [_l[_l.index('Value:'):].rstrip() for _l in __stdout__.split(\"\\n\") if 'Value:' in _l]\nassert len(_got) == 1, \"Print one result line that starts with \" + repr('Value:') + \".\"\nassert _got[0] == _want, \"For this input the result line should be \" + repr(_want) + \", not \" + repr(_got[0]) + \".\"\n"
         }
       ],
-      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"order_credit\", \"total\", \"items\")\n_fn(\"main\")\n_returns('order_credit', (39.0, 1), 3)\n_returns('order_credit', (40.0, 2), 4)\n_returns('order_credit', (80.0, 3), 3)\n_returns('order_credit', (120.0, 2), 0)\n_returns('order_credit', (0.0, 0), 0)\n_returns('order_credit', (39.99, 4), 12)\n_returns('order_credit', (40.0, 1), 0)\n_returns('order_credit', (79.99, 2), 4)\n_returns('order_credit', (79.99, 1), 0)\n_returns('order_credit', (80.0, 2), 0)\n_returns('order_credit', (120.0, 3), 3)\n_returns('order_credit', (120.01, 3), 0)\n_returns('order_credit', (100.0, 5), 5)\n_returns('order_credit', (150.0, 10), 0)\n_guard()\n",
-      "answer": "ZGVmIG9yZGVyX2NyZWRpdCh0b3RhbCwgaXRlbXMpOgogICAgaWYgdG90YWwgPCA0MDoKICAgICAgICByZXR1cm4gMyAqIGl0ZW1zCiAgICBpZiB0b3RhbCA8IDgwIGFuZCBpdGVtcyA+PSAyOgogICAgICAgIHJldHVybiAyICogaXRlbXMKICAgIGlmIHRvdGFsIDw9IDEyMCBhbmQgaXRlbXMgPj0gMzoKICAgICAgICByZXR1cm4gaXRlbXMKICAgIHJldHVybiAwCgpkZWYgbWFpbigpOgogICAgdG90YWwgPSBmbG9hdChpbnB1dCgnVG90YWwgKC0xIHRvIHN0b3ApOiAnKSkKICAgIHdoaWxlIHRvdGFsICE9IC0xOgogICAgICAgIGl0ZW1zID0gaW50KGlucHV0KCdJdGVtczogJykpCiAgICAgICAgY3JlZGl0ID0gb3JkZXJfY3JlZGl0KHRvdGFsLCBpdGVtcykKICAgICAgICBwcmludChmJ0NyZWRpdDogJHtjcmVkaXQ6LjJmfScpCiAgICAgICAgdG90YWwgPSBmbG9hdChpbnB1dCgnVG90YWwgKC0xIHRvIHN0b3ApOiAnKSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
-      "answerNote": "The report lines for the four orders are `Credit: $3.00`, `Credit: $4.00`, `Credit: $3.00`, and `Credit: $0.00`. With `-1` first, the program prints no credit and does not ask for an item count."
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) < 1e-9\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\n_fn(\"letter_value\", \"letter\")\n_fn(\"roman_value\", \"text\")\n_fn(\"main\")\nassert \"letter_value\" in globals()[\"roman_value\"].__code__.co_names, \"roman_value should call letter_value to get each value.\"\n_returns('letter_value', ('I',), 1)\n_returns('letter_value', ('V',), 5)\n_returns('letter_value', ('X',), 10)\n_returns('letter_value', ('L',), 50)\n_returns('letter_value', ('C',), 100)\n_returns('letter_value', ('D',), 500)\n_returns('letter_value', ('M',), 1000)\n_returns('roman_value', ('I',), 1)\n_returns('roman_value', ('IV',), 4)\n_returns('roman_value', ('IX',), 9)\n_returns('roman_value', ('XIV',), 14)\n_returns('roman_value', ('XL',), 40)\n_returns('roman_value', ('XLIV',), 44)\n_returns('roman_value', ('XC',), 90)\n_returns('roman_value', ('XCIX',), 99)\n_returns('roman_value', ('CD',), 400)\n_returns('roman_value', ('CM',), 900)\n_returns('roman_value', ('MCMLXXVIII',), 1978)\n_returns('roman_value', ('MMXXVI',), 2026)\n_returns('roman_value', ('MMMCMXCIX',), 3999)\n_guard()\n",
+      "answer": "ZGVmIGxldHRlcl92YWx1ZShsZXR0ZXIpOgogICAgaWYgbGV0dGVyID09ICdJJzoKICAgICAgICByZXR1cm4gMQogICAgaWYgbGV0dGVyID09ICdWJzoKICAgICAgICByZXR1cm4gNQogICAgaWYgbGV0dGVyID09ICdYJzoKICAgICAgICByZXR1cm4gMTAKICAgIGlmIGxldHRlciA9PSAnTCc6CiAgICAgICAgcmV0dXJuIDUwCiAgICBpZiBsZXR0ZXIgPT0gJ0MnOgogICAgICAgIHJldHVybiAxMDAKICAgIGlmIGxldHRlciA9PSAnRCc6CiAgICAgICAgcmV0dXJuIDUwMAogICAgcmV0dXJuIDEwMDAKCmRlZiByb21hbl92YWx1ZSh0ZXh0KToKICAgIHRvdGFsID0gMAogICAgZm9yIGluZGV4IGluIHJhbmdlKGxlbih0ZXh0KSk6CiAgICAgICAgdmFsdWUgPSBsZXR0ZXJfdmFsdWUodGV4dFtpbmRleF0pCiAgICAgICAgaWYgaW5kZXggKyAxIDwgbGVuKHRleHQpIGFuZCBsZXR0ZXJfdmFsdWUodGV4dFtpbmRleCArIDFdKSA+IHZhbHVlOgogICAgICAgICAgICB0b3RhbCA9IHRvdGFsIC0gdmFsdWUKICAgICAgICBlbHNlOgogICAgICAgICAgICB0b3RhbCA9IHRvdGFsICsgdmFsdWUKICAgIHJldHVybiB0b3RhbAoKZGVmIG1haW4oKToKICAgIHRleHQgPSBpbnB1dCgpCiAgICBwcmludCgnVmFsdWU6Jywgcm9tYW5fdmFsdWUodGV4dCkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "A letter is subtracted only when the next letter is larger. The test `index + 1 < len(text)` stops the last letter from looking past the end of the string."
     }
   }
 }

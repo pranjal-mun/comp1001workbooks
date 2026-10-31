@@ -1,0 +1,304 @@
+{
+  "id": "lecture-21",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 21 Workbook",
+  "subtitle": "Problem solving with recursion: the recursive idea",
+  "exercises": {
+    "ex-triangle": {
+      "type": "example",
+      "code": "def triangle(n):\n    \"\"\"Return the sum from 1 to n.\"\"\"\n    if n == 0:\n        return 0\n    return n + triangle(n - 1)\n\nprint(triangle(4))",
+      "output": "10"
+    },
+    "ex-triangle3": {
+      "type": "example",
+      "code": "def triangle(n):\n    if n == 0:\n        return 0\n    return n + triangle(n - 1)\n\nprint(triangle(3))"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "def sum_squares(n):\n    pass",
+      "cases": [
+        {
+          "name": "sum_squares(0) returns 0",
+          "check": "_returns('sum_squares', (0,), 0)\n"
+        },
+        {
+          "name": "sum_squares(1) returns 1",
+          "check": "_returns('sum_squares', (1,), 1)\n"
+        },
+        {
+          "name": "sum_squares(3) returns 14",
+          "check": "_returns('sum_squares', (3,), 14)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"sum_squares\", \"n\")\n_recursive(\"sum_squares\")\n_no_loops()\n_returns('sum_squares', (0,), 0)\n_returns('sum_squares', (1,), 1)\n_returns('sum_squares', (2,), 5)\n_returns('sum_squares', (3,), 14)\n_returns('sum_squares', (4,), 30)\n_returns('sum_squares', (5,), 55)\n_returns('sum_squares', (6,), 91)\n_returns('sum_squares', (7,), 140)\n_returns('sum_squares', (8,), 204)\n_returns('sum_squares', (9,), 285)\n_returns('sum_squares', (10,), 385)\n",
+      "answer": "ZGVmIHN1bV9zcXVhcmVzKG4pOgogICAgaWYgbiA9PSAwOgogICAgICAgIHJldHVybiAwCiAgICByZXR1cm4gbiAqIG4gKyBzdW1fc3F1YXJlcyhuIC0gMSk=",
+      "answerNote": "The smaller call adds the squares up to `n - 1`. This call adds `n * n`. `sum_squares(0)` returns `0`, `sum_squares(1)` returns `1`, and `sum_squares(3)` returns `14`."
+    },
+    "ex-print-triangle": {
+      "type": "example",
+      "code": "def print_triangle(n):\n    if n == 0:\n        return\n    print_triangle(n - 1)\n    print(\"[]\" * n)\n\nprint_triangle(3)",
+      "output": "[]\n[][]\n[][][]"
+    },
+    "ex-factorial": {
+      "type": "example",
+      "code": "def factorial(n):\n    \"\"\"Return n factorial.\"\"\"\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(4))",
+      "output": "24"
+    },
+    "ex-factorial3": {
+      "type": "example",
+      "code": "def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(3))"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "def power(base, n):\n    pass",
+      "cases": [
+        {
+          "name": "power(2, 0) returns 1",
+          "check": "_returns('power', (2, 0), 1)\n"
+        },
+        {
+          "name": "power(2, 1) returns 2",
+          "check": "_returns('power', (2, 1), 2)\n"
+        },
+        {
+          "name": "power(2, 4) returns 16",
+          "check": "_returns('power', (2, 4), 16)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"power\", \"base\", \"n\")\n_recursive(\"power\")\n_no_loops()\nassert not any(isinstance(n, ast.Pow) or (isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"pow\")\n               for n in ast.walk(ast.parse(__source__))), \"Build the power with multiplication and one recursive call. Do not use ** or pow.\"\n_returns('power', (1, 0), 1)\n_returns('power', (1, 1), 1)\n_returns('power', (1, 2), 1)\n_returns('power', (1, 5), 1)\n_returns('power', (2, 0), 1)\n_returns('power', (2, 1), 2)\n_returns('power', (2, 2), 4)\n_returns('power', (2, 5), 32)\n_returns('power', (3, 0), 1)\n_returns('power', (3, 1), 3)\n_returns('power', (3, 2), 9)\n_returns('power', (3, 5), 243)\n_returns('power', (10, 0), 1)\n_returns('power', (10, 1), 10)\n_returns('power', (10, 2), 100)\n_returns('power', (10, 5), 100000)\n",
+      "answer": "ZGVmIHBvd2VyKGJhc2UsIG4pOgogICAgaWYgbiA9PSAwOgogICAgICAgIHJldHVybiAxCiAgICByZXR1cm4gYmFzZSAqIHBvd2VyKGJhc2UsIG4gLSAxKQ==",
+      "answerNote": "The smaller call supplies `n - 1` factors. Multiply by `base` to add one more factor. `power(2, 0)` returns `1`, `power(2, 1)` returns `2`, and `power(2, 4)` returns `16`."
+    },
+    "ex-broken": {
+      "type": "example",
+      "code": "def broken(n):\n    return n + broken(n - 1)"
+    },
+    "ex-wrong-way": {
+      "type": "example",
+      "code": "def wrong_way(n):\n    if n == 0:\n        return 0\n    return n + wrong_way(n + 1)"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "def digit_sum(n):\n    pass",
+      "cases": [
+        {
+          "name": "digit_sum(0) returns 0",
+          "check": "_returns('digit_sum', (0,), 0)\n"
+        },
+        {
+          "name": "digit_sum(7) returns 7",
+          "check": "_returns('digit_sum', (7,), 7)\n"
+        },
+        {
+          "name": "digit_sum(407) returns 11",
+          "check": "_returns('digit_sum', (407,), 11)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"digit_sum\", \"n\")\n_recursive(\"digit_sum\")\n_no_loops()\nassert not any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"str\" for n in _body(\"digit_sum\")), \"Remove a digit with // 10 and find it with % 10. Do not convert the number to a string.\"\n_returns('digit_sum', (0,), 0)\n_returns('digit_sum', (5,), 5)\n_returns('digit_sum', (9,), 9)\n_returns('digit_sum', (10,), 1)\n_returns('digit_sum', (19,), 10)\n_returns('digit_sum', (40,), 4)\n_returns('digit_sum', (99,), 18)\n_returns('digit_sum', (100,), 1)\n_returns('digit_sum', (407,), 11)\n_returns('digit_sum', (9999,), 36)\n_returns('digit_sum', (12345,), 15)\n_returns('digit_sum', (1000000,), 1)\n",
+      "answer": "ZGVmIGRpZ2l0X3N1bShuKToKICAgIGlmIG4gPCAxMDoKICAgICAgICByZXR1cm4gbgogICAgcmV0dXJuIGRpZ2l0X3N1bShuIC8vIDEwKSArIG4gJSAxMA==",
+      "answerNote": "`n // 10` removes one digit. The recursive call finds the sum of the digits that remain. `digit_sum(0)` returns `0`, `digit_sum(7)` returns `7`, and `digit_sum(407)` returns `11`."
+    },
+    "ex-reverse": {
+      "type": "example",
+      "code": "def reverse(text):\n    if len(text) <= 1:\n        return text\n    return reverse(text[1:]) + text[0]\n\nprint(reverse(\"CAT\"))",
+      "output": "TAC"
+    },
+    "p1": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "Recursion… Calls that continue without reaching a base case… What Python raises…",
+      "answer": "UmVjdXJzaW9uIHNvbHZlcyBhIHByb2JsZW0gdXNpbmcgYSBjYWxsIHRvIHRoZSBzYW1lIGZ1bmN0aW9uIG9uIGEgc21hbGxlciBpbnB1dC4gQSBiYXNlIGNhc2Ugc3VwcGxpZXMgYW4gYW5zd2VyIGRpcmVjdGx5LgoKQ2FsbHMgdGhhdCBuZXZlciByZWFjaCBhIGJhc2UgY2FzZSBrZWVwIG1ha2luZyBtb3JlIGNhbGxzIHdpdGhvdXQgZmluaXNoaW5nLiBQeXRob24gZXZlbnR1YWxseSByYWlzZXMgYFJlY3Vyc2lvbkVycm9yYC4="
+    },
+    "p2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r0": {
+          "accept": [
+            "\"\"",
+            "''"
+          ],
+          "placeholder": "string",
+          "width": "8rem",
+          "show": "\"\""
+        },
+        "r1": {
+          "accept": [
+            "\"ab\"",
+            "'ab'",
+            "ab"
+          ],
+          "placeholder": "string",
+          "width": "8rem",
+          "show": "\"ab\""
+        },
+        "r3": {
+          "accept": [
+            "\"ababab\"",
+            "'ababab'",
+            "ababab"
+          ],
+          "placeholder": "string",
+          "width": "9rem",
+          "show": "\"ababab\""
+        }
+      }
+    },
+    "p2": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "The base case and its returned value… How the recursive case uses the smaller answer…",
+      "answer": "VGhlIGJhc2UgY2FzZSBpcyBgY291bnQgPT0gMGAuIEl0IHJldHVybnMgdGhlIGVtcHR5IHN0cmluZy4KClRoZSBzbWFsbGVyIGNhbGwgcmV0dXJucyBvbmUgZmV3ZXIgY29weSBvZiBgdGV4dGAuIEFkZGluZyBgdGV4dGAgYXQgdGhlIGZyb250IHN1cHBsaWVzIHRoZSBtaXNzaW5nIGNvcHkuIFRoZSByZWN1cnNpdmUgYXJndW1lbnQgZGVjcmVhc2VzIGJ5IDEgdW50aWwgaXQgcmVhY2hlcyAwLg=="
+    },
+    "p3-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c2": {
+          "accept": [
+            "digit_product(23)"
+          ],
+          "placeholder": "call",
+          "width": "11rem"
+        },
+        "c3": {
+          "accept": [
+            "digit_product(2)"
+          ],
+          "placeholder": "call",
+          "width": "11rem"
+        },
+        "v1": {
+          "accept": [
+            "6 × 4 = 24",
+            "6 x 4 = 24",
+            "6 * 4 = 24",
+            "6*4=24",
+            "6×4=24",
+            "6x4=24",
+            "24"
+          ],
+          "placeholder": "value",
+          "width": "8rem",
+          "show": "6 × 4 = 24"
+        },
+        "v2": {
+          "accept": [
+            "2 × 3 = 6",
+            "2 x 3 = 6",
+            "2 * 3 = 6",
+            "2*3=6",
+            "2×3=6",
+            "2x3=6",
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "8rem",
+          "show": "2 × 3 = 6"
+        },
+        "v3": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "8rem"
+        }
+      }
+    },
+    "p3": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "The base case and its answer… Why digit_product(204) returns zero…",
+      "answer": "QSBzaW5nbGUgZGlnaXQgaXMgdGhlIGJhc2UgY2FzZSwgaW5jbHVkaW5nIHplcm8uIEl0cyBwcm9kdWN0IGlzIHRoYXQgZGlnaXQuCgpGb3IgMjA0LCB0aGUgY2FsbCBmb3IgMjAgbXVsdGlwbGllcyAyIGJ5IDAuIFRoZSBjYWxsIGZvciAyMDQgdGhlbiBtdWx0aXBsaWVzIDAgYnkgNCwgc28gaXQgYWxzbyByZXR1cm5zIDAu"
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def largest_digit(n):\n    pass",
+      "cases": [
+        {
+          "name": "largest_digit(0) returns 0",
+          "check": "_returns('largest_digit', (0,), 0)\n"
+        },
+        {
+          "name": "largest_digit(7) returns 7",
+          "check": "_returns('largest_digit', (7,), 7)\n"
+        },
+        {
+          "name": "largest_digit(5832) returns 8",
+          "check": "_returns('largest_digit', (5832,), 8)\n"
+        },
+        {
+          "name": "largest_digit(909) returns 9",
+          "check": "_returns('largest_digit', (909,), 9)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"largest_digit\", \"n\")\n_recursive(\"largest_digit\")\n_no_loops()\nassert not any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == \"str\" for n in _body(\"largest_digit\")), \"Do not convert the number to a string. Use n // 10 and n % 10.\"\n_ops = [type(n.op) for n in _body(\"largest_digit\") if isinstance(n, ast.BinOp)]\nassert ast.FloorDiv in _ops and ast.Mod in _ops, \"Find the largest digit in n // 10, then compare it with n % 10.\"\n_returns('largest_digit', (0,), 0)\n_returns('largest_digit', (1,), 1)\n_returns('largest_digit', (9,), 9)\n_returns('largest_digit', (10,), 1)\n_returns('largest_digit', (19,), 9)\n_returns('largest_digit', (90,), 9)\n_returns('largest_digit', (123,), 3)\n_returns('largest_digit', (321,), 3)\n_returns('largest_digit', (5832,), 8)\n_returns('largest_digit', (909,), 9)\n_returns('largest_digit', (1000,), 1)\n_returns('largest_digit', (7007,), 7)\n_returns('largest_digit', (123456789,), 9)\n_returns('largest_digit', (987654321,), 9)\n",
+      "answer": "ZGVmIGxhcmdlc3RfZGlnaXQobik6CiAgICBpZiBuIDwgMTA6CiAgICAgICAgcmV0dXJuIG4KICAgIHNtYWxsZXIgPSBsYXJnZXN0X2RpZ2l0KG4gLy8gMTApCiAgICBsYXN0ID0gbiAlIDEwCiAgICBpZiBsYXN0ID4gc21hbGxlcjoKICAgICAgICByZXR1cm4gbGFzdAogICAgcmV0dXJuIHNtYWxsZXI=",
+      "answerNote": "A single digit returns itself. Each larger call compares one digit with the largest digit already found in the remaining number."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def letter_score(text):\n    pass",
+      "cases": [
+        {
+          "name": "letter_score('') returns 0",
+          "check": "_returns('letter_score', ('',), 0)\n"
+        },
+        {
+          "name": "letter_score('B') returns 3",
+          "check": "_returns('letter_score', ('B',), 3)\n"
+        },
+        {
+          "name": "letter_score('CAB') returns 9",
+          "check": "_returns('letter_score', ('CAB',), 9)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"letter_score\", \"text\")\n_recursive(\"letter_score\")\n_no_loops()\nassert \"count\" not in __code__, \"Use the score of text[1:] to build the answer. Do not count the letters with count.\"\n_returns('letter_score', ('',), 0)\n_returns('letter_score', ('A',), 1)\n_returns('letter_score', ('B',), 3)\n_returns('letter_score', ('C',), 5)\n_returns('letter_score', ('AA',), 2)\n_returns('letter_score', ('CAB',), 9)\n_returns('letter_score', ('BAC',), 9)\n_returns('letter_score', ('CCCCC',), 25)\n_returns('letter_score', ('ABCABC',), 18)\n_returns('letter_score', ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',), 300)\n",
+      "answer": "ZGVmIGxldHRlcl9zY29yZSh0ZXh0KToKICAgIGlmIHRleHQgPT0gIiI6CiAgICAgICAgcmV0dXJuIDAKICAgIHZhbHVlID0gMQogICAgaWYgdGV4dFswXSA9PSAiQiI6CiAgICAgICAgdmFsdWUgPSAzCiAgICBlbGlmIHRleHRbMF0gPT0gIkMiOgogICAgICAgIHZhbHVlID0gNQogICAgcmV0dXJuIHZhbHVlICsgbGV0dGVyX3Njb3JlKHRleHRbMTpdKQ==",
+      "answerNote": "The empty string contributes zero. For a nonempty string, add the first letter's value to the score of the remaining text."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 10,
+      "starter": "def contains(text, piece):\n    pass",
+      "cases": [
+        {
+          "name": "contains('banana', 'nan') returns True",
+          "check": "_returns('contains', ('banana', 'nan'), True)\n"
+        },
+        {
+          "name": "contains('banana', 'nab') returns False",
+          "check": "_returns('contains', ('banana', 'nab'), False)\n"
+        },
+        {
+          "name": "contains('', '') returns True",
+          "check": "_returns('contains', ('', ''), True)\n"
+        },
+        {
+          "name": "contains('', 'a') returns False",
+          "check": "_returns('contains', ('', 'a'), False)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _recursive(name):\n    _n = len([n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name])\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body with a smaller input.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\n_fn(\"contains\", \"text\", \"piece\")\n_recursive(\"contains\")\n_no_loops()\n_tree = ast.parse(__source__)\nassert not any(isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops) for n in ast.walk(_tree)), \"Do not use in. Compare text[:len(piece)] with piece instead.\"\nassert not any(isinstance(n, ast.Attribute) and n.attr in (\"find\", \"count\") for n in ast.walk(_tree)), \"Do not use find or count. Compare text[:len(piece)] with piece instead.\"\nassert any(isinstance(n, ast.Slice) for n in _body(\"contains\")), \"Use slicing: text[:len(piece)] for the start and text[1:] for the shorter text.\"\n_returns('contains', ('banana', 'nan'), True)\n_returns('contains', ('banana', 'nab'), False)\n_returns('contains', ('', ''), True)\n_returns('contains', ('', 'a'), False)\n_returns('contains', ('abc', ''), True)\n_returns('contains', ('abc', 'abc'), True)\n_returns('contains', ('abc', 'abcd'), False)\n_returns('contains', ('abc', 'a'), True)\n_returns('contains', ('abc', 'c'), True)\n_returns('contains', ('abc', 'bc'), True)\n_returns('contains', ('abc', 'ac'), False)\n_returns('contains', ('aaab', 'aab'), True)\n_returns('contains', ('mississippi', 'ssip'), True)\n_returns('contains', ('mississippi', 'sipx'), False)\n_returns('contains', ('banana', 'ana'), True)\n_returns('contains', ('a', 'a'), True)\n_returns('contains', ('a', 'b'), False)\n",
+      "answer": "ZGVmIGNvbnRhaW5zKHRleHQsIHBpZWNlKToKICAgIGlmIHBpZWNlID09ICIiOgogICAgICAgIHJldHVybiBUcnVlCiAgICBpZiBsZW4odGV4dCkgPCBsZW4ocGllY2UpOgogICAgICAgIHJldHVybiBGYWxzZQogICAgaWYgdGV4dFs6bGVuKHBpZWNlKV0gPT0gcGllY2U6CiAgICAgICAgcmV0dXJuIFRydWUKICAgIHJldHVybiBjb250YWlucyh0ZXh0WzE6XSwgcGllY2Up",
+      "answerNote": "The empty piece succeeds immediately. A text that is too short fails immediately. Every other call either finds a match at the start or searches the shorter text."
+    }
+  }
+}

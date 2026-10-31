@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 21 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-21", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 21 Workbook</h1>
+    <div class="wb-subtitle">Problem solving with recursion: the recursive idea</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Solve a problem by answering a smaller version of the same task. Trace the calls and returned answers, then design recursive functions that reach a base case.</p>
+  <p>Reading: §5.10, How To 5.2, §11.1</p>
+  <ul>
+    <li>Explain the base case and the recursive case.</li>
+    <li>Trace triangle numbers, printed triangles, and factorial calls.</li>
+    <li>Explain why each call needs its own stack frame.</li>
+    <li>Recognize a missing or unreachable base case.</li>
+    <li>Build an answer from a smaller call's promised result.</li>
+    <li>Reduce a number or shorten a string to make a smaller input.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-idea">The recursive idea</p>
+
+<h2 id="s1">1. The recursive idea</h2>
+<p>You already break problems into smaller pieces. Recursion is when a piece has the same shape as the whole problem. To find the total up to 5, use the total up to 4 and add 5.</p>
+<p>The first three rows of a triangle contain 6 squares. The new row adds 4 squares. <code>triangle(4)</code> is <code>triangle(3)</code> plus <code>4</code>, so 10 = 6 + 4. The triangle number for <code>n</code> is 1 + 2 + ⋯ + <var>n</var>.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 230 128" width="230" height="128" role="img" aria-label="Three rows of 1, 2 and 3 squares make 6 squares. A fourth row of 4 squares, drawn with thick lines, adds 4 more." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="4" y="4" width="24" height="24"/>
+    <rect x="4" y="34" width="24" height="24"/><rect x="34" y="34" width="24" height="24"/>
+    <rect x="4" y="64" width="24" height="24"/><rect x="34" y="64" width="24" height="24"/><rect x="64" y="64" width="24" height="24"/>
+    <g style="stroke-width: 3">
+      <rect x="4" y="96" width="24" height="24"/><rect x="34" y="96" width="24" height="24"/><rect x="64" y="96" width="24" height="24"/><rect x="94" y="96" width="24" height="24"/>
+    </g>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px">
+      <text x="135" y="50">6 squares</text>
+      <text x="135" y="113">4 more</text>
+    </g>
+  </svg>
+</figure>
+<p>A <em>base case</em> is an input we can answer directly. With zero rows, the triangle has zero squares. <code>triangle(0)</code> returns <code>0</code>. In the <em>recursive case</em>, the function calls itself with a smaller input. It uses that answer to build this answer. For <code>n &gt; 0</code>, return <code>n + triangle(n - 1)</code>.</p>
+<p>The recursive case must move toward a base case. The base case returns without making another recursive call.</p>
+<p>The six stages still apply:</p>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Understand</td><td>State the allowed inputs and the required answer.</td></tr>
+    <tr><td>Decompose</td><td>Split off one part. Leave a smaller problem.</td></tr>
+    <tr><td>Find patterns</td><td>Check that the smaller problem has the same task.</td></tr>
+    <tr><td>Design</td><td>Choose the base case. Decide how to use the smaller answer. Check small examples.</td></tr>
+    <tr><td>Implement</td><td>Write the base case and the recursive case in Python.</td></tr>
+    <tr><td>Reflect</td><td>Explain why the input gets smaller. Check that the base case is reachable.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For a triangle, remove the last row. The remaining rows form a smaller triangle.</p>
+
+<p class="wb-part" id="part-triangle">Triangle numbers</p>
+
+<h2 id="s2">2. Triangle numbers</h2>
+<p><code>triangle(n)</code> returns the sum of the integers from 1 to <code>n</code>. <code>triangle(4)</code> returns 1 + 2 + 3 + 4 = 10. Assume <code>n</code> is a nonnegative integer.</p>
+<wb-example id="ex-triangle"></wb-example>
+<p><code>n == 0</code> selects the base case. <code>triangle(n - 1)</code> is the recursive call. Adding <code>n</code> builds the answer for this input.</p>
+<wb-example id="ex-triangle3"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Call</th><th>Base?</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>triangle(3)</code></td><td>False</td><td>3 + 3 = 6</td></tr>
+    <tr><td>2</td><td><code>triangle(2)</code></td><td>False</td><td>2 + 1 = 3</td></tr>
+    <tr><td>3</td><td><code>triangle(1)</code></td><td>False</td><td>1 + 0 = 1</td></tr>
+    <tr><td>4</td><td><code>triangle(0)</code></td><td>True</td><td>0</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>Base?</code> means <code>n == 0</code>. Record the calls from top to bottom. Fill the returned values from bottom to top. The final answer is <code>6</code>.</p>
+<p>Suppose <code>triangle(3)</code> gives the correct answer, <code>6</code>. Then <code>triangle(4)</code> adds 4 to get 10. To write the larger case, work out how to use that smaller answer.</p>
+<p>The base case gives a correct starting answer. Each step builds a correct answer from a smaller one. All allowed inputs reach that starting case.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write a recursive function <code>sum_squares(n)</code>. It returns 1<sup>2</sup> + 2<sup>2</sup> + ⋯ + <var>n</var><sup>2</sup>.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Return <code>0</code> when <code>n</code> is <code>0</code>.</li>
+    <li>Use one recursive call.</li>
+    <li>Check inputs <code>0</code>, <code>1</code>, and <code>3</code>.</li>
+  </ul>
+  <p>For <code>n = 3</code>, the answer is 1 + 4 + 9 = 14. Find the smaller sum. Decide which square to add to it.</p>
+  <p><strong>Check</strong> calls <code>sum_squares</code> with 0, 1, and 3, and with every other value up to 10. It compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>sum_squares(n)</code> with one parameter. It returns the sum.</li>
+      <li>Make one recursive call: call <code>sum_squares</code> once inside its own body.</li>
+      <li>Use no loops.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+</div>
+
+<h2 id="s3">3. Printing a triangle</h2>
+<p>Assume <code>n</code> is a nonnegative integer. The smaller call prints the shorter triangle. The final print adds row <code>n</code>.</p>
+<wb-example id="ex-print-triangle"></wb-example>
+<p>A bare <code>return</code> stops at zero. This function prints rows. It returns <code>None</code>.</p>
+<p>The rows print as the smaller calls finish:</p>
+<ol>
+  <li><code>print_triangle(3)</code> calls <code>print_triangle(2)</code>.</li>
+  <li><code>print_triangle(2)</code> calls <code>print_triangle(1)</code>.</li>
+  <li><code>print_triangle(1)</code> calls <code>print_triangle(0)</code>.</li>
+  <li>The base case prints nothing.</li>
+  <li>Row 1 prints, followed by rows 2 and 3.</li>
+</ol>
+<p>Each call returns <code>None</code>.</p>
+
+<p class="wb-part" id="part-factorial">Factorial and design</p>
+
+<h2 id="s4">4. Factorial</h2>
+<p>The factorial of 4 is written 4!.</p>
+<p style="text-align: center">4! = 4 × 3 × 2 × 1 = 24</p>
+<p>The last three factors form the factorial of 3, so 4! = 4 × 3!. The base case is 0! = 1. An empty product has value 1.</p>
+<wb-example id="ex-factorial"></wb-example>
+<p>Assume <code>n</code> is a nonnegative integer. The base case returns <code>1</code>. The recursive case multiplies by <code>n</code>. The problem decides the base answer. A sum starts at <code>0</code>. This product starts at <code>1</code>.</p>
+<p>The calls go down to the base case. The products come back as the calls finish:</p>
+<ol>
+  <li>The calls use <code>n</code> values 4, 3, 2, 1, and 0, in that order.</li>
+  <li>The base case returns 1.</li>
+  <li>The call with <code>n = 1</code> returns 1 × 1 = 1.</li>
+  <li>The call with <code>n = 2</code> returns 2 × 1 = 2.</li>
+  <li>The call with <code>n = 3</code> returns 3 × 2 = 6.</li>
+  <li>The call with <code>n = 4</code> returns 4 × 6 = 24.</li>
+</ol>
+<p>Each larger call multiplies by its own <code>n</code>.</p>
+
+<h2 id="s5">5. One stack frame per call</h2>
+<p>Each call gets its own <code>n</code> in its own stack frame. The latest unfinished call is on top. The calls below it wait for an answer. Python also remembers where each call must continue. While <code>factorial(0)</code> runs, the four factorial frames are:</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 440 150" width="440" height="150" role="img" aria-label="Four stacked frames. Top, drawn thick: factorial(0), n = 0, base case returns 1. Below it: factorial(1), n = 1, waiting to multiply by 1. Then factorial(2), n = 2, waiting to multiply by 2. Bottom: factorial(3), n = 3, waiting to multiply by 3." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="4" y="4" width="432" height="30" style="stroke-width: 3"/>
+    <rect x="4" y="40" width="432" height="30"/>
+    <rect x="4" y="76" width="432" height="30"/>
+    <rect x="4" y="112" width="432" height="30"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle">
+      <text x="220" y="24"><tspan style="font-family: var(--font-mono, monospace)">factorial(0)</tspan>: <tspan style="font-family: var(--font-mono, monospace)">n = 0</tspan>, base case returns <tspan style="font-family: var(--font-mono, monospace)">1</tspan></text>
+      <text x="220" y="60"><tspan style="font-family: var(--font-mono, monospace)">factorial(1)</tspan>: <tspan style="font-family: var(--font-mono, monospace)">n = 1</tspan>, waiting to multiply by 1</text>
+      <text x="220" y="96"><tspan style="font-family: var(--font-mono, monospace)">factorial(2)</tspan>: <tspan style="font-family: var(--font-mono, monospace)">n = 2</tspan>, waiting to multiply by 2</text>
+      <text x="220" y="132"><tspan style="font-family: var(--font-mono, monospace)">factorial(3)</tspan>: <tspan style="font-family: var(--font-mono, monospace)">n = 3</tspan>, waiting to multiply by 3</text>
+    </g>
+  </svg>
+</figure>
+<p><code>factorial(0)</code> and <code>factorial(1)</code> each return <code>1</code>. Next, <code>factorial(2)</code> returns 2 × 1 = 2. Then <code>factorial(3)</code> returns 3 × 2 = 6 to its caller. The returning call's frame finishes. The frame below it becomes active. After <code>factorial(3)</code> returns, all four factorial frames have finished.</p>
+<wb-example id="ex-factorial3"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Call</th><th>Base?</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>factorial(3)</code></td><td>False</td><td>3 × 2 = 6</td></tr>
+    <tr><td>2</td><td><code>factorial(2)</code></td><td>False</td><td>2 × 1 = 2</td></tr>
+    <tr><td>3</td><td><code>factorial(1)</code></td><td>False</td><td>1 × 1 = 1</td></tr>
+    <tr><td>4</td><td><code>factorial(0)</code></td><td>True</td><td>1</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>Base?</code> means <code>n == 0</code>. Start with the base answer, <code>1</code>. Work upward through the multiplications. The final answer is <code>6</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write a recursive function <code>power(base, n)</code>. It returns <code>base</code> to the power <code>n</code>.</p>
+  <ul>
+    <li>Assume <code>base</code> is a positive integer.</li>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Use multiplication and one recursive call.</li>
+    <li>Check <code>power(2, 0)</code>, <code>power(2, 1)</code>, and <code>power(2, 4)</code>.</li>
+  </ul>
+  <p>2<sup>4</sup> = 2 × 2 × 2 × 2. The base stays the same. Reduce the number of factors. For any allowed base, the power with exponent 0 is 1.</p>
+  <p><strong>Check</strong> makes these three calls. It also calls <code>power</code> with the bases 1, 3, and 10 and other small exponents, and compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>power(base, n)</code> with two parameters. It returns the power.</li>
+      <li>Make one recursive call: call <code>power</code> once inside its own body.</li>
+      <li>Use multiplication. Do not use <code>**</code> or <code>pow</code>.</li>
+      <li>Use no loops.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-reaching">Reaching the base case</p>
+
+<h2 id="s6">6. Reaching the base case</h2>
+<p>This function has a recursive case but no base case.</p>
+<wb-example id="ex-broken"></wb-example>
+<p>Starting with <code>broken(2)</code>, the inputs are 2, 1, 0, and then −1. The input gets smaller, but no case returns directly. The calls continue past zero. After too many nested calls, Python raises <code>RecursionError</code>.</p>
+<wb-example id="ex-wrong-way"></wb-example>
+<p>This function has a base case, but its input moves the wrong way. Start with <code>wrong_way(2)</code>. The base case exists. The inputs grow from 2 to 3 to 4 and continue growing. They never reach <code>0</code>. This call also ends with <code>RecursionError</code>.</p>
+<p>For our numeric examples, <code>n</code> is a nonnegative integer.</p>
+<ul>
+  <li>Check the base input first.</li>
+  <li>Check the next input. It should use the base answer.</li>
+  <li>Check a small input that needs several calls.</li>
+  <li>Confirm that each recursive input moves toward the base case.</li>
+</ul>
+<p>For factorial, useful checks are:</p>
+<ul>
+  <li>Input <code>0</code> returns <code>1</code>.</li>
+  <li>Input <code>1</code> returns <code>1</code>.</li>
+  <li>Input <code>4</code> returns <code>24</code>.</li>
+</ul>
+<p>Valid code can also reach Python's recursion limit on a very large input. Use small inputs while learning the pattern.</p>
+
+<p class="wb-part" id="part-smaller">Other smaller inputs</p>
+
+<h2 id="s7">7. Removing a digit</h2>
+<p>For a nonnegative integer, <code>// 10</code> removes the last digit. The expression <code>% 10</code> gives that digit. <code>407 // 10</code> is <code>40</code>, and <code>407 % 10</code> is <code>7</code>. <code>digit_sum(407)</code> is <code>digit_sum(40)</code> plus <code>7</code>. A single digit is a base case. Its digit sum is the digit itself. This includes <code>0</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write a recursive function <code>digit_sum(n)</code>. It returns the sum of the digits of <code>n</code>.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Use one recursive call.</li>
+    <li>Check inputs <code>0</code>, <code>7</code>, and <code>407</code>.</li>
+  </ul>
+  <p>The digits of <code>407</code> add up to 4 + 0 + 7 = 11. Use the sum for the remaining digits. Add the last digit to that answer.</p>
+  <p><strong>Check</strong> calls <code>digit_sum</code> with 0, 7, and 407. It also calls it with numbers such as 10, 9999, and 1000000, and compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>digit_sum(n)</code> with one parameter. It returns the sum of the digits.</li>
+      <li>Make one recursive call: call <code>digit_sum</code> once inside its own body.</li>
+      <li>Do not convert the number to a string.</li>
+      <li>Use no loops.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="s8">8. Shortening a string</h2>
+<p>A string can also get shorter. <code>reverse(text)</code> returns the characters of <code>text</code> in the opposite order.</p>
+<wb-example id="ex-reverse"></wb-example>
+<p><code>text[1:]</code> is the text after its first character. Reverse <code>"AT"</code> to get <code>"TA"</code>. Then add <code>"C"</code> at the end. Empty text and a single character are base cases.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>Write answers for Practices 1 to 3. Write recursive functions for Practices 4 to 6. Use one recursive call in each recursive case. Use no loops.</p>
+<p><strong>Check</strong> calls your function with the values listed in each practice and with other values. It compares the value each call returns.</p>
+
+<h3>1. Explain the stopping point</h3>
+<p>Explain each term in one or two sentences:</p>
+<ol>
+  <li>Recursion</li>
+  <li>Calls that continue without reaching a base case</li>
+</ol>
+<p>Say what Python raises when too many calls remain unfinished.</p>
+<wb-short id="p1"></wb-short>
+
+<h3>2. Repeated text</h3>
+<p>This function joins copies of a string. Assume <code>count</code> is a nonnegative integer.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">repeat_text</span>(text, count):
+    <span class="wb-kw">if</span> count == 0:
+        <span class="wb-kw">return</span> <span class="wb-str">""</span>
+    <span class="wb-kw">return</span> text + <span class="wb-fn">repeat_text</span>(text, count - 1)</code></pre>
+<ol>
+  <li>State the base case and its returned value.</li>
+  <li>Explain how the recursive case uses the smaller answer.</li>
+  <li>Complete the returned strings. Include quotation marks so an empty string is visible.</li>
+</ol>
+<wb-table id="p2-table">
+  <table>
+    <thead><tr><th>Call</th><th>Returned string</th></tr></thead>
+    <tbody>
+      <tr><td><code>repeat_text("ab", 0)</code></td><td data-blank="r0"></td></tr>
+      <tr><td><code>repeat_text("ab", 1)</code></td><td data-blank="r1"></td></tr>
+      <tr><td><code>repeat_text("ab", 3)</code></td><td data-blank="r3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p2"></wb-short>
+
+<h3>3. A product of digits</h3>
+<p>The product of digits means multiplying the digits together. For example, the product for 234 is 2 × 3 × 4 = 24. Assume <code>n</code> is a nonnegative integer.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">digit_product</span>(n):
+    <span class="wb-kw">if</span> n &lt; 10:
+        <span class="wb-kw">return</span> n
+    <span class="wb-kw">return</span> <span class="wb-fn">digit_product</span>(n // 10) * (n % 10)</code></pre>
+<ol>
+  <li>State the base case and explain its answer.</li>
+  <li>Trace <code>digit_product(234)</code>. Record the calls in order, then the values they return.</li>
+  <li>Explain why <code>digit_product(204)</code> returns zero.</li>
+</ol>
+<wb-table id="p3-trace">
+  <table>
+    <thead><tr><th>Call number</th><th>Call</th><th>Returned value</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>digit_product(234)</code></td><td data-blank="v1"></td></tr>
+      <tr><td>2</td><td data-blank="c2"></td><td data-blank="v2"></td></tr>
+      <tr><td>3</td><td data-blank="c3"></td><td data-blank="v3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p3"></wb-short>
+
+<h3>4. Largest digit</h3>
+<p>Write the function <code>largest_digit(n)</code>. It takes a nonnegative integer and returns its largest decimal digit. Find the largest digit in <code>n // 10</code>, then compare it with <code>n % 10</code>. Do not convert the number to a string.</p>
+<ul>
+  <li><code>largest_digit(0)</code> returns <code>0</code>.</li>
+  <li><code>largest_digit(7)</code> returns <code>7</code>.</li>
+  <li><code>largest_digit(5832)</code> returns <code>8</code>.</li>
+  <li><code>largest_digit(909)</code> returns <code>9</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>largest_digit(n)</code> with one parameter. <strong>Check</strong> also calls it with numbers such as 10, 1000, and 987654321.</li>
+    <li>Make one recursive call: call <code>largest_digit</code> once inside its own body.</li>
+    <li>Use <code>n // 10</code> and <code>n % 10</code>. Do not convert the number to a string.</li>
+    <li>Use no loops.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Letter score</h3>
+<p>Write the function <code>letter_score(text)</code>. It takes a string containing only <code>A</code>, <code>B</code>, and <code>C</code>. It returns the total of the letter values.</p>
+<ul>
+  <li>Each <code>A</code> is worth 1.</li>
+  <li>Each <code>B</code> is worth 3.</li>
+  <li>Each <code>C</code> is worth 5.</li>
+  <li>The empty string has score 0.</li>
+</ul>
+<p>Use the score of <code>text[1:]</code> to build the answer.</p>
+<ul>
+  <li><code>letter_score("")</code> returns <code>0</code>.</li>
+  <li><code>letter_score("B")</code> returns <code>3</code>.</li>
+  <li><code>letter_score("CAB")</code> returns <code>9</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>letter_score(text)</code> with one parameter. <strong>Check</strong> also calls it with strings such as <code>"BAC"</code>, <code>"CCCCC"</code>, and <code>"ABCABC"</code>.</li>
+    <li>Make one recursive call: call <code>letter_score</code> once inside its own body.</li>
+    <li>Build the answer from the score of <code>text[1:]</code>. Do not use <code>count</code>.</li>
+    <li>Use no loops.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Find a piece of text</h3>
+<p>Write the function <code>contains(text, piece)</code>. It returns <code>True</code> when <code>piece</code> occurs as consecutive characters in <code>text</code>. Otherwise, it returns <code>False</code>.</p>
+<ul>
+  <li>An empty <code>piece</code> occurs in every string, including the empty string.</li>
+  <li>Compare <code>text[:len(piece)]</code> with <code>piece</code> to test the start of the text.</li>
+  <li>If they do not match, try the text with its first character removed.</li>
+  <li>Stop with <code>False</code> when fewer characters remain than <code>piece</code> needs.</li>
+  <li>Use slicing and recursion. Do not use <code>in</code>, <code>find</code>, or <code>count</code>.</li>
+</ul>
+<p>Check each call:</p>
+<ul>
+  <li><code>contains("banana", "nan")</code> returns <code>True</code>.</li>
+  <li><code>contains("banana", "nab")</code> returns <code>False</code>.</li>
+  <li><code>contains("", "")</code> returns <code>True</code>.</li>
+  <li><code>contains("", "a")</code> returns <code>False</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>contains(text, piece)</code> with two parameters. <strong>Check</strong> also calls it with pairs such as <code>("abc", "")</code>, <code>("abc", "abcd")</code>, and <code>("mississippi", "ssip")</code>.</li>
+    <li>Make one recursive call: call <code>contains</code> once inside its own body.</li>
+    <li>Use slicing. Do not use <code>in</code>, <code>find</code>, or <code>count</code>.</li>
+    <li>Use no loops.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Base cases and recursive steps</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Function</th><th>Base case: answer</th><th>Recursive step</th></tr></thead>
+  <tbody>
+    <tr><td><code>triangle(n)</code></td><td><var>n</var> = 0: 0</td><td><code>n + triangle(n - 1)</code></td></tr>
+    <tr><td><code>sum_squares(n)</code></td><td><var>n</var> = 0: 0</td><td><code>n * n + sum_squares(n - 1)</code></td></tr>
+    <tr><td><code>factorial(n)</code></td><td><var>n</var> = 0: 1</td><td><code>n * factorial(n - 1)</code></td></tr>
+    <tr><td><code>power(base, n)</code></td><td><var>n</var> = 0: 1</td><td><code>base * power(base, n - 1)</code></td></tr>
+    <tr><td><code>digit_sum(n)</code></td><td><var>n</var> &lt; 10: <var>n</var></td><td><code>digit_sum(n // 10) + n % 10</code></td></tr>
+    <tr><td><code>reverse(text)</code></td><td><code>len(text) &lt;= 1</code>:<br>return <code>text</code></td><td><code>reverse(text[1:]) + text[0]</code></td></tr>
+    <tr><td><code>print_triangle(n)</code></td><td><var>n</var> = 0:<br>print nothing</td><td>Call with <code>n - 1</code>.<br>Then print <code>"[]" * n</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Design, calls, and checks</h3>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><td>Design</td><td>State the allowed inputs. Choose a base case. Make the input smaller. Use its promised answer.</td></tr>
+    <tr><td>Smaller answer</td><td>Use the smaller call's promised result. Check how you build your answer from it.</td></tr>
+    <tr><td>Stack frame</td><td>Each call has its own values. The latest unfinished call is on top. Returning removes its frame.</td></tr>
+    <tr><td>Tracing table</td><td>Read the code for each call. Check the base condition. Fill returned values from bottom to top.</td></tr>
+    <tr><td>Checks</td><td>Test a base input, the next input, and a small ordinary input. Write expected answers first.</td></tr>
+    <tr><td><code>RecursionError</code></td><td>Check the base case and the direction of change. A very large valid input can also hit the limit.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 21 Workbook.</p>
+</main>
+</body>
+</html>

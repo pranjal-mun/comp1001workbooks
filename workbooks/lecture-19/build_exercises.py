@@ -320,43 +320,6 @@ E["cp3"] = short('`TypeError`: `ratio` tries to divide a string by an integer on
                  min_chars=30, rows=4, placeholder="The argument that caused the problem, where it entered, and the fix…")
 
 # ============================================================ Coding Practice
-# 1. Trace a cube report
-cube_report = '''def cube(number):
-    return number ** 3
-
-def main():
-    small = cube(3)
-    large = cube(5)
-    print(small)
-    print(large)
-
-if __name__ == '__main__':
-    main()
-'''
-assert out(cube_report) == "27\n125"
-E["p1-trace"] = short("`main` calls `cube(3)`, which returns `27`; `main` stores it in `small`. It calls `cube(5)`, which returns `125`, "
-                      "and stores it in `large`. It then executes the two print calls, in order. The output is:\n`27`\n`125`",
-                      min_chars=40, rows=6, placeholder="The statements that execute, in order, including each return…")
-E["p1-output"] = {"type": "table", "xp": 1, "blanks": {"l1": accept("27", placeholder="output", width="6rem"),
-                                                         "l2": accept("125", placeholder="output", width="6rem")}}
-
-# 2. Return behaviour
-TRUTH = ["false", "true", "false", "false", "true", "true", "true"]
-E["p2"] = {"type": "table", "xp": 1, "blanks": {
-    f"s{i}": {"accept": [v, v[0]], "placeholder": "true or false", "width": "7rem", "show": v.capitalize()}
-    for i, v in enumerate(TRUTH, 1)}}
-E["p2-why"] = short("1. False. A function can reach the end of its body and return `None`.\n"
-                    "2. True. Different branches can contain different returns.\n"
-                    "3. False. `return` ends the current call.\n"
-                    "4. False. For example, a function can call `random.randint` without receiving a parameter.\n"
-                    "5. True. A function may do other work or simply finish, returning `None`.\n"
-                    "6. True. A bare `return` ends the call and returns `None`.\n"
-                    "7. True. A call follows one execution path and returns one object.",
-                    min_chars=60, rows=7, placeholder="1. … 2. … (one reason for each statement)")
-# Check the two claims that can be run.
-assert out("def f():\n    x = 1\nprint(f())\n") == "None"
-assert out("def f():\n    return\n    print('no')\nprint(f())\n") == "None"
-
 # 3. Trace number names
 names = '''def small_name(number):
     if number == 1:
@@ -433,160 +396,146 @@ E["p5-why"] = short("The output is `6 9`. `exchange` changes the names `first` a
                     "The names `left` and `right` in the waiting `main` frame still have the values `6` and `9`.",
                     min_chars=30, rows=4, placeholder="Explain using the two calls' frames…")
 
-# 6. Geometry helpers
-geometry = '''import math
-
-def sphere_volume(radius):
-    return 4 * math.pi * radius ** 3 / 3
-
-def sphere_surface(radius):
-    return 4 * math.pi * radius ** 2
-
-def cylinder_volume(radius, height):
-    return math.pi * radius ** 2 * height
-
-def cylinder_surface(radius, height):
-    return 2 * math.pi * radius * (radius + height)
-
-def cone_volume(radius, height):
-    return math.pi * radius ** 2 * height / 3
-
-def cone_surface(radius, height):
-    slant = math.sqrt(radius ** 2 + height ** 2)
-    return math.pi * radius * (radius + slant)
-
-def main():
-    radius = float(input('Radius: '))
-    height = float(input('Height: '))
-    print(f'Sphere volume: {sphere_volume(radius):.2f}')
-    print(f'Sphere surface: {sphere_surface(radius):.2f}')
-    print(f'Cylinder volume: {cylinder_volume(radius, height):.2f}')
-    print(f'Cylinder surface: {cylinder_surface(radius, height):.2f}')
-    print(f'Cone volume: {cone_volume(radius, height):.2f}')
-    print(f'Cone surface: {cone_surface(radius, height):.2f}')
-
-if __name__ == '__main__':
-    main()
-'''
-geo_ns = namespace(geometry)
-assert run_with_prompts(geometry, ["3", "4"]) == ("Radius: Height: Sphere volume: 113.10\nSphere surface: 113.10\nCylinder volume: 113.10\n"
-                                                  "Cylinder surface: 131.95\nCone volume: 37.70\nCone surface: 75.40")
-
-def report_case(name, code, inputs, label):
-    """Check-only case: any prompts are accepted, so compare the report lines
-    with the prompts removed from the front of the first one."""
-    with_prompts = run_with_prompts(code, inputs)
-    prompts = "Radius: Height: "
-    assert with_prompts.startswith(prompts)
-    want = with_prompts[len(prompts):].split("\n")
-    check = f'''_want = {want!r}
-_got = [line.rstrip() for line in __stdout__.rstrip("\\n").split("\\n")]
-assert len(_got) == len(_want), "{label}, print exactly six report lines, one per measurement."
-assert _got[0].endswith(_want[0]), "{label}, the first report line should end with " + repr(_want[0]) + "."
-for _i in range(1, len(_want)):
-    assert _got[_i] == _want[_i], "{label}, line " + str(_i + 1) + " should be " + repr(_want[_i]) + ", not " + repr(_got[_i]) + "."
+# The three programs below accept any prompt: each case compares only the
+# result line, found by its label, with the model's.
+def result_case(name, code, inputs, label):
+    printed = run_with_prompts(code, inputs)
+    want = [line[line.index(label):] for line in printed.split("\n") if label in line]
+    assert len(want) == 1, printed
+    check = f'''_want = {want[0]!r}
+_got = [_l[_l.index({label!r}):].rstrip() for _l in __stdout__.split("\\n") if {label!r} in _l]
+assert len(_got) == 1, "Print one result line that starts with " + repr({label!r}) + "."
+assert _got[0] == _want, "For this input the result line should be " + repr(_want) + ", not " + repr(_got[0]) + "."
 '''
     return {"name": name, "inputs": list(inputs), "check": check}
 
-GEO_ONE = ["sphere_volume", "sphere_surface"]
-GEO_TWO = ["cylinder_volume", "cylinder_surface", "cone_volume", "cone_surface"]
-geo_check = FN + "".join(f'_fn({n!r}, "radius")\n' for n in GEO_ONE) + "".join(f'_fn({n!r}, "radius", "height")\n' for n in GEO_TWO)
-geo_check += '_fn("main")\n'
-geo_check += 'assert re.search(r"\\bmath\\.pi\\b", __code__), "Use math.pi."\n'
-geo_check += 'assert re.search(r"\\bmath\\.sqrt\\s*\\(", __code__), "Use math.sqrt for the slant length s."\n'
-for n in GEO_ONE:
-    geo_check += returns(n, geo_ns, (1.0,), (2.5,))
-for n in GEO_TWO:
-    geo_check += returns(n, geo_ns, (1.0, 1.0), (2.0, 3.0))
-geo_check += '_guard()\n'
-E["p6"] = {"type": "code", "xp": 10, "minLines": 32,
-    "starter": ("import math\n\n# Define the six helpers here.\n\ndef main():\n    # Read the radius and the height, call all six helpers,\n"
-                "    # and print the labeled results to two decimal places.\n\nif __name__ == '__main__':\n    main()\n"),
-    "cases": [report_case("Radius 3 and height 4", geometry, ["3", "4"], "For radius 3 and height 4"),
-              report_case("Radius 1 and height 1", geometry, ["1", "1"], "For radius 1 and height 1"),
-              report_case("Radius 2.5 and height 10", geometry, ["2.5", "10"], "For radius 2.5 and height 10"),
-              report_case("Radius 0.5 and height 0.2", geometry, ["0.5", "0.2"], "For radius 0.5 and height 0.2")],
-    "check": geo_check,
-    "answer": b64(geometry),
-    "answerNote": "Each helper returns one calculation. `main` handles input and formatting."}
+# 4. Next prime (The Python Workbook, Exercises 92 and 93)
+prime = '''def is_prime(number):
+    if number < 2:
+        return False
+    for divisor in range(2, number):
+        if number % divisor == 0:
+            return False
+    return True
 
-# 7. Read a number
-reader = '''def read_number(prompt='Value:'):
-    return float(input(prompt + ' '))
+def next_prime(number):
+    candidate = number + 1
+    while not is_prime(candidate):
+        candidate = candidate + 1
+    return candidate
 
 def main():
-    first = read_number()
-    second = read_number(prompt='Next:')
-    print(f'Total: {first + second:.1f}')
+    number = int(input())
+    print('Next prime:', next_prime(number))
 
 if __name__ == '__main__':
     main()
 '''
-E["p7"] = {"type": "code", "xp": 10, "minLines": 10,
-    "starter": ("def read_number(prompt='Value:'):\n    # Read and return a float, using the prompt followed by one space.\n\n"
-                "def main():\n    # Read two numbers and print their total to one decimal place.\n\nif __name__ == '__main__':\n    main()\n"),
-    "cases": input_cases(reader, ("Typed 2.5 and 4", ["2.5", "4"]), ("Typed 0 and 0", ["0", "0"]), ("Typed 1.25 and -3", ["1.25", "-3"])),
-    "check": FN + '''_f = _fn("read_number", "prompt")
-assert _f.__defaults__ == ("Value:",), "Give read_number the default prompt='Value:'."
-assert "input" in _f.__code__.co_names and "float" in _f.__code__.co_names, "Read the number with input() and convert it with float() inside read_number."
-_fn("main")
-_calls = [n for n in _body("main") if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == "read_number"]
-assert any(not c.args and not c.keywords for c in _calls), "In main, read the first number with the default prompt: read_number()."
-assert any(not c.args and [k.arg for k in c.keywords] == ["prompt"] and isinstance(c.keywords[0].value, ast.Constant)
-           and c.keywords[0].value.value == "Next:" for c in _calls), "Read the second number with the keyword call read_number(prompt='Next:')."
-_guard()
-''',
-    "answer": b64(reader),
-    "answerNote": "The helper returns the converted input. `main` calls it twice and prints the total."}
-assert [c["expected"] for c in E["p7"]["cases"][:2]] == ["Value: Next: Total: 6.5", "Value: Next: Total: 0.0"]
+prime_ns = namespace(prime)
+assert [prime_ns["next_prime"](n) for n in (13, 1, 24, 89)] == [17, 2, 29, 97]
+E["p-prime"] = {"type": "code", "xp": 10, "minLines": 16,
+    "starter": ("def is_prime(number):\n    # Return True when number is prime, and False otherwise.\n\n"
+                "def next_prime(number):\n    # Return the smallest prime larger than number. Use is_prime.\n\n"
+                "def main():\n    # Read a whole number and print the result.\n\nif __name__ == '__main__':\n    main()\n"),
+    "cases": [result_case(f"Typed {n}", prime, [str(n)], "Next prime:") for n in (13, 1, 24, 89)],
+    "check": FN + '_fn("is_prime", "number")\n_fn("next_prime", "number")\n_fn("main")\n'
+             + 'assert "is_prime" in globals()["next_prime"].__code__.co_names, "next_prime should call is_prime to test each candidate."\n'
+             + returns("is_prime", prime_ns, *[(n,) for n in (0, 1, 2, 3, 4, 9, 25, 49, 97, 100)])
+             + returns("next_prime", prime_ns, *[(n,) for n in (0, 2, 7, 13, 14, 90)]) + "_guard()\n",
+    "answer": b64(prime),
+    "answerNote": "`next_prime` keeps asking `is_prime` about the next candidate until the answer is `True`. "
+                  "While `is_prime` runs, the stack holds `main`, `next_prime`, and `is_prime`."}
 
-# 8. Order credit
-credit = '''def order_credit(total, items):
-    if total < 40:
-        return 3 * items
-    if total < 80 and items >= 2:
-        return 2 * items
-    if total <= 120 and items >= 3:
-        return items
-    return 0
+# 5. Operator precedence (The Python Workbook, Exercise 91)
+precedence = '''def precedence(operator):
+    if operator == '+' or operator == '-':
+        return 1
+    if operator == '*' or operator == '/':
+        return 2
+    if operator == '^':
+        return 3
+    return -1
 
 def main():
-    total = float(input('Total (-1 to stop): '))
-    while total != -1:
-        items = int(input('Items: '))
-        credit = order_credit(total, items)
-        print(f'Credit: ${credit:.2f}')
-        total = float(input('Total (-1 to stop): '))
+    operator = input()
+    level = precedence(operator)
+    if level == -1:
+        print('Not an operator')
+    else:
+        print('Precedence:', level)
 
 if __name__ == '__main__':
     main()
 '''
-credit_ns = namespace(credit)
+prec_ns = namespace(precedence)
 
-def credit_case(name, inputs):
-    printed = run_with_prompts(credit, inputs)
-    want = [line.split("Items: ")[-1] for line in printed.split("\n") if "Credit: " in line]
+def prec_case(typed):
+    printed = run_with_prompts(precedence, [typed])
+    want = "Not an operator" if "Not an operator" in printed else printed[printed.index("Precedence:"):]
     check = f'''_want = {want!r}
-_got = re.findall(r"Credit: \\$\\S*", __stdout__)
-assert len(_got) == len(_want), "Print one Credit line for each order: " + str(len(_want)) + " here, not " + str(len(_got)) + "."
-for _i in range(len(_want)):
-    assert _got[_i] == _want[_i], "Order " + str(_i + 1) + " should print " + repr(_want[_i]) + ", not " + repr(_got[_i]) + "."
+_lines = [_l.rstrip() for _l in __stdout__.split("\\n") if _l.strip()]
+assert _lines and _lines[-1].endswith(_want), "For {typed!r}, the last line should be " + repr(_want) + "."
 '''
-    return {"name": name, "inputs": list(inputs), "check": check}
+    return {"name": f"Typed {typed}", "inputs": [typed], "check": check}
 
-CREDIT_CALLS = [(39.0, 1), (40.0, 2), (80.0, 3), (120.0, 2), (0.0, 0), (39.99, 4), (40.0, 1), (79.99, 2), (79.99, 1),
-                (80.0, 2), (120.0, 3), (120.01, 3), (100.0, 5), (150.0, 10)]
-E["p8"] = {"type": "code", "xp": 10, "minLines": 20,
-    "starter": ("def order_credit(total, items):\n    # Return the credit for one order.\n\n"
-                "def main():\n    # Read totals until -1, reading the item count only for an order.\n\nif __name__ == '__main__':\n    main()\n"),
-    "cases": [credit_case("Orders (39, 1), (40, 2), (80, 3), (120, 2), then -1", ["39", "1", "40", "2", "80", "3", "120", "2", "-1"]),
-              credit_case("The sentinel -1 first", ["-1"]),
-              credit_case("Orders (79.99, 2), (120.01, 3), (0, 0), then -1", ["79.99", "2", "120.01", "3", "0", "0", "-1"])],
-    "check": FN + '_fn("order_credit", "total", "items")\n_fn("main")\n' + returns("order_credit", credit_ns, *CREDIT_CALLS) + "_guard()\n",
-    "answer": b64(credit),
-    "answerNote": "The report lines for the four orders are `Credit: $3.00`, `Credit: $4.00`, `Credit: $3.00`, and `Credit: $0.00`. "
-                  "With `-1` first, the program prints no credit and does not ask for an item count."}
-assert E["p8"]["cases"][0]["check"].startswith("_want = ['Credit: $3.00', 'Credit: $4.00', 'Credit: $3.00', 'Credit: $0.00']")
+E["p-precedence"] = {"type": "code", "xp": 10, "minLines": 16,
+    "starter": ("def precedence(operator):\n    # Return 1, 2, 3, or -1.\n\n"
+                "def main():\n    # Read one operator and print its precedence or the message.\n\nif __name__ == '__main__':\n    main()\n"),
+    "cases": [prec_case(t) for t in ("*", "^", "%", "+", "**")],
+    "check": FN + '_fn("precedence", "operator")\n_fn("main")\n'
+             + returns("precedence", prec_ns, *[(t,) for t in ("+", "-", "*", "/", "^", "%", "**", "", "x")]) + "_guard()\n",
+    "answer": b64(precedence),
+    "answerNote": "`precedence` only returns a number. `main` decides what to print. "
+                  "Because of the guard, another program can import `precedence` without running `main`."}
+
+# 6. Roman numeral value (textbook P5.27)
+roman = '''def letter_value(letter):
+    if letter == 'I':
+        return 1
+    if letter == 'V':
+        return 5
+    if letter == 'X':
+        return 10
+    if letter == 'L':
+        return 50
+    if letter == 'C':
+        return 100
+    if letter == 'D':
+        return 500
+    return 1000
+
+def roman_value(text):
+    total = 0
+    for index in range(len(text)):
+        value = letter_value(text[index])
+        if index + 1 < len(text) and letter_value(text[index + 1]) > value:
+            total = total - value
+        else:
+            total = total + value
+    return total
+
+def main():
+    text = input()
+    print('Value:', roman_value(text))
+
+if __name__ == '__main__':
+    main()
+'''
+roman_ns = namespace(roman)
+ROMAN_TESTS = ["I", "IV", "IX", "XIV", "XL", "XLIV", "XC", "XCIX", "CD", "CM", "MCMLXXVIII", "MMXXVI", "MMMCMXCIX"]
+assert [roman_ns["roman_value"](t) for t in ROMAN_TESTS] == [1, 4, 9, 14, 40, 44, 90, 99, 400, 900, 1978, 2026, 3999]
+E["p-roman"] = {"type": "code", "xp": 10, "minLines": 26,
+    "starter": ("def letter_value(letter):\n    # Return the value of one Roman letter.\n\n"
+                "def roman_value(text):\n    # Return the value of a whole Roman numeral. Use letter_value.\n\n"
+                "def main():\n    # Read a numeral and print its value.\n\nif __name__ == '__main__':\n    main()\n"),
+    "cases": [result_case(f"Typed {t}", roman, [t], "Value:") for t in ("MCMLXXVIII", "XLIV", "IX", "MMXXVI")],
+    "check": FN + '_fn("letter_value", "letter")\n_fn("roman_value", "text")\n_fn("main")\n'
+             + 'assert "letter_value" in globals()["roman_value"].__code__.co_names, "roman_value should call letter_value to get each value."\n'
+             + returns("letter_value", roman_ns, *[(c,) for c in "IVXLCDM"])
+             + returns("roman_value", roman_ns, *[(t,) for t in ROMAN_TESTS]) + "_guard()\n",
+    "answer": b64(roman),
+    "answerNote": "A letter is subtracted only when the next letter is larger. The test `index + 1 < len(text)` stops the last letter "
+                  "from looking past the end of the string."}
 
 for spec in E.values():
     if "starter" in spec:

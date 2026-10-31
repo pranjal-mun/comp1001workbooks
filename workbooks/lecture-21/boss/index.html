@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 21 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-21-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 21 Boss Problems</h1>
+    <div class="wb-subtitle">Problem solving with recursion: the recursive idea</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use recursion from Lecture 21:</p>
+  <ul>
+    <li>a base case that returns without another call</li>
+    <li>a recursive case that makes one call on a smaller problem</li>
+    <li>a return value built from the answer of that call</li>
+  </ul>
+  <p>They use only what Lectures 4 to 21 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code></li>
+    <li>arithmetic, including <code>//</code> and <code>%</code></li>
+    <li>comparisons and <code>if</code> statements</li>
+    <li>functions, default parameter values, <code>main()</code>, and the <code>__name__</code> guard</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. <strong>Check</strong> also calls your functions directly with more values and compares what they return. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show.</p>
+  <p>Each problem also asks you to trace or explain your program. Those parts are under the code box. <strong>Check</strong> grades only the program.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 🐉 and are worth 10, 15, and 20 XP.</p>
+</section>
+<hr>
+
+<h2 id="gcd" data-toc-title="👹 Common factor finder">👹 Boss 1: Common factor finder</h2>
+<p>Write the function <code>gcd(a, b)</code> and a program that uses it. The function returns the greatest common divisor of two integers. A divisor divides a number with no remainder. The greatest common divisor is the largest positive integer that divides both numbers. Every positive integer divides zero.</p>
+<p>Use these rules, called Euclid's algorithm:</p>
+<ul>
+  <li>If <code>b == 0</code>, return <code>a</code>.</li>
+  <li>Otherwise, find the remainder <code>a % b</code>.</li>
+  <li>Return the result of <code>gcd(b, a % b)</code>.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>gcd(a, b)</code> returns the greatest common divisor using the rules above.</li>
+  <li><code>main()</code> reads <code>a</code>, then <code>b</code>, on separate lines. It prints <code>GCD:</code> followed by the result.</li>
+</ol>
+<p>Trace <code>gcd(48, 18)</code> in the table. Record each call and its returned value. Explain why a positive second argument gets closer to zero.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+48
+18
+Output:
+GCD: 6
+Explanation:
+6 is the largest positive integer that divides both 48 and 18.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+7
+0
+Output:
+GCD: 7
+Explanation:
+The second argument is zero, so the first call returns 7.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>a</code> is an integer from 1 through 10000.</li>
+    <li><code>b</code> is an integer from 0 through 10000.</li>
+    <li>Use recursion, no loops, and one recursive call in the recursive case.</li>
+    <li>Use <code>b == 0</code> as the base case.</li>
+    <li>Use the two required functions and the standard guard.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>48</code>, <code>18</code></td><td><code>GCD: 6</code></td></tr>
+    <tr><td><code>7</code>, <code>0</code></td><td><code>GCD: 7</code></td></tr>
+    <tr><td><code>18</code>, <code>48</code></td><td><code>GCD: 6</code></td></tr>
+    <tr><td><code>1</code>, <code>10000</code></td><td><code>GCD: 1</code></td></tr>
+    <tr><td><code>10000</code>, <code>9999</code></td><td><code>GCD: 1</code></td></tr>
+    <tr><td><code>270</code>, <code>192</code></td><td><code>GCD: 6</code></td></tr>
+    <tr><td><code>10000</code>, <code>0</code></td><td><code>GCD: 10000</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>gcd(a, b)</code> with two parameters and <code>main</code> with empty parentheses.</li>
+    <li>Make <code>gcd</code> recursive with one call of <code>gcd</code> inside its own body. Do not use a <code>for</code> or <code>while</code> loop.</li>
+    <li>Use <code>b == 0</code> as the base case.</li>
+    <li><code>gcd</code> returns its answer. <strong>Check</strong> also calls it with pairs such as <code>(1, 0)</code>, <code>(12, 8)</code>, <code>(17, 5)</code>, and <code>(9999, 3333)</code>.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="gcd"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Trace and explain</div>
+  <p>Trace <code>gcd(48, 18)</code>. Record each call and its returned value.</p>
+  <wb-table id="gcd-trace">
+    <table>
+      <thead><tr><th>Call number</th><th>Call</th><th>Base?</th><th>Returned value</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="c1"></td><td data-blank="b1"></td><td data-blank="v1"></td></tr>
+        <tr><td>2</td><td data-blank="c2"></td><td data-blank="b2"></td><td data-blank="v2"></td></tr>
+        <tr><td>3</td><td data-blank="c3"></td><td data-blank="b3"></td><td data-blank="v3"></td></tr>
+        <tr><td>4</td><td data-blank="c4"></td><td data-blank="b4"></td><td data-blank="v4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Explain why a positive second argument gets closer to zero.</p>
+  <wb-short id="gcd-why"></wb-short>
+</div>
+
+<h2 id="total" data-toc-title="👾 Total until blank">👾 Boss 2: Total until blank</h2>
+<p>Write the function <code>read_total()</code> and a program that uses it. The function reads numbers, one per line, until it reads a blank line. It returns their total as a floating-point number. A blank line is a <em>sentinel</em>: a special input that ends the reading.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>Each call reads exactly one line.</li>
+  <li>A blank line returns <code>0.0</code> without another call.</li>
+  <li>Otherwise, convert the line with <code>float</code>.</li>
+  <li>Add that number to the total returned by one recursive call.</li>
+  <li>Zero is a number to include. It does not end the input.</li>
+  <li>A negative number reduces the total.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>read_total()</code> takes no parameters and returns the total. It does not print.</li>
+  <li><code>main()</code> calls <code>read_total()</code> once. It prints <code>Total:</code> followed by the result to two decimal places.</li>
+</ol>
+<p>For the first example, record the line read by each call. Explain which call supplies the first returned answer. Explain why a new call does not erase the number read by its caller.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+4.5
+0
+-1.25
+(blank line)
+Output:
+Total: 3.25
+Explanation:
+The blank fourth line ends the input. The total is 4.5 plus 0 minus 1.25.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Total: 0.00
+Explanation:
+The first line is blank, so no numbers are added.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>There are 0 through 80 number lines, followed by a blank line.</li>
+    <li>Each number is from −1000 through 1000 and is valid input for <code>float</code>.</li>
+    <li>Use recursion and no loops.</li>
+    <li><code>read_total</code> must have no parameters.</li>
+    <li>Keep each number in its own call. Return the total from each call.</li>
+    <li>Use the two required functions and the standard guard.</li>
+  </ul>
+</div>
+<p>The program reads one number per line with no prompt. To type the blank line, press Enter without typing anything.</p>
+<pre class="wb-shell"><span class="wb-typed">4.5</span>
+<span class="wb-typed">0</span>
+<span class="wb-typed">-1.25</span>
+<span class="wb-typed"></span>
+Total: 3.25</pre>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4.5</code>, <code>0</code>, <code>-1.25</code>, blank</td><td><code>Total: 3.25</code></td></tr>
+    <tr><td>blank</td><td><code>Total: 0.00</code></td></tr>
+    <tr><td><code>0</code>, <code>5</code>, blank</td><td><code>Total: 5.00</code></td></tr>
+    <tr><td><code>5</code>, <code>-7.5</code>, blank</td><td><code>Total: -2.50</code></td></tr>
+    <tr><td><code>-1000</code>, blank</td><td><code>Total: -1000.00</code></td></tr>
+    <tr><td>80 numbers, <code>12.5</code> and <code>-7.25</code> in turn, blank</td><td><code>Total: 210.00</code></td></tr>
+    <tr><td><code>1000</code> eighty times, blank</td><td><code>Total: 80000.00</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>read_total()</code> and <code>main</code> with empty parentheses.</li>
+    <li>In <code>read_total</code>, read one line with one <code>input()</code> and make one recursive call. Do not use a <code>for</code> or <code>while</code> loop.</li>
+    <li><code>read_total</code> returns the total as a <code>float</code> and does not print. <strong>Check</strong> also calls it directly and types lines such as <code>2</code>, <code>3</code>, <code>4</code>, and a blank line.</li>
+    <li>Do not use <code>global</code> or <code>nonlocal</code>.</li>
+    <li><code>main</code> calls <code>read_total()</code> once. End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="total"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Trace and explain</div>
+  <p>For the first example, record the line read by each call. Explain which call supplies the first returned answer. Explain why a new call does not erase the number read by its caller.</p>
+  <wb-short id="total-why"></wb-short>
+</div>
+
+<h2 id="root" data-toc-title="🐉 Square root by better guesses">🐉 Boss 3: Square root by better guesses</h2>
+<p>Write the function <code>square_root(n, guess=1.0)</code> and a program that uses it. The function returns an approximation to the positive square root of <code>n</code>. The square root is the positive number whose square equals <code>n</code>. The parameter <code>guess</code> holds the current approximation.</p>
+<p>Use these rules:</p>
+<ul>
+  <li>Give <code>guess</code> the default value <code>1.0</code>. Give <code>n</code> no default.</li>
+  <li>Find the error with <code>abs(guess * guess - n)</code>. The function <code>abs</code> returns the size of a number without its sign.</li>
+  <li>Return <code>guess</code> when the error is at most <code>1e-12</code>, which means 10<sup>−12</sup>.</li>
+  <li>This error allowance is called the <em>tolerance</em>.</li>
+  <li>Otherwise, calculate <code>(guess + n / guess) / 2</code>.</li>
+  <li>Make one recursive call with the same <code>n</code> and the new guess. Return its answer.</li>
+</ul>
+<p>Write these functions:</p>
+<ol>
+  <li><code>square_root(n, guess=1.0)</code> implements the rules above.</li>
+  <li><code>main()</code> reads <code>n</code> and calls <code>square_root(n)</code> with one argument. It prints <code>Root:</code> followed by the answer to six decimal places.</li>
+</ol>
+<p>After testing the program, change only the tolerance to <code>1e-30</code> and try <code>square_root(2)</code>. Record what happens. Explain why a base case can exist even when the calculation cannot reach it.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2
+Output:
+Root: 1.414214
+Explanation:
+The returned guess has a squared error of at most 1e-12.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1
+Output:
+Root: 1.000000
+Explanation:
+The default guess already has zero error, so the first call returns.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li><code>n</code> is a number from 1 through 100, including both endpoints.</li>
+    <li>An explicitly supplied guess is a positive number.</li>
+    <li>Use recursion, no loops, and one recursive call in the recursive case.</li>
+    <li>Use the default guess in <code>main</code>.</li>
+    <li>Use <code>1e-12</code> in the submitted program. Test <code>1e-30</code> in a separate copy.</li>
+    <li>Use the two required functions and the standard guard.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2</code></td><td><code>Root: 1.414214</code></td></tr>
+    <tr><td><code>1</code></td><td><code>Root: 1.000000</code></td></tr>
+    <tr><td><code>4</code></td><td><code>Root: 2.000000</code></td></tr>
+    <tr><td><code>10</code></td><td><code>Root: 3.162278</code></td></tr>
+    <tr><td><code>50.5</code></td><td><code>Root: 7.106335</code></td></tr>
+    <tr><td><code>100</code></td><td><code>Root: 10.000000</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>square_root(n, guess=1.0)</code>: <code>guess</code> has the default value <code>1.0</code> and <code>n</code> has no default. Define <code>main</code> with empty parentheses.</li>
+    <li>Make <code>square_root</code> recursive with one call of <code>square_root</code> inside its own body. Do not use a <code>for</code> or <code>while</code> loop.</li>
+    <li>In <code>square_root</code>, use <code>abs</code> to find the error and the tolerance <code>1e-12</code>.</li>
+    <li>In <code>main</code>, call <code>square_root(n)</code> with one argument.</li>
+    <li><code>square_root</code> returns its answer. <strong>Check</strong> also calls it with values such as <code>9</code> and <code>100</code>, and with supplied guesses such as <code>square_root(9, 3.0)</code> and <code>square_root(36, 0.001)</code>.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="root"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Trace and explain</div>
+  <p>In a separate copy of your program, change only the tolerance to <code>1e-30</code> and try <code>square_root(2)</code>. Record what happens. Explain why a base case can exist even when the calculation cannot reach it.</p>
+  <wb-short id="root-why"></wb-short>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 21 Boss Problems.</p>
+</main>
+</body>
+</html>

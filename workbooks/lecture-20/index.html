@@ -280,11 +280,11 @@ quantity = 2
 </div>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
-<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values and compares what they return. Programs 6, 8, 9, and 11 accept any prompt: the checker looks only at the values or messages each task asks for.</p>
+<p>Practices 1 and 2 are written answers. Practices 3 to 11 are programs.</p>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with other values and compares what they return. A program that reads input may show a prompt first. The checker looks only at the results the task asks for.</p>
 
 <h3>1. Scope trace</h3>
-<p>Read this program, then answer the questions.</p>
-<p>This program calls <code>shifted</code> and prints its result, then prints <code>value</code>.</p>
+<p>This program calls <code>shifted</code> and prints its result. Then it prints <code>value</code>.</p>
 <pre><code>value = 12
 
 <span class="wb-kw">def</span> <span class="wb-fn">shifted</span>(value):
@@ -294,8 +294,8 @@ quantity = 2
 <span class="wb-fn">print</span>(<span class="wb-fn">shifted</span>(5))
 <span class="wb-fn">print</span>(value)</code></pre>
 <ol>
-  <li>Write the two output lines.</li>
-  <li>Classify each use of <code>value</code> as global or parameter, and state its scope. Classify <code>result</code> and state its scope.</li>
+  <li>Write the two lines the program prints.</li>
+  <li>The name <code>value</code> is used in two ways. For each one, say whether it is a global variable or a parameter, and say where it can be used (its scope). Do the same for <code>result</code>.</li>
 </ol>
 <wb-table id="p1-output">
   <table>
@@ -309,34 +309,32 @@ quantity = 2
 <wb-short id="p1"></wb-short>
 
 <h3>2. Refine a word report</h3>
-<p>A program reads words one at a time and ends at a blank line. It prints the number of words and the length of the longest word. With no words, both results are zero. Write high-level steps, then refine the step that processes one word. State what happens when the first line is blank.</p>
+<p>A program reads words, one word per line. It stops when the user enters a blank line. Then it prints two results:</p>
+<ul>
+  <li>the number of words, and</li>
+  <li>the length of the longest word.</li>
+</ul>
+<p>If there are no words, both results are 0.</p>
+<ol>
+  <li>Write the high-level steps of the program.</li>
+  <li>Refine (break into smaller steps) the step that processes one word.</li>
+  <li>Say what happens when the first line is blank.</li>
+</ol>
 <wb-short id="p2"></wb-short>
 
-<h3>3. Parameter reassignment</h3>
-<p>Predict what this program prints. Explain why changing the parameters does or does not change the caller's variables.</p>
-<pre><code><span class="wb-kw">def</span> <span class="wb-fn">exchange</span>(left, right):
-    saved = left
-    left = right
-    right = saved
-
-<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
-    first = 6
-    second = 9
-    <span class="wb-fn">exchange</span>(first, second)
-    <span class="wb-fn">print</span>(first, second)
-
-<span class="wb-fn">main</span>()</code></pre>
-<wb-table id="p3-output">
-  <table>
-    <tbody>
-      <tr><td>Output</td><td data-blank="out"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
-<wb-short id="p3"></wb-short>
-
-<h3>4. Leap-year helper</h3>
-<p>Write <code>is_leap_year(year)</code> using separate <code>if</code> statements and early returns. For this task, a year divisible by 400 is a leap year; otherwise a year divisible by 100 is not; otherwise a year divisible by 4 is; all remaining years are not. The input is a positive whole-number year. Print the results for 2400, 2100, 2028, and 2027, in that order.</p>
+<h3>3. Leap-year helper</h3>
+<p>Write <code>is_leap_year(year)</code>. It returns <code>True</code> when <code>year</code> is a leap year and <code>False</code> when it is not. The year is a positive whole number. Test the rules in this order:</p>
+<ol>
+  <li>If the year is divisible by 400, it is a leap year.</li>
+  <li>Otherwise, if it is divisible by 100, it is not a leap year.</li>
+  <li>Otherwise, if it is divisible by 4, it is a leap year.</li>
+  <li>Otherwise, it is not a leap year.</li>
+</ol>
+<p>Use a separate <code>if</code> statement for each rule. Each <code>if</code> returns its answer at once (an early return). After the function, print the results for 2400, 2100, 2028, and 2027, in that order.</p>
+<pre class="wb-output">True
+False
+True
+False</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -348,35 +346,98 @@ quantity = 2
 </div>
 <wb-exercise id="p4"></wb-exercise>
 
-<h3>5. Reusable numeral helper</h3>
-<p>Write <code>roman_digit(digit, one, five, ten)</code> for one decimal digit from 0 through 9. Its strings name the symbols for one, five, and ten in that position. Use these rules: 0 gives an empty string; 1 through 3 repeat <code>one</code>; 4 gives <code>one + five</code>; 5 gives <code>five</code>; 6 through 8 give <code>five</code> followed by repeated <code>one</code>; 9 gives <code>one + ten</code>. Write <code>roman_number(number)</code> for whole numbers from 1 through 99 by calling the helper for the tens and ones positions. Use X, L, C for tens and I, V, X for ones. Print the results for 44, 9, and 80.</p>
+<h3>4. Reusable numeral helper</h3>
+<p>Write a function that turns a whole number from 1 to 99 into a Roman numeral. Roman numerals use <code>I</code> = 1, <code>V</code> = 5, <code>X</code> = 10, <code>L</code> = 50, and <code>C</code> = 100.</p>
+<p>The tens digit and the ones digit follow the same pattern. Only the letters change:</p>
+<ul>
+  <li>for the ones digit, <em>one</em> is <code>I</code>, <em>five</em> is <code>V</code>, and <em>ten</em> is <code>X</code>;</li>
+  <li>for the tens digit, <em>one</em> is <code>X</code>, <em>five</em> is <code>L</code>, and <em>ten</em> is <code>C</code>.</li>
+</ul>
+<p>So one helper can do both digits if it receives the three letters as parameters.</p>
+<ol>
+  <li>Write <code>roman_digit(digit, one, five, ten)</code>. It returns the string for one digit from 0 to 9:
+    <div class="wb-table-wrap">
+    <table>
+      <thead><tr><th>Digit</th><th>Returned string</th><th>Ones example</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>the empty string</td><td><code>''</code></td></tr>
+        <tr><td>1, 2, 3</td><td><code>one</code> repeated that many times</td><td><code>III</code></td></tr>
+        <tr><td>4</td><td><code>one</code> then <code>five</code></td><td><code>IV</code></td></tr>
+        <tr><td>5</td><td><code>five</code></td><td><code>V</code></td></tr>
+        <tr><td>6, 7, 8</td><td><code>five</code> then <code>one</code> repeated (digit − 5) times</td><td><code>VII</code></td></tr>
+        <tr><td>9</td><td><code>one</code> then <code>ten</code></td><td><code>IX</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </li>
+  <li>Write <code>roman_number(number)</code>. It calls <code>roman_digit</code> once for the tens digit and once for the ones digit, and joins the two strings.</li>
+  <li>Print the results for 44, 9, and 80, in that order.</li>
+</ol>
+<pre class="wb-output">XLIV
+IX
+LXXX</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Define <code>roman_digit(digit, one, five, ten)</code> and <code>roman_number(number)</code>.</li>
     <li><code>roman_number</code> calls <code>roman_digit</code> for the tens and the ones.</li>
-    <li>Each function returns its string. <strong>Check</strong> calls <code>roman_digit</code> with every digit and both sets of symbols, and <code>roman_number</code> with every number from 1 through 99.</li>
+    <li>Each function returns its string. <strong>Check</strong> calls <code>roman_digit</code> with every digit and both sets of letters, and <code>roman_number</code> with every number from 1 to 99.</li>
     <li>Print the three results in the order given.</li>
   </ul>
 </div>
 <wb-exercise id="p5"></wb-exercise>
 
-<h3>6. Pay report</h3>
-<p>For this exercise, a shop pays the usual hourly rate for the first 35 hours and twice that rate for later hours. Read a worker's name, hourly rate, and hours worked, one per line. Rate and hours are nonnegative numbers. Print the name and pay to two decimal places. Refine the program into a pay calculation, a display helper, and <code>main</code>. Test with the name Sam, rate 12, and 38 hours; also test zero hours.</p>
-<p><strong>Check</strong> types Sam, 12, and 38, then Sam, 12, and 0, then three more workers. For Sam and 38 hours, the pay is <code>492.00</code>.</p>
+<h3>5. Time in words</h3>
+<p>Write a program that reads a time and prints it in words. The program reads two whole numbers, one per line:</p>
+<ul>
+  <li>the hours, from 1 to 12, and</li>
+  <li>the minutes: 0, 5, 10, and so on up to 55.</li>
+</ul>
+<p>Use these patterns. The examples use the hour 5.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Minutes</th><th>Pattern</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>hour, then <code>o'clock</code></td><td><code>five o'clock</code></td></tr>
+    <tr><td>15</td><td><code>a quarter past</code>, then the hour</td><td><code>a quarter past five</code></td></tr>
+    <tr><td>30</td><td><code>half past</code>, then the hour</td><td><code>half past five</code></td></tr>
+    <tr><td>45</td><td><code>a quarter to</code>, then the <em>next</em> hour</td><td><code>a quarter to six</code></td></tr>
+    <tr><td>5, 10, 20, 25</td><td>minutes, <code>minutes past</code>, then the hour</td><td><code>ten minutes past five</code></td></tr>
+    <tr><td>35, 40, 50, 55</td><td>(60 − minutes), <code>minutes to</code>, then the <em>next</em> hour</td><td><code>twenty minutes to six</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The hour after 12 is 1.</p>
+<ol>
+  <li>Write <code>number_name(number)</code>. It returns the English word for 1 to 12, for 20 (<code>'twenty'</code>), and for 25 (<code>'twenty-five'</code>). These are the only numbers you need.</li>
+  <li>Write <code>next_hour(hours)</code>. It returns the hour after <code>hours</code>.</li>
+  <li>Write <code>time_name(hours, minutes)</code>. It returns the time in words. Use <code>number_name</code> for every number word.</li>
+  <li>Write <code>main</code>. It reads the hours and the minutes and prints the result. End the file with the standard guard.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>2 and 10</td><td><code>ten minutes past two</code></td></tr>
+    <tr><td>3 and 45</td><td><code>a quarter to four</code></td></tr>
+    <tr><td>12 and 35</td><td><code>twenty-five minutes to one</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> also types 3 and 30, 5 and 0, and 7 and 15.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Define <code>main</code> and at least two other functions.</li>
-    <li>Write a pay calculation that returns the pay without reading input or printing.</li>
-    <li>Write a display helper that prints the name and the pay.</li>
-    <li>The output contains the worker's name and the pay to two decimal places.</li>
+    <li>Define <code>number_name(number)</code>, <code>next_hour(hours)</code>, <code>time_name(hours, minutes)</code>, and <code>main()</code>.</li>
+    <li><code>time_name</code> calls <code>number_name</code>.</li>
+    <li>Each helper returns its result. <strong>Check</strong> calls <code>time_name</code> with every minute value for several hours, including 12.</li>
+    <li>End the file with the standard guard.</li>
   </ul>
 </div>
-<wb-exercise id="p6"></wb-exercise>
+<wb-exercise id="p-time"></wb-exercise>
 
-<h3>7. Digit-bar report</h3>
-<p>Encode a five-digit string using the table below. A <code>|</code> is a tall bar and a <code>.</code> is a short bar. A check digit is an extra digit that makes the sum of all six digits a multiple of 10. Add one tall frame bar at each end. Write <code>digit_bars(digit)</code>, <code>check_digit(code)</code>, and <code>encode(code)</code>. Return strings from the encoding helpers and an integer from <code>check_digit</code>. Preserve leading zeros. Print the encoding for 00000 and 12345.</p>
+<h3>6. Digit-bar report</h3>
+<p>A post office prints a code of five digits as a row of bars. A <code>|</code> is a tall bar and a <code>.</code> is a short bar. Each digit becomes five bars, using this table:</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Digit</th><th>Bars</th><th>Digit</th><th>Bars</th></tr></thead>
@@ -389,33 +450,127 @@ quantity = 2
   </tbody>
 </table>
 </div>
+<p>After the five digits comes one more digit, the <em>check digit</em>. It is chosen so that the sum of all six digits is a multiple of 10. For example, the digits of <code>12345</code> add up to 15, so the check digit is 5 (15 + 5 = 20). Finally, one tall bar <code>|</code> is added at each end.</p>
+<p>So a full bar code is: <code>|</code>, then five digit groups, then the check digit group, then <code>|</code>.</p>
+<ol>
+  <li>Write <code>digit_bars(digit)</code>. It returns the five bars for one digit.</li>
+  <li>Write <code>check_digit(code)</code>. It receives the five digits as a string, such as <code>'12345'</code>, and returns the check digit as an integer.</li>
+  <li>Write <code>encode(code)</code>. It returns the full bar code as a string. Call <code>digit_bars</code> for each digit. A code may start with zeros, such as <code>'00019'</code>. Keep them.</li>
+  <li>Print the bar codes for <code>'00000'</code> and <code>'12345'</code>, in that order.</li>
+</ol>
+<pre class="wb-output">|||...||...||...||...||...||...|
+|...||..|.|..||..|..|.|.|..|.|.|</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Define <code>digit_bars(digit)</code>, <code>check_digit(code)</code>, and <code>encode(code)</code> with one parameter each.</li>
     <li><code>encode</code> calls <code>digit_bars</code> for each digit.</li>
-    <li><code>digit_bars</code> and <code>encode</code> return strings; <code>check_digit</code> returns an integer. <strong>Check</strong> calls <code>digit_bars</code> with every digit and the other two with codes such as <code>'99999'</code>, <code>'01234'</code>, and <code>'00019'</code>.</li>
-    <li>Print the two encodings in the order given.</li>
+    <li><code>digit_bars</code> and <code>encode</code> return strings. <code>check_digit</code> returns an integer. <strong>Check</strong> calls <code>digit_bars</code> with every digit and the other two with codes such as <code>'99999'</code>, <code>'01234'</code>, and <code>'00019'</code>.</li>
+    <li>Print the two bar codes in the order given.</li>
   </ul>
 </div>
 <wb-exercise id="p7"></wb-exercise>
 
+<h3>7. Read a bar code</h3>
+<p>Now go the other way. Write a program that reads a bar code, like the ones printed in Practice 6, and prints its five digits.</p>
+<p>A bar code is <em>valid</em> only when all of these are true:</p>
+<ul>
+  <li>it has exactly 32 characters;</li>
+  <li>its first and last characters are <code>|</code>;</li>
+  <li>each of the six groups of five bars in between is in the table of Practice 6;</li>
+  <li>the six digits (the five digits and the check digit) add up to a multiple of 10.</li>
+</ul>
+<p>The first group starts at index 1, the second at index 6, and so on. Group number <code>position</code> starts at index <code>1 + 5 * position</code>, for <code>position</code> from 0 to 5.</p>
+<ol>
+  <li>Write <code>group_digit(group)</code>. It receives five bars and returns their digit. If the five bars are not in the table, it returns <code>-1</code>.</li>
+  <li>Write <code>decode(code)</code>. If the bar code is valid, it returns the first five digits as a string, such as <code>'12345'</code>. If it is not valid, it returns the empty string <code>''</code>. Use <code>group_digit</code> for each group.</li>
+  <li>Write <code>main</code>. It reads one bar code. It prints <code>Code:</code> followed by the digits, or <code>Invalid bar code</code>. End the file with the standard guard.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>|...||..|.|..||..|..|.|.|..|.|.|</code></td><td><code>Code: 12345</code></td></tr>
+    <tr><td><code>|...|||.|....||..|..|.|.|..|.|.|</code></td><td><code>Invalid bar code</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>In the second code, the group for 2 was changed to the group for 9, so the six digits no longer add up to a multiple of 10. <strong>Check</strong> also types the code for <code>00000</code> and a code with a group that is not in the table.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>group_digit(group)</code>, <code>decode(code)</code>, and <code>main()</code>.</li>
+    <li><code>decode</code> calls <code>group_digit</code>.</li>
+    <li>Both helpers return their result. <strong>Check</strong> calls <code>decode</code> with valid codes and with codes that are too short, too long, missing a frame bar, or have a wrong check digit.</li>
+    <li>End the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="p-decode"></wb-exercise>
+
 <h3>8. Grant calculation</h3>
-<p>Use this exercise's grant rules. For income below 18000, the grant is 1200 per child. For income from 18000 up to but excluding 28000, it is 900 per child if there are at least two children. For income from 28000 through 36000, it is 500 per child if there are at least three children. Otherwise it is zero. Write <code>grant(income, children)</code>. In <code>main</code>, read an income; -1 ends input immediately. For each other nonnegative income, read a nonnegative whole-number child count and print the grant to two decimal places. Test incomes 17000, 18000, 28000, and 36001 with three children each, then -1.</p>
-<p><strong>Check</strong> types this sequence, then <code>-1</code> alone, then incomes 27999 with 1 child, 27999 with 2, and 36000 with 4, followed by <code>-1</code>. A program that asks for a child count after <code>-1</code> asks for more input than the case provides.</p>
+<p>A family receives a grant that depends on its income and its number of children. Use these rules:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Income</th><th>Grant</th></tr></thead>
+  <tbody>
+    <tr><td>below 18000</td><td>1200 per child</td></tr>
+    <tr><td>18000 or more, but below 28000</td><td>900 per child, only if there are at least 2 children</td></tr>
+    <tr><td>28000 to 36000 (both included)</td><td>500 per child, only if there are at least 3 children</td></tr>
+    <tr><td>any other case</td><td>0</td></tr>
+  </tbody>
+</table>
+</div>
+<ol>
+  <li>Write <code>grant(income, children)</code>. It returns the grant.</li>
+  <li>Write <code>main</code>. It reads an income. If the income is <code>-1</code>, the program stops at once, without reading a number of children. Otherwise it reads the number of children and prints the grant to two decimal places. Then it reads the next income, and so on.</li>
+  <li>End the file with the standard guard.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>17000 and 3</td><td><code>3600.00</code></td></tr>
+    <tr><td>18000 and 3</td><td><code>2700.00</code></td></tr>
+    <tr><td>28000 and 3</td><td><code>1500.00</code></td></tr>
+    <tr><td>36001 and 3</td><td><code>0.00</code></td></tr>
+    <tr><td>-1</td><td>(the program stops)</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> types the sequence above. It also types <code>-1</code> alone, and the incomes 27999 with 1 child, 27999 with 2 children, and 36000 with 4 children, then <code>-1</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Define <code>grant(income, children)</code> with two parameters, and <code>main</code>.</li>
     <li><code>grant</code> returns the grant. <strong>Check</strong> also calls it with boundary values such as <code>(17999, 1)</code>, <code>(18000, 1)</code>, <code>(27999, 2)</code>, <code>(36000, 3)</code>, and <code>(36001, 3)</code>.</li>
-    <li>Print one grant to two decimal places for each income before <code>-1</code>.</li>
+    <li>Print one grant to two decimal places for each income before <code>-1</code>. After <code>-1</code>, read nothing more.</li>
   </ul>
 </div>
 <wb-exercise id="p8"></wb-exercise>
 
 <h3>9. Password confirmation</h3>
-<p>For this exercise, a password passes when it has at least 9 characters, an uppercase letter A through Z, a lowercase letter a through z, and a digit 0 through 9. Read a password and a confirmation, one per line. Repeat both entries until they match and the password passes. Print <code>Try again.</code> after each rejected pair and <code>Accepted.</code> after success. Write a Boolean helper for the rules. Test the pair abc and abc, followed by Abcdefgh2 and Abcdefgh2.</p>
-<p><strong>Check</strong> types this test, then three more sequences of pairs, including a pair that does not match.</p>
+<p>A password is <em>strong</em> when all four of these are true:</p>
+<ul>
+  <li>it has at least 9 characters;</li>
+  <li>it has an uppercase letter (<code>A</code> to <code>Z</code>);</li>
+  <li>it has a lowercase letter (<code>a</code> to <code>z</code>);</li>
+  <li>it has a digit (<code>0</code> to <code>9</code>).</li>
+</ul>
+<p>Write a program that asks for a password and then asks for it again (the confirmation).</p>
+<ol>
+  <li>Write a helper with one parameter that returns <code>True</code> when a password is strong and <code>False</code> when it is not.</li>
+  <li>Write <code>main</code>. It reads a password and a confirmation, one per line. If the two do not match, or the password is not strong, print <code>Try again.</code> and read both again. Repeat until the pair is accepted. Then print <code>Accepted.</code></li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>abc</code> and <code>abc</code></td><td><code>Try again.</code></td></tr>
+    <tr><td><code>Abcdefgh2</code> and <code>Abcdefgh2</code></td><td><code>Accepted.</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> types this test, then three more sequences of pairs. One of them has a pair that does not match.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -426,7 +581,20 @@ quantity = 2
 <wb-exercise id="p9"></wb-exercise>
 
 <h3>10. Wire calculation</h3>
-<p>A wire's gauge <code>n</code> is a whole number from 0 through 36. Its diameter in millimetres is <var>d</var> = 0.127 × 92<sup>(36 − <var>n</var>)/39</sup>. Divide by 1000 to convert the diameter to metres. Resistance in ohms is <var>R</var> = 4<var>ρL</var>/(π<var>d</var><sup>2</sup>), where <var>L</var> is length in metres, <var>d</var> is diameter in metres, and <var>ρ</var> is a material constant called resistivity. Use 1.678 × 10<sup>−8</sup> for copper and 2.82 × 10<sup>−8</sup> for aluminium. Write <code>diameter_metres(gauge)</code> and a reusable <code>resistance(length, gauge, resistivity)</code>. Add <code>copper_resistance</code> and <code>aluminium_resistance</code> functions that use named constants and call the reusable calculation. Print both resistances to six decimal places for a 3-metre wire of gauge 18. Length is nonnegative.</p>
+<p>Write a program that works out the electrical resistance of a wire. A wire's size is given by its <em>gauge</em> <var>n</var>, a whole number from 0 to 36.</p>
+<ul>
+  <li>The diameter in millimetres is <var>d</var> = 0.127 × 92<sup>(36 − <var>n</var>)/39</sup>. Divide by 1000 to get the diameter in metres.</li>
+  <li>The resistance in ohms is <var>R</var> = 4<var>ρL</var> / (π<var>d</var><sup>2</sup>). Here <var>L</var> is the length in metres, <var>d</var> is the diameter in metres, and <var>ρ</var> (rho) is the <em>resistivity</em> of the metal.</li>
+  <li>The resistivity of copper is 1.678 × 10<sup>−8</sup>. The resistivity of aluminium is 2.82 × 10<sup>−8</sup>.</li>
+</ul>
+<ol>
+  <li>Write <code>diameter_metres(gauge)</code>. It returns the diameter in metres.</li>
+  <li>Write <code>resistance(length, gauge, resistivity)</code>. It returns the resistance for any metal.</li>
+  <li>Store the two resistivities in named constants. Write <code>copper_resistance(length, gauge)</code> and <code>aluminium_resistance(length, gauge)</code>. Each one calls <code>resistance</code> with its constant.</li>
+  <li>Print the copper resistance, then the aluminium resistance, of a 3-metre wire of gauge 18, to six decimal places.</li>
+</ol>
+<pre class="wb-output">0.061163
+0.102789</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -439,8 +607,30 @@ quantity = 2
 <wb-exercise id="p10"></wb-exercise>
 
 <h3>11. Drag-power report</h3>
-<p>For this exercise, use air density <var>ρ</var> = 1.2 kilograms per cubic metre, area <var>A</var> = 2.0 square metres, and drag coefficient <var>C</var> = 0.3. These are fixed inputs to a model. Convert nonnegative speed from miles per hour to metres per second with <var>v</var> = 0.447<var>s</var>. Compute force in newtons with <var>F</var> = 0.5<var>ρv</var><sup>2</sup><var>AC</var>, power in watts with <var>P</var> = <var>Fv</var>, and horsepower with <var>H</var> = <var>P</var>/746. Write separate conversion, force, and power helpers, then a <code>main</code> that reads speed and prints watts and horsepower to three decimal places. Use named constants for the fixed model inputs. Test 20 and 0 miles per hour.</p>
-<p><strong>Check</strong> types 20, then 0, 55, and 12.5. For 20 miles per hour, the two values are <code>257.226</code> and <code>0.345</code>.</p>
+<p>A moving car pushes against the air. Write a program that reads the car's speed in miles per hour and prints the power needed to overcome the air (the drag), in watts and in horsepower. The speed is 0 or more.</p>
+<p>Use these fixed values. Store each one in a named constant.</p>
+<ul>
+  <li>air density <var>ρ</var> = 1.2 (kilograms per cubic metre);</li>
+  <li>front area of the car <var>A</var> = 2.0 (square metres);</li>
+  <li>drag coefficient <var>C</var> = 0.3.</li>
+</ul>
+<p>Work out the answer in four steps:</p>
+<ol>
+  <li>Convert the speed <var>s</var> to metres per second: <var>v</var> = 0.447<var>s</var>.</li>
+  <li>The drag force in newtons is <var>F</var> = 0.5<var>ρv</var><sup>2</sup><var>AC</var>.</li>
+  <li>The power in watts is <var>P</var> = <var>Fv</var>.</li>
+  <li>The power in horsepower is <var>H</var> = <var>P</var> / 746.</li>
+</ol>
+<p>Write a separate helper for the conversion, the force, and the power. Then write <code>main</code>. It reads the speed and prints the watts and the horsepower, each to three decimal places.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>20</td><td><code>Watts: 257.226</code><br><code>Horsepower: 0.345</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> also types 0, 55, and 12.5. Your labels may differ: the checker looks only at the two numbers.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>

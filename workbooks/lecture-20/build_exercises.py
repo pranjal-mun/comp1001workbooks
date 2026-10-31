@@ -531,27 +531,7 @@ E["p2"] = short("High-level steps: start both counts at zero; read and process w
                 "If the first line is blank, skip processing and print zero for both results.",
                 min_chars=60, rows=7, placeholder="High-level steps… Processing one word… When the first line is blank…")
 
-# 3. Parameter reassignment
-exchange = '''def exchange(left, right):
-    saved = left
-    left = right
-    right = saved
-
-def main():
-    first = 6
-    second = 9
-    exchange(first, second)
-    print(first, second)
-
-main()
-'''
-assert out(exchange) == "6 9"
-E["p3-output"] = {"type": "table", "xp": 1, "blanks": {"out": accept("6 9", placeholder="output", width="6rem")}}
-E["p3"] = short("It prints `6 9`. Assignments in `exchange` change its local parameter bindings. "
-                "The caller's `first` and `second` keep their values.",
-                min_chars=30, rows=4, placeholder="Why changing the parameters does or does not change the caller's variables…")
-
-# 4. Leap-year helper
+# 3. Leap-year helper
 leap = '''def is_leap_year(year):
     if year % 400 == 0:
         return True
@@ -579,7 +559,7 @@ assert sum(isinstance(n, ast.Return) for n in _nodes) >= 3, "Use early returns: 
     "answerNote": "Test the most specific divisibility rule first. Each return finishes the call."}
 assert E["p4"]["cases"][0]["expected"] == "True\nFalse\nTrue\nFalse"
 
-# 5. Reusable numeral helper
+# 4. Reusable numeral helper
 roman = '''def roman_digit(digit, one, five, ten):
     if digit < 4:
         return one * digit
@@ -611,50 +591,94 @@ assert "roman_digit" in globals()["roman_number"].__code__.co_names, "Call roman
     "answerNote": "The same helper handles both positions because the symbols arrive as parameters."}
 assert E["p5"]["cases"][0]["expected"] == "XLIV\nIX\nLXXX"
 
-# 6. Pay report
-pay = '''def pay_amount(rate, hours):
-    if hours <= 35:
-        return rate * hours
-    return rate * 35 + rate * 2 * (hours - 35)
+# 5. Time in words (textbook P5.14)
+# The last two programs accept any prompt: each case compares the end of the
+# last line printed with the model's result.
+def ending_case(name, code, inputs):
+    printed = [line for line in run_with_prompts(code, inputs).split("\n") if line.strip()]
+    want = printed[-1]
+    check = f'''_want = {want!r}
+_lines = [_l.rstrip() for _l in __stdout__.split("\\n") if _l.strip()]
+assert _lines and _lines[-1].endswith(_want), "The last line printed should end with " + repr(_want) + "."
+'''
+    return {"name": name, "inputs": list(inputs), "check": check}
 
-def show_pay(name, amount):
-    print('Worker:', name)
-    print(f'Pay: ${amount:.2f}')
+time_words = '''def number_name(number):
+    if number == 1:
+        return 'one'
+    if number == 2:
+        return 'two'
+    if number == 3:
+        return 'three'
+    if number == 4:
+        return 'four'
+    if number == 5:
+        return 'five'
+    if number == 6:
+        return 'six'
+    if number == 7:
+        return 'seven'
+    if number == 8:
+        return 'eight'
+    if number == 9:
+        return 'nine'
+    if number == 10:
+        return 'ten'
+    if number == 11:
+        return 'eleven'
+    if number == 12:
+        return 'twelve'
+    if number == 20:
+        return 'twenty'
+    return 'twenty-five'
+
+def next_hour(hours):
+    if hours == 12:
+        return 1
+    return hours + 1
+
+def time_name(hours, minutes):
+    if minutes == 0:
+        return number_name(hours) + " o'clock"
+    if minutes == 15:
+        return 'a quarter past ' + number_name(hours)
+    if minutes == 30:
+        return 'half past ' + number_name(hours)
+    if minutes == 45:
+        return 'a quarter to ' + number_name(next_hour(hours))
+    if minutes < 30:
+        return number_name(minutes) + ' minutes past ' + number_name(hours)
+    return number_name(60 - minutes) + ' minutes to ' + number_name(next_hour(hours))
 
 def main():
-    name = input()
-    rate = float(input())
-    hours = float(input())
-    show_pay(name, pay_amount(rate, hours))
+    hours = int(input())
+    minutes = int(input())
+    print(time_name(hours, minutes))
 
 if __name__ == '__main__':
     main()
 '''
-assert run_with_prompts(pay, ["Sam", "12", "38"]) == "Worker: Sam\nPay: $492.00"
-pay_ns = namespace(pay)
+time_ns = namespace(time_words)
+TIME_CASES = [(2, 10), (3, 30), (3, 45), (5, 0), (12, 35), (7, 15)]
+assert [time_ns["time_name"](h, m) for h, m in TIME_CASES] == ["ten minutes past two", "half past three", "a quarter to four",
+    "five o'clock", "twenty-five minutes to one", "a quarter past seven"]
+E["p-time"] = {"type": "code", "xp": 10, "minLines": 40,
+    "starter": ("def number_name(number):\n    # Return the English word for 1 to 12, 20, or 25.\n\n"
+                "def next_hour(hours):\n    # Return the hour after hours. After 12 comes 1.\n\n"
+                "def time_name(hours, minutes):\n    # Return the time in words.\n\n"
+                "def main():\n    # Read the hours and the minutes, then print the time in words.\n\n"
+                "if __name__ == '__main__':\n    main()\n"),
+    "cases": [ending_case(f"Typed {h} and {m}", time_words, [str(h), str(m)]) for h, m in TIME_CASES],
+    "check": FN + '_fn("number_name", "number")\n_fn("next_hour", "hours")\n_fn("time_name", "hours", "minutes")\n_fn("main")\n'
+             + 'assert "number_name" in globals()["time_name"].__code__.co_names, "time_name should call number_name for each number word."\n'
+             + returns("number_name", time_ns, *[(n,) for n in (1, 5, 10, 12, 20, 25)])
+             + returns("next_hour", time_ns, *[(h,) for h in (1, 11, 12)])
+             + returns("time_name", time_ns, *[(h, m) for h in (1, 6, 11, 12) for m in range(0, 60, 5)]) + "_guard()\n",
+    "answer": b64(time_words),
+    "answerNote": "Each helper does one small job. `time_name` only decides which pattern to use; "
+                  "`number_name` supplies the words and `next_hour` handles the change from 12 to 1."}
 
-def pay_case(name, inputs):
-    amount = f"{pay_ns['pay_amount'](float(inputs[1]), float(inputs[2])):.2f}"
-    check = f'''assert {inputs[0]!r} in __stdout__, "Print the worker's name, {inputs[0]}."
-assert re.search(r"(^|[^0-9.]){re.escape(amount)}(?![0-9])", __stdout__), "For rate {inputs[1]} and {inputs[2]} hours, print the pay to two decimal places: {amount}."
-'''
-    return {"name": name, "inputs": list(inputs), "check": check}
-
-E["p6"] = {"type": "code", "xp": 10, "minLines": 18,
-    "starter": "",
-    "cases": [pay_case("Sam, rate 12, 38 hours", ["Sam", "12", "38"]), pay_case("Sam, rate 12, 0 hours", ["Sam", "12", "0"]),
-              pay_case("Ana, rate 20, 35 hours", ["Ana", "20", "35"]), pay_case("Kim, rate 10, 40 hours", ["Kim", "10", "40"]),
-              pay_case("Lee, rate 12.5, 36 hours", ["Lee", "12.5", "36"])],
-    "check": FN + '''_fn("main")
-_helpers = [d for d in _defs() if d.name != "main"]
-assert any(not _uses(d, "print", "input") and any(isinstance(n, ast.Return) and n.value is not None for n in ast.walk(d)) for d in _helpers), "Write a pay calculation that returns the pay without reading input or printing."
-assert any(_uses(d, "print") for d in _helpers), "Write a display helper that prints the name and the pay."
-''',
-    "answer": b64(pay),
-    "answerNote": "The calculation can be tested without reading input or printing a report. For Sam, rate 12 and 38 hours, the model prints "
-                  "`Worker: Sam` and `Pay: $492.00`."}
-
-# 7. Digit-bar report
+# 6. Digit-bar report
 bars = '''def digit_bars(digit):
     if digit == 0:
         return '||...'
@@ -707,6 +731,81 @@ assert "digit_bars" in globals()["encode"].__code__.co_names, "Build the encodin
     "answer": b64(bars),
     "answerNote": "Each digit uses the same helper. The second remainder makes the check digit zero when the digit sum is already a multiple of ten."}
 assert E["p7"]["cases"][0]["expected"] == "|||...||...||...||...||...||...|\n|...||..|.|..||..|..|.|.|..|.|.|"
+
+# 7. Read a bar code (textbook P5.26)
+read_bars = '''def group_digit(group):
+    if group == '||...':
+        return 0
+    if group == '...||':
+        return 1
+    if group == '..|.|':
+        return 2
+    if group == '..||.':
+        return 3
+    if group == '.|..|':
+        return 4
+    if group == '.|.|.':
+        return 5
+    if group == '.||..':
+        return 6
+    if group == '|...|':
+        return 7
+    if group == '|..|.':
+        return 8
+    if group == '|.|..':
+        return 9
+    return -1
+
+def decode(code):
+    if len(code) != 32 or code[0] != '|' or code[31] != '|':
+        return ''
+    digits = ''
+    total = 0
+    for position in range(6):
+        start = 1 + 5 * position
+        digit = group_digit(code[start:start + 5])
+        if digit == -1:
+            return ''
+        total = total + digit
+        if position < 5:
+            digits = digits + str(digit)
+    if total % 10 != 0:
+        return ''
+    return digits
+
+def main():
+    code = input()
+    digits = decode(code)
+    if digits == '':
+        print('Invalid bar code')
+    else:
+        print('Code:', digits)
+
+if __name__ == '__main__':
+    main()
+'''
+read_ns = namespace(read_bars)
+GOOD = [bars_ns["encode"](c) for c in CODES]
+BAD = [GOOD[1][:-1], GOOD[1][:6] + "|||.." + GOOD[1][11:], GOOD[1][:6] + "|.|.." + GOOD[1][11:],
+       "." + GOOD[1][1:], GOOD[1] + "|", ""]
+assert [read_ns["decode"](g) for g in GOOD] == CODES and all(read_ns["decode"](b) == "" for b in BAD)
+E["p-decode"] = {"type": "code", "xp": 10, "minLines": 34,
+    "starter": ("def group_digit(group):\n    # Return the digit for a group of five bars, or -1.\n\n"
+                "def decode(code):\n    # Return the five digits as a string, or '' when the code is not valid.\n\n"
+                "def main():\n    # Read a bar code and print the digits or the message.\n\n"
+                "if __name__ == '__main__':\n    main()\n"),
+    "cases": [ending_case("The code for 12345", read_bars, [GOOD[1]]),
+              ending_case("The code for 00000", read_bars, [GOOD[0]]),
+              ending_case("One group changed to |||..", read_bars, [BAD[1]]),
+              ending_case("The check digit is wrong", read_bars, [BAD[2]])],
+    "check": FN + '_fn("group_digit", "group")\n_fn("decode", "code")\n_fn("main")\n'
+             + 'assert "group_digit" in globals()["decode"].__code__.co_names, "decode should call group_digit for each group of five bars."\n'
+             + returns("group_digit", read_ns, *[(bars_ns["digit_bars"](d),) for d in range(10)], ("|||..",), ("",))
+             + returns("decode", read_ns, *[(c,) for c in GOOD + BAD]) + "_guard()\n",
+    "answer": b64(read_bars),
+    "answerNote": "`decode` checks the length and the two frame bars first. Then it reads six groups of five bars. "
+                  "The sixth group is the check digit, so the six digits must add up to a multiple of 10."}
+assert read_ns["decode"](BAD[2]) == "" and read_ns["group_digit"](BAD[2][6:11]) == 9
 
 # 8. Grant calculation
 grant = '''def grant(income, children):

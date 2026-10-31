@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 23 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-23", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 23 Workbook</h1>
+    <div class="wb-subtitle">Recursion versus iteration and Towers of Hanoi</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Compare loops and recursive functions by tracing their work and unfinished calls. Read the Hanoi solution and use its smaller transfers to count moves.</p>
+  <p>Reading: §11.4 and Worked Example 11.2</p>
+  <ul>
+    <li>Compare recursive and loop solutions to the same problem.</li>
+    <li>Explain frame cost, total calls, and maximum depth.</li>
+    <li>Recognize repeated work in naive Fibonacci.</li>
+    <li>Trace Hanoi calls and changing peg roles.</li>
+    <li>Count Hanoi moves with a recursive function and 2<sup><var>n</var></sup> − 1.</li>
+    <li>Choose an approach using clarity, depth, and repeated work.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-loops">Loops and recursion</p>
+
+<h2 id="s1">1. The same factorial problem, written two ways</h2>
+<p><code>factorial_rec(n)</code> and <code>factorial_loop(n)</code> return the product from 1 to <code>n</code>. Both return <code>1</code> for <code>0</code>. Assume a nonnegative integer input.</p>
+<p>Recursion:</p>
+<wb-example id="ex-factorial-rec"></wb-example>
+<p>Loop:</p>
+<wb-example id="ex-factorial-loop"></wb-example>
+<p>Both return <code>24</code> for <code>n = 4</code>. The way they hold unfinished work differs.</p>
+
+<h2 id="s2">2. Frame cost and the problem's shape</h2>
+<p>For input <code>4</code>, both factorial versions perform four multiplications. The recursive version also makes calls for <code>3</code>, <code>2</code>, <code>1</code>, and <code>0</code>. Each function call needs a frame and call handling. A loop repeats inside its existing frame.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 500 200" width="500" height="200" role="img" aria-label="Left: five stacked frames, factorial_rec(0) on top down to factorial_rec(4) at the bottom, labelled Five factorial frames at peak. Right: one frame, factorial_loop(4), which updates result four times, labelled One factorial frame." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="10" y="10" width="200" height="28"/>
+    <rect x="10" y="42" width="200" height="28"/>
+    <rect x="10" y="74" width="200" height="28"/>
+    <rect x="10" y="106" width="200" height="28"/>
+    <rect x="10" y="138" width="200" height="28"/>
+    <rect x="270" y="66" width="220" height="44"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle">
+      <g style="font-family: var(--font-mono, monospace)">
+        <text x="110" y="29">factorial_rec(0)</text>
+        <text x="110" y="61">factorial_rec(1)</text>
+        <text x="110" y="93">factorial_rec(2)</text>
+        <text x="110" y="125">factorial_rec(3)</text>
+        <text x="110" y="157">factorial_rec(4)</text>
+        <text x="380" y="84">factorial_loop(4)</text>
+      </g>
+      <text x="380" y="102">updates <tspan style="font-family: var(--font-mono, monospace)">result</tspan> four times</text>
+      <text x="110" y="190">Five factorial frames at peak</text>
+      <text x="380" y="190">One factorial frame</text>
+    </g>
+  </svg>
+</figure>
+<p>For this recursive version, peak depth is <var>n</var> + 1. Large inputs can hit Python's depth limit.</p>
+<p>A running total changes after each number. A counter increases until it reaches a limit. A loop usually expresses these repeated updates directly.</p>
+<p>A folder can contain more folders. A tower move can require smaller tower moves. Recursion can keep these descriptions short and clear.</p>
+<p>Check clarity, depth, and whether smaller problems repeat.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write <code>squares_rec(n)</code> and <code>squares_loop(n)</code>. Both return 1<sup>2</sup> + 2<sup>2</sup> + ⋯ + <var>n</var><sup>2</sup>.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Use recursion in the first function and a loop in the second.</li>
+    <li>Check <code>0</code> and <code>3</code>.</li>
+    <li>Which version would you choose for a large input?</li>
+  </ul>
+  <p>For <code>n = 3</code>, both functions should return 1 + 4 + 9 = 14. Compare how each version keeps the unfinished calculation.</p>
+  <p><strong>Check</strong> calls both functions with 0 and 3, and with every other value up to 20. It compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>squares_rec(n)</code> and <code>squares_loop(n)</code>, each with one parameter. Each returns the sum.</li>
+      <li>Use recursion in <code>squares_rec</code>: call <code>squares_rec</code> inside its own body. Use no loops in it.</li>
+      <li>Use a <code>for</code> or <code>while</code> loop in <code>squares_loop</code>. Do not call <code>squares_rec</code> or <code>squares_loop</code> from it.</li>
+      <li>Do not use lists, dictionaries, global variables, or imports.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+  <p>Which version would you choose for a large input?</p>
+  <wb-short id="cp1-choice"></wb-short>
+</div>
+
+<p class="wb-part" id="part-repeated">Repeated work</p>
+
+<h2 id="s3">3. Naive Fibonacci and repeated work</h2>
+<p><code>fib(n)</code> returns Fibonacci number <code>n</code>. Here, <code>fib(0) = 0</code> and <code>fib(1) = 1</code>. Each later number is the sum of the previous two. Assume a nonnegative integer input.</p>
+<wb-example id="ex-fib"></wb-example>
+<p><code>fib(4)</code> needs <code>fib(3)</code> and <code>fib(2)</code>. But <code>fib(3)</code> also needs <code>fib(2)</code>. Both calls compute that answer from scratch. This direct translation of the formula is called the naive recursive version.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 520 210" width="520" height="210" role="img" aria-label="The call tree for fib(4). fib(4) calls fib(3) and fib(2). fib(3) calls fib(2) and fib(1). Each fib(2), drawn with thick lines, calls fib(1) and fib(0)." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <line x1="260" y1="38" x2="160" y2="72"/>
+    <line x1="260" y1="38" x2="390" y2="72"/>
+    <line x1="160" y1="98" x2="90" y2="132"/>
+    <line x1="160" y1="98" x2="230" y2="132"/>
+    <line x1="390" y1="98" x2="340" y2="132"/>
+    <line x1="390" y1="98" x2="450" y2="132"/>
+    <line x1="90" y1="158" x2="45" y2="172"/>
+    <line x1="90" y1="158" x2="135" y2="172"/>
+    <rect x="225" y="12" width="70" height="26"/>
+    <rect x="125" y="72" width="70" height="26"/>
+    <rect x="355" y="72" width="70" height="26" style="stroke-width: 3"/>
+    <rect x="55" y="132" width="70" height="26" style="stroke-width: 3"/>
+    <rect x="195" y="132" width="70" height="26"/>
+    <rect x="305" y="132" width="70" height="26"/>
+    <rect x="415" y="132" width="70" height="26"/>
+    <rect x="10" y="172" width="70" height="26"/>
+    <rect x="100" y="172" width="70" height="26"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 14px" text-anchor="middle">
+      <text x="260" y="30">fib(4)</text>
+      <text x="160" y="90">fib(3)</text>
+      <text x="390" y="90">fib(2)</text>
+      <text x="90" y="150">fib(2)</text>
+      <text x="230" y="150">fib(1)</text>
+      <text x="340" y="150">fib(1)</text>
+      <text x="450" y="150">fib(0)</text>
+      <text x="45" y="190">fib(1)</text>
+      <text x="135" y="190">fib(0)</text>
+    </g>
+  </svg>
+</figure>
+<p>In the call tree for <code>fib(4)</code>, two branches each compute <code>fib(2)</code> and get <code>1</code>. Each branch also makes its own calls to <code>fib(1)</code> and <code>fib(0)</code>. Nine calls produce the final answer, <code>3</code>. The repeated branch includes its own smaller calls.</p>
+
+<h2 id="s4">4. Tracing calls and comparing work with depth</h2>
+<p><code>fib(n)</code> returns Fibonacci number <code>n</code>. Trace <code>fib(4)</code>.</p>
+<wb-example id="ex-fib-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Call</th><th>Depth</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>fib(4)</code></td><td>1</td><td>2 + 1 = 3</td></tr>
+    <tr><td>2</td><td><code>fib(3)</code></td><td>2</td><td>1 + 1 = 2</td></tr>
+    <tr><td>3</td><td><code>fib(2)</code></td><td>3</td><td>1 + 0 = 1</td></tr>
+    <tr><td>4</td><td><code>fib(1)</code></td><td>4</td><td>1</td></tr>
+    <tr><td>5</td><td><code>fib(0)</code></td><td>4</td><td>0</td></tr>
+    <tr><td>6</td><td><code>fib(1)</code></td><td>3</td><td>1</td></tr>
+    <tr><td>7</td><td><code>fib(2)</code></td><td>2</td><td>1 + 0 = 1</td></tr>
+    <tr><td>8</td><td><code>fib(1)</code></td><td>3</td><td>1</td></tr>
+    <tr><td>9</td><td><code>fib(0)</code></td><td>3</td><td>0</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Calls 3 and 7 repeat the same problem. Their local calculations are separate.</p>
+<p><code>fib(n)</code> returns Fibonacci number <code>n</code> using the two smaller values.</p>
+<wb-example id="ex-fib-counts"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>n</code></th><th>Total calls</th><th>Peak depth</th></tr></thead>
+  <tbody>
+    <tr><td>10</td><td>177</td><td>10</td></tr>
+    <tr><td>20</td><td>21,891</td><td>20</td></tr>
+    <tr><td>30</td><td>2,692,537</td><td>30</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Each entry counts one full evaluation of <code>fib(n)</code>. Depth counts only unfinished Fibonacci calls. More calls mean more call handling and repeated additions. A shallow call tree can still contain a lot of work.</p>
+
+<h2 id="s5">5. Carrying Fibonacci values through a loop</h2>
+<p>To find a Fibonacci number, keep the current value and the next one. With <code>a = 2</code> and <code>b = 3</code>, save <code>next_value = 5</code>. Then shift to <code>a = 3</code> and <code>b = 5</code>.</p>
+<p>Start with <code>a = 0</code> and <code>b = 1</code>. After <code>n</code> updates, <code>a</code> is Fibonacci number <code>n</code>. Save the sum before changing either old value. Each update uses the values from the previous update.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write <code>fib_loop(n)</code>. It returns Fibonacci number <code>n</code>, with <code>fib_loop(0) = 0</code> and <code>fib_loop(1) = 1</code>.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Keep only two consecutive Fibonacci values and a temporary value.</li>
+    <li>Use a loop.</li>
+    <li>Check <code>0</code>, <code>1</code>, and <code>5</code>.</li>
+  </ul>
+  <p>For <code>n = 5</code>, the function should return <code>5</code>. Write the assignments in an order that preserves both old values.</p>
+  <p><strong>Check</strong> calls <code>fib_loop</code> with 0, 1, and 5, with every other value up to 30, and with 100. It compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>fib_loop(n)</code> with one parameter. It returns the Fibonacci number.</li>
+      <li>Use a <code>for</code> or <code>while</code> loop. Do not call <code>fib_loop</code> or another function you define from it.</li>
+      <li>Do not use lists, dictionaries, global variables, or imports.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <div class="wb-table-wrap">
+      <table>
+        <thead><tr><th>Call number</th><th>Updates finished</th><th><code>a</code></th><th><code>b</code></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>1</td><td>2</td><td>1</td><td>2</td></tr>
+          <tr><td>1</td><td>3</td><td>2</td><td>3</td></tr>
+          <tr><td>1</td><td>4</td><td>3</td><td>5</td></tr>
+          <tr><td>1</td><td>5</td><td>5</td><td>8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The table follows one call, <code>fib_loop(5)</code>. It returns <code>5</code> after five additions. Inputs <code>0</code> and <code>1</code> return <code>0</code> and <code>1</code>. The loop uses one function frame.</p>
+  </details>
+</div>
+
+<p class="wb-part" id="part-hanoi">Towers of Hanoi</p>
+
+<h2 id="s6">6. Towers of Hanoi and the three-disc moves</h2>
+<p>Move the three discs from peg A to peg C. Peg B is available as a spare. Move one disc at a time. Take only the top disc from a peg. A larger disc must never sit on a smaller disc. Disc 1 is the smallest.</p>
+<p>To move three discs from A to C, first move the top two out of the way:</p>
+<ol>
+  <li>Move the top two discs from A to B.</li>
+  <li>Move disc 3 from A to C.</li>
+  <li>Move the top two discs from B to C.</li>
+</ol>
+<p>Each two-disc transfer is the same task with one fewer disc.</p>
+<p>The top two discs must reach B before disc 3 can move to C. The first three moves are:</p>
+<ol>
+  <li>Move disc 1 from A to C.</li>
+  <li>Move disc 2 from A to B.</li>
+  <li>Move disc 1 from C to B.</li>
+</ol>
+<p>Move disc 3 to C. Then transfer the two-disc tower from B to C. The remaining moves are:</p>
+<ol start="4">
+  <li>Move disc 3 from A to C.</li>
+  <li>Move disc 1 from B to A.</li>
+  <li>Move disc 2 from B to C.</li>
+  <li>Move disc 1 from A to C.</li>
+</ol>
+
+<h2 id="s7">7. Reading and tracing the Hanoi function</h2>
+<p><code>hanoi(n, source, target, spare)</code> prints the moves for <code>n</code> discs. It moves the top <code>n</code> discs from <code>source</code> to <code>target</code>, using <code>spare</code>.</p>
+<wb-example id="ex-hanoi"></wb-example>
+<ol>
+  <li>The first call puts the smaller tower on the spare peg.</li>
+  <li>The print moves the largest disc of this tower.</li>
+  <li>The second call moves the smaller tower to the target.</li>
+</ol>
+<p>The peg roles change on each call. For the outer call, A is the source, C the target, and B the spare.</p>
+<p><code>hanoi</code> prints a legal transfer of a tower. Trace <code>hanoi(2, "A", "C", "B")</code>.</p>
+<wb-example id="ex-hanoi-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>n</code></th><th>source / target / spare</th><th>Own print</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>2</td><td><code>A / C / B</code></td><td><code>Move 2 A to C</code></td></tr>
+    <tr><td>2</td><td>1</td><td><code>A / B / C</code></td><td><code>Move 1 A to B</code></td></tr>
+    <tr><td>3</td><td>0</td><td><code>A / C / B</code></td><td>none</td></tr>
+    <tr><td>4</td><td>0</td><td><code>C / B / A</code></td><td>none</td></tr>
+    <tr><td>5</td><td>1</td><td><code>B / C / A</code></td><td><code>Move 1 B to C</code></td></tr>
+    <tr><td>6</td><td>0</td><td><code>B / A / C</code></td><td>none</td></tr>
+    <tr><td>7</td><td>0</td><td><code>A / C / B</code></td><td>none</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Own print happens after the first smaller call. The print order is calls 2, 1, then 5. All seven calls return <code>None</code>. Only three calls print a move.</p>
+
+<h2 id="s8">8. Counting the Hanoi moves</h2>
+<p>Let <var>M</var>(<var>n</var>) be the number of moves for <code>n</code> discs. Move the top <var>n</var> − 1 discs, move the largest disc, then move the smaller tower again. The two smaller transfers each need <var>M</var>(<var>n</var> − 1) moves. Moving the largest disc needs one move.</p>
+<p style="text-align: center"><var>M</var>(0) = 0 &nbsp;&nbsp;&nbsp;&nbsp; <var>M</var>(<var>n</var>) = 2<var>M</var>(<var>n</var> − 1) + 1</p>
+<div class="wb-table-wrap">
+<table>
+  <tbody>
+    <tr><th>Discs</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+    <tr><th>Moves</th><td>0</td><td>1</td><td>3</td><td>7</td><td>15</td><td>31</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The count doubles, then gains one. This gives <var>M</var>(<var>n</var>) = 2<sup><var>n</var></sup> − 1, written <code>2**n - 1</code> in Python. Every disc in the smaller tower must leave the source before the largest disc moves.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write a recursive function <code>hanoi_moves(n)</code>. It returns the number of moves needed for <code>n</code> discs.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Use one recursive call and <var>M</var>(<var>n</var>) = 2<var>M</var>(<var>n</var> − 1) + 1.</li>
+    <li>Return <code>0</code> for <code>n = 0</code>.</li>
+    <li>Check <code>3</code>.</li>
+    <li>How many calls does this count function make?</li>
+  </ul>
+  <p>The function returns a number. It does not print the individual moves. Compute the smaller count once. Use that answer twice in the arithmetic.</p>
+  <p><strong>Check</strong> calls <code>hanoi_moves</code> with 0 and 3, and with every other value up to 20. It compares the value each call returns.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>hanoi_moves(n)</code> with one parameter. It returns the number of moves and does not print.</li>
+      <li>Make one recursive call: call <code>hanoi_moves</code> once inside its own body. <strong>Check</strong> counts the calls: <code>hanoi_moves(3)</code> must make four calls in all.</li>
+      <li>Build the count with 2 × <code>smaller</code> + 1. Do not use <code>**</code>.</li>
+      <li>Use no loops.</li>
+      <li>Do not use lists, dictionaries, global variables, or imports.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+  <p>How many calls does this count function make for <code>hanoi_moves(3)</code>?</p>
+  <wb-short id="cp3-calls"></wb-short>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <div class="wb-table-wrap">
+      <table>
+        <thead><tr><th>Call number</th><th><code>n</code></th><th><code>smaller</code></th><th>Returned value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>3</td><td>3</td><td>2 × 3 + 1 = 7</td></tr>
+          <tr><td>2</td><td>2</td><td>1</td><td>2 × 1 + 1 = 3</td></tr>
+          <tr><td>3</td><td>1</td><td>0</td><td>2 × 0 + 1 = 1</td></tr>
+          <tr><td>4</td><td>0</td><td>not set</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>hanoi_moves(3)</code> makes four calls and returns <code>7</code>. Counting the moves needs far less work than printing all seven moves.</p>
+  </details>
+</div>
+
+<p class="wb-part" id="part-choosing">Choosing an approach</p>
+
+<h2 id="s9">9. Choosing an approach</h2>
+<p>Start with the clearest correct description of the task.</p>
+<ul>
+  <li>Usually choose a loop to repeat an update to a few values.</li>
+  <li>Consider recursion to solve the same task on smaller parts.</li>
+</ul>
+<p>Before choosing recursion, estimate the maximum depth. Check whether the same smaller problem repeats. For Hanoi, recursion makes the moves easy to describe. The required number of moves still grows as 2<sup><var>n</var></sup> − 1.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>Practices 1 and 3 use loops. Practices 2 and 4 use recursion. Practice 2 also has a table and a trace to complete.</p>
+<p><strong>Check</strong> calls your function with the values listed in each practice and with other values. It compares the value each call returns.</p>
+
+<h3>1. Keep every other character</h3>
+<p>Write <code>alternate_loop(text)</code>. It returns the same string as this recursive function. Keep the characters at positions 0, 2, 4, and every later even position. Keep their original order.</p>
+<wb-example id="ex-alternate-rec"></wb-example>
+<ul>
+  <li>Use a loop and build the answer one character at a time.</li>
+  <li>Do not use recursion or a slice with a step.</li>
+  <li><code>alternate_loop("abcdef")</code> returns <code>"ace"</code>.</li>
+  <li><code>alternate_loop("x")</code> returns <code>"x"</code>.</li>
+  <li><code>alternate_loop("")</code> returns <code>""</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>alternate_loop(text)</code> with one parameter. <strong>Check</strong> also calls it with strings such as <code>"abc"</code>, <code>"abcdefg"</code>, and <code>"hello world"</code>.</li>
+    <li>Use a <code>for</code> or <code>while</code> loop. Do not call <code>alternate_loop</code> or <code>alternate_rec</code> from it.</li>
+    <li>Do not use a slice with a step, such as <code>text[::2]</code>.</li>
+    <li>Do not use lists, dictionaries, global variables, or imports.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+
+<h3>2. Count calls while shrinking</h3>
+<p>This function reduces a nonnegative integer reading until it is at most 10. Trace <code>reduce_reading(100)</code>. Record the inputs in call order and each returned value.</p>
+<wb-example id="ex-reduce"></wb-example>
+<p>Write <code>reading_calls(n)</code>. It returns the number of calls made by <code>reduce_reading(n)</code>, including the first call. Use recursion and return the count through the calls. Do not call <code>reduce_reading</code> from your count function. Complete the table.</p>
+<wb-table id="p2-table">
+  <table>
+    <thead><tr><th>Input</th><th>Reduced reading</th><th>Calls including the first</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td data-blank="r0"></td><td data-blank="c0"></td></tr>
+      <tr><td>10</td><td data-blank="r10"></td><td data-blank="c10"></td></tr>
+      <tr><td>11</td><td data-blank="r11"></td><td data-blank="c11"></td></tr>
+      <tr><td>100</td><td data-blank="r100"></td><td data-blank="c100"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Trace <code>reduce_reading(100)</code>:</p>
+<wb-short id="p2-trace"></wb-short>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>reading_calls(n)</code> with one parameter. <strong>Check</strong> also calls it with inputs such as 33, 1000, and 1000000.</li>
+    <li>Use recursion: call <code>reading_calls</code> inside its own body. Use no loops.</li>
+    <li>Do not call <code>reduce_reading</code> from <code>reading_calls</code>.</li>
+    <li>Do not use lists, dictionaries, global variables, or imports.</li>
+  </ul>
+</div>
+<wb-exercise id="p2"></wb-exercise>
+
+<h3>3. Stay within a move budget</h3>
+<p>Write <code>tower_within(budget)</code>. It returns the largest number of discs whose complete Hanoi transfer fits within the move budget. Assume <code>budget</code> is a nonnegative integer.</p>
+<ul>
+  <li>Use a loop.</li>
+  <li>Build successive move counts with <var>M</var>(<var>n</var>) = 2<var>M</var>(<var>n</var> − 1) + 1.</li>
+  <li>Do not use <code>**</code> or logarithms.</li>
+  <li>A budget of zero allows a tower with zero discs.</li>
+</ul>
+<p>Check these calls:</p>
+<ul>
+  <li><code>tower_within(0)</code> returns <code>0</code>.</li>
+  <li><code>tower_within(6)</code> returns <code>2</code>.</li>
+  <li><code>tower_within(7)</code> returns <code>3</code>.</li>
+  <li><code>tower_within(31)</code> returns <code>5</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>tower_within(budget)</code> with one parameter. <strong>Check</strong> also calls it with every budget up to 69 and with budgets such as 1023, 1024, and 1000000.</li>
+    <li>Use a <code>for</code> or <code>while</code> loop. Do not call <code>tower_within</code> or another function you define from it.</li>
+    <li>Do not use <code>**</code> or <code>pow</code>.</li>
+    <li>Do not use lists, dictionaries, global variables, or imports. Without imports, no logarithm function is available.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Find one Hanoi move</h3>
+<p>Write <code>hanoi_move(n, step, source, target, spare)</code>. It returns the move at position <code>step</code> in the recursive Hanoi solution. Positions start at 1. Return a string in the format <code>Move 2 A to C</code>.</p>
+<ul>
+  <li>Assume <code>n</code> is an integer from 1 through 6.</li>
+  <li>Assume <code>step</code> is from 1 through <code>2**n - 1</code>.</li>
+  <li>The peg names are distinct one-letter strings.</li>
+  <li>Use recursion to follow only the smaller transfer that contains the requested move.</li>
+  <li>Do not generate or print all the moves.</li>
+  <li>You may use <code>2**k - 1</code> to count a smaller transfer's moves.</li>
+</ul>
+<p>Check these calls:</p>
+<ul>
+  <li><code>hanoi_move(1, 1, "A", "C", "B")</code> returns <code>"Move 1 A to C"</code>.</li>
+  <li><code>hanoi_move(3, 4, "A", "C", "B")</code> returns <code>"Move 3 A to C"</code>.</li>
+  <li><code>hanoi_move(3, 6, "A", "C", "B")</code> returns <code>"Move 2 B to C"</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>hanoi_move(n, step, source, target, spare)</code> with five parameters. <strong>Check</strong> also calls it with every step for 1 to 6 discs, and with other peg names.</li>
+    <li>Use recursion: call <code>hanoi_move</code> inside its own body.</li>
+    <li>Follow only the smaller transfer that contains the move. <strong>Check</strong> counts the calls: a call with <code>n</code> discs may make at most <code>n</code> calls in all.</li>
+    <li>Do not print in <code>hanoi_move</code>. Return the move as a string.</li>
+    <li>Do not use lists, dictionaries, global variables, or imports.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Loops, calls and repeated work</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Topic</th><th>What to remember</th></tr></thead>
+  <tbody>
+    <tr><td>Same problem</td><td>A loop and recursion can return the same answer. Compare clarity and work.</td></tr>
+    <tr><td>Simple accumulation</td><td>A loop updates its local total or product inside one function frame.</td></tr>
+    <tr><td>Recursive cost</td><td>Each call adds a frame and call handling. Peak depth counts unfinished calls.</td></tr>
+    <tr><td>Factorial examples</td><td>Both do <var>n</var> multiplications. Recursion peaks at <var>n</var> + 1 frames. The loop uses one.</td></tr>
+    <tr><td>Naive Fibonacci</td><td>The same inputs appear in different branches. Each call computes its answer again.</td></tr>
+    <tr><td>Work versus depth</td><td>Total calls measure repeated work. Peak depth measures the longest active path.</td></tr>
+    <tr><td>Fibonacci loop</td><td>Keep consecutive values. Save their sum before shifting them forward. Our version makes <var>n</var> updates.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Hanoi and the final choice</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Topic</th><th>What to remember</th></tr></thead>
+  <tbody>
+    <tr><td>Hanoi rules</td><td>Move one top disc at a time. Never put a larger disc on a smaller one.</td></tr>
+    <tr><td>Recursive transfer</td><td>Move <var>n</var> − 1 discs to the spare peg. Move the largest disc to the target. Move the smaller tower onto it.</td></tr>
+    <tr><td>Peg roles</td><td>Read each call as <code>n, source, target, spare</code>. The roles change in the two recursive calls.</td></tr>
+    <tr><td>Move count</td><td><var>M</var>(0) = 0 and <var>M</var>(<var>n</var>) = 2<var>M</var>(<var>n</var> − 1) + 1. Therefore <var>M</var>(<var>n</var>) = 2<sup><var>n</var></sup> − 1.</td></tr>
+    <tr><td>Counting versus moving</td><td>A count function can reuse one smaller count. Printing a solution must produce every move.</td></tr>
+    <tr><td>Recursion fits</td><td>The task has a clear smaller version and the depth and total work stay reasonable.</td></tr>
+    <tr><td>A loop fits</td><td>The task is a sequence of updates to a few values. It avoids a chain of unfinished function calls.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 23 Workbook.</p>
+</main>
+</body>
+</html>

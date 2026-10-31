@@ -1,0 +1,554 @@
+{
+  "id": "lecture-22",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 22 Workbook",
+  "subtitle": "Tracing recursion and recursive helpers",
+  "exercises": {
+    "ex-visit": {
+      "type": "example",
+      "code": "def visit(n):\n    if n == 0:\n        return\n    print(\"enter\", n)\n    visit(n - 1)\n    print(\"leave\", n)\n\nvisit(2)",
+      "output": "enter 2\nenter 1\nleave 1\nleave 2"
+    },
+    "ex-visit-trace": {
+      "type": "example",
+      "code": "def visit(n):\n    if n == 0:\n        return\n    print(\"enter\", n)\n    visit(n - 1)\n    print(\"leave\", n)\n\nvisit(2)"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def show_digits(n):\n    pass",
+      "cases": [
+        {
+          "name": "show_digits(7)",
+          "check": "_prints('show_digits', (7,), '7\\n')\n"
+        },
+        {
+          "name": "show_digits(407)",
+          "check": "_prints('show_digits', (407,), '4\\n0\\n7\\n')\n"
+        },
+        {
+          "name": "show_digits(10)",
+          "check": "_prints('show_digits', (10,), '1\\n0\\n')\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"show_digits\", \"n\")\n_no_loops(\"show_digits\")\nassert _self_calls(\"show_digits\") == 1, \"Use one recursive call: show_digits calls itself once.\"\n_ops = [type(n.op) for n in _body(\"show_digits\") if isinstance(n, ast.BinOp)]\nassert ast.FloorDiv in _ops and ast.Mod in _ops, \"Use // 10 and % 10 to split the number into its digits.\"\n_prints('show_digits', (1,), '1\\n')\n_prints('show_digits', (9,), '9\\n')\n_prints('show_digits', (70,), '7\\n0\\n')\n_prints('show_digits', (100,), '1\\n0\\n0\\n')\n_prints('show_digits', (1001,), '1\\n0\\n0\\n1\\n')\n_prints('show_digits', (2026,), '2\\n0\\n2\\n6\\n')\n_prints('show_digits', (90210,), '9\\n0\\n2\\n1\\n0\\n')\n",
+      "answer": "ZGVmIHNob3dfZGlnaXRzKG4pOgogICAgaWYgbiA+PSAxMDoKICAgICAgICBzaG93X2RpZ2l0cyhuIC8vIDEwKQogICAgcHJpbnQobiAlIDEwKQ==",
+      "answerNote": "The earlier digits print first. `407 // 10` is `40`. `407 % 10` is `7`. `show_digits(7)` prints just `7`."
+    },
+    "ex-factorial": {
+      "type": "example",
+      "code": "def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n\nfactorial(3)"
+    },
+    "ex-countdown-bug": {
+      "type": "example",
+      "code": "def countdown(n):\n    if n == 0:\n        return\n    print(n)\n    countdown(n)"
+    },
+    "ex-countdown-fix": {
+      "type": "example",
+      "code": "def countdown(n):\n    if n == 0:\n        return\n    print(n)\n    countdown(n - 1)"
+    },
+    "ex-product": {
+      "type": "example",
+      "code": "def product(n):\n    if n == 0:\n        return 0\n    return n * product(n - 1)\n\nprint(product(3))",
+      "output": "0"
+    },
+    "ex-total-bug": {
+      "type": "example",
+      "code": "def total(n):\n    if n == 0:\n        return 0\n    total(n - 1)"
+    },
+    "ex-total-fix": {
+      "type": "example",
+      "code": "def total(n):\n    if n == 0:\n        return 0\n    return n + total(n - 1)"
+    },
+    "ex-total-trace": {
+      "type": "example",
+      "code": "def total(n):\n    if n == 0:\n        return 0\n    total(n - 1)\n\nprint(total(2))",
+      "output": "None"
+    },
+    "ex-is-palindrome": {
+      "type": "example",
+      "code": "def is_palindrome(text):\n    return palindrome_helper(\n        text, 0, len(text) - 1)"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def palindrome_helper(text, start, end):\n    pass\n\ndef is_palindrome(text):\n    return palindrome_helper(text, 0, len(text) - 1)",
+      "cases": [
+        {
+          "name": "is_palindrome(\"abba\")",
+          "check": "_returns('is_palindrome', ('abba',), True)\n"
+        },
+        {
+          "name": "is_palindrome(\"abc\")",
+          "check": "_returns('is_palindrome', ('abc',), False)\n"
+        },
+        {
+          "name": "is_palindrome(\"\")",
+          "check": "_returns('is_palindrome', ('',), True)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"palindrome_helper\", \"text\", \"start\", \"end\")\n_fn(\"is_palindrome\", \"text\")\nassert _calls_in(\"is_palindrome\", \"palindrome_helper\"), \"Keep is_palindrome as given: it calls palindrome_helper(text, 0, len(text) - 1).\"\n_no_loops(\"palindrome_helper\")\nassert _self_calls(\"palindrome_helper\") == 1, \"Use one recursive call: palindrome_helper calls itself once.\"\n_returns('palindrome_helper', ('abba', 0, 3), True)\n_returns('palindrome_helper', ('abba', 1, 2), True)\n_returns('palindrome_helper', ('abba', 2, 1), True)\n_returns('palindrome_helper', ('abc', 0, 2), False)\n_returns('palindrome_helper', ('', 0, -1), True)\n_returns('palindrome_helper', ('abca', 1, 2), False)\n_returns('palindrome_helper', ('xabay', 1, 3), True)\n_returns('is_palindrome', ('a',), True)\n_returns('is_palindrome', ('ab',), False)\n_returns('is_palindrome', ('aa',), True)\n_returns('is_palindrome', ('aba',), True)\n_returns('is_palindrome', ('abca',), False)\n_returns('is_palindrome', ('racecar',), True)\n_returns('is_palindrome', ('robot',), False)\n_returns('is_palindrome', ('level',), True)\n_returns('is_palindrome', ('abcba',), True)\n_returns('is_palindrome', ('abccba',), True)\n_returns('is_palindrome', ('abcdba',), False)\n",
+      "answer": "ZGVmIHBhbGluZHJvbWVfaGVscGVyKHRleHQsIHN0YXJ0LCBlbmQpOgogICAgaWYgc3RhcnQgPj0gZW5kOgogICAgICAgIHJldHVybiBUcnVlCiAgICBpZiB0ZXh0W3N0YXJ0XSAhPSB0ZXh0W2VuZF06CiAgICAgICAgcmV0dXJuIEZhbHNlCiAgICByZXR1cm4gcGFsaW5kcm9tZV9oZWxwZXIoCiAgICAgICAgdGV4dCwgc3RhcnQgKyAxLCBlbmQgLSAxKQoKZGVmIGlzX3BhbGluZHJvbWUodGV4dCk6CiAgICByZXR1cm4gcGFsaW5kcm9tZV9oZWxwZXIodGV4dCwgMCwgbGVuKHRleHQpIC0gMSk=",
+      "answerNote": "Each recursive call moves both indices inward. A mismatch stops the check immediately. The helper's Boolean answer returns through the wrapper."
+    },
+    "ex-trace-abba": {
+      "type": "example",
+      "code": "def palindrome_helper(\n        text, start, end):\n    if start >= end:\n        return True\n    if text[start] != text[end]:\n        return False\n    return palindrome_helper(\n        text, start + 1, end - 1)\n\npalindrome_helper(\"abba\", 0, 3)"
+    },
+    "ex-trace-abca": {
+      "type": "example",
+      "code": "def palindrome_helper(\n        text, start, end):\n    if start >= end:\n        return True\n    if text[start] != text[end]:\n        return False\n    return palindrome_helper(\n        text, start + 1, end - 1)\n\npalindrome_helper(\"abca\", 0, 3)"
+    },
+    "ex-sentence": {
+      "type": "example",
+      "code": "def sentence_helper(text, start, end):\n    if start >= end:\n        return True\n    first = text[start]\n    last = text[end]\n    if not first.isalpha():\n        return sentence_helper(text, start + 1, end)\n    if not last.isalpha():\n        return sentence_helper(text, start, end - 1)\n    if first.lower() != last.lower():\n        return False\n    return sentence_helper(text, start + 1, end - 1)"
+    },
+    "ex-sentence-trace": {
+      "type": "example",
+      "code": "def sentence_helper(text, start, end):\n    if start >= end:\n        return True\n    first = text[start]\n    last = text[end]\n    if not first.isalpha():\n        return sentence_helper(\n            text, start + 1, end)\n    if not last.isalpha():\n        return sentence_helper(\n            text, start, end - 1)\n    if first.lower() != last.lower():\n        return False\n    return sentence_helper(\n        text, start + 1, end - 1)"
+    },
+    "ex-fib": {
+      "type": "example",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    left = fib(n - 1)\n    right = fib(n - 2)\n    return left + right"
+    },
+    "ex-fib-trace": {
+      "type": "example",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    left = fib(n - 1)\n    right = fib(n - 2)\n    return left + right\n\nprint(fib(3))"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "def ways(n):\n    pass",
+      "cases": [
+        {
+          "name": "ways(0)",
+          "check": "_returns('ways', (0,), 1)\n"
+        },
+        {
+          "name": "ways(2)",
+          "check": "_returns('ways', (2,), 2)\n"
+        },
+        {
+          "name": "ways(3)",
+          "check": "_returns('ways', (3,), 3)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"ways\", \"n\")\n_no_loops(\"ways\")\nassert _self_calls(\"ways\") == 2, \"Use two recursive calls in ways for the larger inputs.\"\n_returns('ways', (1,), 1)\n_returns('ways', (2,), 2)\n_returns('ways', (3,), 3)\n_returns('ways', (4,), 5)\n_returns('ways', (5,), 8)\n_returns('ways', (6,), 13)\n_returns('ways', (7,), 21)\n_returns('ways', (8,), 34)\n_returns('ways', (9,), 55)\n_returns('ways', (10,), 89)\n_returns('ways', (11,), 144)\n_returns('ways', (12,), 233)\n",
+      "answer": "ZGVmIHdheXMobik6CiAgICBpZiBuIDw9IDE6CiAgICAgICAgcmV0dXJuIDEKICAgIG9uZV9zdGVwID0gd2F5cyhuIC0gMSkKICAgIHR3b19zdGVwcyA9IHdheXMobiAtIDIpCiAgICByZXR1cm4gb25lX3N0ZXAgKyB0d29fc3RlcHM=",
+      "answerNote": "A first step of 1 leaves `n - 1` stairs. A first step of 2 leaves `n - 2` stairs. The groups have different first steps, so add their counts. `ways(0) = 1`, `ways(2) = 2`, and `ways(3) = 3`."
+    },
+    "p1-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "in1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r1": {
+          "accept": [
+            "14"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "in2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "in3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r3": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "in4": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d4": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r4": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "in5": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d5": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r5": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "in6": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d6": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r6": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        }
+      }
+    },
+    "p1-output": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 2,
+      "rows": 3,
+      "placeholder": "The printed output, and how the returned values give it…",
+      "answer": "YDE4YAoKVGhlIHRocmVlIGNhbGxzIGluIHRoZSBwcmludGVkIGV4cHJlc3Npb24gcmV0dXJuIDE0LCA1LCBhbmQgMi4gVGhlIGV4cHJlc3Npb24gaXMgKDE0IOKIkiA1KSDDlyAyLiBUaGUgbWF4aW11bSBkZXB0aCBpcyAzLg=="
+    },
+    "p2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c0": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "d0": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "c1": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "d1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "c2": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "d2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        }
+      }
+    },
+    "p2-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "in1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r1": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in3": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r3": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in4": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d4": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r4": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in5": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d5": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r5": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in6": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d6": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r6": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        },
+        "in7": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "5rem"
+        },
+        "d7": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "depth",
+          "width": "5rem"
+        },
+        "r7": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "count",
+          "width": "5rem"
+        }
+      }
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def smallest_letter(text):\n    pass",
+      "cases": [
+        {
+          "name": "smallest_letter(\"m\")",
+          "check": "_returns('smallest_letter', ('m',), 'm')\n"
+        },
+        {
+          "name": "smallest_letter(\"cabin\")",
+          "check": "_returns('smallest_letter', ('cabin',), 'a')\n"
+        },
+        {
+          "name": "smallest_letter(\"zoo\")",
+          "check": "_returns('smallest_letter', ('zoo',), 'o')\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"smallest_letter\", \"text\")\n_no_loops(\"smallest_letter\")\nassert _self_calls(\"smallest_letter\") == 1, \"Use one recursive call: smallest_letter calls itself once.\"\nassert not any(isinstance(n, ast.Call) and ((isinstance(n.func, ast.Name) and n.func.id in (\"sorted\", \"min\", \"max\"))\n               or (isinstance(n.func, ast.Attribute) and n.func.attr == \"sort\")) for n in _body(\"smallest_letter\")), \"Compare the letters yourself with <. Do not use sorted, sort, min, or max.\"\nassert any(isinstance(n, ast.Compare) and any(isinstance(o, ast.Lt) for o in n.ops) for n in _body(\"smallest_letter\")), \"Compare letters with <.\"\n_returns('smallest_letter', ('aaa',), 'a')\n_returns('smallest_letter', ('zyx',), 'x')\n_returns('smallest_letter', ('z',), 'z')\n_returns('smallest_letter', ('az',), 'a')\n_returns('smallest_letter', ('za',), 'a')\n_returns('smallest_letter', ('banana',), 'a')\n_returns('smallest_letter', ('recursion',), 'c')\n_returns('smallest_letter', ('zyxwvutsrqponmlkjihgfedcba',), 'a')\n_returns('smallest_letter', ('qwerty',), 'e')\n",
+      "answer": "ZGVmIHNtYWxsZXN0X2xldHRlcih0ZXh0KToKICAgIGlmIGxlbih0ZXh0KSA9PSAxOgogICAgICAgIHJldHVybiB0ZXh0CiAgICBzbWFsbGVyID0gc21hbGxlc3RfbGV0dGVyKHRleHRbMTpdKQogICAgaWYgdGV4dFswXSA8IHNtYWxsZXI6CiAgICAgICAgcmV0dXJuIHRleHRbMF0KICAgIHJldHVybiBzbWFsbGVy",
+      "answerNote": "A one-letter word returns its only letter. Each larger call compares its first letter with the smallest letter in the rest of the word."
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def lowercase_part(text, start, end):\n    pass\n\ndef lowercase_text(text):\n    pass",
+      "cases": [
+        {
+          "name": "lowercase_part(\"AB-CD\", 1, 3)",
+          "check": "_returns('lowercase_part', ('AB-CD', 1, 3), 'b-c')\n"
+        },
+        {
+          "name": "lowercase_text(\"Shop!\")",
+          "check": "_returns('lowercase_text', ('Shop!',), 'shop!')\n"
+        },
+        {
+          "name": "lowercase_text(\"\")",
+          "check": "_returns('lowercase_text', ('',), '')\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"lowercase_part\", \"text\", \"start\", \"end\")\n_fn(\"lowercase_text\", \"text\")\n_no_loops(\"lowercase_part\")\n_no_loops(\"lowercase_text\")\nassert _self_calls(\"lowercase_part\") == 1, \"Use one recursive call in the helper: lowercase_part calls itself once.\"\nassert _calls_in(\"lowercase_text\", \"lowercase_part\"), \"In lowercase_text, call the helper lowercase_part for the whole string.\"\nfor _n in ast.walk(ast.parse(__source__)):\n    if isinstance(_n, ast.Call) and isinstance(_n.func, ast.Attribute) and _n.func.attr == \"lower\":\n        _on = _n.func.value\n        assert isinstance(_on, ast.Subscript) and not isinstance(_on.slice, ast.Slice), \"Use lower() on one character at a time, such as text[start].lower(). Do not use it on the whole string or on a slice.\"\n_returns('lowercase_part', ('', 0, -1), '')\n_returns('lowercase_part', ('X', 0, 0), 'x')\n_returns('lowercase_part', ('AB', 1, 0), '')\n_returns('lowercase_part', ('HeLLo World', 0, 10), 'hello world')\n_returns('lowercase_part', ('HeLLo World', 2, 6), 'llo w')\n_returns('lowercase_part', ('ABC', 2, 2), 'c')\n_returns('lowercase_text', ('aB 7!',), 'ab 7!')\n_returns('lowercase_text', ('ABC',), 'abc')\n_returns('lowercase_text', ('x',), 'x')\n_returns('lowercase_text', ('Hello, World!',), 'hello, world!')\n_returns('lowercase_text', ('MIXED case 123',), 'mixed case 123')\n",
+      "answer": "ZGVmIGxvd2VyY2FzZV9wYXJ0KHRleHQsIHN0YXJ0LCBlbmQpOgogICAgaWYgc3RhcnQgPiBlbmQ6CiAgICAgICAgcmV0dXJuICIiCiAgICByZXR1cm4gdGV4dFtzdGFydF0ubG93ZXIoKSArIGxvd2VyY2FzZV9wYXJ0KAogICAgICAgIHRleHQsIHN0YXJ0ICsgMSwgZW5kKQoKZGVmIGxvd2VyY2FzZV90ZXh0KHRleHQpOgogICAgcmV0dXJuIGxvd2VyY2FzZV9wYXJ0KHRleHQsIDAsIGxlbih0ZXh0KSAtIDEp",
+      "answerNote": "The wrapper chooses the whole range. The helper adds one lowercase character to the answer for the rest of that range."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 12,
+      "starter": "def multiply(a, b):\n    pass",
+      "cases": [
+        {
+          "name": "multiply(7, 0)",
+          "check": "_returns('multiply', (7, 0), 0)\n"
+        },
+        {
+          "name": "multiply(7, 4)",
+          "check": "_returns('multiply', (7, 4), 28)\n"
+        },
+        {
+          "name": "multiply(7, 5)",
+          "check": "_returns('multiply', (7, 5), 35)\n"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, _ = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _no_loops(name):\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in _body(name)), \"Use recursion and no loop in \" + name + \".\"\n_fn(\"multiply\", \"a\", \"b\")\n_no_loops(\"multiply\")\nassert not any(isinstance(n, (ast.BinOp, ast.AugAssign)) and isinstance(n.op, (ast.Mult, ast.Div)) for n in ast.walk(ast.parse(__source__))), \"Build the answer with addition. Do not use * or /.\"\nassert _self_calls(\"multiply\") == 1, \"Use one recursive call in multiply: find the product with b // 2 once and reuse it.\"\n_returns('multiply', (0, 8), 0)\n_returns('multiply', (3, 1), 3)\n_returns('multiply', (0, 0), 0)\n_returns('multiply', (1, 1), 1)\n_returns('multiply', (12, 13), 156)\n_returns('multiply', (1, 100), 100)\n_returns('multiply', (25, 64), 1600)\n_returns('multiply', (9, 1000), 9000)\n_returns('multiply', (123, 77), 9471)\n",
+      "answer": "ZGVmIG11bHRpcGx5KGEsIGIpOgogICAgaWYgYiA9PSAwOgogICAgICAgIHJldHVybiAwCiAgICBoYWxmID0gbXVsdGlwbHkoYSwgYiAvLyAyKQogICAgZG91YmxlZCA9IGhhbGYgKyBoYWxmCiAgICBpZiBiICUgMiA9PSAwOgogICAgICAgIHJldHVybiBkb3VibGVkCiAgICByZXR1cm4gZG91YmxlZCArIGE=",
+      "answerNote": "For 4, doubling the product with 2 supplies all four copies of `a`. For 5, one more copy is needed."
+    }
+  }
+}

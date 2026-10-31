@@ -203,12 +203,18 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 </div>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
-<p>For each function, keep calculations in the function and display results in the caller unless the task asks for an output-only function.</p>
-<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values, listed under each task, and compares what they return or print. Programs that read input read each value with no prompt, unless the task gives one.</p>
+<p>In these programs, a function does the calculation and <em>returns</em> the result. The code that calls the function prints the result. The only exceptions are tasks that ask for a function that prints.</p>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with other values, listed under each task, and compares what they return or print. Programs that read input use <code>input()</code> with no prompt, unless the task gives a prompt.</p>
 
 <h3>1. Inputs and results</h3>
 <p>Assume <code>rectangle_area(width, height)</code> returns <code>width * height</code>.</p>
-<p>For <code>rectangle_area(6, 2)</code>, identify the arguments, parameters, and returned value. How many arguments does this definition require, and how many values does one call return in this lecture's examples? Confirm the result with a call.</p>
+<p>Look at the call <code>rectangle_area(6, 2)</code>.</p>
+<ol>
+  <li>What are the arguments of the call? What are the parameters of the function? What value does the call return?</li>
+  <li>How many arguments must every call of this function have?</li>
+  <li>How many values does one call return?</li>
+</ol>
+<p>Then check your answer: write a line that calls <code>rectangle_area(6, 2)</code> and prints the result.</p>
 <wb-short id="p1"></wb-short>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
@@ -220,7 +226,9 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p1-call"></wb-exercise>
 
 <h3>2. Money display</h3>
-<p>Write <code>show_money(amount)</code> to print a dollar sign and exactly two digits after the decimal point. Test it with 7.5 and 0. Use the same function for both calls. What one line would you change to display <code>EUR</code> before the number instead?</p>
+<p>Write <code>show_money(amount)</code>. It prints the amount with a dollar sign in front and exactly two digits after the decimal point. For example, <code>show_money(7.5)</code> prints <code>$7.50</code>.</p>
+<p>Call the function twice: once with 7.5 and once with 0.</p>
+<p>Then answer: suppose you want to show <code>EUR</code> in front of the number instead of <code>$</code>. Which one line would you change?</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -233,7 +241,21 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-short id="p2-eur"></wb-short>
 
 <h3>3. Letter-to-digit conversion</h3>
-<p>Write pseudocode and then <code>phone_digits(text)</code> to return a copy of <code>text</code> with uppercase letters replaced by phone-keypad digits. Use ABC: 2, DEF: 3, GHI: 4, JKL: 5, MNO: 6, PQRS: 7, TUV: 8, WXYZ: 9. Keep digits and hyphens unchanged. Input contains only these characters. Test <code>8-CAT</code> and the empty string. Print <code>[</code> and <code>]</code> around each result so the empty result is visible.</p>
+<p>On a phone keypad, each digit key also shows some letters:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Letters</th><th>ABC</th><th>DEF</th><th>GHI</th><th>JKL</th><th>MNO</th><th>PQRS</th><th>TUV</th><th>WXYZ</th></tr></thead>
+  <tbody><tr><td>Digit</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr></tbody>
+</table>
+</div>
+<p>Write <code>phone_digits(text)</code>. It returns a copy of <code>text</code> in which every uppercase letter is replaced by its digit. Digits and hyphens (<code>-</code>) stay as they are. The text contains only uppercase letters, digits, and hyphens.</p>
+<ol>
+  <li>First write the steps in pseudocode.</li>
+  <li>Then write the function.</li>
+  <li>Print the results for <code>'8-CAT'</code> and for the empty string. Put <code>[</code> before each result and <code>]</code> after it, so that an empty result can be seen.</li>
+</ol>
+<pre class="wb-output">[8-228]
+[]</pre>
 <wb-short id="p3-plan"></wb-short>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
@@ -246,7 +268,18 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p3"></wb-exercise>
 
 <h3>4. Separated copies</h3>
-<p>Write <code>separated_copies(text, count, separator)</code> to return <code>count</code> copies with the separator only between copies. Assume <code>count</code> is a non-negative integer. Print each result inside brackets. Cases: <code>('go', 3, '/')</code> gives <code>[go/go/go]</code>; <code>('go', 0, '/')</code> gives <code>[]</code>; <code>('go', 1, '/')</code> gives <code>[go]</code>.</p>
+<p>Write <code>separated_copies(text, count, separator)</code>. It returns one string that holds <code>text</code> repeated <code>count</code> times, with <code>separator</code> between the copies. There is no separator before the first copy or after the last copy. <code>count</code> is a whole number, 0 or more.</p>
+<p>Print each result with <code>[</code> before it and <code>]</code> after it:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Printed</th></tr></thead>
+  <tbody>
+    <tr><td><code>separated_copies('go', 3, '/')</code></td><td><code>[go/go/go]</code></td></tr>
+    <tr><td><code>separated_copies('go', 0, '/')</code></td><td><code>[]</code></td></tr>
+    <tr><td><code>separated_copies('go', 1, '/')</code></td><td><code>[go]</code></td></tr>
+  </tbody>
+</table>
+</div>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -257,7 +290,8 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p4"></wb-exercise>
 
 <h3>5. Vowel count</h3>
-<p>Write <code>vowel_count(text)</code> to return the number of vowels in <code>text</code>. Count a, e, i, o, and u in either case. Print the results for <code>Blue sky</code>, the empty string, and <code>AEIOU</code>. The results must be 2, 0, and 5.</p>
+<p>Write <code>vowel_count(text)</code>. It returns how many vowels are in <code>text</code>. The vowels are a, e, i, o, and u. Count both lowercase and uppercase vowels.</p>
+<p>Print the results for <code>'Blue sky'</code>, the empty string, and <code>'AEIOU'</code>. The program prints 2, 0, and 5, one per line.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -268,7 +302,18 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p5"></wb-exercise>
 
 <h3>6. Word count</h3>
-<p>Write <code>word_count(text)</code> to return the number of words. A word is a nonempty run of characters separated by ordinary spaces. Allow repeated, leading, and trailing spaces. Print results for <code>red&nbsp;&nbsp;blue</code>, the empty string, and three spaces followed by <code>one</code> and three more spaces. The results must be 2, 0, and 1. Do not use <code>split</code>.</p>
+<p>Write <code>word_count(text)</code>. It returns how many words are in <code>text</code>. A word is a group of one or more characters that are not spaces. Words are separated by spaces. There may be more than one space between words, and there may be spaces at the start or the end. Do not use <code>split</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Text</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>'red&nbsp;&nbsp;blue'</code> (two spaces in the middle)</td><td>2</td></tr>
+    <tr><td><code>''</code> (the empty string)</td><td>0</td></tr>
+    <tr><td><code>'&nbsp;&nbsp;&nbsp;one&nbsp;&nbsp;&nbsp;'</code> (three spaces, <code>one</code>, three spaces)</td><td>1</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Print the three results, one per line.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -280,7 +325,18 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p6"></wb-exercise>
 
 <h3>7. Interior letter swap</h3>
-<p>Write <code>swap_inside(word, first, second)</code> to return a string with two interior characters exchanged. An interior character is neither the first nor the last character. Assume the word has at least four characters and <code>1 &lt;= first &lt; second &lt;= len(word) - 2</code>. Keep all other characters in place. Print results for <code>('planet', 1, 4)</code> and <code>('abcd', 1, 2)</code>: <code>peanlt</code> and <code>acbd</code>.</p>
+<p>Write <code>swap_inside(word, first, second)</code>. It returns a copy of <code>word</code> in which the characters at index <code>first</code> and index <code>second</code> have changed places. All other characters stay where they are.</p>
+<p>The two characters are never the first or the last character of the word. You can assume that the word has at least four characters and that <code>1 &lt;= first &lt; second &lt;= len(word) - 2</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>swap_inside('planet', 1, 4)</code></td><td><code>peanlt</code> (the <code>l</code> and the <code>e</code> change places)</td></tr>
+    <tr><td><code>swap_inside('abcd', 1, 2)</code></td><td><code>acbd</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Print the two results, one per line.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -291,7 +347,14 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p7"></wb-exercise>
 
 <h3>8. Solid measurements</h3>
-<p>Write six functions for volume and surface area: <code>sphere_volume(r)</code>, <code>sphere_area(r)</code>, <code>cylinder_volume(r, h)</code>, <code>cylinder_area(r, h)</code>, <code>cone_volume(r, h)</code>, and <code>cone_area(r, h)</code>. Radius <code>r</code> and height <code>h</code> are positive lengths in the same unit. Use <code>math.pi</code>. The formulas are given below; no geometry needs to be derived. Surface areas include all circular bases. Read <code>r</code> and <code>h</code>, then print the six results in the order above, each to two decimal places. With input 2 followed by 3, the lines must be 33.51, 50.27, 37.70, 62.83, 12.57, and 35.22.</p>
+<p>Write six functions. Each one returns the volume or the surface area of a shape:</p>
+<ol>
+  <li><code>sphere_volume(r)</code> and <code>sphere_area(r)</code></li>
+  <li><code>cylinder_volume(r, h)</code> and <code>cylinder_area(r, h)</code></li>
+  <li><code>cone_volume(r, h)</code> and <code>cone_area(r, h)</code></li>
+</ol>
+<p>Here <code>r</code> is the radius and <code>h</code> is the height. Both are positive numbers. Use <code>math.pi</code> and the formulas in the table. The surface area includes the flat circles at the ends.</p>
+<p>The program reads <code>r</code> and then <code>h</code>. It prints the six results in the order of the list above, one per line, each to two decimal places. For example, when the user types 2 and then 3, the program prints 33.51, 50.27, 37.70, 62.83, 12.57, and 35.22.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Shape</th><th>Volume</th><th>Surface area</th></tr></thead>
@@ -314,7 +377,8 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p8"></wb-exercise>
 
 <h3>9. Read and return a number</h3>
-<p>Write <code>read_number(message)</code> to display <code>message</code> followed by a space, read a valid decimal number, and return it as a float. Call it with <code>Length:</code> and then <code>Width:</code>, store the two results, and print their product. With input 2.5 followed by 4, the final result is 10.0. The program does not need to recover from invalid text.</p>
+<p>Write <code>read_number(message)</code>. It shows <code>message</code> followed by one space as the prompt, reads what the user types, and returns it as a <code>float</code>. You can assume the user types a valid number.</p>
+<p>In the program, call <code>read_number</code> twice: first with the message <code>'Length:'</code>, then with <code>'Width:'</code>. Store the two results in variables, then print their product. When the user types 2.5 and then 4, the program prints 10.0.</p>
 <p><strong>Check</strong> types 2.5 and 4, then 3 and 3, and 0.5 and 0.5. The prompts are part of the output, so the first run prints <code>Length: Width: 10.0</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
@@ -327,7 +391,21 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p9"></wb-exercise>
 
 <h3>10. Pay calculation</h3>
-<p>Write <code>weekly_pay(rate, hours)</code> to return pay for non-negative hours and a positive hourly rate. The first 35 hours use <code>rate</code>; hours beyond 35 use <code>1.5 * rate</code>. Write <code>show_pay(name, amount)</code> to print the name and pay to two decimal places. Read a name, rate, and hours, then call both functions. Cases: <code>Lee</code>, 12, 37 gives <code>Lee: $456.00</code>; <code>Sam</code>, 12, 0 gives <code>Sam: $0.00</code>.</p>
+<p>A worker is paid by the hour. For the first 35 hours of the week, each hour is paid at the normal rate. Each hour after 35 is paid at 1.5 times the normal rate.</p>
+<ol>
+  <li>Write <code>weekly_pay(rate, hours)</code>. It returns the pay for the week. The rate is positive and the hours are 0 or more.</li>
+  <li>Write <code>show_pay(name, amount)</code>. It prints the name, a colon, and the pay with a dollar sign and two decimal places.</li>
+  <li>The program reads a name, an hourly rate, and a number of hours, one per line. Then it calls <code>weekly_pay</code> and passes the result to <code>show_pay</code>.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>Lee</code>, 12, 37</td><td><code>Lee: $456.00</code> (35 × 12 + 2 × 18)</td></tr>
+    <tr><td><code>Sam</code>, 12, 0</td><td><code>Sam: $0.00</code></td></tr>
+  </tbody>
+</table>
+</div>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Typed</th><th>Output</th></tr></thead>
@@ -350,20 +428,38 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p10"></wb-exercise>
 
 <h3>11. Preparation instructions</h3>
-<p>Write <code>base_steps()</code> to print <code>Fill the container.</code> and <code>Add the mixture.</code> on separate lines. Write <code>finish_steps(warm)</code> to print <code>Warm the mixture.</code> when <code>warm</code> is <code>True</code>, or <code>Leave it cool.</code> otherwise. Read <code>warm</code> or <code>cool</code>, call <code>base_steps()</code>, then pass the comparison <code>choice == 'warm'</code> to <code>finish_steps</code>. Assume the input is one of those two words.</p>
+<p>Write a program that prints instructions for preparing a mixture.</p>
+<ol>
+  <li>Write <code>base_steps()</code>. It prints <code>Fill the container.</code> and then <code>Add the mixture.</code>, on separate lines.</li>
+  <li>Write <code>finish_steps(warm)</code>. Its parameter is <code>True</code> or <code>False</code>. If <code>warm</code> is <code>True</code>, it prints <code>Warm the mixture.</code> Otherwise it prints <code>Leave it cool.</code></li>
+  <li>The program reads one word, <code>warm</code> or <code>cool</code>, into a variable <code>choice</code>. It calls <code>base_steps()</code>. Then it calls <code>finish_steps(choice == 'warm')</code>. The comparison gives <code>True</code> or <code>False</code>, and that value is passed to the function.</li>
+</ol>
 <p><strong>Check</strong> types <code>warm</code>, then <code>cool</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
     <li>Define <code>base_steps</code> with empty parentheses and <code>finish_steps(warm)</code> with one parameter.</li>
-    <li><code>base_steps</code> prints the two lines and returns <code>None</code>; <code>finish_steps</code> prints the matching instruction for <code>True</code> and for <code>False</code> and returns <code>None</code>.</li>
+    <li><code>base_steps</code> prints the two lines and returns <code>None</code>. <code>finish_steps</code> prints the matching instruction for <code>True</code> and for <code>False</code> and returns <code>None</code>.</li>
     <li>Pass the comparison <code>choice == 'warm'</code> to <code>finish_steps</code>.</li>
   </ul>
 </div>
 <wb-exercise id="p11"></wb-exercise>
 
 <h3>12. Viewing angle</h3>
-<p>A vertical screen has its bottom <code>bottom</code> metres above eye level and height <code>height</code> metres. The viewer is <code>distance</code> metres horizontally from the screen on a level floor. Write <code>view_angle(distance, bottom, height)</code> to return the angle in radians using the supplied formula arctan((<var>bottom</var> + <var>height</var>)/<var>distance</var>) − arctan(<var>bottom</var>/<var>distance</var>). In Python, <code>math.atan(x)</code> computes the inverse tangent in radians. Assume <code>distance &gt; 0</code>, <code>bottom &gt;= 0</code>, and <code>height &gt; 0</code>. Also write <code>standard_angle(distance)</code> for bottom 1 and height 2. Print <code>standard_angle(4)</code> and <code>view_angle(5, 0, 5)</code> to three decimal places: 0.399 and 0.785.</p>
+<p>A person looks at a screen on a wall. Three lengths, all in metres, describe the view:</p>
+<ul>
+  <li><code>distance</code>: how far the person stands from the wall (more than 0);</li>
+  <li><code>bottom</code>: how far the bottom of the screen is above the person's eyes (0 or more);</li>
+  <li><code>height</code>: the height of the screen (more than 0).</li>
+</ul>
+<p>The angle that the screen fills in the person's view, in radians, is</p>
+<p>arctan((<var>bottom</var> + <var>height</var>) / <var>distance</var>) − arctan(<var>bottom</var> / <var>distance</var>).</p>
+<p>In Python, <code>math.atan(x)</code> gives arctan of <code>x</code> in radians.</p>
+<ol>
+  <li>Write <code>view_angle(distance, bottom, height)</code>. It returns the angle.</li>
+  <li>Write <code>standard_angle(distance)</code>. It returns the angle for a screen with bottom 1 and height 2. Use <code>view_angle</code>.</li>
+  <li>Print <code>standard_angle(4)</code> and <code>view_angle(5, 0, 5)</code>, each to three decimal places. The program prints 0.399 and 0.785.</li>
+</ol>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -375,7 +471,15 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p12"></wb-exercise>
 
 <h3>13. Lens calculation</h3>
-<p>Write <code>focal_length(n, radius1, radius2, thickness)</code> to return <var>f</var> = 1/<var>q</var>, where <var>q</var> = (<var>n</var> − 1)(1/<var>R</var><sub>1</sub> − 1/<var>R</var><sub>2</sub> + (<var>n</var> − 1)<var>d</var>/(<var>n</var><var>R</var><sub>1</sub><var>R</var><sub>2</sub>)). Here <code>n</code> is a dimensionless material value, <code>radius1</code> and <code>radius2</code> are signed radii, and <code>thickness</code> is <var>d</var>. All lengths use the same unit, so <var>f</var> uses that unit too. Assume <code>n &gt; 1</code>, both radii are nonzero, thickness is non-negative, and <var>q</var> is nonzero. Print results for <code>(1.5, 10, -10, 0)</code> and <code>(1.5, 10, -10, 2)</code> to three decimal places: 10.000 and 10.345.</p>
+<p>The focal length of a lens is <var>f</var> = 1 / <var>q</var>, where</p>
+<p><var>q</var> = (<var>n</var> − 1) × (1/<var>R</var><sub>1</sub> − 1/<var>R</var><sub>2</sub> + (<var>n</var> − 1)<var>d</var> / (<var>n</var><var>R</var><sub>1</sub><var>R</var><sub>2</sub>)).</p>
+<p>In the function, the letters in the formula are these parameters:</p>
+<ul>
+  <li><var>n</var> is <code>n</code>, a number for the glass of the lens (more than 1);</li>
+  <li><var>R</var><sub>1</sub> and <var>R</var><sub>2</sub> are <code>radius1</code> and <code>radius2</code>, the curves of the two sides (not 0, and they may be negative);</li>
+  <li><var>d</var> is <code>thickness</code>, the thickness of the lens (0 or more).</li>
+</ul>
+<p>Write <code>focal_length(n, radius1, radius2, thickness)</code>. It works out <var>q</var>, then returns 1 / <var>q</var>. Print the results for <code>focal_length(1.5, 10, -10, 0)</code> and <code>focal_length(1.5, 10, -10, 2)</code>, each to three decimal places. The program prints 10.000 and 10.345.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -386,7 +490,18 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p13"></wb-exercise>
 
 <h3>14. Tapered container</h3>
-<p>An open container has circular bottom radius <code>r1</code>, circular top radius <code>r2</code>, and vertical height <code>h</code>, all positive and in metres. Write <code>container_volume(r1, r2, h)</code> and <code>container_area(r1, r2, h)</code> using <var>V</var> = π<var>h</var>(<var>r</var><sub>1</sub><sup>2</sup> + <var>r</var><sub>2</sub><sup>2</sup> + <var>r</var><sub>1</sub><var>r</var><sub>2</sub>)/3 and <var>A</var> = π(<var>r</var><sub>1</sub> + <var>r</var><sub>2</sub>)√((<var>r</var><sub>2</sub> − <var>r</var><sub>1</sub>)<sup>2</sup> + <var>h</var><sup>2</sup>) + π<var>r</var><sub>1</sub><sup>2</sup>. Area includes the side and bottom, with no lid. Volume is in cubic metres and area is in square metres. Print both results for <code>(1, 1, 2)</code> to three decimal places: 6.283 and 15.708.</p>
+<p>A container is shaped like a bucket: round at the bottom and at the top, with no lid. Three lengths, all in metres and all positive, describe it:</p>
+<ul>
+  <li><code>r1</code>: the radius of the bottom;</li>
+  <li><code>r2</code>: the radius of the top;</li>
+  <li><code>h</code>: the height.</li>
+</ul>
+<p>The volume (in cubic metres) and the outside area of the side and the bottom (in square metres) are:</p>
+<ul>
+  <li><var>V</var> = π<var>h</var>(<var>r</var><sub>1</sub><sup>2</sup> + <var>r</var><sub>2</sub><sup>2</sup> + <var>r</var><sub>1</sub><var>r</var><sub>2</sub>) / 3</li>
+  <li><var>A</var> = π(<var>r</var><sub>1</sub> + <var>r</var><sub>2</sub>)√((<var>r</var><sub>2</sub> − <var>r</var><sub>1</sub>)<sup>2</sup> + <var>h</var><sup>2</sup>) + π<var>r</var><sub>1</sub><sup>2</sup></li>
+</ul>
+<p>Write <code>container_volume(r1, r2, h)</code> and <code>container_area(r1, r2, h)</code>. Print both results for <code>(1, 1, 2)</code>, each to three decimal places. The program prints 6.283 and 15.708.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -397,7 +512,14 @@ new_score = <span class="wb-fn">adjust</span>(score, 3)
 <wb-exercise id="p14"></wb-exercise>
 
 <h3>15. Grid border</h3>
-<p>Write <code>print_border_grid(width, height, border)</code> to print a rectangular grid with <code>border</code> around its outside and dots in its interior. Width and height are integers of at least 2; <code>border</code> is one printable character other than a dot or space. The function prints the grid and returns <code>None</code>. Test <code>(5, 3, '#')</code> and <code>(2, 2, '*')</code>.</p>
+<p>Write <code>print_border_grid(width, height, border)</code>. It prints a rectangle that is <code>width</code> characters wide and <code>height</code> lines tall. The characters around the edge are <code>border</code>. The characters inside are dots (<code>.</code>). The function prints the rectangle and does not return a value.</p>
+<p><code>width</code> and <code>height</code> are whole numbers, 2 or more. <code>border</code> is one character (not a dot and not a space).</p>
+<p>Call the function with <code>(5, 3, '#')</code> and then with <code>(2, 2, '*')</code>. The program prints:</p>
+<pre class="wb-output">#####
+#...#
+#####
+**
+**</pre>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>

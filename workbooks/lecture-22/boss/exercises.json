@@ -1,0 +1,226 @@
+{
+  "id": "lecture-22-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 22 Boss Problems",
+  "short": "L22 bosses",
+  "subtitle": "Tracing recursion and recursive helpers",
+  "exercises": {
+    "song": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 44,
+      "starter": "def show_gift(day):\n    pass\n\ndef show_gifts(day):\n    pass\n\ndef show_verse(day):\n    pass\n\ndef show_song(days):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Day 1\n1 paper bag\nDay 2\n2 pencils\n1 paper bag\nDay 3\n3 notebooks\n2 pencils\n1 paper bag"
+        },
+        {
+          "name": "Example 2: typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Day 1\n1 paper bag"
+        },
+        {
+          "name": "Typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Day 1\n1 paper bag\nDay 2\n2 pencils\n1 paper bag"
+        },
+        {
+          "name": "Typed 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "Day 1\n1 paper bag\nDay 2\n2 pencils\n1 paper bag\nDay 3\n3 notebooks\n2 pencils\n1 paper bag\nDay 4\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 5\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 6\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag"
+        },
+        {
+          "name": "Typed 12",
+          "inputs": [
+            "12"
+          ],
+          "expected": "Day 1\n1 paper bag\nDay 2\n2 pencils\n1 paper bag\nDay 3\n3 notebooks\n2 pencils\n1 paper bag\nDay 4\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 5\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 6\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 7\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 8\n8 glue sticks\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 9\n9 labels\n8 glue sticks\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 10\n10 brushes\n9 labels\n8 glue sticks\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 11\n11 stamps\n10 brushes\n9 labels\n8 glue sticks\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag\nDay 12\n12 cards\n11 stamps\n10 brushes\n9 labels\n8 glue sticks\n7 markers\n6 folders\n5 rulers\n4 erasers\n3 notebooks\n2 pencils\n1 paper bag"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want, quiet=False):\n    value, out = _call(name, *args)\n    call = _shown(name, args)\n    if quiet:\n        assert out == \"\", call + \" printed something. Return the result and let main print it.\"\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _plain():\n    for _n in ast.walk(ast.parse(__source__)):\n        assert not isinstance(_n, (ast.For, ast.While, ast.comprehension)), \"Use recursion and no loops.\"\n        assert not isinstance(_n, (ast.List, ast.Dict, ast.Set)), \"Use no lists or dictionaries. Keep the values in parameters and return values.\"\n_fn(\"show_gift\", \"day\")\n_fn(\"show_gifts\", \"day\")\n_fn(\"show_verse\", \"day\")\n_fn(\"show_song\", \"days\")\n_fn(\"main\")\nassert any(isinstance(n, ast.If) and len(n.orelse) == 1 and isinstance(n.orelse[0], ast.If) for n in _body(\"show_gift\")), \"In show_gift, use an if/elif chain with one branch for each day.\"\nfor _g in ['1 paper bag', '2 pencils', '3 notebooks', '4 erasers', '5 rulers', '6 folders', '7 markers', '8 glue sticks', '9 labels', '10 brushes', '11 stamps', '12 cards']:\n    assert __source__.count(_g) <= 1, \"Write the text \\\"\" + _g + \"\\\" only once in your code, in show_gift.\"\nassert _self_calls(\"show_gifts\") >= 1, \"Use recursion in show_gifts: it calls show_gifts with a smaller day.\"\nassert _self_calls(\"show_song\") >= 1, \"Use recursion in show_song: it calls show_song with a smaller number of days.\"\nassert _calls_in(\"show_verse\", \"show_gifts\"), \"In show_verse, print the heading and then call show_gifts.\"\nassert _calls_in(\"main\", \"show_song\"), \"In main, read the number of days and call show_song.\"\n_plain()\n_prints('show_gift', (1,), '1 paper bag\\n')\n_prints('show_gift', (2,), '2 pencils\\n')\n_prints('show_gift', (3,), '3 notebooks\\n')\n_prints('show_gift', (4,), '4 erasers\\n')\n_prints('show_gift', (5,), '5 rulers\\n')\n_prints('show_gift', (6,), '6 folders\\n')\n_prints('show_gift', (7,), '7 markers\\n')\n_prints('show_gift', (8,), '8 glue sticks\\n')\n_prints('show_gift', (9,), '9 labels\\n')\n_prints('show_gift', (10,), '10 brushes\\n')\n_prints('show_gift', (11,), '11 stamps\\n')\n_prints('show_gift', (12,), '12 cards\\n')\n_prints('show_gifts', (1,), '1 paper bag\\n')\n_prints('show_gifts', (4,), '4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_gifts', (12,), '12 cards\\n11 stamps\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_verse', (1,), 'Day 1\\n1 paper bag\\n')\n_prints('show_verse', (5,), 'Day 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (1,), 'Day 1\\n1 paper bag\\n')\n_prints('show_song', (2,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (3,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (4,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (5,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (6,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (7,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (8,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 8\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (9,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 8\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 9\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (10,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 8\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 9\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 10\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (11,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 8\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 9\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 10\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 11\\n11 stamps\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_prints('show_song', (12,), 'Day 1\\n1 paper bag\\nDay 2\\n2 pencils\\n1 paper bag\\nDay 3\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 4\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 5\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 6\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 7\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 8\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 9\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 10\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 11\\n11 stamps\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\nDay 12\\n12 cards\\n11 stamps\\n10 brushes\\n9 labels\\n8 glue sticks\\n7 markers\\n6 folders\\n5 rulers\\n4 erasers\\n3 notebooks\\n2 pencils\\n1 paper bag\\n')\n_guard()\n",
+      "hints": [
+        "`show_gift` is an `if`/`elif` chain with one `print` for each day, such as `if day == 1:` followed by `print(\"1 paper bag\")`.",
+        "`show_gifts(day)` stops when `day == 0`. Otherwise it calls `show_gift(day)` first and then `show_gifts(day - 1)`, so the gifts come out in decreasing order.",
+        "`show_song(days)` also stops at 0. Otherwise it calls `show_song(days - 1)` first and then `show_verse(days)`, so the verses come out in increasing order. `show_verse` prints `\"Day\", day` and calls `show_gifts(day)`."
+      ],
+      "answer": "ZGVmIHNob3dfZ2lmdChkYXkpOgogICAgaWYgZGF5ID09IDE6CiAgICAgICAgcHJpbnQoIjEgcGFwZXIgYmFnIikKICAgIGVsaWYgZGF5ID09IDI6CiAgICAgICAgcHJpbnQoIjIgcGVuY2lscyIpCiAgICBlbGlmIGRheSA9PSAzOgogICAgICAgIHByaW50KCIzIG5vdGVib29rcyIpCiAgICBlbGlmIGRheSA9PSA0OgogICAgICAgIHByaW50KCI0IGVyYXNlcnMiKQogICAgZWxpZiBkYXkgPT0gNToKICAgICAgICBwcmludCgiNSBydWxlcnMiKQogICAgZWxpZiBkYXkgPT0gNjoKICAgICAgICBwcmludCgiNiBmb2xkZXJzIikKICAgIGVsaWYgZGF5ID09IDc6CiAgICAgICAgcHJpbnQoIjcgbWFya2VycyIpCiAgICBlbGlmIGRheSA9PSA4OgogICAgICAgIHByaW50KCI4IGdsdWUgc3RpY2tzIikKICAgIGVsaWYgZGF5ID09IDk6CiAgICAgICAgcHJpbnQoIjkgbGFiZWxzIikKICAgIGVsaWYgZGF5ID09IDEwOgogICAgICAgIHByaW50KCIxMCBicnVzaGVzIikKICAgIGVsaWYgZGF5ID09IDExOgogICAgICAgIHByaW50KCIxMSBzdGFtcHMiKQogICAgZWxpZiBkYXkgPT0gMTI6CiAgICAgICAgcHJpbnQoIjEyIGNhcmRzIikKCmRlZiBzaG93X2dpZnRzKGRheSk6CiAgICBpZiBkYXkgPT0gMDoKICAgICAgICByZXR1cm4KICAgIHNob3dfZ2lmdChkYXkpCiAgICBzaG93X2dpZnRzKGRheSAtIDEpCgpkZWYgc2hvd192ZXJzZShkYXkpOgogICAgcHJpbnQoIkRheSIsIGRheSkKICAgIHNob3dfZ2lmdHMoZGF5KQoKZGVmIHNob3dfc29uZyhkYXlzKToKICAgIGlmIGRheXMgPT0gMDoKICAgICAgICByZXR1cm4KICAgIHNob3dfc29uZyhkYXlzIC0gMSkKICAgIHNob3dfdmVyc2UoZGF5cykKCmRlZiBtYWluKCk6CiAgICBkYXlzID0gaW50KGlucHV0KCkpCiAgICBzaG93X3NvbmcoZGF5cykKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "`show_song` prints each verse after its smaller call finishes. `show_gifts` prints its gift before making the smaller call. This places the verses in increasing order and the gifts in decreasing order."
+    },
+    "encode": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 24,
+      "starter": "def run_length(text, index, count):\n    pass\n\ndef encode(text):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed AAAAAAAAAAAABBBBAAAAAAB",
+          "inputs": [
+            "AAAAAAAAAAAABBBBAAAAAAB"
+          ],
+          "expected": "Encoded: \"A12B4A6B1\""
+        },
+        {
+          "name": "Example 2: typed a blank line",
+          "inputs": [
+            ""
+          ],
+          "expected": "Encoded: \"\""
+        },
+        {
+          "name": "Typed A",
+          "inputs": [
+            "A"
+          ],
+          "expected": "Encoded: \"A1\""
+        },
+        {
+          "name": "Typed AaAA",
+          "inputs": [
+            "AaAA"
+          ],
+          "expected": "Encoded: \"A1a1A2\""
+        },
+        {
+          "name": "Typed 80 copies of z",
+          "inputs": [
+            "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+          ],
+          "expected": "Encoded: \"z80\""
+        },
+        {
+          "name": "Typed Mississippi",
+          "inputs": [
+            "Mississippi"
+          ],
+          "expected": "Encoded: \"M1i1s2i1s2i1p2i1\""
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want, quiet=False):\n    value, out = _call(name, *args)\n    call = _shown(name, args)\n    if quiet:\n        assert out == \"\", call + \" printed something. Return the result and let main print it.\"\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _plain():\n    for _n in ast.walk(ast.parse(__source__)):\n        assert not isinstance(_n, (ast.For, ast.While, ast.comprehension)), \"Use recursion and no loops.\"\n        assert not isinstance(_n, (ast.List, ast.Dict, ast.Set)), \"Use no lists or dictionaries. Keep the values in parameters and return values.\"\n_fn(\"run_length\", \"text\", \"index\", \"count\")\n_fn(\"encode\", \"text\")\n_fn(\"main\")\nassert _self_calls(\"run_length\") >= 1, \"Use recursion in run_length: it calls itself with the next index and count.\"\nassert _self_calls(\"encode\") >= 1, \"Use recursion in encode: it encodes the rest of the text with another call to encode.\"\nassert _calls_in(\"encode\", \"run_length\"), \"In encode, find the length of the first run with run_length(text, 0, 0).\"\n_local_state()\n_plain()\n_returns('run_length', ('AAAAB', 0, 0), 4, quiet=True)\n_returns('run_length', ('A', 0, 0), 1, quiet=True)\n_returns('run_length', ('AB', 0, 0), 1, quiet=True)\n_returns('run_length', ('AAA', 2, 2), 3, quiet=True)\n_returns('run_length', ('aA', 0, 0), 1, quiet=True)\n_returns('run_length', ('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', 0, 0), 80, quiet=True)\n_returns('encode', ('',), '', quiet=True)\n_returns('encode', ('A',), 'A1', quiet=True)\n_returns('encode', ('AaAA',), 'A1a1A2', quiet=True)\n_returns('encode', ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',), 'A80', quiet=True)\n_returns('encode', ('ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB',), 'A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1A1B1', quiet=True)\n_returns('encode', ('Mississippi',), 'M1i1s2i1s2i1p2i1', quiet=True)\n_returns('encode', ('AAAAAAAAAAAABBBBAAAAAAB',), 'A12B4A6B1', quiet=True)\n_guard()\n",
+      "hints": [
+        "`run_length` returns `count` when `index` reaches `len(text)` or when `text[index]` differs from `text[0]`. Otherwise it returns `run_length(text, index + 1, count + 1)`.",
+        "`encode` returns `\"\"` for empty text. Otherwise it finds `length = run_length(text, 0, 0)`. For `AAAAB` that is 4.",
+        "Return `text[0] + str(length) + encode(text[length:])`. In `main`, read the line and print `'Encoded: \"' + encode(text) + '\"'`."
+      ],
+      "answer": "ZGVmIHJ1bl9sZW5ndGgodGV4dCwgaW5kZXgsIGNvdW50KToKICAgIGlmIGluZGV4ID09IGxlbih0ZXh0KToKICAgICAgICByZXR1cm4gY291bnQKICAgIGlmIHRleHRbaW5kZXhdICE9IHRleHRbMF06CiAgICAgICAgcmV0dXJuIGNvdW50CiAgICByZXR1cm4gcnVuX2xlbmd0aCh0ZXh0LCBpbmRleCArIDEsIGNvdW50ICsgMSkKCmRlZiBlbmNvZGUodGV4dCk6CiAgICBpZiB0ZXh0ID09ICIiOgogICAgICAgIHJldHVybiAiIgogICAgbGVuZ3RoID0gcnVuX2xlbmd0aCh0ZXh0LCAwLCAwKQogICAgcmV0dXJuIHRleHRbMF0gKyBzdHIobGVuZ3RoKSArIGVuY29kZSh0ZXh0W2xlbmd0aDpdKQoKZGVmIG1haW4oKToKICAgIHRleHQgPSBpbnB1dCgpCiAgICBwcmludCgnRW5jb2RlZDogIicgKyBlbmNvZGUodGV4dCkgKyAnIicpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "The helper stops at the end of the string or at the first different character. The helper passes its count to the next call. `encode` combines one encoded run with the encoded remainder."
+    },
+    "coins": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 26,
+      "starter": "def possible_change(dollars, coins):\n    pass\n\ndef change_helper(cents, coins):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 1.00 and 4",
+          "inputs": [
+            "1.00",
+            "4"
+          ],
+          "expected": "Possible: True"
+        },
+        {
+          "name": "Example 2: typed 1.00 and 5",
+          "inputs": [
+            "1.00",
+            "5"
+          ],
+          "expected": "Possible: False"
+        },
+        {
+          "name": "Example 3: typed 0.00 and 0",
+          "inputs": [
+            "0.00",
+            "0"
+          ],
+          "expected": "Possible: True"
+        },
+        {
+          "name": "Typed 2.00 and 8",
+          "inputs": [
+            "2.00",
+            "8"
+          ],
+          "expected": "Possible: True"
+        },
+        {
+          "name": "Typed 0.29 and 5",
+          "inputs": [
+            "0.29",
+            "5"
+          ],
+          "expected": "Possible: True"
+        },
+        {
+          "name": "Typed 0.29 and 2",
+          "inputs": [
+            "0.29",
+            "2"
+          ],
+          "expected": "Possible: False"
+        },
+        {
+          "name": "Typed 1.99 and 8",
+          "inputs": [
+            "1.99",
+            "8"
+          ],
+          "expected": "Possible: False"
+        },
+        {
+          "name": "Typed 0.08 and 8",
+          "inputs": [
+            "0.08",
+            "8"
+          ],
+          "expected": "Possible: True"
+        },
+        {
+          "name": "Typed 0.50 and 1",
+          "inputs": [
+            "0.50",
+            "1"
+          ],
+          "expected": "Possible: False"
+        },
+        {
+          "name": "Typed 0.00 and 3",
+          "inputs": [
+            "0.00",
+            "3"
+          ],
+          "expected": "Possible: False"
+        },
+        {
+          "name": "Typed 0.05 and 0",
+          "inputs": [
+            "0.05",
+            "0"
+          ],
+          "expected": "Possible: False"
+        }
+      ],
+      "check": "import types, io, contextlib, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want, quiet=False):\n    value, out = _call(name, *args)\n    call = _shown(name, args)\n    if quiet:\n        assert out == \"\", call + \" printed something. Return the result and let main print it.\"\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, bool):\n        ok = value is want\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _lines(text):\n    return \", \".join(text.rstrip(\"\\n\").split(\"\\n\")) if text.strip() else \"nothing\"\ndef _prints(name, args, want):\n    _, got = _call(name, *args)\n    call = _shown(name, args)\n    assert got.rstrip(\"\\n\").split(\"\\n\") == want.rstrip(\"\\n\").split(\"\\n\"), call + \" should print the lines \" + _lines(want) + \", not \" + _lines(got) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _local_state():\n    _tree = ast.parse(__source__)\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(_tree)), \"Do not use global or nonlocal. Pass values as arguments and return results.\"\n    for _n in _tree.body:\n        _targets = _n.targets if isinstance(_n, ast.Assign) else [_n.target] if isinstance(_n, (ast.AugAssign, ast.AnnAssign)) else []\n        for _t in _targets:\n            for _m in ast.walk(_t):\n                if isinstance(_m, ast.Name):\n                    assert _m.id.isupper(), \"Keep changing data local: assign \" + _m.id + \" inside a function. Only uppercase constants belong at the top level.\"\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _self_calls(name):\n    return len(_calls_in(name, name))\ndef _plain():\n    for _n in ast.walk(ast.parse(__source__)):\n        assert not isinstance(_n, (ast.For, ast.While, ast.comprehension)), \"Use recursion and no loops.\"\n        assert not isinstance(_n, (ast.List, ast.Dict, ast.Set)), \"Use no lists or dictionaries. Keep the values in parameters and return values.\"\n_fn(\"possible_change\", \"dollars\", \"coins\")\n_fn(\"change_helper\", \"cents\", \"coins\")\n_fn(\"main\")\nassert _calls_in(\"possible_change\", \"round\"), \"In possible_change, convert with int(round(dollars * 100)) so 0.29 becomes 29 cents.\"\nassert _calls_in(\"possible_change\", \"change_helper\"), \"In possible_change, return the answer from change_helper(cents, coins).\"\nassert any(isinstance(n, ast.BoolOp) and isinstance(n.op, ast.Or) and\n           sum(isinstance(m, ast.Call) and isinstance(m.func, ast.Name) and m.func.id == \"change_helper\" for m in ast.walk(n)) >= 4\n           for n in _body(\"change_helper\")), \"Join the four recursive choices, one for each coin, with or.\"\n_plain()\n_h = change_helper.__globals__[\"change_helper\"]\n_stack = []\n_bad = []\ndef _watch(cents, coins):\n    if not (isinstance(cents, int) and not isinstance(cents, bool)):\n        _bad.append(\"Use integer cents in every helper call. Convert with int(round(dollars * 100)) in possible_change, not \" + repr(cents) + \".\")\n    elif _stack and (_stack[-1][0] < 0 or _stack[-1][1] <= 0):\n        _bad.append(\"Stop impossible branches: change_helper\" + repr(_stack[-1]) + \" should return False without calling change_helper again.\")\n    if not _bad and len(_stack) > 20:\n        _bad.append(\"Use one fewer coin in each recursive call, so every branch stops.\")\n    if _bad:\n        raise RecursionError(\"stopped\")\n    _stack.append((cents, coins))\n    try:\n        return _h(cents, coins)\n    finally:\n        _stack.pop()\nchange_helper.__globals__[\"change_helper\"] = _watch\ntry:\n    for _args in [(0.29, 5), (0.04, 3), (0.57, 3), (1.0, 5), (0.0, 2), (0.1, 0)]:\n        try:\n            _call(\"possible_change\", *_args)\n        except RecursionError:\n            pass\n        assert not _bad, _bad[0]\nfinally:\n    change_helper.__globals__[\"change_helper\"] = _h\n_returns('change_helper', (0, 0), True)\n_returns('change_helper', (25, 1), True)\n_returns('change_helper', (24, 1), False)\n_returns('change_helper', (100, 4), True)\n_returns('change_helper', (100, 5), False)\n_returns('change_helper', (5, 5), True)\n_returns('change_helper', (7, 3), True)\n_returns('change_helper', (0, 1), False)\n_returns('change_helper', (1, 0), False)\n_returns('possible_change', (0.29, 5), True)\n_returns('possible_change', (0.29, 2), False)\n_returns('possible_change', (0.57, 5), True)\n_returns('possible_change', (0.57, 3), False)\n_returns('possible_change', (2.0, 8), True)\n_returns('possible_change', (1.99, 8), False)\n_returns('possible_change', (0.08, 8), True)\n_returns('possible_change', (0.5, 1), False)\n_returns('possible_change', (0.1, 1), True)\n_returns('possible_change', (0.0, 3), False)\n_returns('possible_change', (0.05, 0), False)\n_returns('possible_change', (0.15, 2), True)\n_returns('possible_change', (0.3, 3), True)\n_returns('possible_change', (1.1, 8), True)\n_returns('possible_change', (0.04, 3), False)\n_guard()\n",
+      "hints": [
+        "In `possible_change`, set `cents = int(round(dollars * 100))` and return `change_helper(cents, coins)`. `round` matters: `0.29 * 100` is `28.999999999999996`.",
+        "`change_helper` returns `True` when `cents` and `coins` are both 0. It returns `False` when either one is 0 or below, before making any more calls.",
+        "Otherwise try each coin with one fewer coin left: `change_helper(cents - 25, coins - 1) or change_helper(cents - 10, coins - 1)`, and the same for 5 and 1.",
+        "To stop more impossible branches early, also return `False` when `cents < coins` or `cents > 25 * coins`."
+      ],
+      "answer": "ZGVmIHBvc3NpYmxlX2NoYW5nZShkb2xsYXJzLCBjb2lucyk6CiAgICBjZW50cyA9IGludChyb3VuZChkb2xsYXJzICogMTAwKSkKICAgIHJldHVybiBjaGFuZ2VfaGVscGVyKGNlbnRzLCBjb2lucykKCmRlZiBjaGFuZ2VfaGVscGVyKGNlbnRzLCBjb2lucyk6CiAgICBpZiBjZW50cyA9PSAwIGFuZCBjb2lucyA9PSAwOgogICAgICAgIHJldHVybiBUcnVlCiAgICBpZiBjZW50cyA8PSAwIG9yIGNvaW5zIDw9IDA6CiAgICAgICAgcmV0dXJuIEZhbHNlCiAgICBpZiBjZW50cyA8IGNvaW5zIG9yIGNlbnRzID4gMjUgKiBjb2luczoKICAgICAgICByZXR1cm4gRmFsc2UKICAgIHJldHVybiAoY2hhbmdlX2hlbHBlcihjZW50cyAtIDI1LCBjb2lucyAtIDEpCiAgICAgICAgICAgIG9yIGNoYW5nZV9oZWxwZXIoY2VudHMgLSAxMCwgY29pbnMgLSAxKQogICAgICAgICAgICBvciBjaGFuZ2VfaGVscGVyKGNlbnRzIC0gNSwgY29pbnMgLSAxKQogICAgICAgICAgICBvciBjaGFuZ2VfaGVscGVyKGNlbnRzIC0gMSwgY29pbnMgLSAxKSkKCmRlZiBtYWluKCk6CiAgICBkb2xsYXJzID0gZmxvYXQoaW5wdXQoKSkKICAgIGNvaW5zID0gaW50KGlucHV0KCkpCiAgICBwcmludCgiUG9zc2libGU6IiwgcG9zc2libGVfY2hhbmdlKGRvbGxhcnMsIGNvaW5zKSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "Each choice uses one coin and reduces the amount by its value. Success requires both remaining values to be zero. An amount below `coins` cents is too small for that many coins. An amount above `25 * coins` cents is too large."
+    }
+  }
+}

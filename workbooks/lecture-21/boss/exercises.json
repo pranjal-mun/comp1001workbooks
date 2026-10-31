@@ -1,0 +1,501 @@
+{
+  "id": "lecture-21-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 21 Boss Problems",
+  "short": "L21 bosses",
+  "subtitle": "Problem solving with recursion: the recursive idea",
+  "exercises": {
+    "gcd": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 14,
+      "starter": "def gcd(a, b):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 48 and 18",
+          "inputs": [
+            "48",
+            "18"
+          ],
+          "expected": "GCD: 6"
+        },
+        {
+          "name": "Example 2: typed 7 and 0",
+          "inputs": [
+            "7",
+            "0"
+          ],
+          "expected": "GCD: 7"
+        },
+        {
+          "name": "Typed 18 and 48",
+          "inputs": [
+            "18",
+            "48"
+          ],
+          "expected": "GCD: 6"
+        },
+        {
+          "name": "Typed 1 and 10000",
+          "inputs": [
+            "1",
+            "10000"
+          ],
+          "expected": "GCD: 1"
+        },
+        {
+          "name": "Typed 10000 and 9999",
+          "inputs": [
+            "10000",
+            "9999"
+          ],
+          "expected": "GCD: 1"
+        },
+        {
+          "name": "Typed 270 and 192",
+          "inputs": [
+            "270",
+            "192"
+          ],
+          "expected": "GCD: 6"
+        },
+        {
+          "name": "Typed 10000 and 0",
+          "inputs": [
+            "10000",
+            "0"
+          ],
+          "expected": "GCD: 10000"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _recursive(name):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\ndef _no_global():\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(ast.parse(__source__))), \"Do not use global or nonlocal. Keep each value in its own call and return results.\"\n_fn(\"gcd\", \"a\", \"b\")\n_fn(\"main\")\n_recursive(\"gcd\")\n_no_loops()\nassert any(isinstance(_n, ast.Compare) and len(_n.ops) == 1 and isinstance(_n.ops[0], ast.Eq)\n           and sorted(type(_s).__name__ + str(getattr(_s, \"id\", getattr(_s, \"value\", \"\")))\n                      for _s in [_n.left] + _n.comparators) == [\"Constant0\", \"Nameb\"]\n           for _n in ast.walk(ast.parse(__source__))), \"Use b == 0 as the base case.\"\n_returns('gcd', (48, 18), 6)\n_returns('gcd', (18, 48), 6)\n_returns('gcd', (7, 0), 7)\n_returns('gcd', (1, 0), 1)\n_returns('gcd', (10000, 0), 10000)\n_returns('gcd', (1, 10000), 1)\n_returns('gcd', (10000, 1), 1)\n_returns('gcd', (12, 8), 4)\n_returns('gcd', (17, 5), 1)\n_returns('gcd', (100, 75), 25)\n_returns('gcd', (9999, 3333), 3333)\n_returns('gcd', (10000, 9999), 1)\n_returns('gcd', (6, 6), 6)\n_returns('gcd', (270, 192), 6)\n_guard()\n",
+      "hints": [
+        "Start `gcd` with the base case: `if b == 0:` return `a`. For 7 and 0 that returns 7 at once.",
+        "Otherwise return `gcd(b, a % b)`. For 48 and 18 the remainder `48 % 18` is 12, so the next call is `gcd(18, 12)`, then `gcd(12, 6)`, then `gcd(6, 0)`, which returns 6.",
+        "In `main`, read `a` and `b` with `int(input())`, one per line, and print `'GCD:'` and `gcd(a, b)` with one `print`."
+      ],
+      "answer": "ZGVmIGdjZChhLCBiKToKICAgIGlmIGIgPT0gMDoKICAgICAgICByZXR1cm4gYQogICAgcmV0dXJuIGdjZChiLCBhICUgYikKCmRlZiBtYWluKCk6CiAgICBhID0gaW50KGlucHV0KCkpCiAgICBiID0gaW50KGlucHV0KCkpCiAgICBwcmludCgnR0NEOicsIGdjZChhLCBiKSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "For positive `b`, the remainder is at least zero and less than `b`. The second argument therefore decreases until it reaches zero. The base call returns 6 in the trace. Every waiting call returns that same value."
+    },
+    "gcd-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c1": {
+          "accept": [
+            "gcd(48, 18)",
+            "gcd(48,18)"
+          ],
+          "placeholder": "call",
+          "width": "9rem",
+          "show": "gcd(48, 18)"
+        },
+        "c2": {
+          "accept": [
+            "gcd(18, 12)",
+            "gcd(18,12)"
+          ],
+          "placeholder": "call",
+          "width": "9rem",
+          "show": "gcd(18, 12)"
+        },
+        "c3": {
+          "accept": [
+            "gcd(12, 6)",
+            "gcd(12,6)"
+          ],
+          "placeholder": "call",
+          "width": "9rem",
+          "show": "gcd(12, 6)"
+        },
+        "c4": {
+          "accept": [
+            "gcd(6, 0)",
+            "gcd(6,0)"
+          ],
+          "placeholder": "call",
+          "width": "9rem",
+          "show": "gcd(6, 0)"
+        },
+        "b1": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "True/False",
+          "width": "6rem"
+        },
+        "b2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "True/False",
+          "width": "6rem"
+        },
+        "b3": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "True/False",
+          "width": "6rem"
+        },
+        "b4": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "True/False",
+          "width": "6rem"
+        },
+        "v1": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "v2": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "v3": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        },
+        "v4": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "value",
+          "width": "5rem"
+        }
+      }
+    },
+    "gcd-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Why a positive second argument gets closer to zero…",
+      "answer": "Rm9yIHBvc2l0aXZlIGBiYCwgdGhlIHJlbWFpbmRlciBpcyBhdCBsZWFzdCB6ZXJvIGFuZCBsZXNzIHRoYW4gYGJgLiBUaGUgc2Vjb25kIGFyZ3VtZW50IHRoZXJlZm9yZSBkZWNyZWFzZXMgdW50aWwgaXQgcmVhY2hlcyB6ZXJvLgoKVGhlIGJhc2UgY2FsbCByZXR1cm5zIDYgaW4gdGhlIHRyYWNlLiBFdmVyeSB3YWl0aW5nIGNhbGwgcmV0dXJucyB0aGF0IHNhbWUgdmFsdWUu"
+    },
+    "total": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 14,
+      "starter": "def read_total():\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 4.5, 0, -1.25, blank",
+          "inputs": [
+            "4.5",
+            "0",
+            "-1.25",
+            ""
+          ],
+          "expected": "Total: 3.25"
+        },
+        {
+          "name": "Example 2: typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "Total: 0.00"
+        },
+        {
+          "name": "Typed 0, 5, blank",
+          "inputs": [
+            "0",
+            "5",
+            ""
+          ],
+          "expected": "Total: 5.00"
+        },
+        {
+          "name": "Typed 5, -7.5, blank",
+          "inputs": [
+            "5",
+            "-7.5",
+            ""
+          ],
+          "expected": "Total: -2.50"
+        },
+        {
+          "name": "Typed -1000, blank",
+          "inputs": [
+            "-1000",
+            ""
+          ],
+          "expected": "Total: -1000.00"
+        },
+        {
+          "name": "Typed 80 numbers (12.5 and -7.25 in turn), blank",
+          "inputs": [
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            "12.5",
+            "-7.25",
+            ""
+          ],
+          "expected": "Total: 210.00"
+        },
+        {
+          "name": "Typed 1000 eighty times, blank",
+          "inputs": [
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            "1000",
+            ""
+          ],
+          "expected": "Total: 80000.00"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _recursive(name):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\ndef _no_global():\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(ast.parse(__source__))), \"Do not use global or nonlocal. Keep each value in its own call and return results.\"\nimport builtins as _builtins\n_fn(\"read_total\")\n_fn(\"main\")\n_recursive(\"read_total\")\n_no_loops()\n_no_global()\nassert len(_calls_in(\"read_total\", \"input\")) == 1, \"Read exactly one line in each call: use one input() in read_total.\"\nassert not _calls_in(\"read_total\", \"print\"), \"read_total returns the total and does not print. Print in main.\"\nassert len(_calls_in(\"main\", \"read_total\")) == 1, \"In main, call read_total() once and print the total it returns.\"\ndef _fed(_lines):\n    _answers = list(_lines)\n    def _input(prompt=\"\"):\n        if not _answers:\n            raise AssertionError(\"read_total() kept reading after the blank line. Return 0.0 at the blank line without another call.\")\n        return _answers.pop(0)\n    _saved = _builtins.input\n    _builtins.input = _input\n    try:\n        _value, _printed = _call(\"read_total\")\n    finally:\n        _builtins.input = _saved\n    _shown = \", \".join(repr(_l) for _l in _lines)\n    assert not _printed, \"read_total returns the total and does not print. Print in main.\"\n    assert _value is not None, \"With the lines \" + _shown + \", read_total() returned None. Return the total from each call.\"\n    return _value, _shown\nfor _lines, _want in zip([[''], ['4.5', '0', '-1.25', ''], ['0', ''], ['0', '5', ''], ['5', '-7.5', ''], ['2', '3', '4', ''], ['-1000', ''], ['1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '1000', '']], [0.0, 3.25, 0.0, 5.0, -2.5, 9.0, -1000.0, 80000.0]):\n    _value, _shown = _fed(_lines)\n    assert isinstance(_value, float) and abs(_value - _want) <= 1e-9 * max(1, abs(_want)), \"With the lines \" + _shown[:60] + \", read_total() should return \" + repr(_want) + \", not \" + repr(_value) + \".\"\n_guard()\n",
+      "hints": [
+        "Each call of `read_total` starts with `line = input()`. If `line == \"\"`, return `0.0` without another call.",
+        "Otherwise convert the line with `number = float(line)` and return `number + read_total()`. The recursive call reads the next line. For the lines 4.5, 0, -1.25 and a blank line, the fourth call returns `0.0` first.",
+        "In `main`, call `read_total()` once and print `f'Total: {total:.2f}'`. The waiting calls return -1.25, -1.25, and 3.25, so the program prints `Total: 3.25`."
+      ],
+      "answer": "ZGVmIHJlYWRfdG90YWwoKToKICAgIGxpbmUgPSBpbnB1dCgpCiAgICBpZiBsaW5lID09ICIiOgogICAgICAgIHJldHVybiAwLjAKICAgIG51bWJlciA9IGZsb2F0KGxpbmUpCiAgICByZXR1cm4gbnVtYmVyICsgcmVhZF90b3RhbCgpCgpkZWYgbWFpbigpOgogICAgdG90YWwgPSByZWFkX3RvdGFsKCkKICAgIHByaW50KGYnVG90YWw6IHt0b3RhbDouMmZ9JykKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "The calls read `4.5`, `0`, `-1.25`, and a blank line, in that order. The fourth call returns `0.0` first. The waiting calls then return `-1.25`, `-1.25`, and `3.25`. Each call has its own `number` in its own frame. The earlier frame keeps its number while it waits for the later call."
+    },
+    "total-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 6,
+      "placeholder": "The line read by each call… Which call supplies the first returned answer… Why a new call does not erase its caller's number…",
+      "answer": "VGhlIGNhbGxzIHJlYWQgYDQuNWAsIGAwYCwgYC0xLjI1YCwgYW5kIGEgYmxhbmsgbGluZSwgaW4gdGhhdCBvcmRlci4gVGhlIGZvdXJ0aCBjYWxsIHJldHVybnMgYDAuMGAgZmlyc3QuIFRoZSB3YWl0aW5nIGNhbGxzIHRoZW4gcmV0dXJuIGAtMS4yNWAsIGAtMS4yNWAsIGFuZCBgMy4yNWAuCgpFYWNoIGNhbGwgaGFzIGl0cyBvd24gYG51bWJlcmAgaW4gaXRzIG93biBmcmFtZS4gVGhlIGVhcmxpZXIgZnJhbWUga2VlcHMgaXRzIG51bWJlciB3aGlsZSBpdCB3YWl0cyBmb3IgdGhlIGxhdGVyIGNhbGwu"
+    },
+    "root": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 12,
+      "starter": "def square_root(n, guess=1.0):\n    pass\n\ndef main():\n    pass\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "Example 1: typed 2",
+          "inputs": [
+            "2"
+          ],
+          "expected": "Root: 1.414214"
+        },
+        {
+          "name": "Example 2: typed 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "Root: 1.000000"
+        },
+        {
+          "name": "Typed 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "Root: 2.000000"
+        },
+        {
+          "name": "Typed 10",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Root: 3.162278"
+        },
+        {
+          "name": "Typed 50.5",
+          "inputs": [
+            "50.5"
+          ],
+          "expected": "Root: 7.106335"
+        },
+        {
+          "name": "Typed 100",
+          "inputs": [
+            "100"
+          ],
+          "expected": "Root: 10.000000"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    try:\n        value, printed = _call(name, *args)\n    except RecursionError:\n        raise AssertionError(call + \" raised RecursionError. Check that every recursive call moves toward the base case.\")\n    if value is None:\n        raise AssertionError(call + \" returned None. Return a value on every path.\")\n    if isinstance(want, float):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _recursive(name):\n    _n = len(_calls_in(name, name))\n    assert _n >= 1, \"Make \" + name + \" recursive: call \" + name + \" inside its own body.\"\n    assert _n == 1, \"Use one recursive call: call \" + name + \" once inside its own body, not \" + str(_n) + \" times.\"\ndef _no_loops():\n    assert not any(isinstance(n, (ast.For, ast.While, ast.comprehension)) for n in ast.walk(ast.parse(__source__))), \"Use recursion and no loops. Remove the for or while loop.\"\ndef _no_global():\n    assert not any(isinstance(n, (ast.Global, ast.Nonlocal)) for n in ast.walk(ast.parse(__source__))), \"Do not use global or nonlocal. Keep each value in its own call and return results.\"\n_f = _fn(\"square_root\", \"n\", \"guess\")\nassert _f.__defaults__ == (1.0,), \"Give guess the default value 1.0 and give n no default: def square_root(n, guess=1.0).\"\n_fn(\"main\")\n_recursive(\"square_root\")\n_no_loops()\nassert _calls_in(\"square_root\", \"abs\"), \"Find the error with abs(guess * guess - n).\"\nassert any(isinstance(n, ast.Constant) and n.value == 1e-12 for n in _body(\"square_root\")), \"Use the tolerance 1e-12 in the submitted program.\"\n_m = _calls_in(\"main\", \"square_root\")\nassert _m and all(len(c.args) == 1 and not c.keywords for c in _m), \"In main, call square_root(n) with one argument so it uses the default guess.\"\n_returns('square_root', (1,), 1.0)\n_returns('square_root', (2,), 1.414213562373095)\n_returns('square_root', (4,), 2.000000000000002)\n_returns('square_root', (9,), 3.0)\n_returns('square_root', (10,), 3.162277660168379)\n_returns('square_root', (50.5,), 7.10633520177595)\n_returns('square_root', (100,), 10.0)\n_returns('square_root', (2, 2.0), 1.414213562373095)\n_returns('square_root', (9, 3.0), 3.0)\n_returns('square_root', (100, 50.0), 10.0)\n_returns('square_root', (2, 0.5), 1.414213562373095)\n_returns('square_root', (1, 1.0), 1.0)\n_returns('square_root', (36, 0.001), 6.0)\n_guard()\n",
+      "hints": [
+        "Write the header as `def square_root(n, guess=1.0):`. The base case is `if abs(guess * guess - n) <= 1e-12:`, which returns `guess`. For `n = 1` the first guess already has zero error.",
+        "Otherwise compute `better = (guess + n / guess) / 2` and return `square_root(n, better)`. For `n = 2` the guesses are 1.0, 1.5, 1.4166..., and so on.",
+        "In `main`, read `n` with `float(input())` and print `f'Root: {square_root(n):.6f}'`. For 2 that prints `Root: 1.414214`."
+      ],
+      "answer": "ZGVmIHNxdWFyZV9yb290KG4sIGd1ZXNzPTEuMCk6CiAgICBpZiBhYnMoZ3Vlc3MgKiBndWVzcyAtIG4pIDw9IDFlLTEyOgogICAgICAgIHJldHVybiBndWVzcwogICAgYmV0dGVyID0gKGd1ZXNzICsgbiAvIGd1ZXNzKSAvIDIKICAgIHJldHVybiBzcXVhcmVfcm9vdChuLCBiZXR0ZXIpCgpkZWYgbWFpbigpOgogICAgbiA9IGZsb2F0KGlucHV0KCkpCiAgICBwcmludChmJ1Jvb3Q6IHtzcXVhcmVfcm9vdChuKTouNmZ9JykKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "For 1, the first guess satisfies the base case. For 2, the returned guess is about `1.414213562373095`. With tolerance `1e-30`, this calculation raises `RecursionError`. Floating-point rounding prevents the squared error from becoming that small. The guesses stop improving enough to reach the base case."
+    },
+    "root-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 5,
+      "placeholder": "What happens with 1e-30… Why the base case cannot be reached…",
+      "answer": "V2l0aCB0b2xlcmFuY2UgYDFlLTMwYCwgdGhpcyBjYWxjdWxhdGlvbiByYWlzZXMgYFJlY3Vyc2lvbkVycm9yYC4KCkZsb2F0aW5nLXBvaW50IHJvdW5kaW5nIHByZXZlbnRzIHRoZSBzcXVhcmVkIGVycm9yIGZyb20gYmVjb21pbmcgdGhhdCBzbWFsbC4gVGhlIGd1ZXNzZXMgc3RvcCBpbXByb3ZpbmcgZW5vdWdoIHRvIHJlYWNoIHRoZSBiYXNlIGNhc2Uu"
+    }
+  }
+}

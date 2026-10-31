@@ -298,27 +298,6 @@
       "placeholder": "High-level steps… Processing one word… When the first line is blank…",
       "answer": "SGlnaC1sZXZlbCBzdGVwczogc3RhcnQgYm90aCBjb3VudHMgYXQgemVybzsgcmVhZCBhbmQgcHJvY2VzcyB3b3JkcyB1bnRpbCBhIGJsYW5rIGxpbmU7IGRpc3BsYXkgYm90aCBjb3VudHMuCgpSZWZpbmUgcHJvY2Vzc2luZyBvbmUgd29yZDogYWRkIG9uZSB0byB0aGUgd29yZCBjb3VudCwgY29tcGFyZSBpdHMgbGVuZ3RoIHdpdGggdGhlIGxvbmdlc3QgbGVuZ3RoLCB1cGRhdGUgdGhhdCBsZW5ndGggd2hlbiBsYXJnZXIsIHRoZW4gcmVhZCBhZ2Fpbi4KCklmIHRoZSBmaXJzdCBsaW5lIGlzIGJsYW5rLCBza2lwIHByb2Nlc3NpbmcgYW5kIHByaW50IHplcm8gZm9yIGJvdGggcmVzdWx0cy4="
     },
-    "p3-output": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "out": {
-          "accept": [
-            "6 9"
-          ],
-          "placeholder": "output",
-          "width": "6rem"
-        }
-      }
-    },
-    "p3": {
-      "type": "short",
-      "xp": 2,
-      "minChars": 30,
-      "rows": 4,
-      "placeholder": "Why changing the parameters does or does not change the caller's variables…",
-      "answer": "SXQgcHJpbnRzIGA2IDlgLiBBc3NpZ25tZW50cyBpbiBgZXhjaGFuZ2VgIGNoYW5nZSBpdHMgbG9jYWwgcGFyYW1ldGVyIGJpbmRpbmdzLiBUaGUgY2FsbGVyJ3MgYGZpcnN0YCBhbmQgYHNlY29uZGAga2VlcCB0aGVpciB2YWx1ZXMu"
-    },
     "p4": {
       "type": "code",
       "xp": 5,
@@ -349,61 +328,64 @@
       "answer": "ZGVmIHJvbWFuX2RpZ2l0KGRpZ2l0LCBvbmUsIGZpdmUsIHRlbik6CiAgICBpZiBkaWdpdCA8IDQ6CiAgICAgICAgcmV0dXJuIG9uZSAqIGRpZ2l0CiAgICBpZiBkaWdpdCA9PSA0OgogICAgICAgIHJldHVybiBvbmUgKyBmaXZlCiAgICBpZiBkaWdpdCA8IDk6CiAgICAgICAgcmV0dXJuIGZpdmUgKyBvbmUgKiAoZGlnaXQgLSA1KQogICAgcmV0dXJuIG9uZSArIHRlbgoKZGVmIHJvbWFuX251bWJlcihudW1iZXIpOgogICAgdGVucyA9IHJvbWFuX2RpZ2l0KG51bWJlciAvLyAxMCwgJ1gnLCAnTCcsICdDJykKICAgIG9uZXMgPSByb21hbl9kaWdpdChudW1iZXIgJSAxMCwgJ0knLCAnVicsICdYJykKICAgIHJldHVybiB0ZW5zICsgb25lcwoKcHJpbnQocm9tYW5fbnVtYmVyKDQ0KSkKcHJpbnQocm9tYW5fbnVtYmVyKDkpKQpwcmludChyb21hbl9udW1iZXIoODApKQ==",
       "answerNote": "The same helper handles both positions because the symbols arrive as parameters."
     },
-    "p6": {
+    "p-time": {
       "type": "code",
       "xp": 10,
-      "minLines": 18,
-      "starter": "",
+      "minLines": 40,
+      "starter": "def number_name(number):\n    # Return the English word for 1 to 12, 20, or 25.\n\ndef next_hour(hours):\n    # Return the hour after hours. After 12 comes 1.\n\ndef time_name(hours, minutes):\n    # Return the time in words.\n\ndef main():\n    # Read the hours and the minutes, then print the time in words.\n\nif __name__ == '__main__':\n    main()",
       "cases": [
         {
-          "name": "Sam, rate 12, 38 hours",
+          "name": "Typed 2 and 10",
           "inputs": [
-            "Sam",
-            "12",
-            "38"
+            "2",
+            "10"
           ],
-          "check": "assert 'Sam' in __stdout__, \"Print the worker's name, Sam.\"\nassert re.search(r\"(^|[^0-9.])492\\.00(?![0-9])\", __stdout__), \"For rate 12 and 38 hours, print the pay to two decimal places: 492.00.\"\n"
+          "check": "_want = 'ten minutes past two'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
         },
         {
-          "name": "Sam, rate 12, 0 hours",
+          "name": "Typed 3 and 30",
           "inputs": [
-            "Sam",
-            "12",
+            "3",
+            "30"
+          ],
+          "check": "_want = 'half past three'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "Typed 3 and 45",
+          "inputs": [
+            "3",
+            "45"
+          ],
+          "check": "_want = 'a quarter to four'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "Typed 5 and 0",
+          "inputs": [
+            "5",
             "0"
           ],
-          "check": "assert 'Sam' in __stdout__, \"Print the worker's name, Sam.\"\nassert re.search(r\"(^|[^0-9.])0\\.00(?![0-9])\", __stdout__), \"For rate 12 and 0 hours, print the pay to two decimal places: 0.00.\"\n"
+          "check": "_want = \"five o'clock\"\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
         },
         {
-          "name": "Ana, rate 20, 35 hours",
+          "name": "Typed 12 and 35",
           "inputs": [
-            "Ana",
-            "20",
+            "12",
             "35"
           ],
-          "check": "assert 'Ana' in __stdout__, \"Print the worker's name, Ana.\"\nassert re.search(r\"(^|[^0-9.])700\\.00(?![0-9])\", __stdout__), \"For rate 20 and 35 hours, print the pay to two decimal places: 700.00.\"\n"
+          "check": "_want = 'twenty-five minutes to one'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
         },
         {
-          "name": "Kim, rate 10, 40 hours",
+          "name": "Typed 7 and 15",
           "inputs": [
-            "Kim",
-            "10",
-            "40"
+            "7",
+            "15"
           ],
-          "check": "assert 'Kim' in __stdout__, \"Print the worker's name, Kim.\"\nassert re.search(r\"(^|[^0-9.])450\\.00(?![0-9])\", __stdout__), \"For rate 10 and 40 hours, print the pay to two decimal places: 450.00.\"\n"
-        },
-        {
-          "name": "Lee, rate 12.5, 36 hours",
-          "inputs": [
-            "Lee",
-            "12.5",
-            "36"
-          ],
-          "check": "assert 'Lee' in __stdout__, \"Print the worker's name, Lee.\"\nassert re.search(r\"(^|[^0-9.])462\\.50(?![0-9])\", __stdout__), \"For rate 12.5 and 36 hours, print the pay to two decimal places: 462.50.\"\n"
+          "check": "_want = 'a quarter past seven'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
         }
       ],
-      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _uses(node, *names):\n    return any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in names for n in ast.walk(node))\ndef _constant(value, label):\n    _hits = [k for k, v in globals().items() if k.isupper() and isinstance(v, (int, float)) and not isinstance(v, bool)\n             and abs(v - value) <= 1e-12 * max(1, abs(value))]\n    assert _hits, \"Store the \" + label + \" (\" + repr(value) + \") in a named constant with an uppercase name.\"\n_fn(\"main\")\n_helpers = [d for d in _defs() if d.name != \"main\"]\nassert any(not _uses(d, \"print\", \"input\") and any(isinstance(n, ast.Return) and n.value is not None for n in ast.walk(d)) for d in _helpers), \"Write a pay calculation that returns the pay without reading input or printing.\"\nassert any(_uses(d, \"print\") for d in _helpers), \"Write a display helper that prints the name and the pay.\"\n",
-      "answer": "ZGVmIHBheV9hbW91bnQocmF0ZSwgaG91cnMpOgogICAgaWYgaG91cnMgPD0gMzU6CiAgICAgICAgcmV0dXJuIHJhdGUgKiBob3VycwogICAgcmV0dXJuIHJhdGUgKiAzNSArIHJhdGUgKiAyICogKGhvdXJzIC0gMzUpCgpkZWYgc2hvd19wYXkobmFtZSwgYW1vdW50KToKICAgIHByaW50KCdXb3JrZXI6JywgbmFtZSkKICAgIHByaW50KGYnUGF5OiAke2Ftb3VudDouMmZ9JykKCmRlZiBtYWluKCk6CiAgICBuYW1lID0gaW5wdXQoKQogICAgcmF0ZSA9IGZsb2F0KGlucHV0KCkpCiAgICBob3VycyA9IGZsb2F0KGlucHV0KCkpCiAgICBzaG93X3BheShuYW1lLCBwYXlfYW1vdW50KHJhdGUsIGhvdXJzKSkKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
-      "answerNote": "The calculation can be tested without reading input or printing a report. For Sam, rate 12 and 38 hours, the model prints `Worker: Sam` and `Pay: $492.00`."
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _uses(node, *names):\n    return any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in names for n in ast.walk(node))\ndef _constant(value, label):\n    _hits = [k for k, v in globals().items() if k.isupper() and isinstance(v, (int, float)) and not isinstance(v, bool)\n             and abs(v - value) <= 1e-12 * max(1, abs(value))]\n    assert _hits, \"Store the \" + label + \" (\" + repr(value) + \") in a named constant with an uppercase name.\"\n_fn(\"number_name\", \"number\")\n_fn(\"next_hour\", \"hours\")\n_fn(\"time_name\", \"hours\", \"minutes\")\n_fn(\"main\")\nassert \"number_name\" in globals()[\"time_name\"].__code__.co_names, \"time_name should call number_name for each number word.\"\n_returns('number_name', (1,), 'one')\n_returns('number_name', (5,), 'five')\n_returns('number_name', (10,), 'ten')\n_returns('number_name', (12,), 'twelve')\n_returns('number_name', (20,), 'twenty')\n_returns('number_name', (25,), 'twenty-five')\n_returns('next_hour', (1,), 2)\n_returns('next_hour', (11,), 12)\n_returns('next_hour', (12,), 1)\n_returns('time_name', (1, 0), \"one o'clock\")\n_returns('time_name', (1, 5), 'five minutes past one')\n_returns('time_name', (1, 10), 'ten minutes past one')\n_returns('time_name', (1, 15), 'a quarter past one')\n_returns('time_name', (1, 20), 'twenty minutes past one')\n_returns('time_name', (1, 25), 'twenty-five minutes past one')\n_returns('time_name', (1, 30), 'half past one')\n_returns('time_name', (1, 35), 'twenty-five minutes to two')\n_returns('time_name', (1, 40), 'twenty minutes to two')\n_returns('time_name', (1, 45), 'a quarter to two')\n_returns('time_name', (1, 50), 'ten minutes to two')\n_returns('time_name', (1, 55), 'five minutes to two')\n_returns('time_name', (6, 0), \"six o'clock\")\n_returns('time_name', (6, 5), 'five minutes past six')\n_returns('time_name', (6, 10), 'ten minutes past six')\n_returns('time_name', (6, 15), 'a quarter past six')\n_returns('time_name', (6, 20), 'twenty minutes past six')\n_returns('time_name', (6, 25), 'twenty-five minutes past six')\n_returns('time_name', (6, 30), 'half past six')\n_returns('time_name', (6, 35), 'twenty-five minutes to seven')\n_returns('time_name', (6, 40), 'twenty minutes to seven')\n_returns('time_name', (6, 45), 'a quarter to seven')\n_returns('time_name', (6, 50), 'ten minutes to seven')\n_returns('time_name', (6, 55), 'five minutes to seven')\n_returns('time_name', (11, 0), \"eleven o'clock\")\n_returns('time_name', (11, 5), 'five minutes past eleven')\n_returns('time_name', (11, 10), 'ten minutes past eleven')\n_returns('time_name', (11, 15), 'a quarter past eleven')\n_returns('time_name', (11, 20), 'twenty minutes past eleven')\n_returns('time_name', (11, 25), 'twenty-five minutes past eleven')\n_returns('time_name', (11, 30), 'half past eleven')\n_returns('time_name', (11, 35), 'twenty-five minutes to twelve')\n_returns('time_name', (11, 40), 'twenty minutes to twelve')\n_returns('time_name', (11, 45), 'a quarter to twelve')\n_returns('time_name', (11, 50), 'ten minutes to twelve')\n_returns('time_name', (11, 55), 'five minutes to twelve')\n_returns('time_name', (12, 0), \"twelve o'clock\")\n_returns('time_name', (12, 5), 'five minutes past twelve')\n_returns('time_name', (12, 10), 'ten minutes past twelve')\n_returns('time_name', (12, 15), 'a quarter past twelve')\n_returns('time_name', (12, 20), 'twenty minutes past twelve')\n_returns('time_name', (12, 25), 'twenty-five minutes past twelve')\n_returns('time_name', (12, 30), 'half past twelve')\n_returns('time_name', (12, 35), 'twenty-five minutes to one')\n_returns('time_name', (12, 40), 'twenty minutes to one')\n_returns('time_name', (12, 45), 'a quarter to one')\n_returns('time_name', (12, 50), 'ten minutes to one')\n_returns('time_name', (12, 55), 'five minutes to one')\n_guard()\n",
+      "answer": "ZGVmIG51bWJlcl9uYW1lKG51bWJlcik6CiAgICBpZiBudW1iZXIgPT0gMToKICAgICAgICByZXR1cm4gJ29uZScKICAgIGlmIG51bWJlciA9PSAyOgogICAgICAgIHJldHVybiAndHdvJwogICAgaWYgbnVtYmVyID09IDM6CiAgICAgICAgcmV0dXJuICd0aHJlZScKICAgIGlmIG51bWJlciA9PSA0OgogICAgICAgIHJldHVybiAnZm91cicKICAgIGlmIG51bWJlciA9PSA1OgogICAgICAgIHJldHVybiAnZml2ZScKICAgIGlmIG51bWJlciA9PSA2OgogICAgICAgIHJldHVybiAnc2l4JwogICAgaWYgbnVtYmVyID09IDc6CiAgICAgICAgcmV0dXJuICdzZXZlbicKICAgIGlmIG51bWJlciA9PSA4OgogICAgICAgIHJldHVybiAnZWlnaHQnCiAgICBpZiBudW1iZXIgPT0gOToKICAgICAgICByZXR1cm4gJ25pbmUnCiAgICBpZiBudW1iZXIgPT0gMTA6CiAgICAgICAgcmV0dXJuICd0ZW4nCiAgICBpZiBudW1iZXIgPT0gMTE6CiAgICAgICAgcmV0dXJuICdlbGV2ZW4nCiAgICBpZiBudW1iZXIgPT0gMTI6CiAgICAgICAgcmV0dXJuICd0d2VsdmUnCiAgICBpZiBudW1iZXIgPT0gMjA6CiAgICAgICAgcmV0dXJuICd0d2VudHknCiAgICByZXR1cm4gJ3R3ZW50eS1maXZlJwoKZGVmIG5leHRfaG91cihob3Vycyk6CiAgICBpZiBob3VycyA9PSAxMjoKICAgICAgICByZXR1cm4gMQogICAgcmV0dXJuIGhvdXJzICsgMQoKZGVmIHRpbWVfbmFtZShob3VycywgbWludXRlcyk6CiAgICBpZiBtaW51dGVzID09IDA6CiAgICAgICAgcmV0dXJuIG51bWJlcl9uYW1lKGhvdXJzKSArICIgbydjbG9jayIKICAgIGlmIG1pbnV0ZXMgPT0gMTU6CiAgICAgICAgcmV0dXJuICdhIHF1YXJ0ZXIgcGFzdCAnICsgbnVtYmVyX25hbWUoaG91cnMpCiAgICBpZiBtaW51dGVzID09IDMwOgogICAgICAgIHJldHVybiAnaGFsZiBwYXN0ICcgKyBudW1iZXJfbmFtZShob3VycykKICAgIGlmIG1pbnV0ZXMgPT0gNDU6CiAgICAgICAgcmV0dXJuICdhIHF1YXJ0ZXIgdG8gJyArIG51bWJlcl9uYW1lKG5leHRfaG91cihob3VycykpCiAgICBpZiBtaW51dGVzIDwgMzA6CiAgICAgICAgcmV0dXJuIG51bWJlcl9uYW1lKG1pbnV0ZXMpICsgJyBtaW51dGVzIHBhc3QgJyArIG51bWJlcl9uYW1lKGhvdXJzKQogICAgcmV0dXJuIG51bWJlcl9uYW1lKDYwIC0gbWludXRlcykgKyAnIG1pbnV0ZXMgdG8gJyArIG51bWJlcl9uYW1lKG5leHRfaG91cihob3VycykpCgpkZWYgbWFpbigpOgogICAgaG91cnMgPSBpbnQoaW5wdXQoKSkKICAgIG1pbnV0ZXMgPSBpbnQoaW5wdXQoKSkKICAgIHByaW50KHRpbWVfbmFtZShob3VycywgbWludXRlcykpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigp",
+      "answerNote": "Each helper does one small job. `time_name` only decides which pattern to use; `number_name` supplies the words and `next_hour` handles the change from 12 to 1."
     },
     "p7": {
       "type": "code",
@@ -419,6 +401,45 @@
       "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _uses(node, *names):\n    return any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in names for n in ast.walk(node))\ndef _constant(value, label):\n    _hits = [k for k, v in globals().items() if k.isupper() and isinstance(v, (int, float)) and not isinstance(v, bool)\n             and abs(v - value) <= 1e-12 * max(1, abs(value))]\n    assert _hits, \"Store the \" + label + \" (\" + repr(value) + \") in a named constant with an uppercase name.\"\n_fn(\"digit_bars\", \"digit\")\n_fn(\"check_digit\", \"code\")\n_fn(\"encode\", \"code\")\nassert \"digit_bars\" in globals()[\"encode\"].__code__.co_names, \"Build the encoding in encode by calling digit_bars for each digit.\"\n_returns('digit_bars', (0,), '||...')\n_returns('digit_bars', (1,), '...||')\n_returns('digit_bars', (2,), '..|.|')\n_returns('digit_bars', (3,), '..||.')\n_returns('digit_bars', (4,), '.|..|')\n_returns('digit_bars', (5,), '.|.|.')\n_returns('digit_bars', (6,), '.||..')\n_returns('digit_bars', (7,), '|...|')\n_returns('digit_bars', (8,), '|..|.')\n_returns('digit_bars', (9,), '|.|..')\n_returns('check_digit', ('00000',), 0)\n_returns('check_digit', ('12345',), 5)\n_returns('check_digit', ('99999',), 5)\n_returns('check_digit', ('01234',), 0)\n_returns('check_digit', ('56789',), 5)\n_returns('check_digit', ('00019',), 0)\n_returns('check_digit', ('10000',), 9)\n_returns('check_digit', ('55555',), 5)\n_returns('encode', ('00000',), '|||...||...||...||...||...||...|')\n_returns('encode', ('12345',), '|...||..|.|..||..|..|.|.|..|.|.|')\n_returns('encode', ('99999',), '||.|..|.|..|.|..|.|..|.|...|.|.|')\n_returns('encode', ('01234',), '|||......||..|.|..||..|..|||...|')\n_returns('encode', ('56789',), '|.|.|..||..|...||..|.|.|...|.|.|')\n_returns('encode', ('00019',), '|||...||...||......|||.|..||...|')\n_returns('encode', ('10000',), '|...||||...||...||...||...|.|..|')\n_returns('encode', ('55555',), '|.|.|..|.|..|.|..|.|..|.|..|.|.|')\n",
       "answer": "ZGVmIGRpZ2l0X2JhcnMoZGlnaXQpOgogICAgaWYgZGlnaXQgPT0gMDoKICAgICAgICByZXR1cm4gJ3x8Li4uJwogICAgaWYgZGlnaXQgPT0gMToKICAgICAgICByZXR1cm4gJy4uLnx8JwogICAgaWYgZGlnaXQgPT0gMjoKICAgICAgICByZXR1cm4gJy4ufC58JwogICAgaWYgZGlnaXQgPT0gMzoKICAgICAgICByZXR1cm4gJy4ufHwuJwogICAgaWYgZGlnaXQgPT0gNDoKICAgICAgICByZXR1cm4gJy58Li58JwogICAgaWYgZGlnaXQgPT0gNToKICAgICAgICByZXR1cm4gJy58LnwuJwogICAgaWYgZGlnaXQgPT0gNjoKICAgICAgICByZXR1cm4gJy58fC4uJwogICAgaWYgZGlnaXQgPT0gNzoKICAgICAgICByZXR1cm4gJ3wuLi58JwogICAgaWYgZGlnaXQgPT0gODoKICAgICAgICByZXR1cm4gJ3wuLnwuJwogICAgcmV0dXJuICd8LnwuLicKCmRlZiBjaGVja19kaWdpdChjb2RlKToKICAgIHRvdGFsID0gMAogICAgZm9yIGNoIGluIGNvZGU6CiAgICAgICAgdG90YWwgPSB0b3RhbCArIGludChjaCkKICAgIHJldHVybiAoMTAgLSB0b3RhbCAlIDEwKSAlIDEwCgpkZWYgZW5jb2RlKGNvZGUpOgogICAgcmVzdWx0ID0gJ3wnCiAgICBmb3IgY2ggaW4gY29kZToKICAgICAgICByZXN1bHQgPSByZXN1bHQgKyBkaWdpdF9iYXJzKGludChjaCkpCiAgICByZXN1bHQgPSByZXN1bHQgKyBkaWdpdF9iYXJzKGNoZWNrX2RpZ2l0KGNvZGUpKQogICAgcmV0dXJuIHJlc3VsdCArICd8JwoKcHJpbnQoZW5jb2RlKCcwMDAwMCcpKQpwcmludChlbmNvZGUoJzEyMzQ1Jykp",
       "answerNote": "Each digit uses the same helper. The second remainder makes the check digit zero when the digit sum is already a multiple of ten."
+    },
+    "p-decode": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 34,
+      "starter": "def group_digit(group):\n    # Return the digit for a group of five bars, or -1.\n\ndef decode(code):\n    # Return the five digits as a string, or '' when the code is not valid.\n\ndef main():\n    # Read a bar code and print the digits or the message.\n\nif __name__ == '__main__':\n    main()",
+      "cases": [
+        {
+          "name": "The code for 12345",
+          "inputs": [
+            "|...||..|.|..||..|..|.|.|..|.|.|"
+          ],
+          "check": "_want = 'Code: 12345'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "The code for 00000",
+          "inputs": [
+            "|||...||...||...||...||...||...|"
+          ],
+          "check": "_want = 'Code: 00000'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "One group changed to |||..",
+          "inputs": [
+            "|...|||||....||..|..|.|.|..|.|.|"
+          ],
+          "check": "_want = 'Invalid bar code'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        },
+        {
+          "name": "The check digit is wrong",
+          "inputs": [
+            "|...|||.|....||..|..|.|.|..|.|.|"
+          ],
+          "check": "_want = 'Invalid bar code'\n_lines = [_l.rstrip() for _l in __stdout__.split(\"\\n\") if _l.strip()]\nassert _lines and _lines[-1].endswith(_want), \"The last line printed should end with \" + repr(_want) + \".\"\n"
+        }
+      ],
+      "check": "import types, io, contextlib, re, ast\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    value, printed = _call(name, *args)\n    call = _shown(name, args)\n    if value is None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    if isinstance(want, bool):\n        ok = value is want\n    elif isinstance(want, (int, float)):\n        ok = isinstance(value, (int, float)) and not isinstance(value, bool) and abs(value - want) <= 1e-9 * max(1, abs(want))\n    else:\n        ok = value == want and type(value) is type(want)\n    assert ok, call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _guard():\n    _tree = ast.parse(__source__)\n    _last = _tree.body[-1] if _tree.body else None\n    _ok = False\n    if isinstance(_last, ast.If) and not _last.orelse and isinstance(_last.test, ast.Compare):\n        _sides = [_last.test.left] + list(_last.test.comparators)\n        _names = [s.id for s in _sides if isinstance(s, ast.Name)]\n        _texts = [s.value for s in _sides if isinstance(s, ast.Constant)]\n        _call_main = (len(_last.body) == 1 and isinstance(_last.body[0], ast.Expr) and isinstance(_last.body[0].value, ast.Call)\n                      and isinstance(_last.body[0].value.func, ast.Name) and _last.body[0].value.func.id == \"main\"\n                      and not _last.body[0].value.args and not _last.body[0].value.keywords)\n        _ok = (len(_sides) == 2 and isinstance(_last.test.ops[0], ast.Eq) and _names == [\"__name__\"]\n               and _texts == [\"__main__\"] and _call_main)\n    assert _ok, \"End the file with the standard guard: if __name__ == '__main__': followed by an indented main().\"\ndef _body(name):\n    for node in ast.parse(__source__).body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return list(ast.walk(node))\n    return []\ndef _calls_in(name, callee):\n    return [n for n in _body(name) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == callee]\ndef _defs():\n    return [n for n in ast.parse(__source__).body if isinstance(n, ast.FunctionDef)]\ndef _uses(node, *names):\n    return any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in names for n in ast.walk(node))\ndef _constant(value, label):\n    _hits = [k for k, v in globals().items() if k.isupper() and isinstance(v, (int, float)) and not isinstance(v, bool)\n             and abs(v - value) <= 1e-12 * max(1, abs(value))]\n    assert _hits, \"Store the \" + label + \" (\" + repr(value) + \") in a named constant with an uppercase name.\"\n_fn(\"group_digit\", \"group\")\n_fn(\"decode\", \"code\")\n_fn(\"main\")\nassert \"group_digit\" in globals()[\"decode\"].__code__.co_names, \"decode should call group_digit for each group of five bars.\"\n_returns('group_digit', ('||...',), 0)\n_returns('group_digit', ('...||',), 1)\n_returns('group_digit', ('..|.|',), 2)\n_returns('group_digit', ('..||.',), 3)\n_returns('group_digit', ('.|..|',), 4)\n_returns('group_digit', ('.|.|.',), 5)\n_returns('group_digit', ('.||..',), 6)\n_returns('group_digit', ('|...|',), 7)\n_returns('group_digit', ('|..|.',), 8)\n_returns('group_digit', ('|.|..',), 9)\n_returns('group_digit', ('|||..',), -1)\n_returns('group_digit', ('',), -1)\n_returns('decode', ('|||...||...||...||...||...||...|',), '00000')\n_returns('decode', ('|...||..|.|..||..|..|.|.|..|.|.|',), '12345')\n_returns('decode', ('||.|..|.|..|.|..|.|..|.|...|.|.|',), '99999')\n_returns('decode', ('|||......||..|.|..||..|..|||...|',), '01234')\n_returns('decode', ('|.|.|..||..|...||..|.|.|...|.|.|',), '56789')\n_returns('decode', ('|||...||...||......|||.|..||...|',), '00019')\n_returns('decode', ('|...||||...||...||...||...|.|..|',), '10000')\n_returns('decode', ('|.|.|..|.|..|.|..|.|..|.|..|.|.|',), '55555')\n_returns('decode', ('|...||..|.|..||..|..|.|.|..|.|.',), '')\n_returns('decode', ('|...|||||....||..|..|.|.|..|.|.|',), '')\n_returns('decode', ('|...|||.|....||..|..|.|.|..|.|.|',), '')\n_returns('decode', ('....||..|.|..||..|..|.|.|..|.|.|',), '')\n_returns('decode', ('|...||..|.|..||..|..|.|.|..|.|.||',), '')\n_returns('decode', ('',), '')\n_guard()\n",
+      "answer": "ZGVmIGdyb3VwX2RpZ2l0KGdyb3VwKToKICAgIGlmIGdyb3VwID09ICd8fC4uLic6CiAgICAgICAgcmV0dXJuIDAKICAgIGlmIGdyb3VwID09ICcuLi58fCc6CiAgICAgICAgcmV0dXJuIDEKICAgIGlmIGdyb3VwID09ICcuLnwufCc6CiAgICAgICAgcmV0dXJuIDIKICAgIGlmIGdyb3VwID09ICcuLnx8Lic6CiAgICAgICAgcmV0dXJuIDMKICAgIGlmIGdyb3VwID09ICcufC4ufCc6CiAgICAgICAgcmV0dXJuIDQKICAgIGlmIGdyb3VwID09ICcufC58Lic6CiAgICAgICAgcmV0dXJuIDUKICAgIGlmIGdyb3VwID09ICcufHwuLic6CiAgICAgICAgcmV0dXJuIDYKICAgIGlmIGdyb3VwID09ICd8Li4ufCc6CiAgICAgICAgcmV0dXJuIDcKICAgIGlmIGdyb3VwID09ICd8Li58Lic6CiAgICAgICAgcmV0dXJuIDgKICAgIGlmIGdyb3VwID09ICd8LnwuLic6CiAgICAgICAgcmV0dXJuIDkKICAgIHJldHVybiAtMQoKZGVmIGRlY29kZShjb2RlKToKICAgIGlmIGxlbihjb2RlKSAhPSAzMiBvciBjb2RlWzBdICE9ICd8JyBvciBjb2RlWzMxXSAhPSAnfCc6CiAgICAgICAgcmV0dXJuICcnCiAgICBkaWdpdHMgPSAnJwogICAgdG90YWwgPSAwCiAgICBmb3IgcG9zaXRpb24gaW4gcmFuZ2UoNik6CiAgICAgICAgc3RhcnQgPSAxICsgNSAqIHBvc2l0aW9uCiAgICAgICAgZGlnaXQgPSBncm91cF9kaWdpdChjb2RlW3N0YXJ0OnN0YXJ0ICsgNV0pCiAgICAgICAgaWYgZGlnaXQgPT0gLTE6CiAgICAgICAgICAgIHJldHVybiAnJwogICAgICAgIHRvdGFsID0gdG90YWwgKyBkaWdpdAogICAgICAgIGlmIHBvc2l0aW9uIDwgNToKICAgICAgICAgICAgZGlnaXRzID0gZGlnaXRzICsgc3RyKGRpZ2l0KQogICAgaWYgdG90YWwgJSAxMCAhPSAwOgogICAgICAgIHJldHVybiAnJwogICAgcmV0dXJuIGRpZ2l0cwoKZGVmIG1haW4oKToKICAgIGNvZGUgPSBpbnB1dCgpCiAgICBkaWdpdHMgPSBkZWNvZGUoY29kZSkKICAgIGlmIGRpZ2l0cyA9PSAnJzoKICAgICAgICBwcmludCgnSW52YWxpZCBiYXIgY29kZScpCiAgICBlbHNlOgogICAgICAgIHByaW50KCdDb2RlOicsIGRpZ2l0cykKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBtYWluKCk=",
+      "answerNote": "`decode` checks the length and the two frame bars first. Then it reads six groups of five bars. The sixth group is the check digit, so the six digits must add up to a multiple of 10."
     },
     "p8": {
       "type": "code",

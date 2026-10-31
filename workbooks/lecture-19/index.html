@@ -288,52 +288,11 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
 </div>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
-<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with further values and compares what they return. Programs 6 and 8 accept any prompt. The checker looks only at the report lines. End programs 6, 7, and 8 with the standard guard.</p>
+<p>Practices 1 to 3 are traces: work them out on paper first, then fill in the tables. Practices 4 to 6 are programs.</p>
+<p><strong>Check</strong> runs each program and compares what it prints. It also calls your functions with other values and compares what they return. Your program may show a prompt before it reads input. The checker looks only at the result line.</p>
 
-<h3>1. Trace a cube report</h3>
-<p>This program calculates and prints the cubes of 3 and 5. Starting with the first statement in <code>main</code>, list the statements that execute, including each return to the caller. Write the exact output.</p>
-<pre><code><span class="wb-kw">def</span> <span class="wb-fn">cube</span>(number):
-    <span class="wb-kw">return</span> number ** 3
-
-<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
-    small = <span class="wb-fn">cube</span>(3)
-    large = <span class="wb-fn">cube</span>(5)
-    <span class="wb-fn">print</span>(small)
-    <span class="wb-fn">print</span>(large)
-
-<span class="wb-kw">if</span> __name__ == <span class="wb-str">'__main__'</span>:
-    <span class="wb-fn">main</span>()</code></pre>
-<wb-short id="p1-trace"></wb-short>
-<wb-table id="p1-output">
-  <table>
-    <thead><tr><th>Line</th><th>Output</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td data-blank="l1"></td></tr>
-      <tr><td>2</td><td data-blank="l2"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
-
-<h3>2. Return behaviour</h3>
-<p>For each statement, write true or false and give a reason.</p>
-<wb-table id="p2">
-  <table>
-    <thead><tr><th>Statement</th><th>True or false</th></tr></thead>
-    <tbody>
-      <tr><td>1. Every function body needs a <code>return</code> statement.</td><td data-blank="s1"></td></tr>
-      <tr><td>2. A function body can contain two different <code>return</code> statements.</td><td data-blank="s2"></td></tr>
-      <tr><td>3. A call continues with the next line in the function after executing <code>return</code>.</td><td data-blank="s3"></td></tr>
-      <tr><td>4. A function with no parameters must return the same result on every call.</td><td data-blank="s4"></td></tr>
-      <tr><td>5. A function can finish without printing anything and without returning a useful value.</td><td data-blank="s5"></td></tr>
-      <tr><td>6. A bare <code>return</code> can end a function without supplying a useful value.</td><td data-blank="s6"></td></tr>
-      <tr><td>7. Each call has one returned object, even if different branches return different results.</td><td data-blank="s7"></td></tr>
-    </tbody>
-  </table>
-</wb-table>
-<wb-short id="p2-why"></wb-short>
-
-<h3>3. Trace number names</h3>
-<p>Trace <code>number_name</code> for <code>4</code>, <code>20</code>, <code>23</code>, <code>0</code>, <code>-3</code>, and <code>25</code>. For each call, write the branch taken, any helper argument, and the returned string. This function names only 1 through 4 and 20 through 24.</p>
+<h3>1. Trace number names</h3>
+<p>The function <code>number_name</code> below returns the English name of a number. It only knows the numbers 1 to 4 and 20 to 24. For any other number it returns the empty string <code>''</code>.</p>
 <pre><code><span class="wb-kw">def</span> <span class="wb-fn">small_name</span>(number):
     <span class="wb-kw">if</span> number == 1:
         <span class="wb-kw">return</span> <span class="wb-str">'one'</span>
@@ -353,6 +312,7 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
     <span class="wb-kw">if</span> 21 &lt;= number &lt;= 24:
         <span class="wb-kw">return</span> <span class="wb-str">'twenty-'</span> + <span class="wb-fn">small_name</span>(number - 20)
     <span class="wb-kw">return</span> <span class="wb-str">''</span></code></pre>
+<p>For each call in the table, write the string that <code>number_name</code> returns. Then explain each call: which <code>return</code> statement runs, and what argument is passed to <code>small_name</code> if it is called.</p>
 <wb-table id="p3">
   <table>
     <thead><tr><th>Call</th><th>Returned string</th></tr></thead>
@@ -368,8 +328,8 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
 </wb-table>
 <wb-short id="p3-why"></wb-short>
 
-<h3>4. Trace a loop with returns</h3>
-<p>Trace <code>count_halvings</code> for <code>-2</code>, <code>0</code>, <code>1</code>, <code>8</code>, and <code>12</code>. Record the values of <code>number</code> and <code>count</code> after each completed loop iteration, then the returned value.</p>
+<h3>2. Trace a loop with returns</h3>
+<p>The function <code>count_halvings</code> counts how many times a number can be divided by 2 before the loop stops. It has three <code>return</code> statements.</p>
 <pre><code><span class="wb-kw">def</span> <span class="wb-fn">count_halvings</span>(number):
     <span class="wb-kw">if</span> number &lt; 0:
         <span class="wb-kw">return</span> -1
@@ -380,6 +340,7 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
         number = number // 2
         count = count + 1
     <span class="wb-kw">return</span> count</code></pre>
+<p>Trace the calls <code>count_halvings(-2)</code>, <code>count_halvings(0)</code>, <code>count_halvings(1)</code>, <code>count_halvings(8)</code>, and <code>count_halvings(12)</code>. After each full pass through the loop, write down the values of <code>number</code> and <code>count</code>. Then write the value the call returns.</p>
 <wb-short id="p4-trace"></wb-short>
 <wb-table id="p4">
   <table>
@@ -394,8 +355,8 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
   </table>
 </wb-table>
 
-<h3>5. Separate call frames</h3>
-<p>This program calls a helper that exchanges its own parameter values, then prints the two values in <code>main</code>. Predict the output. Explain your answer using the two calls' frames.</p>
+<h3>3. Separate call frames</h3>
+<p>In this program, <code>main</code> passes two values to <code>exchange</code>. The helper swaps its own two parameters. Then <code>main</code> prints its two variables.</p>
 <pre><code><span class="wb-kw">def</span> <span class="wb-fn">exchange</span>(first, second):
     saved = first
     first = second
@@ -409,6 +370,7 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
 
 <span class="wb-kw">if</span> __name__ == <span class="wb-str">'__main__'</span>:
     <span class="wb-fn">main</span>()</code></pre>
+<p>What does the program print? Explain your answer using the frame of <code>main</code> and the frame of <code>exchange</code>.</p>
 <wb-table id="p5">
   <table>
     <tbody>
@@ -418,79 +380,109 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'</pre>
 </wb-table>
 <wb-short id="p5-why"></wb-short>
 
-<h3>6. Geometry helpers</h3>
-<p>Write six helpers that return the volume and total surface area of a sphere, a cylinder, and a cone. Each receives a positive radius <code>radius</code>; the cylinder and cone also receive a positive height <code>height</code>. Read both numbers in <code>main</code>, call all six helpers, and print labeled results to two decimal places. End the file with the standard guard.</p>
-<p>Use these formulas, with radius <var>r</var>, height <var>h</var>, and <var>s</var> = √(<var>r</var><sup>2</sup> + <var>h</var><sup>2</sup>):</p>
+<h3>4. Next prime</h3>
+<p>A <em>prime number</em> is a whole number greater than 1 that can be divided exactly only by 1 and by itself. For example, 7 is prime. 9 is not prime, because 3 divides 9 exactly.</p>
+<p>Write a program that reads a whole number and prints the first prime number that is larger than it.</p>
+<ol>
+  <li>Write <code>is_prime(number)</code>. It returns <code>True</code> when <code>number</code> is prime and <code>False</code> when it is not.</li>
+  <li>Write <code>next_prime(number)</code>. It returns the smallest prime that is larger than <code>number</code>. Use <code>is_prime</code> to test each candidate.</li>
+  <li>Write <code>main</code>. It reads the number and prints the result as shown below. End the file with the standard guard.</li>
+</ol>
 <div class="wb-table-wrap">
 <table>
-  <thead><tr><th>Shape</th><th>Volume</th><th>Total surface area</th></tr></thead>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
   <tbody>
-    <tr><td>Sphere</td><td>4π<var>r</var><sup>3</sup>/3</td><td>4π<var>r</var><sup>2</sup></td></tr>
-    <tr><td>Cylinder</td><td>π<var>r</var><sup>2</sup><var>h</var></td><td>2π<var>r</var>(<var>r</var> + <var>h</var>)</td></tr>
-    <tr><td>Cone</td><td>π<var>r</var><sup>2</sup><var>h</var>/3</td><td>π<var>r</var>(<var>r</var> + <var>s</var>)</td></tr>
+    <tr><td>13</td><td><code>Next prime: 17</code></td></tr>
+    <tr><td>1</td><td><code>Next prime: 2</code></td></tr>
+    <tr><td>24</td><td><code>Next prime: 29</code></td></tr>
   </tbody>
 </table>
 </div>
-<p>Use <code>math.pi</code> and <code>math.sqrt</code>. Test with radius 3 and height 4. The six report lines must be:</p>
-<pre class="wb-output">Sphere volume: 113.10
-Sphere surface: 113.10
-Cylinder volume: 113.10
-Cylinder surface: 131.95
-Cone volume: 37.70
-Cone surface: 75.40</pre>
-<p><strong>Check</strong> types 3 and 4, then 1 and 1, 2.5 and 10, and 0.5 and 0.2.</p>
+<p><strong>Check</strong> also types 89.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Define <code>sphere_volume(radius)</code>, <code>sphere_surface(radius)</code>, <code>cylinder_volume(radius, height)</code>, <code>cylinder_surface(radius, height)</code>, <code>cone_volume(radius, height)</code>, and <code>cone_surface(radius, height)</code>.</li>
-    <li>Use <code>math.pi</code>, and <code>math.sqrt</code> for the slant length <var>s</var>.</li>
-    <li>Each helper returns its measurement. <strong>Check</strong> also calls each one with <code>radius</code> equal to 1 and to 2.5, or with <code>(1.0, 1.0)</code> and <code>(2.0, 3.0)</code>.</li>
-    <li>Print the six report lines in the order and with the labels shown above.</li>
+    <li>Define <code>is_prime(number)</code> and <code>next_prime(number)</code>, each with one parameter.</li>
+    <li><code>is_prime</code> returns <code>True</code> or <code>False</code>. <strong>Check</strong> also calls it with numbers such as 0, 1, 2, 9, 25, and 97.</li>
+    <li><code>next_prime</code> calls <code>is_prime</code> and returns the prime.</li>
     <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
   </ul>
 </div>
-<wb-exercise id="p6"></wb-exercise>
+<wb-exercise id="p-prime"></wb-exercise>
 
-<h3>7. Read a number</h3>
-<p>This program reads two numbers and prints their total to one decimal place. Write an input helper and a complete program.</p>
+<h3>5. Operator precedence</h3>
+<p>Python works out <code>2 + 3 * 4</code> as 14, because it multiplies before it adds. We say that <code>*</code> has a higher <em>precedence</em> than <code>+</code>.</p>
+<p>In this exercise there are five operators: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>^</code>. The <code>^</code> means "raise to a power". (Python writes this as <code>**</code>. Here we use <code>^</code> so that every operator is one character.)</p>
 <ol>
-  <li>Define <code>read_number(prompt='Value:')</code>. It reads and returns a float, using the prompt followed by one space.</li>
-  <li>In <code>main</code>, read one number with the default prompt and one with the keyword call <code>read_number(prompt='Next:')</code>. Print their total to one decimal place as <code>Total: ...</code>. End the file with the standard guard.</li>
-  <li>Use valid numeric input. Test <code>2.5</code> and <code>4</code>, then <code>0</code> and <code>0</code>. The report lines must be <code>Total: 6.5</code> and <code>Total: 0.0</code>, respectively.</li>
+  <li>Write <code>precedence(operator)</code>. It receives a string and returns:
+    <ul>
+      <li><code>1</code> for <code>+</code> and <code>-</code></li>
+      <li><code>2</code> for <code>*</code> and <code>/</code></li>
+      <li><code>3</code> for <code>^</code></li>
+      <li><code>-1</code> for any other string</li>
+    </ul>
+  </li>
+  <li>Write <code>main</code>. It reads one operator. If <code>precedence</code> returns <code>-1</code>, print <code>Not an operator</code>. Otherwise, print <code>Precedence:</code> followed by the number.</li>
+  <li><code>main</code> must run only when the file is run directly, not when another program imports it. End the file with the standard guard.</li>
 </ol>
-<p><strong>Check</strong> types 2.5 and 4, then 0 and 0, and 1.25 and -3. The prompts are part of the output, so the first run prints <code>Value: Next: Total: 6.5</code>.</p>
-<div class="wb-block">
-  <div class="wb-block-title">Rules the checker enforces</div>
-  <ul>
-    <li>Give <code>read_number</code> one parameter with the default <code>prompt='Value:'</code>.</li>
-    <li>Read the number with <code>input()</code> and convert it with <code>float()</code> inside <code>read_number</code>.</li>
-    <li>In <code>main</code>, read the first number with <code>read_number()</code> and the second with <code>read_number(prompt='Next:')</code>.</li>
-    <li>End the file with the standard guard.</li>
-  </ul>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>*</code></td><td><code>Precedence: 2</code></td></tr>
+    <tr><td><code>^</code></td><td><code>Precedence: 3</code></td></tr>
+    <tr><td><code>%</code></td><td><code>Not an operator</code></td></tr>
+  </tbody>
+</table>
 </div>
-<wb-exercise id="p7"></wb-exercise>
-
-<h3>8. Order credit</h3>
-<p>A shop uses the following credit rule for this exercise. A credit is an amount returned to a customer.</p>
-<ul>
-  <li>A total below $40 earns $3 per item.</li>
-  <li>A total from $40 up to, but not including, $80 earns $2 per item when there are at least two items.</li>
-  <li>A total from $80 through $120 earns $1 per item when there are at least three items.</li>
-  <li>All other orders earn no credit.</li>
-</ul>
-<p>Write <code>order_credit(total, items)</code> to return the credit. In <code>main</code>, read order totals until <code>-1</code> is entered. Read the item count only for an order, then print <code>Credit: $...</code> to two decimal places. Valid totals are nonnegative, and item counts are nonnegative integers. The sentinel is not an order. End the file with the standard guard.</p>
-<p>Test orders <code>(39, 1)</code>, <code>(40, 2)</code>, <code>(80, 3)</code>, and <code>(120, 2)</code>, followed by the sentinel. Also test the sentinel as the first input.</p>
-<p><strong>Check</strong> types these two sequences, then the orders <code>(79.99, 2)</code>, <code>(120.01, 3)</code>, and <code>(0, 0)</code> followed by <code>-1</code>. A program that asks for an item count after the sentinel asks for more input than the case provides.</p>
+<p><strong>Check</strong> also types <code>+</code> and <code>**</code>.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
-    <li>Define <code>order_credit(total, items)</code> with two parameters.</li>
-    <li><code>order_credit</code> returns the credit. <strong>Check</strong> also calls it with boundary totals such as <code>(39.99, 4)</code>, <code>(40.0, 1)</code>, <code>(80.0, 2)</code>, <code>(120.0, 3)</code>, and <code>(120.01, 3)</code>.</li>
-    <li>Print one <code>Credit: $...</code> line for each order.</li>
+    <li>Define <code>precedence(operator)</code> with one parameter.</li>
+    <li><code>precedence</code> returns the number. <strong>Check</strong> also calls it with each of the five operators and with strings such as <code>'%'</code>, <code>'**'</code>, and <code>''</code>.</li>
     <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
   </ul>
 </div>
-<wb-exercise id="p8"></wb-exercise>
+<wb-exercise id="p-precedence"></wb-exercise>
+
+<h3>6. Roman numeral value</h3>
+<p>Roman numerals are written with seven letters:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Letter</th><th>I</th><th>V</th><th>X</th><th>L</th><th>C</th><th>D</th><th>M</th></tr></thead>
+  <tbody>
+    <tr><td>Value</td><td>1</td><td>5</td><td>10</td><td>50</td><td>100</td><td>500</td><td>1000</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Read the letters from left to right. Usually you add each letter's value: <code>VIII</code> is 5 + 1 + 1 + 1 = 8. But sometimes a letter comes just before a letter with a <em>larger</em> value. Then you subtract it instead. In <code>IX</code>, the <code>I</code> comes before the larger <code>X</code>, so <code>IX</code> is 10 − 1 = 9. In the same way, <code>XC</code> is 90 and <code>CM</code> is 900.</p>
+<ol>
+  <li>Write <code>letter_value(letter)</code>. It returns the value of one Roman letter from the table.</li>
+  <li>Write <code>roman_value(text)</code>. It returns the value of a whole numeral. Look at each letter in turn. If the next letter has a larger value, subtract this letter's value from the total. Otherwise, add it. Use <code>letter_value</code> to get every value.</li>
+  <li>Write <code>main</code>. It reads a numeral written in capital letters and prints <code>Value:</code> followed by its value. End the file with the standard guard.</li>
+</ol>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td><code>MCMLXXVIII</code></td><td><code>Value: 1978</code></td><td>M + CM + L + XX + VIII = 1000 + 900 + 50 + 20 + 8</td></tr>
+    <tr><td><code>XLIV</code></td><td><code>Value: 44</code></td><td>XL + IV = 40 + 4</td></tr>
+    <tr><td><code>IX</code></td><td><code>Value: 9</code></td><td>10 − 1</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Check</strong> also types <code>MMXXVI</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>letter_value(letter)</code> and <code>roman_value(text)</code>, each with one parameter.</li>
+    <li><code>roman_value</code> calls <code>letter_value</code>.</li>
+    <li>Both functions return a number. <strong>Check</strong> calls <code>letter_value</code> with all seven letters and <code>roman_value</code> with numerals such as <code>'XIV'</code>, <code>'XCIX'</code>, <code>'CD'</code>, and <code>'MMMCMXCIX'</code>.</li>
+    <li>Define <code>main</code> with empty parentheses and end the file with the standard guard.</li>
+  </ul>
+</div>
+<wb-exercise id="p-roman"></wb-exercise>
 
 <wb-bosses></wb-bosses>
 

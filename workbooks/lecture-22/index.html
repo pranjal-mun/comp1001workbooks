@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 22 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-22", specs: "./exercises.json" });
+  </script>
+  <style>
+    /* countdown.py is shown with its line numbers so the traceback's line 5 and line 7 can be found; the numbers are not part of the copied text. */
+    pre.wb-numbered code { counter-reset: wb-line; }
+    pre.wb-numbered .ln { counter-increment: wb-line; }
+    pre.wb-numbered .ln::before { content: counter(wb-line); display: inline-block; width: 1.5em; margin-right: 1em; text-align: right; color: var(--ink-quiet); user-select: none; }
+    /* Call diagrams drawn from the printed workbook's pictures. */
+    .wb-diagram { display: block; max-width: 100%; height: auto; margin: 1rem auto; font-family: var(--font-sans); font-size: 0.85rem; color: var(--ink); }
+    .wb-diagram .node { fill: var(--panel); stroke: var(--ink); stroke-width: 1.2; }
+    .wb-diagram .base { fill: var(--panel); stroke: var(--ink); stroke-width: 2.2; }
+    .wb-diagram .edge { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+    .wb-diagram text { fill: var(--ink); text-anchor: middle; dominant-baseline: middle; }
+    .wb-diagram .label { fill: var(--ink-quiet); }
+    .wb-diagram .code { font-family: var(--font-mono); }
+    .wb-diagram .big { font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 22 Workbook</h1>
+    <div class="wb-subtitle">Tracing recursion and recursive helpers</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Trace what runs before a recursive call and what waits until it returns. Use helpers to carry the part of a problem that still needs checking.</p>
+  <p>Reading: §11.2 and §11.3</p>
+  <ul>
+    <li>Trace recursive calls, printed output, and returned values.</li>
+    <li>Count recursion depth as the number of unfinished calls.</li>
+    <li>Read a recursive traceback and identify common recursion bugs.</li>
+    <li>Write a palindrome helper that carries two indices.</li>
+    <li>Trace sentence checks that skip nonletters and ignore letter case.</li>
+    <li>Combine the answers from two recursive calls.</li>
+    <li>Test inputs near the stopping points.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-output">Output order</p>
+
+<h2 id="s1">1. Printing before and after the call</h2>
+<p><code>visit(n)</code> prints an entry and an exit message for each positive <code>n</code>. The first print runs before the smaller call. The second print waits for that call to finish.</p>
+<wb-example id="ex-visit"></wb-example>
+<p><code>visit(n)</code> prints entry and exit messages around its recursive call. Read the before column down. Read the after column up.</p>
+<wb-example id="ex-visit-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>n</code></th><th>Before call</th><th>After call</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>2</td><td><code>enter 2</code></td><td><code>leave 2</code></td></tr>
+    <tr><td>2</td><td>1</td><td><code>enter 1</code></td><td><code>leave 1</code></td></tr>
+    <tr><td>3</td><td>0</td><td>no print</td><td>no print</td></tr>
+  </tbody>
+</table>
+</div>
+<svg class="wb-diagram" viewBox="0 0 440 50" width="440" role="img" aria-label="The printed lines in order: enter 2, then enter 1, then leave 1, then leave 2.">
+  <defs>
+    <marker id="wb-arrow-visit" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+  <rect class="node" x="5" y="8" width="80" height="34" rx="6"></rect>
+  <text class="code" x="45" y="25">enter 2</text>
+  <rect class="node" x="122" y="8" width="80" height="34" rx="6"></rect>
+  <text class="code" x="162" y="25">enter 1</text>
+  <rect class="node" x="239" y="8" width="80" height="34" rx="6"></rect>
+  <text class="code" x="279" y="25">leave 1</text>
+  <rect class="node" x="356" y="8" width="80" height="34" rx="6"></rect>
+  <text class="code" x="396" y="25">leave 2</text>
+  <line class="edge" x1="85" y1="25" x2="120" y2="25" marker-end="url(#wb-arrow-visit)"></line>
+  <line class="edge" x1="202" y1="25" x2="237" y2="25" marker-end="url(#wb-arrow-visit)"></line>
+  <line class="edge" x1="319" y1="25" x2="354" y2="25" marker-end="url(#wb-arrow-visit)"></line>
+</svg>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write a recursive function <code>show_digits(n)</code>. It prints the digits of a positive integer from left to right, one digit per line.</p>
+  <ul>
+    <li>Use <code>// 10</code> and <code>% 10</code>.</li>
+    <li>Use one recursive call and no loop.</li>
+    <li>Check <code>7</code> and <code>407</code>.</li>
+  </ul>
+  <p>For <code>407</code>, the output is:</p>
+  <pre class="wb-output">4
+0
+7</pre>
+  <p>Decide where the print belongs relative to the recursive call.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>show_digits(n)</code> with one parameter. It prints one digit per line.</li>
+      <li>Use one recursive call and no loop.</li>
+      <li>Use <code>// 10</code> and <code>% 10</code> to split the number.</li>
+      <li><strong>Check</strong> calls <code>show_digits</code> with 7, 407, and 10. It also tries numbers such as 1001 and 90210.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-depth">Depth and errors</p>
+
+<h2 id="s2">2. Recursion depth</h2>
+<p><code>factorial(n)</code> returns the product from 1 to <code>n</code>. It returns <code>1</code> for <code>0</code>. Assume <code>n</code> is a nonnegative integer.</p>
+<wb-example id="ex-factorial"></wb-example>
+<svg class="wb-diagram" viewBox="0 0 260 220" width="260" role="img" aria-label="factorial(3) calls factorial(2) at depth 2, which calls factorial(1) at depth 3, which calls factorial(0) at depth 4. factorial(3) is at depth 1.">
+  <defs>
+    <marker id="wb-arrow-depth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+  <rect class="node" x="10" y="5" width="140" height="34" rx="6"></rect>
+  <text class="code" x="80" y="22">factorial(3)</text>
+  <text x="210" y="22">depth 1</text>
+  <rect class="node" x="10" y="62" width="140" height="34" rx="6"></rect>
+  <text class="code" x="80" y="79">factorial(2)</text>
+  <text x="210" y="79">depth 2</text>
+  <rect class="node" x="10" y="119" width="140" height="34" rx="6"></rect>
+  <text class="code" x="80" y="136">factorial(1)</text>
+  <text x="210" y="136">depth 3</text>
+  <rect class="node" x="10" y="176" width="140" height="34" rx="6"></rect>
+  <text class="code" x="80" y="193">factorial(0)</text>
+  <text x="210" y="193">depth 4</text>
+  <line class="edge" x1="80" y1="39" x2="80" y2="60" marker-end="url(#wb-arrow-depth)"></line>
+  <line class="edge" x1="80" y1="96" x2="80" y2="117" marker-end="url(#wb-arrow-depth)"></line>
+  <line class="edge" x1="80" y1="153" x2="80" y2="174" marker-end="url(#wb-arrow-depth)"></line>
+</svg>
+<p>Here, depth counts only the factorial calls. The maximum depth is 4. For <code>factorial(n)</code>, the maximum depth is <em>n</em> + 1 with this base case.</p>
+
+<h2 id="s3">3. Reading errors and checking progress</h2>
+<p><code>countdown(n)</code> is meant to print down to 1. This version repeats the same input. Read the last traceback line first. Find the repeated call.</p>
+<pre class="wb-numbered"><code><span class="ln"><span class="wb-kw">def</span> <span class="wb-fn">countdown</span>(n):</span>
+<span class="ln">    <span class="wb-kw">if</span> n == 0:</span>
+<span class="ln">        <span class="wb-kw">return</span></span>
+<span class="ln">    <span class="wb-fn">print</span>(n)</span>
+<span class="ln">    <span class="wb-fn">countdown</span>(n)</span>
+<span class="ln"></span>
+<span class="ln"><span class="wb-fn">countdown</span>(3)</span></code></pre>
+<pre class="wb-output wb-error">Traceback (most recent call last):
+  File "countdown.py", line 7, in &lt;module&gt;
+    countdown(3)
+  ...
+  File "countdown.py", line 5, in countdown
+    countdown(n)
+  [Previous line repeated 996 more times]
+RecursionError: maximum recursion depth exceeded</pre>
+<p>This is a traceback excerpt. Python groups repeated entries. Counts vary. A very large valid input can also exceed Python's depth limit.</p>
+<p><code>countdown(n)</code> should print the positive integers from <code>n</code> down to 1. Assume <code>n</code> is a nonnegative integer. The first version is buggy. The second version corrects the recursive argument.</p>
+<wb-example id="ex-countdown-bug"></wb-example>
+<wb-example id="ex-countdown-fix"></wb-example>
+<p>The buggy version repeats <code>3, 3, 3, ...</code>. The correction reaches <code>0</code>. A base case helps only when the calls can reach it.</p>
+
+<h2 id="s4">4. Base answers and missing returns</h2>
+<p><code>product(n)</code> should return 1 × 2 × ⋯ × <em>n</em>. For <code>n = 0</code>, it should return <code>1</code>. The calls stop, but the result is wrong. The zero travels back through every multiplication.</p>
+<wb-example id="ex-product"></wb-example>
+<p>The base case must return <code>1</code>. Also check reachability. Subtracting <code>2</code> from an odd input will skip <code>0</code>.</p>
+<p><code>total(n)</code> should return 1 + 2 + ⋯ + <em>n</em>. It should return <code>0</code> for <code>0</code>. Assume <code>n</code> is a nonnegative integer. The first version discards the smaller answer. The second version uses it.</p>
+<wb-example id="ex-total-bug"></wb-example>
+<wb-example id="ex-total-fix"></wb-example>
+<p>Calling a function produces an answer. The caller must use that answer. A function that reaches its end without <code>return</code> returns <code>None</code>.</p>
+<p><code>total(n)</code> is meant to return the sum from 1 to <code>n</code>. This version loses the answer.</p>
+<wb-example id="ex-total-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Call</th><th>Smaller answer</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>total(2)</code></td><td><code>None</code></td><td><code>None</code></td></tr>
+    <tr><td>2</td><td><code>total(1)</code></td><td><code>0</code></td><td><code>None</code></td></tr>
+    <tr><td>3</td><td><code>total(0)</code></td><td>no call</td><td><code>0</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>total(1)</code> receives <code>0</code>, then reaches its end. <code>total(2)</code> receives <code>None</code>, then also reaches its end.</p>
+
+<p class="wb-part" id="part-palindrome">Palindrome helpers</p>
+
+<h2 id="s5">5. Palindrome helpers and stopping cases</h2>
+<p><code>is_palindrome(text)</code> returns <code>True</code> when the text reads the same backward. Start with words made of lowercase letters. <code>"racecar"</code> is a palindrome. <code>"robot"</code> is not. After checking the outside pair, the same question applies to the inside.</p>
+<svg class="wb-diagram" viewBox="0 0 400 170" width="400" role="img" aria-label="The letters of racecar at indices 0 to 6. Lines join index 0 with 6, 1 with 5, and 2 with 4. Each pair matches. The middle letter is left.">
+  <text class="label" x="30" y="12">0</text>
+  <text class="label" x="86" y="12">1</text>
+  <text class="label" x="142" y="12">2</text>
+  <text class="label" x="198" y="12">3</text>
+  <text class="label" x="254" y="12">4</text>
+  <text class="label" x="310" y="12">5</text>
+  <text class="label" x="366" y="12">6</text>
+  <rect class="node" x="10" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="30" y="44">r</text>
+  <rect class="node" x="66" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="86" y="44">a</text>
+  <rect class="node" x="122" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="142" y="44">c</text>
+  <rect class="node" x="178" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="198" y="44">e</text>
+  <rect class="node" x="234" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="254" y="44">c</text>
+  <rect class="node" x="290" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="310" y="44">a</text>
+  <rect class="node" x="346" y="24" width="40" height="40" rx="6"></rect>
+  <text class="code big" x="366" y="44">r</text>
+  <polyline class="edge" points="30,64 30,130 366,130 366,64"></polyline>
+  <polyline class="edge" points="86,64 86,110 310,110 310,64"></polyline>
+  <polyline class="edge" points="142,64 142,90 254,90 254,64"></polyline>
+  <text class="label" x="198" y="155">Each pair matches. The middle letter is left.</text>
+</svg>
+<p><code>is_palindrome(text)</code> checks the whole word. <code>palindrome_helper(text, start, end)</code> checks only the part between two indices. The caller supplies just the word. The wrapper supplies the starting indices. The helper changes the indices on later calls.</p>
+<wb-example id="ex-is-palindrome"></wb-example>
+<p>Both function definitions must run before the first call. The text stays the same. The unchecked part gets smaller.</p>
+<p>The helper checks the characters from <code>start</code> to <code>end</code>, including both ends.</p>
+<ol>
+  <li>If <code>start &gt;= end</code>, return <code>True</code>.</li>
+  <li>Otherwise, if the outside characters differ, return <code>False</code>.</li>
+  <li>Otherwise, call the helper with <code>start + 1</code> and <code>end - 1</code>.</li>
+</ol>
+<p>An empty word starts with <code>start = 0, end = -1</code>. Check <code>start &gt;= end</code> before indexing the text.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write <code>palindrome_helper(text, start, end)</code>. It returns whether the characters from <code>start</code> to <code>end</code> form a palindrome.</p>
+  <ul>
+    <li>Assume lowercase letters only.</li>
+    <li>Return <code>True</code> when the indices meet or cross.</li>
+    <li>Use one recursive call.</li>
+    <li>Check <code>"abba"</code>, <code>"abc"</code>, and <code>""</code> through <code>is_palindrome</code>.</li>
+  </ul>
+  <p>The wrapper calls the helper with <code>0</code> and <code>len(text) - 1</code>. For <code>"abba"</code>, the index pairs are (0, 3), (1, 2), and (2, 1). The expected results are <code>True</code>, <code>False</code>, and <code>True</code>.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Keep <code>is_palindrome(text)</code> as given. It calls the helper.</li>
+      <li>Define <code>palindrome_helper(text, start, end)</code> with three parameters. It returns <code>True</code> or <code>False</code>.</li>
+      <li>Use one recursive call and no loop.</li>
+      <li><strong>Check</strong> calls <code>is_palindrome</code> with <code>"abba"</code>, <code>"abc"</code>, and <code>""</code>, and with other words such as <code>"racecar"</code> and <code>"robot"</code>. It also calls <code>palindrome_helper</code> with other index pairs.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<h2 id="s6">6. Tracing the palindrome helper</h2>
+<p><code>palindrome_helper</code> checks the part from <code>start</code> to <code>end</code>, including both ends. The original text stays <code>"abba"</code> in every call.</p>
+<wb-example id="ex-trace-abba"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>start</code></th><th><code>end</code></th><th>Current part</th><th>Outside check</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>3</td><td><code>"abba"</code></td><td><code>'a' == 'a'</code><br>match</td><td><code>True</code></td></tr>
+    <tr><td>2</td><td>1</td><td>2</td><td><code>"bb"</code></td><td><code>'b' == 'b'</code><br>match</td><td><code>True</code></td></tr>
+    <tr><td>3</td><td>2</td><td>1</td><td><code>""</code></td><td>no comparison<br>indices cross</td><td><code>True</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Call 3 stops before indexing the text. Its <code>True</code> returns through calls 2 and 1. The current part is empty when the indices cross. No new string is created. The wrapper adds one frame around these three helper calls.</p>
+<p><code>palindrome_helper</code> checks the selected part of a word for matching outside characters. The original text stays <code>"abca"</code> in every call.</p>
+<wb-example id="ex-trace-abca"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>start</code></th><th><code>end</code></th><th>Current part</th><th>Outside check</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>3</td><td><code>"abca"</code></td><td><code>'a' == 'a'</code><br>match</td><td><code>False</code></td></tr>
+    <tr><td>2</td><td>1</td><td>2</td><td><code>"bc"</code></td><td><code>'b' != 'c'</code><br>mismatch</td><td><code>False</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Call 2 returns <code>False</code> immediately. Call 1 returns that same answer. There is no third call. The first pair matches, but the inside part fails the palindrome test.</p>
+
+<h2 id="s7">7. Skipping nonletters</h2>
+<p><code>sentence_helper(text, start, end)</code> checks a selected part of a sentence. It ignores letter case and skips nonletters. <code>isalpha()</code> tests whether a character is a letter. <code>lower()</code> converts a letter to lowercase. Every recursive branch moves at least one index inward.</p>
+<wb-example id="ex-sentence"></wb-example>
+<p>Call <code>sentence_helper(text, 0, len(text) - 1)</code> to check the whole sentence. <code>"A man, a plan, a canal, Panama!"</code> returns <code>True</code>.</p>
+<p><code>sentence_helper</code> checks a selected part, ignoring case and skipping nonletters.</p>
+<p>Trace <code>sentence_helper("␣A,ba!", 0, 5)</code>. The symbol <code>␣</code> shows a space.</p>
+<wb-example id="ex-sentence-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>start</code></th><th><code>end</code></th><th>Current part</th><th>Outside check</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>5</td><td><code>"␣A,ba!"</code></td><td><code>␣</code> / <code>!</code><br>skip space</td><td><code>True</code></td></tr>
+    <tr><td>2</td><td>1</td><td>5</td><td><code>"A,ba!"</code></td><td><code>A</code> / <code>!</code><br>skip <code>!</code></td><td><code>True</code></td></tr>
+    <tr><td>3</td><td>1</td><td>4</td><td><code>"A,ba"</code></td><td><code>A</code> / <code>a</code><br>match</td><td><code>True</code></td></tr>
+    <tr><td>4</td><td>2</td><td>3</td><td><code>",b"</code></td><td><code>,</code> / <code>b</code><br>skip comma</td><td><code>True</code></td></tr>
+    <tr><td>5</td><td>3</td><td>3</td><td><code>"b"</code></td><td>no comparison<br>indices meet</td><td><code>True</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Call 3 compares lowercase letters. The return order is 5, 4, 3, 2, then 1.</p>
+
+<p class="wb-part" id="part-two-calls">Two recursive calls</p>
+
+<h2 id="s8">8. Two recursive calls</h2>
+<p><code>fib(n)</code> returns Fibonacci number <code>n</code>, with <code>fib(0) = 0</code> and <code>fib(1) = 1</code>. Each later number is the sum of the previous two. Assume <code>n</code> is a nonnegative integer. Python finishes the <code>left</code> call before starting the <code>right</code> call. The calls run in sequence. The parent combines both returned values.</p>
+<wb-example id="ex-fib"></wb-example>
+<svg class="wb-diagram" viewBox="0 0 360 200" width="360" role="img" aria-label="fib(3) calls fib(2) and fib(1). fib(1) returns 1. fib(2) calls fib(1), which returns 1, and fib(0), which returns 0.">
+  <defs>
+    <marker id="wb-arrow-fib" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+  <rect class="node" x="150" y="5" width="70" height="32" rx="6"></rect>
+  <text class="code" x="185" y="21">fib(3)</text>
+  <rect class="node" x="70" y="72" width="70" height="32" rx="6"></rect>
+  <text class="code" x="105" y="88">fib(2)</text>
+  <rect class="node" x="225" y="66" width="90" height="44" rx="6"></rect>
+  <text class="code" x="270" y="80">fib(1)</text>
+  <text x="270" y="97">returns 1</text>
+  <rect class="node" x="5" y="146" width="90" height="44" rx="6"></rect>
+  <text class="code" x="50" y="160">fib(1)</text>
+  <text x="50" y="177">returns 1</text>
+  <rect class="node" x="120" y="146" width="90" height="44" rx="6"></rect>
+  <text class="code" x="165" y="160">fib(0)</text>
+  <text x="165" y="177">returns 0</text>
+  <line class="edge" x1="170" y1="37" x2="118" y2="70" marker-end="url(#wb-arrow-fib)"></line>
+  <line class="edge" x1="200" y1="37" x2="252" y2="64" marker-end="url(#wb-arrow-fib)"></line>
+  <line class="edge" x1="95" y1="104" x2="60" y2="144" marker-end="url(#wb-arrow-fib)"></line>
+  <line class="edge" x1="115" y1="104" x2="152" y2="144" marker-end="url(#wb-arrow-fib)"></line>
+</svg>
+<p><code>fib(n)</code> returns Fibonacci number <code>n</code>. Each nonbase call adds two smaller answers.</p>
+<wb-example id="ex-fib-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Call</th><th>Depth</th><th>Returned value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>fib(3)</code></td><td>1</td><td>1 + 1 = 2</td></tr>
+    <tr><td>2</td><td><code>fib(2)</code></td><td>2</td><td>1 + 0 = 1</td></tr>
+    <tr><td>3</td><td><code>fib(1)</code></td><td>3</td><td>1</td></tr>
+    <tr><td>4</td><td><code>fib(0)</code></td><td>3</td><td>0</td></tr>
+    <tr><td>5</td><td><code>fib(1)</code></td><td>2</td><td>1</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The return order is calls 3, 4, 2, 5, then 1. There are five calls in total. At most three Fibonacci calls are unfinished at once.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write a recursive function <code>ways(n)</code>. It returns the number of ways to climb <code>n</code> stairs using steps of size 1 or 2.</p>
+  <ul>
+    <li>Assume <code>n</code> is a nonnegative integer.</li>
+    <li>Return <code>1</code> for <code>n = 0</code> and <code>n = 1</code>.</li>
+    <li>Use two recursive calls for larger inputs.</li>
+    <li>Check <code>0</code>, <code>2</code>, and <code>3</code>.</li>
+  </ul>
+  <p>For 3 stairs, the possible step sequences are:</p>
+  <ul>
+    <li>1 + 1 + 1</li>
+    <li>1 + 2</li>
+    <li>2 + 1</li>
+  </ul>
+  <p>Split the possibilities by the size of the first step. For zero stairs, doing nothing counts as one way.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>ways(n)</code> with one parameter. It returns the number of ways.</li>
+      <li>Use two recursive calls and no loop.</li>
+      <li><strong>Check</strong> calls <code>ways</code> with 0, 2, and 3, and with every <code>n</code> from 1 to 12.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="s9">9. Tests near the stopping points</h2>
+<p>Small tests can expose the wrong base answer or a skipped stopping condition.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Expected</th><th>What it checks</th></tr></thead>
+  <tbody>
+    <tr><td><code>show_digits(10)</code></td><td><code>1</code>, then <code>0</code></td><td>A zero digit survives the return path.</td></tr>
+    <tr><td><code>is_palindrome("")</code></td><td><code>True</code></td><td>Crossed indices stop before indexing.</td></tr>
+    <tr><td><code>is_palindrome("a")</code></td><td><code>True</code></td><td>The indices meet.</td></tr>
+    <tr><td><code>is_palindrome("ab")</code></td><td><code>False</code></td><td>An outside mismatch stops the check.</td></tr>
+    <tr><td><code>fib(2)</code></td><td><code>1</code></td><td>Both recursive calls reach base cases.</td></tr>
+    <tr><td><code>ways(0)</code></td><td><code>1</code></td><td>The empty climb has one way.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Stay inside the stated input domain. Also test a larger ordinary input.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>Practices 1 and 2 are traces. Practices 3 to 5 are functions.</p>
+<p>Use recursion and no loops in the functions you write. Keep each answer in a return value or in the parameters of a helper.</p>
+<p><strong>Check</strong> calls your functions with the values in the task and compares what they return. It also calls them with other values.</p>
+
+<h3>1. Trace an expression</h3>
+<p>Trace the calls made by this program. Number calls when they begin. Count depth within <code>adjust</code> only. Record each call's input and returned value, then write the printed output.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">adjust</span>(n):
+    <span class="wb-kw">if</span> n == 0:
+        <span class="wb-kw">return</span> 2
+    <span class="wb-kw">return</span> 3 * <span class="wb-fn">adjust</span>(n - 1) - 1
+
+<span class="wb-fn">print</span>((<span class="wb-fn">adjust</span>(2) - <span class="wb-fn">adjust</span>(1)) * <span class="wb-fn">adjust</span>(0))</code></pre>
+<wb-table id="p1-trace">
+  <table>
+    <thead><tr><th>Call number</th><th>Input</th><th>Depth</th><th>Returned value</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="in1"></td><td data-blank="d1"></td><td data-blank="r1"></td></tr>
+      <tr><td>2</td><td data-blank="in2"></td><td data-blank="d2"></td><td data-blank="r2"></td></tr>
+      <tr><td>3</td><td data-blank="in3"></td><td data-blank="d3"></td><td data-blank="r3"></td></tr>
+      <tr><td>4</td><td data-blank="in4"></td><td data-blank="d4"></td><td data-blank="r4"></td></tr>
+      <tr><td>5</td><td data-blank="in5"></td><td data-blank="d5"></td><td data-blank="r5"></td></tr>
+      <tr><td>6</td><td data-blank="in6"></td><td data-blank="d6"></td><td data-blank="r6"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Printed output:</p>
+<wb-short id="p1-output"></wb-short>
+
+<h3>2. Count branching calls</h3>
+<p><code>branch(n)</code> returns a count of all calls made by <code>branch(n)</code>, including the first call. Assume <code>n</code> is a nonnegative integer. Trace <code>branch(2)</code>. Record call numbers, inputs, depths, and returned values. Then complete the table.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">branch</span>(n):
+    <span class="wb-kw">if</span> n == 0:
+        <span class="wb-kw">return</span> 1
+    left = <span class="wb-fn">branch</span>(n - 1)
+    right = <span class="wb-fn">branch</span>(n - 1)
+    <span class="wb-kw">return</span> 1 + left + right</code></pre>
+<p>Record your trace of <code>branch(2)</code> in this table. The call numbers are given.</p>
+<wb-table id="p2-trace">
+  <table>
+    <thead><tr><th>Call number</th><th>Input</th><th>Depth</th><th>Returned count</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="in1"></td><td data-blank="d1"></td><td data-blank="r1"></td></tr>
+      <tr><td>2</td><td data-blank="in2"></td><td data-blank="d2"></td><td data-blank="r2"></td></tr>
+      <tr><td>3</td><td data-blank="in3"></td><td data-blank="d3"></td><td data-blank="r3"></td></tr>
+      <tr><td>4</td><td data-blank="in4"></td><td data-blank="d4"></td><td data-blank="r4"></td></tr>
+      <tr><td>5</td><td data-blank="in5"></td><td data-blank="d5"></td><td data-blank="r5"></td></tr>
+      <tr><td>6</td><td data-blank="in6"></td><td data-blank="d6"></td><td data-blank="r6"></td></tr>
+      <tr><td>7</td><td data-blank="in7"></td><td data-blank="d7"></td><td data-blank="r7"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Then complete this table.</p>
+<wb-table id="p2">
+  <table>
+    <thead><tr><th>Call</th><th>Returned count</th><th>Maximum depth</th></tr></thead>
+    <tbody>
+      <tr><td><code>branch(0)</code></td><td data-blank="c0"></td><td data-blank="d0"></td></tr>
+      <tr><td><code>branch(1)</code></td><td data-blank="c1"></td><td data-blank="d1"></td></tr>
+      <tr><td><code>branch(2)</code></td><td data-blank="c2"></td><td data-blank="d2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<details class="wb-answer"><summary>Show the explanation</summary>
+<p>Each call counts itself with 1. A nonbase call also includes the counts returned by its two smaller calls.</p>
+</details>
+
+<h3>3. Smallest letter</h3>
+<p>Write <code>smallest_letter(text)</code>. It returns the alphabetically smallest letter in a nonempty word of lowercase English letters. Compare letters with <code>&lt;</code>. Use one recursive call and no sorting function.</p>
+<ul>
+  <li><code>smallest_letter("m")</code> returns <code>"m"</code>.</li>
+  <li><code>smallest_letter("cabin")</code> returns <code>"a"</code>.</li>
+  <li><code>smallest_letter("zoo")</code> returns <code>"o"</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>smallest_letter(text)</code> with one parameter. It returns one letter.</li>
+    <li>Use one recursive call and no loop.</li>
+    <li>Compare letters with <code>&lt;</code>. Do not use <code>sorted</code>, <code>sort</code>, <code>min</code>, or <code>max</code>.</li>
+    <li><strong>Check</strong> calls it with the three words above and with other words such as <code>"banana"</code> and <code>"za"</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Lowercase a selected range</h3>
+<p>Write <code>lowercase_part(text, start, end)</code> and <code>lowercase_text(text)</code>. The helper returns the characters from <code>start</code> through <code>end</code> as lowercase text in their original order. The wrapper returns the lowercase version of the whole string.</p>
+<ul>
+  <li>The helper returns <code>""</code> when <code>start &gt; end</code>.</li>
+  <li>Otherwise, both indices are valid positions in <code>text</code>.</li>
+  <li>Use <code>lower()</code> on one character at a time.</li>
+  <li>Use one recursive call in the helper.</li>
+  <li>Do not use <code>lower()</code> on the whole string or on a slice.</li>
+</ul>
+<p>Check these calls:</p>
+<ul>
+  <li><code>lowercase_part("AB-CD", 1, 3)</code> returns <code>"b-c"</code>.</li>
+  <li><code>lowercase_text("Shop!")</code> returns <code>"shop!"</code>.</li>
+  <li><code>lowercase_text("")</code> returns <code>""</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>lowercase_part(text, start, end)</code> and <code>lowercase_text(text)</code>. Both return strings.</li>
+    <li>Use one recursive call in the helper and no loop.</li>
+    <li><code>lowercase_text</code> calls <code>lowercase_part</code> for the whole string.</li>
+    <li>Use <code>lower()</code> only on one indexed character, such as <code>text[start].lower()</code>.</li>
+    <li><strong>Check</strong> makes the three calls above and also tries other strings and ranges.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Multiply by halving</h3>
+<p>Write <code>multiply(a, b)</code>. It returns the product of two nonnegative integers. Use addition to build the answer. Do not use multiplication, division with <code>/</code>, or a loop.</p>
+<p>Use these mathematical rules:</p>
+<ul>
+  <li>Multiplying by zero gives zero.</li>
+  <li>For even <code>b</code>, find the product with <code>b // 2</code>, then add that answer to itself.</li>
+  <li>For odd <code>b</code>, double the product with <code>b // 2</code>, then add <code>a</code>.</li>
+  <li>Use one recursive call in each nonbase call.</li>
+</ul>
+<p>Check these calls:</p>
+<ul>
+  <li><code>multiply(7, 0)</code> returns <code>0</code>.</li>
+  <li><code>multiply(7, 4)</code> returns <code>28</code>.</li>
+  <li><code>multiply(7, 5)</code> returns <code>35</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>multiply(a, b)</code> with two parameters. It returns the product.</li>
+    <li>Use one recursive call and no loop.</li>
+    <li>Do not use <code>*</code> or <code>/</code> anywhere in your code.</li>
+    <li><strong>Check</strong> makes the three calls above and also tries pairs such as (12, 13) and (9, 1000).</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Calls, output and errors</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Concept</th><th>Rule to remember</th></tr></thead>
+  <tbody>
+    <tr><td>Print before the call</td><td>Runs while calls go deeper.</td></tr>
+    <tr><td>Print after the call</td><td>Waits until the smaller call finishes.</td></tr>
+    <tr><td>Recursion depth</td><td>Counts unfinished calls along one active path. State which functions you count.</td></tr>
+    <tr><td>Recursive traceback</td><td>Read the error type first. Find the repeated call site. Check the input change.</td></tr>
+    <tr><td><code>RecursionError</code></td><td>The call depth exceeded Python's limit. Check progress and the stopping condition. A very large valid input can also reach the limit.</td></tr>
+    <tr><td>No progress</td><td>Change the input toward a reachable base case.</td></tr>
+    <tr><td>Wrong base answer</td><td>Choose a value that makes the next larger case correct.</td></tr>
+    <tr><td>Missing <code>return</code></td><td>Pass the smaller answer back, or combine it and return the result. Reaching the function's end returns <code>None</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Helpers and branching calls</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Concept</th><th>Rule to remember</th></tr></thead>
+  <tbody>
+    <tr><td>Wrapper function</td><td>Supplies the helper's starting state from the caller's input.</td></tr>
+    <tr><td>Helper parameters</td><td>Track the unchecked part. A palindrome helper uses <code>start</code> and <code>end</code>.</td></tr>
+    <tr><td>Palindrome success</td><td>Return <code>True</code> when <code>start &gt;= end</code>. Check before indexing.</td></tr>
+    <tr><td>Palindrome mismatch</td><td>Return <code>False</code> when the outside letters differ.</td></tr>
+    <tr><td>Palindrome progress</td><td>Move both indices inward after a match. For sentences, use <code>lower()</code> to compare letters. Use <code>isalpha()</code> to skip nonletters.</td></tr>
+    <tr><td>Two recursive calls</td><td>Finish the first call before the second. The parent uses both answers.</td></tr>
+    <tr><td>Call number and depth</td><td>Number records entry order. Depth counts unfinished calls on the current path.</td></tr>
+    <tr><td>Combining answers</td><td>Fibonacci adds two earlier numbers. Stairs adds counts for two possible first steps.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 22 Workbook.</p>
+</main>
+</body>
+</html>

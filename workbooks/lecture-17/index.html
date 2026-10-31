@@ -199,10 +199,16 @@ Hello!</pre>
 <p>A string placed first in the body is the <strong>docstring</strong>. It tells the caller what the function does. <code>help(show_heading)</code> displays the stored documentation. Describe the function's promise. Keep the internal steps in the code.</p>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
-<p>Programs 6 to 11 assign their fixed values inside the function body, as each starter shows. Keep those assignment lines as given. <strong>Check</strong> runs each program as written, then again with the test values from the statement in place of those assignments.</p>
+<p>In Programs 6 to 11, the starter code gives each function its test values with assignment lines inside the function body, such as <code>a = 8</code>. Keep those lines exactly as they are.</p>
+<p><strong>Check</strong> first runs your program as written. Then it changes those assignment lines to the other test values and runs it again.</p>
 
 <h3>1. Information in a call</h3>
-<p>For <code>len('paper')</code>, name the function, write the information supplied, and give the value produced.</p>
+<p>Look at the call <code>len('paper')</code>. Answer three questions:</p>
+<ol>
+  <li>What is the name of the function?</li>
+  <li>What value is passed to the function?</li>
+  <li>What value does the call produce?</li>
+</ol>
 <wb-short id="p1"></wb-short>
 
 <h3>2. Execution order</h3>
@@ -225,7 +231,12 @@ Hello!</pre>
 </wb-table>
 
 <h3>3. Names and promises</h3>
-<p>Write a header and a docstring for each task: display a report heading; display a closing reminder. Complete each function with one output statement and call each function once. Choose the displayed text yourself.</p>
+<p>Write two functions:</p>
+<ul>
+  <li>one that displays a heading for a report;</li>
+  <li>one that displays a closing reminder at the end of the report.</li>
+</ul>
+<p>Choose a clear name for each function. Give each one a docstring that says what it does. Each function body has one <code>print</code> call. You choose the text it prints. After the two definitions, call each function once.</p>
 <div class="wb-block">
   <div class="wb-block-title">Rules the checker enforces</div>
   <ul>
@@ -275,7 +286,12 @@ Hello!</pre>
 </wb-table>
 
 <h3>6. A numerical summary</h3>
-<p>Define <code>show_smallest</code> and <code>show_average</code>. In each body, assign <code>a = 8</code>, <code>b = 3</code>, and <code>c = 7</code>. The first function prints the smallest value. The second prints their arithmetic average, which is their sum divided by three. Document and call both functions. Test again with all three values set to 4.</p>
+<p>Write two functions. Each one starts with the same three values, <code>a = 8</code>, <code>b = 3</code>, and <code>c = 7</code>, as the starter shows.</p>
+<ol>
+  <li><code>show_smallest</code> prints the smallest of the three values.</li>
+  <li><code>show_average</code> prints their average: the sum of the three values divided by 3.</li>
+</ol>
+<p>Give each function a docstring, and call each one once. Then test again with all three values set to 4.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Values</th><th>Output</th></tr></thead>
@@ -295,7 +311,13 @@ Hello!</pre>
 <wb-exercise id="p6"></wb-exercise>
 
 <h3>7. Relationships between values</h3>
-<p>Define <code>show_relationships</code> with the fixed values <code>a = 4</code>, <code>b = 4</code>, and <code>c = 6</code>. Print three Boolean values, one per line: whether all three are equal; whether every pair is different; whether the values are in increasing order, allowing equality. Document and call the function. Test again with <code>2, 2, 2</code> and with <code>1, 3, 5</code>.</p>
+<p>Write <code>show_relationships</code>. It starts with the values <code>a = 4</code>, <code>b = 4</code>, and <code>c = 6</code>, as the starter shows. It prints three Boolean values (<code>True</code> or <code>False</code>), one per line:</p>
+<ol>
+  <li>Are all three values equal?</li>
+  <li>Are all three values different from each other?</li>
+  <li>Is each value less than or equal to the next one (<code>a &lt;= b &lt;= c</code>)?</li>
+</ol>
+<p>Give the function a docstring and call it once. Then test again with <code>2, 2, 2</code> and with <code>1, 3, 5</code>.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Values</th><th>Output</th></tr></thead>
@@ -317,7 +339,13 @@ Hello!</pre>
 <wb-exercise id="p7"></wb-exercise>
 
 <h3>8. Digits of a number</h3>
-<p>Define <code>show_digits</code> with <code>number = 8040</code> inside its body. Print its first digit, last digit, and number of digits, one per line. Document and call the function. Test again with zero, which has one digit.</p>
+<p>Write <code>show_digits</code>. It starts with <code>number = 8040</code>, as the starter shows. It prints three lines:</p>
+<ol>
+  <li>the first digit of the number;</li>
+  <li>the last digit of the number;</li>
+  <li>how many digits the number has.</li>
+</ol>
+<p>Give the function a docstring and call it once. Then test again with <code>0</code>. Zero has one digit.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th><code>number</code></th><th>Output</th></tr></thead>
@@ -367,7 +395,8 @@ Hello!</pre>
 <wb-exercise id="p9"></wb-exercise>
 
 <h3>10. A growing balance</h3>
-<p>Define <code>show_balance</code> with an initial balance of 200, an annual interest rate of 3 percent, and 2 years stored inside its body. Each year, interest adds 3 percent of the current balance, so multiply the balance by <code>1.03</code>. Print only the final balance with two decimal places. Document and call the function. Test zero years as well.</p>
+<p>A bank account starts with a balance of 200. Each year, the bank adds interest of 3 percent of the current balance. So each year, the balance is multiplied by <code>1.03</code>.</p>
+<p>Write <code>show_balance</code>. It starts with <code>balance = 200.0</code> and <code>years = 2</code>, as the starter shows. It applies the interest once for each year, then prints only the final balance, to two decimal places. Give the function a docstring and call it once. Then test again with 0 years.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th><code>years</code></th><th>Output</th></tr></thead>
@@ -390,7 +419,9 @@ Hello!</pre>
 <wb-exercise id="p10"></wb-exercise>
 
 <h3>11. A colour code</h3>
-<p>A colour uses three whole-number components: red, green, and blue, each from 0 to 255. The combined code is <code>65536 × red + 256 × green + blue</code>. Use a temperature from 0 to 100 degrees Celsius. Use this path to assign its colour:</p>
+<p>A screen colour is made of three whole numbers: red, green, and blue. Each one is from 0 to 255. The three numbers can be combined into one <em>colour code</em>:</p>
+<p><code>code = 65536 × red + 256 × green + blue</code></p>
+<p>In this exercise, a temperature from 0 to 100 degrees Celsius is shown as a colour. Cold is blue and hot is red. The table gives red, green, and blue for each range of temperatures <var>t</var>:</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th>Temperature <var>t</var></th><th>Red</th><th>Green</th><th>Blue</th></tr></thead>
@@ -402,7 +433,13 @@ Hello!</pre>
   </tbody>
 </table>
 </div>
-<p>Round each component with <code>round</code>. Define <code>show_colour</code> with <code>temperature = 25</code> inside its body, then compute and print the combined code. Document and call it. Test the five path endpoints: 0, 25, 50, 75, and 100, as well as 12.5.</p>
+<p>Write <code>show_colour</code>. It starts with <code>temperature = 25</code>, as the starter shows.</p>
+<ol>
+  <li>Use the row of the table that holds the temperature to work out red, green, and blue.</li>
+  <li>Round each of the three numbers with <code>round</code>.</li>
+  <li>Print the colour code.</li>
+</ol>
+<p>Give the function a docstring and call it once. Test the temperatures where the table changes rows (0, 25, 50, 75, and 100) and also 12.5.</p>
 <div class="wb-table-wrap">
 <table>
   <thead><tr><th><code>temperature</code></th><th>Output</th></tr></thead>
