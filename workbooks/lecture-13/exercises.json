@@ -970,7 +970,7 @@
           "expected": "Word, or blank to finish: ADA\nWord, or blank to finish: "
         }
       ],
-      "check": "assert \"while True\" in __source__, \"Rewrite the loop as while True with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nassert __source__.count(\"input(\") == 1, \"The input line should appear once, inside the loop.\"\n",
+      "check": "assert \"while True\" in __source__, \"Rewrite the loop as while True with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nassert __code__.count(\"input(\") == 1, \"The input line should appear once, inside the loop.\"\n",
       "answer": "d2hpbGUgVHJ1ZToKICAgIHRleHQgPSBpbnB1dCgnV29yZCwgb3IgYmxhbmsgdG8gZmluaXNoOiAnKQogICAgaWYgdGV4dCA9PSAnJzoKICAgICAgICBicmVhawogICAgcHJpbnQodGV4dC51cHBlcigpKQ==",
       "answerNote": "The input appears once, and the blank line is tested before text.upper() is printed."
     },
@@ -1101,7 +1101,7 @@
           "expected": "Study time (-1 to finish): Study time (-1 to finish): Entries: 1\nTotal minutes: 120.0"
         }
       ],
-      "check": "import re\nassert \"while True\" in __source__, \"Keep the while True loop with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each value to total with total = total + ... inside the loop.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\nassert __source__.count(\"input(\") == 1, \"The input line should appear once, inside the while True loop.\"\n",
+      "check": "import re\nassert \"while True\" in __source__, \"Keep the while True loop with one break.\"\nassert __source__.count(\"break\") == 1, \"Use exactly one break to leave the loop.\"\nupdate = re.search(r\"total\\s*(\\+=|=\\s*total\\s*\\+)\", __source__)\nassert update, \"Add each value to total with total = total + ... inside the loop.\"\nassert __source__.index(\"break\") < update.start(), \"Test the sentinel and break before total and count are updated.\"\nassert __code__.count(\"input(\") == 1, \"The input line should appear once, inside the while True loop.\"\n",
       "answer": "dG90YWwgPSAwLjAKY291bnQgPSAwCgp3aGlsZSBUcnVlOgogICAgbWludXRlcyA9IGZsb2F0KGlucHV0KCdTdHVkeSB0aW1lICgtMSB0byBmaW5pc2gpOiAnKSkKICAgIGlmIG1pbnV0ZXMgPT0gLTE6CiAgICAgICAgYnJlYWsKICAgIHRvdGFsID0gdG90YWwgKyBtaW51dGVzCiAgICBjb3VudCA9IGNvdW50ICsgMQoKcHJpbnQoJ0VudHJpZXM6JywgY291bnQpCnByaW50KGYnVG90YWwgbWludXRlczoge3RvdGFsOi4xZn0nKQ=="
     },
     "pf-zero": {
@@ -1206,7 +1206,7 @@
           "expected": "Passes: 3"
         }
       ],
-      "check": "assert \"count = 0\" in __source__, \"Keep count starting at 0 and repair the test instead.\"\nassert \"while\" in __source__, \"Keep the while loop and repair its test.\"\n",
+      "check": "import re\nassert re.search(r\"\\bcount\\s*=\\s*0\\b\", __code__), \"Keep count starting at 0 and repair the test instead.\"\nassert \"while\" in __source__, \"Keep the while loop and repair its test.\"\n",
       "answer": "Y291bnQgPSAwCndoaWxlIGNvdW50IDwgMzoKICAgIGNvdW50ID0gY291bnQgKyAxCgpwcmludCgnUGFzc2VzOicsIGNvdW50KQ=="
     },
     "ex-passes": {

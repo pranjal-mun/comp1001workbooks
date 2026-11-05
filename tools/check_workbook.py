@@ -37,9 +37,16 @@ _LITERALS = re.compile(
     r"'(?:\\.|[^'\\\n])*'"
     r")|#[^\n]*", re.S)
 
+_KEYWORDS = ("False|None|True|and|as|assert|async|await|break|class|continue|def|del|elif|else|except|finally|"
+             "for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|try|while|with|yield")
+_SPACE_BEFORE_BRACKET = re.compile(r"\b(?!(?:" + _KEYWORDS + r")\b)([A-Za-z_]\w*)[ \t]+(?=[(\[])")
+_SPACE_INSIDE_BRACKETS = re.compile(r"(?<=[(\[])[ \t]+|[ \t]+(?=[)\]])")
+
 def _code_only(source):
     """The source with comments removed and every string literal emptied,
-    so a check can look for keywords without matching prose."""
+    so a check can look for keywords without matching prose. Spaces next to
+    call and index brackets are removed too, so print (x) and print( x ) both
+    read as print(x). A keyword keeps its space: if (x) stays as it is."""
     def blank(match):
         text, literal = match.group(0), match.group(1)
         if literal is None:
@@ -50,7 +57,8 @@ def _code_only(source):
         if "f" in prefix.lower():
             fields = "".join(re.findall(r"\{[^{}]*\}", literal))
         return prefix + quote * width + fields + quote * width
-    return _LITERALS.sub(blank, source)
+    code = _LITERALS.sub(blank, source)
+    return _SPACE_INSIDE_BRACKETS.sub("", _SPACE_BEFORE_BRACKET.sub(r"\1", code))
 
 
 def run(source, inputs=(), check=None):

@@ -62,7 +62,7 @@ assert type(small) is int and type(large) is int, "Convert both counts with int(
 constants = {k: v for k, v in globals().items() if k == k.upper() and not k.startswith("__") and isinstance(v, float)}
 assert 0.1 in constants.values() and 0.25 in constants.values(), "Store the two deposit amounts, 0.10 and 0.25, in ALL_CAPS constants (for example SMALL_DEPOSIT)."
 assert re.search(r":\\s*[<>^]?\\d*\\.2f", __source__), "Show the refund with the .2f specifier so it always has two decimals."
-assert "round(" not in __source__, "Do not round the value; let the .2f specifier format the display."
+assert "round(" not in __code__, "Do not round the value; let the .2f specifier format the display."
 assert len(__stdout__.strip().splitlines()) == 1, "Print one line with a single print() call."
 """,
     "answer": b64(deposits),
@@ -84,7 +84,7 @@ E["bread"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 9,
     "cases": cases(bread, ("Typed 3", ["3"]), ("Typed 1", ["1"]), ("Typed 12", ["12"]), ("Typed 100", ["100"])),
     "check": FSTRING + NO_IF + """import re
 assert type(loaves) is int, "Convert the typed text with int(): loaves is a whole number."
-assert "round(" not in __source__, "Do not round the values; let the .2f specifier format the display."
+assert "round(" not in __code__, "Do not round the values; let the .2f specifier format the display."
 assert len(re.findall(r":\\s*[<>^]?\\d+\\.2f", __source__)) >= 3, "Give each amount a width and two decimals, as in {total:7.2f}, so the decimal points line up."
 lines = __stdout__.split("Loaves: ", 1)[-1].strip().splitlines()
 assert len(lines) == 3, "Print exactly three lines: the regular price, the discount, and the total."

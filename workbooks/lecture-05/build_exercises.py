@@ -221,7 +221,7 @@ c5 = "measured = 1.2\nreference = 1.0\ndifference = measured - reference\nprint(
 E["c5"] = {"type": "code", "xp": 5, "minLines": 5,
     "starter": "measured = 1.2\nreference = 1.0\n# Complete the revised program.\n",
     "cases": [{"name": "Program output", "expected": run(c5)}],
-    "check": '''assert "round(" in __source__, "Use round(..., 2) on the difference before printing it."
+    "check": '''assert "round(" in __code__, "Use round(..., 2) on the difference before printing it."
 assert "0.2" not in __source__.replace("1.2", ""), "Compute the difference with subtraction; do not print 0.2 directly."''',
     "answer": b64(c5)}
 E["c5-exact"] = {"type": "short", "xp": 2, "answer": b64(
@@ -255,7 +255,7 @@ E["c7"] = {"type": "code", "xp": 10, "minLines": 14,
     "check": QUALIFIED_MATH + '''for _name in ("a1", "b1", "h1", "a2", "b2", "h2", "a3", "b3", "h3"):
     assert _name in globals(), f"Assign the dimension {_name} to its own variable."
 assert "math.pi" in __source__, "Use math.pi for pi."
-assert "round(" in __source__, "Round the total to two decimal places with round(..., 2)."''',
+assert "round(" in __code__, "Round the total to two decimal places with round(..., 2)."''',
     "answer": b64(c7),
     "answerNote": "The second case sets h2 = 1, so the checker expects the line `h2 = 4` in your program."}
 E["c8-branch"] = {"type": "short", "xp": 1, "minChars": 5, "rows": 2, "placeholder": "Which part of the formula?", "answer": b64(
@@ -282,7 +282,7 @@ E["c9"] = {"type": "code", "xp": 10, "minLines": 8,
 assert "EPSILON" in globals(), "Store the constant under the name EPSILON (capital letters, the constant convention)."
 assert _m.isclose(EPSILON, 8.854e-12), "EPSILON should be 8.854 * 10 ** (-12)."
 assert "math.pi" in __source__, "Use math.pi for pi."
-assert "round(" in __source__, "Round the force to three decimal places with round(..., 3)."''',
+assert "round(" in __code__, "Round the force to three decimal places with round(..., 3)."''',
     "answer": b64(c9)}
 
 for spec in E.values():

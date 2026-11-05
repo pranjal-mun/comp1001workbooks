@@ -55,7 +55,7 @@ E["cp3-fix"] = {"type": "code", "xp": 2, "minLines": 4,
     "cases": [
         {"name": "score = 100", "expected": run(cp3_fix)},
         {"name": "score = 99 (prints nothing)", "rewrite": [["score = 100", "score = 99"]], "expected": run(cp3_fix.replace("score = 100", "score = 99"))}],
-    "check": 'assert "score == 100" in __source__, "The condition should test equality with score == 100."\n'
+    "check": 'import re\nassert re.search(r"\\bscore\\s*==\\s*100\\b|\\b100\\s*==\\s*score\\b", __code__), "The condition should test equality with score == 100."\n'
              'assert "= 100:" not in __source__.replace("==", ""), "An if condition must compare, not assign: use == in the condition."',
     "answer": b64(cp3_fix)}
 # ---------------------------------------------------------------- Section 4
@@ -89,7 +89,7 @@ E["cp7-cond"] = {"type": "code", "xp": 5, "minLines": 6,
         {"name": "choice = 'y'", "rewrite": [["choice = 'N'", "choice = 'y'"]], "expected": run(cp7.replace("'N'", "'y'"))},
         {"name": "choice = 'No'", "rewrite": [["choice = 'N'", "choice = 'No'"]], "expected": run(cp7.replace("'N'", "'No'"))}],
     "check": 'assert "False" not in __source__.split("if", 1)[1].split(":", 1)[0], "Replace False with a comparison that uses choice."\n'
-             'assert ".lower()" in __source__ or ".upper()" in __source__, "Convert choice to one case (for example choice.lower()) before comparing it."',
+             'assert ".lower()" in __code__ or ".upper()" in __code__, "Convert choice to one case (for example choice.lower()) before comparing it."',
     "answer": b64(cp7)}
 E["cp7-why"] = {"type": "short", "xp": 2, "answer": b64(
     "`.lower()` produces a lowercase copy of `choice` for the comparison, so `'N'` and `'n'` both compare equal to `'n'`. Capitalization no longer affects the result, and the original string is unchanged.")}
@@ -157,7 +157,7 @@ E["pc"] = {"type": "code", "xp": 5, "minLines": 7,
         {"name": "'Hello' and 'HELLO'", "rewrite": [["word2 = 'hello'", "word2 = 'HELLO'"]], "expected": run(pc.replace("word2 = 'hello'", "word2 = 'HELLO'"))},
         {"name": "'Hello' and 'help'", "rewrite": [["word2 = 'hello'", "word2 = 'help'"]], "expected": run(pc.replace("word2 = 'hello'", "word2 = 'help'"))},
         {"name": "'Hello' and 'hello ' (trailing space)", "rewrite": [["word2 = 'hello'", "word2 = 'hello '"]], "expected": run(pc.replace("word2 = 'hello'", "word2 = 'hello '"))}],
-    "check": 'assert ".lower()" in __source__ or ".upper()" in __source__ or ".casefold()" in __source__, "Convert both strings to the same case (for example with .lower()) before comparing them."\n'
+    "check": 'assert ".lower()" in __code__ or ".upper()" in __code__ or ".casefold()" in __code__, "Convert both strings to the same case (for example with .lower()) before comparing them."\n'
              'assert word1 == "Hello", "Do not change word1 itself; convert a copy inside the comparison."',
     "answer": b64(pc)}
 pd = "calculated = 0.1 + 0.2\nexpected = 0.3\n\nclose_enough = abs(calculated - expected) < 0.0001\nprint(close_enough)\n"
@@ -167,7 +167,7 @@ E["pd"] = {"type": "code", "xp": 5, "minLines": 6,
         {"name": "0.1 + 0.2 against 0.3", "expected": run(pd)},
         {"name": "0.1 + 0.2 against 0.31", "rewrite": [["expected = 0.3", "expected = 0.31"]], "expected": run(pd.replace("expected = 0.3", "expected = 0.31"))},
         {"name": "0.1 + 0.2 against 0.30005", "rewrite": [["expected = 0.3", "expected = 0.30005"]], "expected": run(pd.replace("expected = 0.3", "expected = 0.30005"))}],
-    "check": 'assert "abs(" in __source__, "Use abs() so the difference is a nonnegative distance."\n'
+    "check": 'assert "abs(" in __code__, "Use abs() so the difference is a nonnegative distance."\n'
              'assert "0.0001" in __source__ or "1e-4" in __source__ or "1e-04" in __source__, "Compare the difference with the tolerance 0.0001."\n'
              'user = {k: v for k, v in globals().items() if not k.startswith("__")}\n'
              'assert any(type(v) is bool for v in user.values()), "Store the comparison result in a variable before printing it."',
@@ -188,8 +188,8 @@ E["pf"] = {"type": "code", "xp": 5, "minLines": 9,
         {"name": "answer = 'YES'", "rewrite": [["answer = 'Yes'", "answer = 'YES'"]], "expected": run(pf.replace("answer = 'Yes'", "answer = 'YES'"))},
         {"name": "answer = 'no'", "rewrite": [["answer = 'Yes'", "answer = 'no'"]], "expected": run(pf.replace("answer = 'Yes'", "answer = 'no'"))},
         {"name": "expected = 0.4", "rewrite": [["expected = 0.3", "expected = 0.4"]], "expected": run(pf.replace("expected = 0.3", "expected = 0.4"))}],
-    "check": 'assert ".lower()" in __source__ or ".upper()" in __source__, "Normalize the answer with .lower() so any capitalization of yes is recognized."\n'
-             'assert "abs(" in __source__, "Compare the size of the float difference with abs()."\n'
+    "check": 'assert ".lower()" in __code__ or ".upper()" in __code__, "Normalize the answer with .lower() so any capitalization of yes is recognized."\n'
+             'assert "abs(" in __code__, "Compare the size of the float difference with abs()."\n'
              'assert "1e-9" in __source__ or "0.000000001" in __source__, "Use the stated tolerance 1e-9."',
     "answer": b64(pf)}
 # ---------------------------------------------------------------- Putting It All Together
@@ -222,7 +222,7 @@ E["pr2"] = {"type": "code", "xp": 5, "minLines": 3,
     "cases": [
         {"name": "floor = 13", "expected": run(pr2)},
         {"name": "floor = 12", "rewrite": [["floor = 13\n", "floor = 12\n"]], "expected": run(pr2.replace("floor = 13\n", "floor = 12\n"))}],
-    "check": 'assert "floor == 13" in __source__, "The print should display the Boolean result of floor == 13."\n'
+    "check": 'import re\nassert re.search(r"\\bfloor\\s*==\\s*13\\b|\\b13\\s*==\\s*floor\\b", __code__), "The print should display the Boolean result of floor == 13."\n'
              'assert "if" not in __source__.split("#")[0].split(), "No if statement is needed: one assignment, then one print."\n'
              'assert type(floor) is int, "Store the floor number as a whole number in floor."',
     "answer": b64(pr2)}
@@ -255,7 +255,7 @@ E["pr7"] = {"type": "code", "xp": 10, "minLines": 11,
         {"name": "7, 7, 3", "inputs": ["7", "7", "3"], "expected": run(pr7, ["7", "7", "3"])},
         {"name": "1, 2, 10", "inputs": ["1", "2", "10"], "expected": run(pr7, ["1", "2", "10"])},
         {"name": "-5, -2, -9", "inputs": ["-5", "-2", "-9"], "expected": run(pr7, ["-5", "-2", "-9"])}],
-    "check": 'assert "max(" not in __source__, "Do not call max(); compare the values with if statements."\n'
+    "check": 'assert "max(" not in __code__, "Do not call max(); compare the values with if statements."\n'
              'assert __source__.count("if ") >= 2, "Use two separate if statements, one for second and one for third."\n'
              'assert "else" not in __source__, "Two separate if statements are enough here; no else is needed."',
     "answer": b64(pr7)}
@@ -269,7 +269,7 @@ E["pr8"] = {"type": "code", "xp": 10, "minLines": 11,
         {"name": "note, notebook", "inputs": ["note", "notebook"], "expected": run(pr8, ["note", "notebook"])},
         {"name": "9cats, birds", "inputs": ["9cats", "birds"], "expected": run(pr8, ["9cats", "birds"])}],
     "check": 'assert __source__.count("if ") == 1 and "else" in __source__, "Use one if/else statement to decide the order."\n'
-             'assert ".lower()" not in __source__, "Python order keeps capitalization significant; do not change the case."',
+             'assert ".lower()" not in __code__, "Python order keeps capitalization significant; do not change the case."',
     "answer": b64(pr8)}
 pr9 = "command = input('Command: ')\n\nif command.lower() == 'quit':\n    print('Command accepted')\nelse:\n    print('Unknown command')\n"
 E["pr9"] = {"type": "code", "xp": 5, "minLines": 7,
@@ -279,7 +279,7 @@ E["pr9"] = {"type": "code", "xp": 5, "minLines": 7,
         {"name": "quite", "inputs": ["quite"], "expected": run(pr9, ["quite"])},
         {"name": "Quit", "inputs": ["Quit"], "expected": run(pr9, ["Quit"])},
         {"name": "quit (with a trailing space)", "inputs": ["quit "], "expected": run(pr9, ["quit "])}],
-    "check": 'assert ".lower()" in __source__ or ".upper()" in __source__, "Normalize the command with .lower() so any capitalization of quit matches."',
+    "check": 'assert ".lower()" in __code__ or ".upper()" in __code__, "Normalize the command with .lower() so any capitalization of quit matches."',
     "answer": b64(pr9)}
 pr10 = "first = float(input('First reading: '))\nsecond = float(input('Second reading: '))\n\nif abs(first - second) < 0.01:\n    print('Match')\nelse:\n    print('Different')\n"
 E["pr10"] = {"type": "code", "xp": 5, "minLines": 8,
@@ -289,7 +289,7 @@ E["pr10"] = {"type": "code", "xp": 5, "minLines": 8,
         {"name": "2.0 and 1.98", "inputs": ["2.0", "1.98"], "expected": run(pr10, ["2.0", "1.98"])},
         {"name": "1.995 and 2.0 (reversed)", "inputs": ["1.995", "2.0"], "expected": run(pr10, ["1.995", "2.0"])},
         {"name": "1.0 and 1.01 (exactly at the boundary)", "inputs": ["1.0", "1.01"], "expected": run(pr10, ["1.0", "1.01"])}],
-    "check": 'assert "abs(" in __source__, "Use abs() so the order of the two readings does not matter."\n'
+    "check": 'assert "abs(" in __code__, "Use abs() so the order of the two readings does not matter."\n'
              'assert "0.01" in __source__ or "1e-2" in __source__, "Compare the difference with the tolerance 0.01."',
     "answer": b64(pr10),
     "answerNote": "abs(1.0 - 1.01) is 0.010000000000000009 in floating point. The boundary case prints Different either way. The strict < is still the right operator."}

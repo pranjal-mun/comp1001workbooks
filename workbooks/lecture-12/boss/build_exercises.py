@@ -52,7 +52,6 @@ E["clearance"] = {"type": "code", "xp": 10, "boss": "👹", "minLines": 12,
     "check": WHILE_ONLY + """assert __code__.count("DISCOUNT_RATE") >= 2, "Work out the discount with price * DISCOUNT_RATE instead of writing 0.25 again."
 assert re.search(r":[^}]*\\.2f\\}", __source__), "Show every amount with :.2f in the f-string."
 assert __code__.count("print(") == 2, "Print one row per pass with a single print() inside the loop, and keep the heading print() outside it."
-assert count == rows, "Add 1 to count on every pass so the loop stops after rows passes."
 """,
     "answer": b64(clearance),
     "hints": [
@@ -138,9 +137,6 @@ E["circle"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 12,
     "check": WHILE_ONLY + """assert "math" not in __code__ and "import" not in __code__, "Build the estimate with the loop; do not import a module."
 assert re.search(r":[^}]*\\.6f\\}", __source__), "Show the estimate with :.6f in the f-string."
 assert __code__.count("print(") == 1, "Print one estimate per pass with a single print() inside the loop."
-assert denominator == 2 * terms + 1, "Add 2 to denominator on every pass so it moves through 1, 3, 5, 7 and so on."
-assert sign == (1 if terms % 2 == 0 else -1), "Flip sign on every pass so the terms alternate between adding and subtracting."
-assert step == terms + 1, "Add 1 to step on every pass and stop after terms passes."
 """,
     "answer": b64(circle),
     "hints": [

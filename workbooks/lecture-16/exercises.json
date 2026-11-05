@@ -960,7 +960,7 @@
           "expected": "-6 -10"
         }
       ],
-      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\"random\\.choice\\(\\s*['\\\"]NSEW['\\\"]\\s*\\)\", __source__), \"Choose each direction with random.choice('NSEW').\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print one line: x and y separated by a space.\"\n",
+      "check": "import re\nassert re.search(r\"^\\s*for\\b\", __code__, re.M), \"Use a for loop.\"\nassert re.search(r\"random\\.seed\\(\\s*seed\\s*\\)\", __code__), \"Seed the generator with random.seed(seed) before the first random call.\"\nassert re.search(r\"random\\.choice\\s*\\(\\s*['\\\"]NSEW['\\\"]\\s*\\)\", __source__), \"Choose each direction with random.choice('NSEW').\"\nassert __stdout__.count(\"\\n\") <= 1, \"Print one line: x and y separated by a space.\"\n",
       "answer": "aW1wb3J0IHJhbmRvbQpzZWVkID0gaW50KGlucHV0KCkpCnN0ZXBzID0gaW50KGlucHV0KCkpCnJhbmRvbS5zZWVkKHNlZWQpCnggPSAwCnkgPSAwCmZvciBzdGVwIGluIHJhbmdlKHN0ZXBzKToKICAgIGRpcmVjdGlvbiA9IHJhbmRvbS5jaG9pY2UoJ05TRVcnKQogICAgaWYgZGlyZWN0aW9uID09ICdOJzoKICAgICAgICB5ID0geSArIDEKICAgIGVsaWYgZGlyZWN0aW9uID09ICdTJzoKICAgICAgICB5ID0geSAtIDEKICAgIGVsaWYgZGlyZWN0aW9uID09ICdFJzoKICAgICAgICB4ID0geCArIDEKICAgIGVsc2U6CiAgICAgICAgeCA9IHggLSAxCnByaW50KHgsIHkp",
       "answerNote": "Each loop pass changes exactly one coordinate by 1."
     },

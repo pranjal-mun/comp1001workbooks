@@ -134,7 +134,7 @@ E["cp7"] = {"type": "code", "xp": 2, "minLines": 2, "check": cp7_check,
 # ---------------------------------------------------------------- 8. Escape Sequences
 E["ex-escape"] = example("print('First line\\nSecond line')\nprint('A\\tB')\nprint(\"She said, \\\"Hello.\\\"\")\nprint('C:\\\\courses\\\\comp1001')\n")
 cp8 = "print('input\\nprocess\\noutput')\n"
-cp8_check = '''assert __source__.count("print(") == 1, "Use one print() call with one string literal."
+cp8_check = '''assert __code__.count("print(") == 1, "Use one print() call with one string literal."
 assert "\\\\n" in __source__, "Use the newline escape \\\\n inside the string to start each new line."
 '''
 E["cp8"] = {"type": "code", "xp": 2, "minLines": 1, "check": cp8_check,
@@ -162,7 +162,7 @@ E["fr4"] = {"type": "table", "xp": 1, "blanks": {
 pa = "print('A', 'B', 'C', sep='-')\nprint('Ready', end='...')\nprint('go')\n"
 pa_check = '''assert "sep=" in __source__.replace(" ", ""), "Display A-B-C with one print() call that uses sep='-'."
 assert "end=" in __source__.replace(" ", ""), "Display Ready...go with two print() calls; the first uses end='...'."
-assert __source__.count("print(") == 3, "Use exactly three print() calls: one for A-B-C and two for Ready...go."
+assert __code__.count("print(") == 3, "Use exactly three print() calls: one for A-B-C and two for Ready...go."
 '''
 E["pa"] = {"type": "code", "xp": 5, "minLines": 3, "check": pa_check,
     "starter": "# Display A-B-C using sep, then Ready...go using end.\n",
@@ -306,7 +306,7 @@ c11 = ("import math\n\ntemperature = float(input('Temperature (C): '))\nhumidity
 E["c11"] = {"type": "code", "xp": 5, "minLines": 8,
     "starter": "import math\n\ntemperature = float(input('Temperature (C): '))\nhumidity = float(input('Relative humidity (0 to 1): '))\n\nf_value = ________________________________________\ndew_point = ______________________________________\nprint(____________________________________________)\n",
     "cases": [case("Typed 20 and 0.5", ["20", "0.5"], c11), case("Typed 30 and 0.8", ["30", "0.8"], c11)],
-    "check": 'assert "math.log(" in __source__, "Use math.log() for the natural logarithm of the humidity."',
+    "check": 'assert "math.log(" in __code__, "Use math.log() for the natural logarithm of the humidity."',
     "answer": b64(c11)}
 c12 = ("import math\n\nEPSILON = 8.854e-12\nq1 = float(input('Charge 1 (C): '))\nq2 = float(input('Charge 2 (C): '))\ndistance = float(input('Distance (m): '))\n\n"
        "force = (q1 * q2) / (4 * math.pi * EPSILON * distance ** 2)\nprint(f'Force: {force:.5f} N')\n")

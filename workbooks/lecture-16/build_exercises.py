@@ -421,7 +421,7 @@ E["p7"] = {"type": "code", "xp": 5, "minLines": 12,
     "starter": "import random\nseed = int(input())\nsteps = int(input())\nrandom.seed(seed)\nx = 0\ny = 0\n# Take the steps, then print x and y.\n",
     "cases": [case("Typed 1, 5", ["1", "5"], walk), case("Typed 3, 1", ["3", "1"], walk), case("Typed 7, 10", ["7", "10"], walk),
               case("Typed 2, 25", ["2", "25"], walk), case("Typed 10, 100", ["10", "100"], walk)],
-    "check": FOR + SEED + '''assert re.search(r"random\\.choice\\(\\s*['\\"]NSEW['\\"]\\s*\\)", __source__), "Choose each direction with random.choice('NSEW')."
+    "check": FOR + SEED + '''assert re.search(r"random\\.choice\\s*\\(\\s*['\\"]NSEW['\\"]\\s*\\)", __source__), "Choose each direction with random.choice('NSEW')."
 assert __stdout__.count("\\n") <= 1, "Print one line: x and y separated by a space."
 ''',
     "answer": b64(walk),

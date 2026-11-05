@@ -61,7 +61,7 @@
           "expected": "COMP 1001\n====================\nLab 4"
         }
       ],
-      "check": "assert \"COMP 1001\" not in __source__, \"Build 'COMP 1001' from the three pieces with +, rather than typing it as one string.\"\nassert \"=\" * 20 not in __source__, \"Use repetition (*) to make the 20 equals signs, rather than typing them.\"\nassert \"str(\" in __source__, \"Use str() to turn the number 4 into text before joining it.\"",
+      "check": "assert \"COMP 1001\" not in __source__, \"Build 'COMP 1001' from the three pieces with +, rather than typing it as one string.\"\nassert \"=\" * 20 not in __source__, \"Use repetition (*) to make the 20 equals signs, rather than typing them.\"\nassert \"str(\" in __code__, \"Use str() to turn the number 4 into text before joining it.\"",
       "answer": "cHJpbnQoJ0NPTVAnICsgJyAnICsgJzEwMDEnKQpwcmludCgnPScgKiAyMCkKcHJpbnQoJ0xhYiAnICsgc3RyKDQpKQ=="
     },
     "ex-w06": {
@@ -251,7 +251,7 @@
           "expected": "python basics"
         }
       ],
-      "check": "assert title == '  Python Basics  ', \"Leave title as it is: the methods should return new strings, not change the original.\"\nassert clean_title == 'python basics', 'clean_title should hold the stripped, lowercase text.'\nassert '.strip(' in __source__ and '.lower(' in __source__, 'Use the .strip() and .lower() methods.'",
+      "check": "assert title == '  Python Basics  ', \"Leave title as it is: the methods should return new strings, not change the original.\"\nassert clean_title == 'python basics', 'clean_title should hold the stripped, lowercase text.'\nassert '.strip(' in __code__ and '.lower(' in __code__, 'Use the .strip() and .lower() methods.'",
       "answer": "dGl0bGUgPSAnICBQeXRob24gQmFzaWNzICAnCgpjbGVhbl90aXRsZSA9IHRpdGxlLnN0cmlwKCkKY2xlYW5fdGl0bGUgPSBjbGVhbl90aXRsZS5sb3dlcigpCgpwcmludChjbGVhbl90aXRsZSk=",
       "answerNote": "The one-line version clean_title = title.strip().lower() is also correct."
     },
@@ -469,7 +469,7 @@
       ],
       "answer": "cmF3X25hbWUgPSBpbnB1dCgnTmFtZTogJykKcmF3X2NvZGUgPSBpbnB1dCgnQ291cnNlIGNvZGU6ICcpCgpuYW1lID0gcmF3X25hbWUuc3RyaXAoKQpjb2RlID0gcmF3X2NvZGUuc3RyaXAoKS51cHBlcigpCmJhZGdlID0gbmFtZSArICcgfCAnICsgY29kZQpib3JkZXIgPSAnLScgKiBsZW4oYmFkZ2UpCgpwcmludChib3JkZXIpCnByaW50KGJhZGdlKQpwcmludChib3JkZXIpCnByaW50KCdDT01QIGNvdXJzZTonLCAnQ09NUCcgaW4gY29kZSk=",
       "minLines": 12,
-      "check": "assert '.strip(' in __source__, 'Use .strip() to remove the outer whitespace from both inputs.'\nassert '.upper(' in __source__, 'Use .upper() to store the course code in uppercase.'\nassert 'len(' in __source__, 'Make the border exactly as long as the badge by repeating \"-\" len(badge) times.'\nassert ' in ' in __source__, \"Use the in operator to report whether 'COMP' occurs in the code.\""
+      "check": "assert '.strip(' in __code__, 'Use .strip() to remove the outer whitespace from both inputs.'\nassert '.upper(' in __code__, 'Use .upper() to store the course code in uppercase.'\nassert 'len(' in __code__, 'Make the border exactly as long as the badge by repeating \"-\" len(badge) times.'\nassert ' in ' in __source__, \"Use the in operator to report whether 'COMP' occurs in the code.\""
     },
     "cpr1": {
       "type": "table",
@@ -632,7 +632,7 @@
           "expected": "sxcsee"
         }
       ],
-      "check": "assert __source__.count('.replace(') >= 3, 'Use three .replace() calls: one to the temporary character, and two to swap.'\nassert \"'*'\" in __source__ or '\"*\"' in __source__, \"Use '*' as the temporary character.\"\nassert 'word = word.replace' in __source__.replace('  ', ' '), 'Store each result back in word; .replace() returns a new string.'",
+      "check": "import re\nassert __code__.count('.replace(') >= 3, 'Use three .replace() calls: one to the temporary character, and two to swap.'\nassert \"'*'\" in __source__ or '\"*\"' in __source__, \"Use '*' as the temporary character.\"\nassert re.search(r'\\bword\\s*=\\s*word\\.replace', __code__), 'Store each result back in word; .replace() returns a new string.'",
       "answer": "d29yZCA9ICdzZWVzYXcnCmZpcnN0ID0gJ3MnCnNlY29uZCA9ICdlJwoKd29yZCA9IHdvcmQucmVwbGFjZShmaXJzdCwgJyonKQp3b3JkID0gd29yZC5yZXBsYWNlKHNlY29uZCwgZmlyc3QpCndvcmQgPSB3b3JkLnJlcGxhY2UoJyonLCBzZWNvbmQpCgpwcmludCh3b3JkKQ=="
     },
     "cpr5-value": {
@@ -863,7 +863,7 @@
         }
       ],
       "answer": "bmFtZSA9IGlucHV0KCdOYW1lOiAnKQoKYm9yZGVyID0gJysnICsgJy0nICogKGxlbihuYW1lKSArIDIpICsgJysnCm1pZGRsZSA9ICd8ICcgKyBuYW1lICsgJyB8JwoKcHJpbnQoYm9yZGVyKQpwcmludChtaWRkbGUpCnByaW50KGJvcmRlcik=",
-      "check": "import re\nassert not re.search(r'-{2,}', __source__), 'Build the border by repeating \"-\" with *, not by typing a fixed run of hyphens.'\nassert 'len(' in __source__, 'Use len(name) so the border fits any name.'"
+      "check": "import re\nassert not re.search(r'-{2,}', __source__), 'Build the border by repeating \"-\" with *, not by typing a fixed run of hyphens.'\nassert 'len(' in __code__, 'Use len(name) so the border fits any name.'"
     }
   }
 }

@@ -680,7 +680,7 @@
           "expected": "0.2"
         }
       ],
-      "check": "assert \"round(\" in __source__, \"Use round(..., 2) on the difference before printing it.\"\nassert \"0.2\" not in __source__.replace(\"1.2\", \"\"), \"Compute the difference with subtraction; do not print 0.2 directly.\"",
+      "check": "assert \"round(\" in __code__, \"Use round(..., 2) on the difference before printing it.\"\nassert \"0.2\" not in __source__.replace(\"1.2\", \"\"), \"Compute the difference with subtraction; do not print 0.2 directly.\"",
       "answer": "bWVhc3VyZWQgPSAxLjIKcmVmZXJlbmNlID0gMS4wCmRpZmZlcmVuY2UgPSBtZWFzdXJlZCAtIHJlZmVyZW5jZQpwcmludChyb3VuZChkaWZmZXJlbmNlLCAyKSk="
     },
     "c5-exact": {
@@ -797,7 +797,7 @@
           "expected": "128.81"
         }
       ],
-      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nfor _name in (\"a1\", \"b1\", \"h1\", \"a2\", \"b2\", \"h2\", \"a3\", \"b3\", \"h3\"):\n    assert _name in globals(), f\"Assign the dimension {_name} to its own variable.\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __source__, \"Round the total to two decimal places with round(..., 2).\"",
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nfor _name in (\"a1\", \"b1\", \"h1\", \"a2\", \"b2\", \"h2\", \"a3\", \"b3\", \"h3\"):\n    assert _name in globals(), f\"Assign the dimension {_name} to its own variable.\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __code__, \"Round the total to two decimal places with round(..., 2).\"",
       "answer": "aW1wb3J0IG1hdGgKYTEgPSAyCmIxID0gMwpoMSA9IDMKYTIgPSAzCmIyID0gMwpoMiA9IDQKYTMgPSAzCmIzID0gMQpoMyA9IDMKdjEgPSBtYXRoLnBpICogaDEgKiAoYTEgKiogMiArIGExICogYjEgKyBiMSAqKiAyKSAvIDMKdjIgPSBtYXRoLnBpICogaDIgKiAoYTIgKiogMiArIGEyICogYjIgKyBiMiAqKiAyKSAvIDMKdjMgPSBtYXRoLnBpICogaDMgKiAoYTMgKiogMiArIGEzICogYjMgKyBiMyAqKiAyKSAvIDMKcHJpbnQocm91bmQodjEgKyB2MiArIHYzLCAyKSk=",
       "answerNote": "The second case sets h2 = 1, so the checker expects the line `h2 = 4` in your program."
     },
@@ -884,7 +884,7 @@
           "expected": "0.0"
         }
       ],
-      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nimport math as _m\nassert \"EPSILON\" in globals(), \"Store the constant under the name EPSILON (capital letters, the constant convention).\"\nassert _m.isclose(EPSILON, 8.854e-12), \"EPSILON should be 8.854 * 10 ** (-12).\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __source__, \"Round the force to three decimal places with round(..., 3).\"",
+      "check": "import re\nlines = [l.strip() for l in __source__.split(\"\\n\")]\nassert \"import math\" in lines, \"Use the preferred course form: a line `import math` on its own.\"\nassert not any(l.startswith(\"from math import\") for l in lines), \"Use `import math`, not `from math import ...`, so the module name stays visible.\"\nimport math as _m\nassert \"EPSILON\" in globals(), \"Store the constant under the name EPSILON (capital letters, the constant convention).\"\nassert _m.isclose(EPSILON, 8.854e-12), \"EPSILON should be 8.854 * 10 ** (-12).\"\nassert \"math.pi\" in __source__, \"Use math.pi for pi.\"\nassert \"round(\" in __code__, \"Round the force to three decimal places with round(..., 3).\"",
       "answer": "aW1wb3J0IG1hdGgKcTEgPSAwLjAwMDAwMgpxMiA9IDAuMDAwMDAzCnIgPSAwLjUKRVBTSUxPTiA9IDguODU0ICogMTAgKiogKC0xMikKZm9yY2UgPSBxMSAqIHEyIC8gKDQgKiBtYXRoLnBpICogRVBTSUxPTiAqIHIgKiogMikKcHJpbnQocm91bmQoZm9yY2UsIDMpKQ=="
     }
   }

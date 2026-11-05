@@ -98,7 +98,7 @@ E["binary"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 10,
 assert re.search(r"^\\s*while\\s+True\\b", __code__, re.M), "Use while True for the loop."
 assert len(re.findall(r"^\\s*break\\b", __code__, re.M)) == 1, "Leave the loop with exactly one break."
 assert re.search(r"%\\s*2\\b", __code__), "Find each binary digit with the remainder after division by 2."
-assert re.search(r"//\\s*2\\b", __code__), "Move to the next digit with integer division by 2."
+assert re.search(r"//=?\\s*2\\b", __code__), "Move to the next digit with integer division by 2."
 assert "bin(" not in __code__ and "format(" not in __code__ and ":b" not in __code__, "Build the digits with the loop; bin() and format codes are not needed."
 assert __stdout__.count("\\n") <= 1, "Print exactly one line."
 ''',

@@ -247,7 +247,7 @@ E["pc"] = {"type": "code", "xp": 5, "minLines": 6, "starter": words_old,
               case("Ada, blank", ["Ada", ""], words)],
     "check": '''assert "while True" in __source__, "Rewrite the loop as while True with one break."
 assert __source__.count("break") == 1, "Use exactly one break to leave the loop."
-assert __source__.count("input(") == 1, "The input line should appear once, inside the loop."
+assert __code__.count("input(") == 1, "The input line should appear once, inside the loop."
 ''',
     "answer": b64(words),
     "answerNote": "The input appears once, and the blank line is tested before text.upper() is printed."}
@@ -290,7 +290,7 @@ E["pf"] = {"type": "code", "xp": 10, "minLines": 12, "starter": "total = 0.0\nco
               case("-1 first", ["-1"], study_total),
               case("0, 15, -1", ["0", "15", "-1"], study_total),
               case("120, -1", ["120", "-1"], study_total)],
-    "check": SENTINEL_FIRST + '''assert __source__.count("input(") == 1, "The input line should appear once, inside the while True loop."
+    "check": SENTINEL_FIRST + '''assert __code__.count("input(") == 1, "The input line should appear once, inside the while True loop."
 ''',
     "answer": b64(study_total)}
 E["pf-zero"] = {"type": "table", "xp": 1, "blanks": {
@@ -324,7 +324,8 @@ E["ph2-why"] = {"type": "short", "xp": 1, "minChars": 10, "rows": 2, "placeholde
     "The loop starts at zero and accepts 0, 1, 2, and 3. Change the test to `count < 3`.")}
 E["ph2"] = {"type": "code", "xp": 2, "minLines": 4, "starter": four_starter,
     "cases": [{"name": "three passes", "expected": run(four_fixed)}],
-    "check": '''assert "count = 0" in __source__, "Keep count starting at 0 and repair the test instead."
+    "check": '''import re
+assert re.search(r"\\bcount\\s*=\\s*0\\b", __code__), "Keep count starting at 0 and repair the test instead."
 assert "while" in __source__, "Keep the while loop and repair its test."
 ''',
     "answer": b64(four_fixed)}

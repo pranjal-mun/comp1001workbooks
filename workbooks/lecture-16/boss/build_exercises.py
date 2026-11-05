@@ -227,7 +227,7 @@ E["streaks"] = {"type": "code", "xp": 25, "boss": "💀", "minLines": 16,
         ("Typed 3, 10", ["3", "10"])),
     "check": RE + SEED + TWO_DP + '''assert re.search(r"^\\s*for\\b", __code__, re.M), "Use an outer for loop over the trials."
 assert re.search(r"^\\s+while\\b", __code__, re.M), "Use an inner while loop that flips until the run length reaches 3."
-assert re.search(r"random\\.choice\\(\\s*['\\"]HT['\\"]\\s*\\)", __source__), "Flip the coin with random.choice('HT')."
+assert re.search(r"random\\.choice\\s*\\(\\s*['\\"]HT['\\"]\\s*\\)", __source__), "Flip the coin with random.choice('HT')."
 ''',
     "hints": [
         "Each trial starts fresh: `previous = ''`, `run_length = 0`, `flips = 0`, and `outcomes = ''`. Put those four lines at the top of the `for trial in range(trials)` body.",

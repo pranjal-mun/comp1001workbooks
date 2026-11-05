@@ -137,7 +137,7 @@
           "expected": ""
         }
       ],
-      "check": "assert \"score == 100\" in __source__, \"The condition should test equality with score == 100.\"\nassert \"= 100:\" not in __source__.replace(\"==\", \"\"), \"An if condition must compare, not assign: use == in the condition.\"",
+      "check": "import re\nassert re.search(r\"\\bscore\\s*==\\s*100\\b|\\b100\\s*==\\s*score\\b\", __code__), \"The condition should test equality with score == 100.\"\nassert \"= 100:\" not in __source__.replace(\"==\", \"\"), \"An if condition must compare, not assign: use == in the condition.\"",
       "answer": "c2NvcmUgPSAxMDAKCmlmIHNjb3JlID09IDEwMDoKICAgIHByaW50KCdQZXJmZWN0IHNjb3JlJyk="
     },
     "ex-w06": {
@@ -312,7 +312,7 @@
           "expected": "Something else"
         }
       ],
-      "check": "assert \"False\" not in __source__.split(\"if\", 1)[1].split(\":\", 1)[0], \"Replace False with a comparison that uses choice.\"\nassert \".lower()\" in __source__ or \".upper()\" in __source__, \"Convert choice to one case (for example choice.lower()) before comparing it.\"",
+      "check": "assert \"False\" not in __source__.split(\"if\", 1)[1].split(\":\", 1)[0], \"Replace False with a comparison that uses choice.\"\nassert \".lower()\" in __code__ or \".upper()\" in __code__, \"Convert choice to one case (for example choice.lower()) before comparing it.\"",
       "answer": "Y2hvaWNlID0gJ04nCgppZiBjaG9pY2UubG93ZXIoKSA9PSAnbic6CiAgICBwcmludCgnTGV0dGVyIG4nKQplbHNlOgogICAgcHJpbnQoJ1NvbWV0aGluZyBlbHNlJyk="
     },
     "cp7-why": {
@@ -984,7 +984,7 @@
           "expected": "Different"
         }
       ],
-      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__ or \".casefold()\" in __source__, \"Convert both strings to the same case (for example with .lower()) before comparing them.\"\nassert word1 == \"Hello\", \"Do not change word1 itself; convert a copy inside the comparison.\"",
+      "check": "assert \".lower()\" in __code__ or \".upper()\" in __code__ or \".casefold()\" in __code__, \"Convert both strings to the same case (for example with .lower()) before comparing them.\"\nassert word1 == \"Hello\", \"Do not change word1 itself; convert a copy inside the comparison.\"",
       "answer": "d29yZDEgPSAnSGVsbG8nCndvcmQyID0gJ2hlbGxvJwoKaWYgd29yZDEubG93ZXIoKSA9PSB3b3JkMi5sb3dlcigpOgogICAgcHJpbnQoJ01hdGNoJykKZWxzZToKICAgIHByaW50KCdEaWZmZXJlbnQnKQ=="
     },
     "pd": {
@@ -1018,7 +1018,7 @@
           "expected": "True"
         }
       ],
-      "check": "assert \"abs(\" in __source__, \"Use abs() so the difference is a nonnegative distance.\"\nassert \"0.0001\" in __source__ or \"1e-4\" in __source__ or \"1e-04\" in __source__, \"Compare the difference with the tolerance 0.0001.\"\nuser = {k: v for k, v in globals().items() if not k.startswith(\"__\")}\nassert any(type(v) is bool for v in user.values()), \"Store the comparison result in a variable before printing it.\"",
+      "check": "assert \"abs(\" in __code__, \"Use abs() so the difference is a nonnegative distance.\"\nassert \"0.0001\" in __source__ or \"1e-4\" in __source__ or \"1e-04\" in __source__, \"Compare the difference with the tolerance 0.0001.\"\nuser = {k: v for k, v in globals().items() if not k.startswith(\"__\")}\nassert any(type(v) is bool for v in user.values()), \"Store the comparison result in a variable before printing it.\"",
       "answer": "Y2FsY3VsYXRlZCA9IDAuMSArIDAuMgpleHBlY3RlZCA9IDAuMwoKY2xvc2VfZW5vdWdoID0gYWJzKGNhbGN1bGF0ZWQgLSBleHBlY3RlZCkgPCAwLjAwMDEKcHJpbnQoY2xvc2VfZW5vdWdoKQ=="
     },
     "pe": {
@@ -1198,7 +1198,7 @@
           "expected": "Accepted"
         }
       ],
-      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__, \"Normalize the answer with .lower() so any capitalization of yes is recognized.\"\nassert \"abs(\" in __source__, \"Compare the size of the float difference with abs().\"\nassert \"1e-9\" in __source__ or \"0.000000001\" in __source__, \"Use the stated tolerance 1e-9.\"",
+      "check": "assert \".lower()\" in __code__ or \".upper()\" in __code__, \"Normalize the answer with .lower() so any capitalization of yes is recognized.\"\nassert \"abs(\" in __code__, \"Compare the size of the float difference with abs().\"\nassert \"1e-9\" in __source__ or \"0.000000001\" in __source__, \"Use the stated tolerance 1e-9.\"",
       "answer": "YW5zd2VyID0gJ1llcycKY2FsY3VsYXRlZCA9IDAuMSArIDAuMgpleHBlY3RlZCA9IDAuMwoKaWYgYW5zd2VyLmxvd2VyKCkgPT0gJ3llcyc6CiAgICBwcmludCgnQWNjZXB0ZWQnKQoKaWYgYWJzKGNhbGN1bGF0ZWQgLSBleHBlY3RlZCkgPCAxZS05OgogICAgcHJpbnQoJ1ZhbHVlcyBtYXRjaCcp"
     },
     "ex-w15": {
@@ -1307,7 +1307,7 @@
           "expected": "False"
         }
       ],
-      "check": "assert \"floor == 13\" in __source__, \"The print should display the Boolean result of floor == 13.\"\nassert \"if\" not in __source__.split(\"#\")[0].split(), \"No if statement is needed: one assignment, then one print.\"\nassert type(floor) is int, \"Store the floor number as a whole number in floor.\"",
+      "check": "import re\nassert re.search(r\"\\bfloor\\s*==\\s*13\\b|\\b13\\s*==\\s*floor\\b\", __code__), \"The print should display the Boolean result of floor == 13.\"\nassert \"if\" not in __source__.split(\"#\")[0].split(), \"No if statement is needed: one assignment, then one print.\"\nassert type(floor) is int, \"Store the floor number as a whole number in floor.\"",
       "answer": "Zmxvb3IgPSAxMwpwcmludChmbG9vciA9PSAxMyk="
     },
     "ex-w16": {
@@ -1644,7 +1644,7 @@
           "expected": "First number: Second number: Third number: Largest: -2.0"
         }
       ],
-      "check": "assert \"max(\" not in __source__, \"Do not call max(); compare the values with if statements.\"\nassert __source__.count(\"if \") >= 2, \"Use two separate if statements, one for second and one for third.\"\nassert \"else\" not in __source__, \"Two separate if statements are enough here; no else is needed.\"",
+      "check": "assert \"max(\" not in __code__, \"Do not call max(); compare the values with if statements.\"\nassert __source__.count(\"if \") >= 2, \"Use two separate if statements, one for second and one for third.\"\nassert \"else\" not in __source__, \"Two separate if statements are enough here; no else is needed.\"",
       "answer": "Zmlyc3QgPSBmbG9hdChpbnB1dCgnRmlyc3QgbnVtYmVyOiAnKSkKc2Vjb25kID0gZmxvYXQoaW5wdXQoJ1NlY29uZCBudW1iZXI6ICcpKQp0aGlyZCA9IGZsb2F0KGlucHV0KCdUaGlyZCBudW1iZXI6ICcpKQoKbGFyZ2VzdCA9IGZpcnN0CmlmIHNlY29uZCA+IGxhcmdlc3Q6CiAgICBsYXJnZXN0ID0gc2Vjb25kCmlmIHRoaXJkID4gbGFyZ2VzdDoKICAgIGxhcmdlc3QgPSB0aGlyZAoKcHJpbnQoJ0xhcmdlc3Q6JywgbGFyZ2VzdCk="
     },
     "pr8": {
@@ -1686,7 +1686,7 @@
           "expected": "First label: Second label: First in Python order: 9cats\nSecond in Python order: birds"
         }
       ],
-      "check": "assert __source__.count(\"if \") == 1 and \"else\" in __source__, \"Use one if/else statement to decide the order.\"\nassert \".lower()\" not in __source__, \"Python order keeps capitalization significant; do not change the case.\"",
+      "check": "assert __source__.count(\"if \") == 1 and \"else\" in __source__, \"Use one if/else statement to decide the order.\"\nassert \".lower()\" not in __code__, \"Python order keeps capitalization significant; do not change the case.\"",
       "answer": "Zmlyc3QgPSBpbnB1dCgnRmlyc3QgbGFiZWw6ICcpCnNlY29uZCA9IGlucHV0KCdTZWNvbmQgbGFiZWw6ICcpCgppZiBmaXJzdCA8IHNlY29uZDoKICAgIGVhcmxpZXIgPSBmaXJzdAogICAgbGF0ZXIgPSBzZWNvbmQKZWxzZToKICAgIGVhcmxpZXIgPSBzZWNvbmQKICAgIGxhdGVyID0gZmlyc3QKCnByaW50KCdGaXJzdCBpbiBQeXRob24gb3JkZXI6JywgZWFybGllcikKcHJpbnQoJ1NlY29uZCBpbiBQeXRob24gb3JkZXI6JywgbGF0ZXIp"
     },
     "pr9": {
@@ -1724,7 +1724,7 @@
           "expected": "Command: Unknown command"
         }
       ],
-      "check": "assert \".lower()\" in __source__ or \".upper()\" in __source__, \"Normalize the command with .lower() so any capitalization of quit matches.\"",
+      "check": "assert \".lower()\" in __code__ or \".upper()\" in __code__, \"Normalize the command with .lower() so any capitalization of quit matches.\"",
       "answer": "Y29tbWFuZCA9IGlucHV0KCdDb21tYW5kOiAnKQoKaWYgY29tbWFuZC5sb3dlcigpID09ICdxdWl0JzoKICAgIHByaW50KCdDb21tYW5kIGFjY2VwdGVkJykKZWxzZToKICAgIHByaW50KCdVbmtub3duIGNvbW1hbmQnKQ=="
     },
     "pr10": {
@@ -1766,7 +1766,7 @@
           "expected": "First reading: Second reading: Different"
         }
       ],
-      "check": "assert \"abs(\" in __source__, \"Use abs() so the order of the two readings does not matter.\"\nassert \"0.01\" in __source__ or \"1e-2\" in __source__, \"Compare the difference with the tolerance 0.01.\"",
+      "check": "assert \"abs(\" in __code__, \"Use abs() so the order of the two readings does not matter.\"\nassert \"0.01\" in __source__ or \"1e-2\" in __source__, \"Compare the difference with the tolerance 0.01.\"",
       "answer": "Zmlyc3QgPSBmbG9hdChpbnB1dCgnRmlyc3QgcmVhZGluZzogJykpCnNlY29uZCA9IGZsb2F0KGlucHV0KCdTZWNvbmQgcmVhZGluZzogJykpCgppZiBhYnMoZmlyc3QgLSBzZWNvbmQpIDwgMC4wMToKICAgIHByaW50KCdNYXRjaCcpCmVsc2U6CiAgICBwcmludCgnRGlmZmVyZW50Jyk=",
       "answerNote": "abs(1.0 - 1.01) is 0.010000000000000009 in floating point. The boundary case prints Different either way. The strict < is still the right operator."
     },

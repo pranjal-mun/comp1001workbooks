@@ -92,7 +92,7 @@ E["label"] = {"type": "code", "xp": 15, "boss": "👾", "minLines": 9,
         ("Gander", [["name = 'Pranjal Patra'", "name = 'Sabina'"], ["street = '230 Elizabeth Avenue'", "street = '9 Whisker Way'"], ["city = \"St. John's\"", "city = 'gander'"], ["province = 'nl'", "province = 'Nl'"], ["postal = 'a1c 5s7'", "postal = 'a1v 1w8'"]])),
     "check": NO_IF + """import re
 assert ".upper(" in __code__, "Use .upper() to make the capitals; do not retype the values."
-assert "len(" in __source__ and re.search(r"['\\"]-['\\"]\\s*\\*|\\*\\s*['\\"]-['\\"]", __source__), "Make the dashes with '-' * len(...) so the line is exactly as long as the address line."
+assert "len(" in __code__ and re.search(r"['\\"]-['\\"]\\s*\\*|\\*\\s*['\\"]-['\\"]", __source__), "Make the dashes with '-' * len(...) so the line is exactly as long as the address line."
 lines = __stdout__.strip().splitlines()
 assert len(lines) == 4, "Print four lines: name, street, address line, dashes."
 assert lines[2].count("  ") == 1, "Put exactly two spaces between the province and the postal code."

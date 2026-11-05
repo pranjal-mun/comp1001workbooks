@@ -114,8 +114,8 @@ cp7 = "balance = -20\n\nif balance < 0:\n    status = 'Overdrawn'\nelse:\n    st
 E["cp7-fix"] = {"type": "code", "xp": 2, "minLines": 8,
     "starter": "balance = -20\n\nif balance < 0:\n    status = 'Overdrawn'\n    print('Status:', status)\nelse:\n    status = 'Available'\n    print('Status:', status)\n",
     "cases": [case("balance = -20", cp7), case("balance = 120", cp7, rewrite=[["balance = -20", "balance = 120"]])],
-    "check": 'assert __source__.count("print(") == 1, "The print call is still duplicated. Keep exactly one print, written once after the decision."\n'
-             'assert any(line.startswith("print(") for line in __source__.split("\\n")), "Put the single print at the left margin, after the if/else, so it runs in both cases."',
+    "check": 'assert __code__.count("print(") == 1, "The print call is still duplicated. Keep exactly one print, written once after the decision."\n'
+             'assert any(line.startswith("print(") for line in __code__.split("\\n")), "Put the single print at the left margin, after the if/else, so it runs in both cases."',
     "answer": b64(cp7)}
 # ---------------------------------------------------------------- Section 8
 E["cp8"] = {"type": "table", "xp": 1, "blanks": {
@@ -129,7 +129,7 @@ cp9 = "age = 15\n\nif age < 18:\n    print('Reduced price')\n"
 E["cp9-fix"] = {"type": "code", "xp": 2, "minLines": 4,
     "starter": "age = 15\n\nif age < 18\nprint('Reduced price')\n",
     "cases": [case("age = 15", cp9), case("age = 30 (nothing printed)", cp9, rewrite=[["age = 15", "age = 30"]])],
-    "check": 'assert "age < 18" in __source__ or "age<18" in __source__ or "18 > age" in __source__, "Keep the condition age < 18."',
+    "check": 'import re\nassert re.search(r"\\bage\\s*<\\s*18\\b|\\b18\\s*>\\s*age\\b", __code__), "Keep the condition age < 18."',
     "answer": b64(cp9),
     "answerNote": "The colon finishes the header. Four spaces place the print call inside the block."}
 # ---------------------------------------------------------------- Final review
@@ -166,7 +166,7 @@ E["pc"] = {"type": "code", "xp": 5, "minLines": 7,
     "starter": "mark = 65\n\n# Store 'Pass' or 'Not yet' in result, then print result once.\n",
     "cases": [case("mark = 65", pc), case("mark = 50", pc, rewrite=[["mark = 65", "mark = 50"]]), case("mark = 49", pc, rewrite=[["mark = 65", "mark = 49"]])],
     "check": 'assert "result" in globals(), "Store the message in a variable named result."\n'
-             'assert __source__.count("print(") == 1, "Print result exactly once, after the decision."',
+             'assert __code__.count("print(") == 1, "Print result exactly once, after the decision."',
     "answer": b64(pc)}
 E["pd-cases"] = {"type": "short", "xp": 2, "minChars": 20, "rows": 2, "answer": b64(
     "Case 1: the item is late, so the fee is 5 dollars. Case 2: the item is not late, so the fee is 0 dollars.")}
@@ -202,7 +202,7 @@ ca = "number = float(input('Number: '))\n\nif number < 0:\n    magnitude = -numb
 E["ca"] = {"type": "code", "xp": 5, "minLines": 9,
     "starter": "# Ask for a number, choose the magnitude with one if/else, then print both.\n",
     "cases": [case("Number: -7.5", ca, inputs=["-7.5"]), case("Number: 4", ca, inputs=["4"]), case("Number: 0 (the boundary)", ca, inputs=["0"])],
-    "check": 'assert "abs(" not in __source__, "Do not call abs(). Choose the magnitude with an if/else statement."\n'
+    "check": 'assert "abs(" not in __code__, "Do not call abs(). Choose the magnitude with an if/else statement."\n'
              'assert "else" in __source__, "Use one if/else statement: one branch keeps the number, the other stores its opposite."',
     "answer": b64(ca)}
 cb = ("name = input('Employee name: ')\nwage = float(input('Hourly wage: $'))\nhours = float(input('Hours worked: '))\n\n"
@@ -212,7 +212,7 @@ cb_check = '''lines = [line.strip() for line in __source__.split("\\n")]
 assert sum(line.startswith("if ") for line in lines) == 1, "Use exactly one if statement."
 assert sum(line == "else:" for line in lines) == 1, "Use exactly one else branch."
 assert not any(line.startswith("elif") for line in lines), "This task needs only a two-way decision: no elif."
-assert any(line.startswith("print(") for line in __source__.split("\\n")), "Put the final output after the branches, at the left margin, so it runs in both cases."
+assert any(line.startswith("print(") for line in __code__.split("\\n")), "Put the final output after the branches, at the left margin, so it runs in both cases."
 '''
 E["cb"] = {"type": "code", "xp": 10, "minLines": 12,
     "starter": "# Ask for the name, wage, and hours; choose the pay with one if/else; print after the branches.\n",

@@ -275,7 +275,7 @@
       "type": "code",
       "xp": 2,
       "minLines": 1,
-      "check": "assert __source__.count(\"print(\") == 1, \"Use one print() call with one string literal.\"\nassert \"\\\\n\" in __source__, \"Use the newline escape \\\\n inside the string to start each new line.\"\n",
+      "check": "assert __code__.count(\"print(\") == 1, \"Use one print() call with one string literal.\"\nassert \"\\\\n\" in __source__, \"Use the newline escape \\\\n inside the string to start each new line.\"\n",
       "starter": "print('____________________')",
       "cases": [
         {
@@ -378,7 +378,7 @@
       "type": "code",
       "xp": 5,
       "minLines": 3,
-      "check": "assert \"sep=\" in __source__.replace(\" \", \"\"), \"Display A-B-C with one print() call that uses sep='-'.\"\nassert \"end=\" in __source__.replace(\" \", \"\"), \"Display Ready...go with two print() calls; the first uses end='...'.\"\nassert __source__.count(\"print(\") == 3, \"Use exactly three print() calls: one for A-B-C and two for Ready...go.\"\n",
+      "check": "assert \"sep=\" in __source__.replace(\" \", \"\"), \"Display A-B-C with one print() call that uses sep='-'.\"\nassert \"end=\" in __source__.replace(\" \", \"\"), \"Display Ready...go with two print() calls; the first uses end='...'.\"\nassert __code__.count(\"print(\") == 3, \"Use exactly three print() calls: one for A-B-C and two for Ready...go.\"\n",
       "starter": "# Display A-B-C using sep, then Ready...go using end.",
       "cases": [
         {
@@ -795,7 +795,7 @@
           "expected": "Temperature (C): Relative humidity (0 to 1): Dew point: 26.2 C"
         }
       ],
-      "check": "assert \"math.log(\" in __source__, \"Use math.log() for the natural logarithm of the humidity.\"",
+      "check": "assert \"math.log(\" in __code__, \"Use math.log() for the natural logarithm of the humidity.\"",
       "answer": "aW1wb3J0IG1hdGgKCnRlbXBlcmF0dXJlID0gZmxvYXQoaW5wdXQoJ1RlbXBlcmF0dXJlIChDKTogJykpCmh1bWlkaXR5ID0gZmxvYXQoaW5wdXQoJ1JlbGF0aXZlIGh1bWlkaXR5ICgwIHRvIDEpOiAnKSkKCmZfdmFsdWUgPSAoMTcuMjcgKiB0ZW1wZXJhdHVyZSkgLyAoMjM3LjcgKyB0ZW1wZXJhdHVyZSkgKyBtYXRoLmxvZyhodW1pZGl0eSkKZGV3X3BvaW50ID0gKDIzNy43ICogZl92YWx1ZSkgLyAoMTcuMjcgLSBmX3ZhbHVlKQpwcmludChmJ0RldyBwb2ludDoge2Rld19wb2ludDouMWZ9IEMnKQ=="
     },
     "c12": {

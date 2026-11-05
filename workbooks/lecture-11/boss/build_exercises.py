@@ -110,7 +110,7 @@ E["roulette"] = {"type": "code", "xp": 20, "boss": "🐉", "minLines": 15,
     "cases": input_cases(roulette, ("Typed 13", ["13"]), ("Typed 0", ["0"]), ("Typed 00", ["00"]), ("Typed 1", ["1"]),
                          ("Typed 12", ["12"]), ("Typed 36", ["36"]), ("Typed 20", ["20"]), ("Typed 18", ["18"]),
                          ("Typed 29", ["29"])),
-    "check": NO_IMPORT + """assert re.search(r"^spin = input\\('Spin: '\\)\\s*$", __source__, re.M), "Keep spin as text, so that 00 stays 00. Convert to int only after ruling out 0 and 00."
+    "check": NO_IMPORT + """assert re.search(r"^spin\\s*=\\s*input\\s*\\(\\s*(['\\"])Spin: \\1\\s*\\)\\s*(#.*)?$", __source__, re.M), "Keep spin as text, so that 00 stays 00. Convert to int only after ruling out 0 and 00."
 assert re.search(r"\\band\\b", __code__) and re.search(r"\\bor\\b", __code__) and re.search(r"\\bnot\\b", __code__), "Use and, or and not to build the red test."
 assert "%" in __code__, "Use % to tell odd from even."
 __lines__ = __stdout__.strip().splitlines()

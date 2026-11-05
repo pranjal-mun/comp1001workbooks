@@ -466,7 +466,7 @@
           ]
         }
       ],
-      "check": "assert __source__.count(\"print(\") == 1, \"The print call is still duplicated. Keep exactly one print, written once after the decision.\"\nassert any(line.startswith(\"print(\") for line in __source__.split(\"\\n\")), \"Put the single print at the left margin, after the if/else, so it runs in both cases.\"",
+      "check": "assert __code__.count(\"print(\") == 1, \"The print call is still duplicated. Keep exactly one print, written once after the decision.\"\nassert any(line.startswith(\"print(\") for line in __code__.split(\"\\n\")), \"Put the single print at the left margin, after the if/else, so it runs in both cases.\"",
       "answer": "YmFsYW5jZSA9IC0yMAoKaWYgYmFsYW5jZSA8IDA6CiAgICBzdGF0dXMgPSAnT3ZlcmRyYXduJwplbHNlOgogICAgc3RhdHVzID0gJ0F2YWlsYWJsZScKCnByaW50KCdTdGF0dXM6Jywgc3RhdHVzKQ=="
     },
     "cp8": {
@@ -539,7 +539,7 @@
           ]
         }
       ],
-      "check": "assert \"age < 18\" in __source__ or \"age<18\" in __source__ or \"18 > age\" in __source__, \"Keep the condition age < 18.\"",
+      "check": "import re\nassert re.search(r\"\\bage\\s*<\\s*18\\b|\\b18\\s*>\\s*age\\b\", __code__), \"Keep the condition age < 18.\"",
       "answer": "YWdlID0gMTUKCmlmIGFnZSA8IDE4OgogICAgcHJpbnQoJ1JlZHVjZWQgcHJpY2UnKQ==",
       "answerNote": "The colon finishes the header. Four spaces place the print call inside the block."
     },
@@ -759,7 +759,7 @@
           ]
         }
       ],
-      "check": "assert \"result\" in globals(), \"Store the message in a variable named result.\"\nassert __source__.count(\"print(\") == 1, \"Print result exactly once, after the decision.\"",
+      "check": "assert \"result\" in globals(), \"Store the message in a variable named result.\"\nassert __code__.count(\"print(\") == 1, \"Print result exactly once, after the decision.\"",
       "answer": "bWFyayA9IDY1CgppZiBtYXJrID49IDUwOgogICAgcmVzdWx0ID0gJ1Bhc3MnCmVsc2U6CiAgICByZXN1bHQgPSAnTm90IHlldCcKCnByaW50KHJlc3VsdCk="
     },
     "pd-cases": {
@@ -926,7 +926,7 @@
           ]
         }
       ],
-      "check": "assert \"abs(\" not in __source__, \"Do not call abs(). Choose the magnitude with an if/else statement.\"\nassert \"else\" in __source__, \"Use one if/else statement: one branch keeps the number, the other stores its opposite.\"",
+      "check": "assert \"abs(\" not in __code__, \"Do not call abs(). Choose the magnitude with an if/else statement.\"\nassert \"else\" in __source__, \"Use one if/else statement: one branch keeps the number, the other stores its opposite.\"",
       "answer": "bnVtYmVyID0gZmxvYXQoaW5wdXQoJ051bWJlcjogJykpCgppZiBudW1iZXIgPCAwOgogICAgbWFnbml0dWRlID0gLW51bWJlcgplbHNlOgogICAgbWFnbml0dWRlID0gbnVtYmVyCgpwcmludCgnT3JpZ2luYWw6JywgbnVtYmVyKQpwcmludCgnTWFnbml0dWRlOicsIG1hZ25pdHVkZSk="
     },
     "cb": {
@@ -963,7 +963,7 @@
           ]
         }
       ],
-      "check": "lines = [line.strip() for line in __source__.split(\"\\n\")]\nassert sum(line.startswith(\"if \") for line in lines) == 1, \"Use exactly one if statement.\"\nassert sum(line == \"else:\" for line in lines) == 1, \"Use exactly one else branch.\"\nassert not any(line.startswith(\"elif\") for line in lines), \"This task needs only a two-way decision: no elif.\"\nassert any(line.startswith(\"print(\") for line in __source__.split(\"\\n\")), \"Put the final output after the branches, at the left margin, so it runs in both cases.\"\n",
+      "check": "lines = [line.strip() for line in __source__.split(\"\\n\")]\nassert sum(line.startswith(\"if \") for line in lines) == 1, \"Use exactly one if statement.\"\nassert sum(line == \"else:\" for line in lines) == 1, \"Use exactly one else branch.\"\nassert not any(line.startswith(\"elif\") for line in lines), \"This task needs only a two-way decision: no elif.\"\nassert any(line.startswith(\"print(\") for line in __code__.split(\"\\n\")), \"Put the final output after the branches, at the left margin, so it runs in both cases.\"\n",
       "answer": "bmFtZSA9IGlucHV0KCdFbXBsb3llZSBuYW1lOiAnKQp3YWdlID0gZmxvYXQoaW5wdXQoJ0hvdXJseSB3YWdlOiAkJykpCmhvdXJzID0gZmxvYXQoaW5wdXQoJ0hvdXJzIHdvcmtlZDogJykpCgppZiBob3VycyA+IDQwOgogICAgcmVndWxhcl9wYXkgPSA0MCAqIHdhZ2UKICAgIG92ZXJ0aW1lX2hvdXJzID0gaG91cnMgLSA0MAogICAgb3ZlcnRpbWVfcGF5ID0gb3ZlcnRpbWVfaG91cnMgKiB3YWdlICogMS41CiAgICBwYXkgPSByZWd1bGFyX3BheSArIG92ZXJ0aW1lX3BheQplbHNlOgogICAgcGF5ID0gaG91cnMgKiB3YWdlCgpwcmludCgnRW1wbG95ZWU6JywgbmFtZSkKcHJpbnQoZidQYXk6ICR7cGF5Oi4yZn0nKQ=="
     }
   }

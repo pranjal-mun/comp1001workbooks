@@ -141,7 +141,7 @@ E["cp6"] = {"type": "table", "xp": 1, "blanks": {
 cp7 = "count = 3\nwhile count > 0:\n    print(count)\n    count = count - 1\n"
 E["cp7"] = {"type": "code", "xp": 2, "minLines": 5, "starter": "count = 3\nwhile count > 0:\n    print(count)\n",
     "cases": [{"name": "prints 3, 2, 1", "expected": run(cp7)}],
-    "check": ("assert __source__.count('print(') == 1, 'Keep the single print(count) and let the loop repeat it.'\n"
+    "check": ("assert __code__.count('print(') == 1, 'Keep the single print(count) and let the loop repeat it.'\n"
               "assert count == 0, 'Subtract 1 from count on every pass so that count > 0 becomes False.'"),
     "answer": b64(cp7),
     "answerNote": "The update runs after the print, so 3, 2 and 1 are printed before count reaches 0."}
@@ -256,7 +256,7 @@ cd = "number = 5\n\nwhile number >= 1:\n    print(number)\n    number = number -
 E["cd-count"] = {"type": "code", "xp": 2, "minLines": 6,
     "starter": "number = ____________________\n\nwhile ____________________:\n    print(number)\n    number = ____________________\n",
     "cases": [{"name": "5 down to 1", "expected": run(cd)}],
-    "check": WHILE + "assert __source__.count('print(') == 1, 'Keep the single print(number) and let the loop repeat it.'\nassert number == 0, 'Subtract 1 from number on every pass so that number >= 1 becomes False.'\n",
+    "check": WHILE + "assert __code__.count('print(') == 1, 'Keep the single print(number) and let the loop repeat it.'\nassert number == 0, 'Subtract 1 from number on every pass so that number >= 1 becomes False.'\n",
     "answer": b64(cd)}
 
 # ---- E. Diagnose loop bugs

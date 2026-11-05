@@ -64,7 +64,7 @@ E["cp2"] = {"type": "code", "xp": 2, "minLines": 6,
     "cases": [{"name": "Program output", "expected": run(cp2)}],
     "check": 'assert "COMP 1001" not in __source__, "Build \'COMP 1001\' from the three pieces with +, rather than typing it as one string."\n'
              'assert "=" * 20 not in __source__, "Use repetition (*) to make the 20 equals signs, rather than typing them."\n'
-             'assert "str(" in __source__, "Use str() to turn the number 4 into text before joining it."',
+             'assert "str(" in __code__, "Use str() to turn the number 4 into text before joining it."',
     "answer": b64(cp2)}
 
 # ---------------------------------------------------------------- 3. Character Positions and Indexes
@@ -112,7 +112,7 @@ E["cp7"] = {"type": "code", "xp": 5, "minLines": 6,
     "cases": [{"name": "Program output", "expected": run(cp7)}],
     "check": "assert title == '  Python Basics  ', \"Leave title as it is: the methods should return new strings, not change the original.\"\n"
              "assert clean_title == 'python basics', 'clean_title should hold the stripped, lowercase text.'\n"
-             "assert '.strip(' in __source__ and '.lower(' in __source__, 'Use the .strip() and .lower() methods.'",
+             "assert '.strip(' in __code__ and '.lower(' in __code__, 'Use the .strip() and .lower() methods.'",
     "answer": b64(cp7),
     "answerNote": "The one-line version clean_title = title.strip().lower() is also correct."}
 E["cp7-why"] = {"type": "short", "xp": 2, "answer": b64(
@@ -158,9 +158,9 @@ E["badge"] = program(
     badge,
     [("Ada Lovelace, comp1001", ["  Ada Lovelace  ", " comp1001 "]), ("Li, art", ["Li", "art"]), ("Grace Hopper, COMP 2001", ["Grace Hopper ", "comp 2001"])],
     xp=10, minLines=12,
-    check="assert '.strip(' in __source__, 'Use .strip() to remove the outer whitespace from both inputs.'\n"
-          "assert '.upper(' in __source__, 'Use .upper() to store the course code in uppercase.'\n"
-          "assert 'len(' in __source__, 'Make the border exactly as long as the badge by repeating \"-\" len(badge) times.'\n"
+    check="assert '.strip(' in __code__, 'Use .strip() to remove the outer whitespace from both inputs.'\n"
+          "assert '.upper(' in __code__, 'Use .upper() to store the course code in uppercase.'\n"
+          "assert 'len(' in __code__, 'Make the border exactly as long as the badge by repeating \"-\" len(badge) times.'\n"
           "assert ' in ' in __source__, \"Use the in operator to report whether 'COMP' occurs in the code.\"")
 
 # ---------------------------------------------------------------- Coding Practice
@@ -187,9 +187,9 @@ E["cpr5"] = {"type": "code", "xp": 5, "minLines": 9,
     "starter": "word = 'seesaw'\nfirst = 's'\nsecond = 'e'\n\n# Three .replace() calls, each stored back in word\n\nprint(word)\n",
     "cases": [{"name": "seesaw", "expected": run(swap)},
               {"name": "excess", "rewrite": [["word = 'seesaw'", "word = 'excess'"]], "expected": run(swap.replace("word = 'seesaw'", "word = 'excess'"))}],
-    "check": "assert __source__.count('.replace(') >= 3, 'Use three .replace() calls: one to the temporary character, and two to swap.'\n"
+    "check": "import re\nassert __code__.count('.replace(') >= 3, 'Use three .replace() calls: one to the temporary character, and two to swap.'\n"
              "assert \"'*'\" in __source__ or '\"*\"' in __source__, \"Use '*' as the temporary character.\"\n"
-             "assert 'word = word.replace' in __source__.replace('  ', ' '), 'Store each result back in word; .replace() returns a new string.'",
+             "assert re.search(r'\\bword\\s*=\\s*word\\.replace', __code__), 'Store each result back in word; .replace() returns a new string.'",
     "answer": b64(swap)}
 E["cpr5-value"] = {"type": "table", "xp": 1, "blanks": {"v": {"accept": quoted("esseaw"), "caseSensitive": True, "placeholder": "final value"}}}
 middle = "text = 'Python'\nmiddle = len(text) // 2\n\nprint(text[0])\nprint(text[-1])\nprint(text[middle])\nprint(text[middle - 1:middle + 1])\n"
@@ -226,7 +226,7 @@ frame = "name = input('Name: ')\n\nborder = '+' + '-' * (len(name) + 2) + '+'\nm
 E["cpr13"] = program("name = input('Name: ')\n\nborder = ...\nmiddle = ...\n\nprint(border)\nprint(middle)\nprint(border)\n", frame,
     [("Ada", ["Ada"]), ("Li", ["Li"]), ("Grace Hopper", ["Grace Hopper"])],
     check="import re\nassert not re.search(r'-{2,}', __source__), 'Build the border by repeating \"-\" with *, not by typing a fixed run of hyphens.'\n"
-          "assert 'len(' in __source__, 'Use len(name) so the border fits any name.'")
+          "assert 'len(' in __code__, 'Use len(name) so the border fits any name.'")
 
 for spec in E.values():
     if "starter" in spec:

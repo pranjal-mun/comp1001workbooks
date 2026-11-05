@@ -363,7 +363,7 @@
           "expected": "3\n2\n1"
         }
       ],
-      "check": "assert __source__.count('print(') == 1, 'Keep the single print(count) and let the loop repeat it.'\nassert count == 0, 'Subtract 1 from count on every pass so that count > 0 becomes False.'",
+      "check": "assert __code__.count('print(') == 1, 'Keep the single print(count) and let the loop repeat it.'\nassert count == 0, 'Subtract 1 from count on every pass so that count > 0 becomes False.'",
       "answer": "Y291bnQgPSAzCndoaWxlIGNvdW50ID4gMDoKICAgIHByaW50KGNvdW50KQogICAgY291bnQgPSBjb3VudCAtIDE=",
       "answerNote": "The update runs after the print, so 3, 2 and 1 are printed before count reaches 0."
     },
@@ -1010,7 +1010,7 @@
           "expected": "5\n4\n3\n2\n1"
         }
       ],
-      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert __source__.count('print(') == 1, 'Keep the single print(number) and let the loop repeat it.'\nassert number == 0, 'Subtract 1 from number on every pass so that number >= 1 becomes False.'\n",
+      "check": "assert 'while' in __source__, 'Repeat the work with a while loop.'\nassert __code__.count('print(') == 1, 'Keep the single print(number) and let the loop repeat it.'\nassert number == 0, 'Subtract 1 from number on every pass so that number >= 1 becomes False.'\n",
       "answer": "bnVtYmVyID0gNQoKd2hpbGUgbnVtYmVyID49IDE6CiAgICBwcmludChudW1iZXIpCiAgICBudW1iZXIgPSBudW1iZXIgLSAx"
     },
     "ce-parts": {
