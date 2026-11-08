@@ -1,0 +1,917 @@
+{
+  "id": "lecture-25",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 25 Workbook",
+  "subtitle": "List algorithms, slices, and comprehensions",
+  "exercises": {
+    "ex-total": {
+      "type": "example",
+      "code": "marks = [40, 75, 50, 35]\ntotal = 0\npasses = 0\nfor mark in marks:\n    total = total + mark\n    if mark >= 50:\n        passes = passes + 1\nprint(total, passes)",
+      "output": "200 2"
+    },
+    "ex-builtins": {
+      "type": "example",
+      "code": "marks = [40, 75, 50, 35]\nprint(sum(marks))\nprint(max(marks), min(marks))\nprint(len(marks))\nif len(marks) > 0:\n    print(sum(marks) / len(marks))",
+      "output": "200\n75 35\n4\n50.0"
+    },
+    "ex-found": {
+      "type": "example",
+      "code": "marks = [40, 75, 50, 35]\nfound = False\nfor m in marks:\n    if m == 50:\n        found = True\nprint(found)\nprint(50 in marks)",
+      "output": "True\nTrue"
+    },
+    "ex-largest": {
+      "type": "example",
+      "code": "values = [42, 76, 68, 91]\nlargest = values[0]\nfor i in range(1, len(values)):\n    if values[i] > largest:\n        largest = values[i]\nprint(largest)",
+      "output": "91"
+    },
+    "ex-longest": {
+      "type": "example",
+      "code": "names = [\"Ann\", \"Charlotte\",\n         \"Zachary\"]\nlongest = names[0]\nfor name in names[1:]:\n    if len(name) > len(longest):\n        longest = name\nprint(longest)",
+      "output": "Charlotte"
+    },
+    "ex-best": {
+      "type": "example",
+      "code": "marks = [42, 76, 68, 91]\nbest = 0\nfor i in range(1, len(marks)):\n    if marks[i] > marks[best]:\n        best = i\nprint(best, marks[best])",
+      "output": "3 91"
+    },
+    "ex-related": {
+      "type": "example",
+      "code": "names = [\"Ann\", \"Ben\", \"Cal\"]\nmarks = [70, 95, 80]\nbest = 0\nfor i in range(1, len(marks)):\n    if marks[i] > marks[best]:\n        best = i\nprint(names[best], marks[best])",
+      "output": "Ben 95"
+    },
+    "ex-swap": {
+      "type": "example",
+      "code": "values = [42, 76, 68, 91]\ni = 0\nj = 3\nvalues[i], values[j] = values[j], values[i]\nprint(values)",
+      "output": "[91, 76, 68, 42]"
+    },
+    "ex-swap-wrong": {
+      "type": "example",
+      "code": "values = [42, 76, 68, 91]\ni = 0\nj = 3\nvalues[i] = values[j]\nvalues[j] = values[i]\nprint(values)",
+      "output": "[91, 76, 68, 91]"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "marks = [58, 91, 74, 91]\n# Find the first largest index, then swap and print.",
+      "cases": [
+        {
+          "name": "marks = [58, 91, 74, 91]",
+          "expected": "1\n[91, 58, 74, 91]"
+        },
+        {
+          "name": "marks = [5, 3, 9, 9, 1]",
+          "expected": "2\n[9, 3, 5, 9, 1]",
+          "rewrite": [
+            [
+              "marks = [58, 91, 74, 91]",
+              "marks = [5, 3, 9, 9, 1]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\nassert _loops(), \"Use a loop to find the index of the first largest value.\"\nassert not _func_calls(\"max\") and not _calls(\"index\"), \"Find the index with a loop. Do not use max or index.\"\nassert _swap(), \"Swap the two elements with one statement, such as marks[0], marks[best] = marks[best], marks[0].\"\n",
+      "answer": "bWFya3MgPSBbNTgsIDkxLCA3NCwgOTFdCmJlc3QgPSAwCmZvciBpIGluIHJhbmdlKDEsIGxlbihtYXJrcykpOgogICAgaWYgbWFya3NbaV0gPiBtYXJrc1tiZXN0XToKICAgICAgICBiZXN0ID0gaQpwcmludChiZXN0KQptYXJrc1swXSwgbWFya3NbYmVzdF0gPSBtYXJrc1tiZXN0XSwgbWFya3NbMF0KcHJpbnQobWFya3Mp",
+      "answerNote": "The second 91 does not change best, because 91 > 91 is False."
+    },
+    "cp1-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "b1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "best",
+          "width": "4rem"
+        },
+        "b2": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "best",
+          "width": "4rem"
+        },
+        "b3": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "best",
+          "width": "4rem"
+        }
+      }
+    },
+    "ex-insert-pop": {
+      "type": "example",
+      "code": "values = [10, 30, 40]\nvalues.insert(1, 20)\nremoved = values.pop(2)\nprint(removed)\nprint(values)",
+      "output": "30\n[10, 20, 40]"
+    },
+    "ex-reverse": {
+      "type": "example",
+      "code": "values = [10, 30, 20]\nvalues.reverse()\nprint(values)",
+      "output": "[20, 30, 10]"
+    },
+    "ex-reverse-slice": {
+      "type": "example",
+      "code": "values = [10, 30, 20]\nbackward = values[::-1]\nprint(values)\nprint(backward)",
+      "output": "[10, 30, 20]\n[20, 30, 10]"
+    },
+    "ex-sort-alias": {
+      "type": "example",
+      "code": "marks = [70, 40, 90]\nbackup = marks\nmarks.sort()\nprint(marks)\nprint(backup)",
+      "output": "[40, 70, 90]\n[40, 70, 90]"
+    },
+    "ex-sorted": {
+      "type": "example",
+      "code": "marks = [70, 40, 90]\nordered = sorted(marks)\nprint(marks)\nprint(ordered)",
+      "output": "[70, 40, 90]\n[40, 70, 90]"
+    },
+    "ex-descending": {
+      "type": "example",
+      "code": "marks = [70, 40, 90]\nordered = sorted(marks,\n                 reverse=True)\nprint(ordered)\nmarks.sort(reverse=True)\nprint(marks)",
+      "output": "[90, 70, 40]\n[90, 70, 40]"
+    },
+    "ex-sort-none": {
+      "type": "example",
+      "code": "marks = [70, 40, 90]\nmarks = marks.sort()\nprint(marks)",
+      "output": "None"
+    },
+    "ex-reversed": {
+      "type": "example",
+      "code": "nums = [10, 30, 20]\nbackward = list(reversed(nums))\nprint(backward)\nprint(nums)",
+      "output": "[20, 30, 10]\n[10, 30, 20]"
+    },
+    "ex-add-bonus": {
+      "type": "example",
+      "code": "def add_bonus(values):\n    \"\"\"Add 5 to each element.\"\"\"\n    for i in range(len(values)):\n        values[i] = values[i] + 5\n\nmarks = [70, 80]\nadd_bonus(marks)\nprint(marks)",
+      "output": "[75, 85]"
+    },
+    "ex-with-bonus": {
+      "type": "example",
+      "code": "def with_bonus(values):\n    \"\"\"Return new bonus values.\"\"\"\n    result = []\n    for value in values:\n        result.append(value + 5)\n    return result\n\nmarks = [70, 80]\nnew_marks = with_bonus(marks)\nprint(marks)\nprint(new_marks)",
+      "output": "[70, 80]\n[75, 85]"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "def ranked_scores(values):\n    pass\nscores = [8, 6, 10, 6]",
+      "cases": [
+        {
+          "name": "scores = [8, 6, 10, 6]",
+          "expected": "[6, 8, 10]\n8.0\n[8, 6, 10, 6]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"ranked_scores\", \"values\")\n_f = _body(\"ranked_scores\")\nassert _func_calls(\"min\", _f) and _calls(\"remove\", _f) and _calls(\"sort\", _f), \"Inside ranked_scores, use min, remove, and sort on the copy.\"\nassert _slices(_f) or _calls(\"copy\", _f) or _func_calls(\"list\", _f), \"Make a copy of values first, such as result = values[:].\"\n_returns('ranked_scores', ([8, 6, 10, 6],), [6, 8, 10])\n_returns('ranked_scores', ([5, 1],), [5])\n_returns('ranked_scores', ([3, 3, 3],), [3, 3])\n_returns('ranked_scores', ([9, 2, 7, 4],), [4, 7, 9])\n_keeps(\"ranked_scores\", ([8, 6, 10, 6],))\n_keeps(\"ranked_scores\", ([9, 2, 7, 4],))\n",
+      "answer": "ZGVmIHJhbmtlZF9zY29yZXModmFsdWVzKToKICAgIHJlc3VsdCA9IHZhbHVlc1s6XQogICAgcmVzdWx0LnJlbW92ZShtaW4ocmVzdWx0KSkKICAgIHJlc3VsdC5zb3J0KCkKICAgIHJldHVybiByZXN1bHQKc2NvcmVzID0gWzgsIDYsIDEwLCA2XQpyYW5rZWQgPSByYW5rZWRfc2NvcmVzKHNjb3JlcykKcHJpbnQocmFua2VkKQpwcmludChzdW0ocmFua2VkKSAvIGxlbihyYW5rZWQpKQpwcmludChzY29yZXMp",
+      "answerNote": "The copy loses one lowest score. The input list stays unchanged."
+    },
+    "cp2-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "copy": {
+          "accept": [
+            "[8, 6, 10, 6]",
+            "[8,6,10,6]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[8, 6, 10, 6]"
+        },
+        "remove": {
+          "accept": [
+            "[8, 10, 6]",
+            "[8,10,6]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[8, 10, 6]"
+        },
+        "sort": {
+          "accept": [
+            "[6, 8, 10]",
+            "[6,8,10]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[6, 8, 10]"
+        }
+      }
+    },
+    "ex-squares-loop": {
+      "type": "example",
+      "code": "squares = []\nfor n in range(1, 6):\n    squares.append(n * n)\nprint(squares)",
+      "output": "[1, 4, 9, 16, 25]"
+    },
+    "ex-squares-comp": {
+      "type": "example",
+      "code": "squares = [n * n\n           for n in range(1, 6)]\nprint(squares)",
+      "output": "[1, 4, 9, 16, 25]"
+    },
+    "ex-lengths": {
+      "type": "example",
+      "code": "names = [\"Ada\", \"Alan\", \"Grace\"]\nlengths = [len(name)\n           for name in names]\nprint(lengths)\nprint(names)",
+      "output": "[3, 4, 5]\n['Ada', 'Alan', 'Grace']"
+    },
+    "ex-passes-comp": {
+      "type": "example",
+      "code": "marks = [45, 50, 68, 49, 90]\npasses = [m for m in marks\n          if m >= 50]\nprint(passes)",
+      "output": "[50, 68, 90]"
+    },
+    "ex-passes-loop": {
+      "type": "example",
+      "code": "marks = [45, 50, 68, 49, 90]\npasses = []\nfor m in marks:\n    if m >= 50:\n        passes.append(m)\nprint(passes)",
+      "output": "[50, 68, 90]"
+    },
+    "ex-upper": {
+      "type": "example",
+      "code": "names = [\"Ada\", \"Grace\", \"Lin\", \"Alan\"]\nlong_names = [name.upper() for name in names if len(name) > 3]\nprint(long_names)",
+      "output": "['GRACE', 'ALAN']"
+    },
+    "ex-report": {
+      "type": "example",
+      "code": "marks = [45, 50, 68]\npasses = []\nfor mark in marks:\n    if mark >= 50:\n        passes.append(mark)\n        print(\"Accepted:\", mark)\n    else:\n        print(\"Below 50:\", mark)\nprint(passes)",
+      "output": "Below 50: 45\nAccepted: 50\nAccepted: 68\n[50, 68]"
+    },
+    "ex-simple": {
+      "type": "example",
+      "code": "nums = [-2, 3, 4, 7, 12]\nsimple = [2*n for n in nums]\nprint(simple)",
+      "output": "[-4, 6, 8, 14, 24]"
+    },
+    "ex-crowded": {
+      "type": "example",
+      "code": "nums = [-2, 3, 4, 7, 12]\ncrowded = [2*n + 1 for n in nums\n           if n > 0 and n < 10\n           and n % 2 == 0]\nprint(crowded)",
+      "output": "[9]"
+    },
+    "ex-crowded-loop": {
+      "type": "example",
+      "code": "nums = [-2, 3, 4, 7, 12]\nresult = []\nfor n in nums:\n    if n > 0 and n < 10:\n        if n % 2 == 0:\n            result.append(2*n + 1)\nprint(result)",
+      "output": "[9]"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 14,
+      "starter": "def bonus_passes(marks):\n    pass\n\ndef bonus_passes_loop(marks):\n    pass\n\nmarks = [45, 50, 68, 49, 90]",
+      "cases": [
+        {
+          "name": "marks = [45, 50, 68, 49, 90]",
+          "expected": "[55, 73, 95]\n[55, 73, 95]\n[]\n[45, 50, 68, 49, 90]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"bonus_passes\", \"marks\")\n_fn(\"bonus_passes_loop\", \"marks\")\nassert _comps(_body(\"bonus_passes\")), \"Write bonus_passes with a list comprehension.\"\nassert _loops(_body(\"bonus_passes_loop\")) and _calls(\"append\", _body(\"bonus_passes_loop\")), \"Write bonus_passes_loop with a loop and append.\"\n_returns('bonus_passes', ([45, 50, 68, 49, 90],), [55, 73, 95])\n_returns('bonus_passes', ([],), [])\n_returns('bonus_passes', ([49, 50, 46],), [55])\n_returns('bonus_passes', ([100, 10],), [105])\n_returns('bonus_passes_loop', ([45, 50, 68, 49, 90],), [55, 73, 95])\n_returns('bonus_passes_loop', ([],), [])\n_returns('bonus_passes_loop', ([49, 50, 46],), [55])\n_returns('bonus_passes_loop', ([100, 10],), [105])\n_keeps(\"bonus_passes\", ([45, 50, 68, 49, 90],))\n_keeps(\"bonus_passes_loop\", ([45, 50, 68, 49, 90],))\n",
+      "answer": "ZGVmIGJvbnVzX3Bhc3NlcyhtYXJrcyk6CiAgICByZXR1cm4gW20gKyA1IGZvciBtIGluIG1hcmtzCiAgICAgICAgICAgIGlmIG0gPj0gNTBdCgpkZWYgYm9udXNfcGFzc2VzX2xvb3AobWFya3MpOgogICAgcmVzdWx0ID0gW10KICAgIGZvciBtIGluIG1hcmtzOgogICAgICAgIGlmIG0gPj0gNTA6CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQobSArIDUpCiAgICByZXR1cm4gcmVzdWx0CgptYXJrcyA9IFs0NSwgNTAsIDY4LCA0OSwgOTBdCnByaW50KGJvbnVzX3Bhc3NlcyhtYXJrcykpCnByaW50KGJvbnVzX3Bhc3Nlc19sb29wKG1hcmtzKSkKcHJpbnQoYm9udXNfcGFzc2VzKFtdKSkKcHJpbnQobWFya3Mp",
+      "answerNote": "Both versions select marks with the original value. They apply the bonus after the selection."
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "values = [-3, 2, -4, 5]",
+      "cases": [
+        {
+          "name": "values = [-3, 2, -4, 5]",
+          "expected": "120\n2"
+        },
+        {
+          "name": "values = []",
+          "expected": "1\n0",
+          "rewrite": [
+            [
+              "values = [-3, 2, -4, 5]",
+              "values = []"
+            ]
+          ]
+        },
+        {
+          "name": "values = [-1, -2, -3]",
+          "expected": "-6\n3",
+          "rewrite": [
+            [
+              "values = [-3, 2, -4, 5]",
+              "values = [-1, -2, -3]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\nassert len(_loops()) >= 2, \"Use one loop for the product and another loop for the count.\"\nassert not _func_calls(\"range\"), \"Loop over the values directly. Do not use range.\"\n",
+      "answer": "dmFsdWVzID0gWy0zLCAyLCAtNCwgNV0KcHJvZHVjdCA9IDEKZm9yIHZhbHVlIGluIHZhbHVlczoKICAgIHByb2R1Y3QgPSBwcm9kdWN0ICogdmFsdWUKbmVnYXRpdmVzID0gMApmb3IgdmFsdWUgaW4gdmFsdWVzOgogICAgaWYgdmFsdWUgPCAwOgogICAgICAgIG5lZ2F0aXZlcyA9IG5lZ2F0aXZlcyArIDEKcHJpbnQocHJvZHVjdCkKcHJpbnQobmVnYXRpdmVzKQ==",
+      "answerNote": "Both loops run zero times for an empty list. The initial values then become the results."
+    },
+    "ex-shift": {
+      "type": "example",
+      "code": "values = [14, 5, 9, 2, 7]\nposition = 1\nfor i in range(position, len(values) - 1):\n    values[i] = values[i + 1]\nvalues.pop()\nprint(values)"
+    },
+    "p2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "v1": {
+          "accept": [
+            "[14, 9, 9, 2, 7]",
+            "[14,9,9,2,7]"
+          ],
+          "placeholder": "list",
+          "width": "12rem",
+          "show": "[14, 9, 9, 2, 7]"
+        },
+        "i2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "v2": {
+          "accept": [
+            "[14, 9, 2, 2, 7]",
+            "[14,9,2,2,7]"
+          ],
+          "placeholder": "list",
+          "width": "12rem",
+          "show": "[14, 9, 2, 2, 7]"
+        },
+        "i3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "v3": {
+          "accept": [
+            "[14, 9, 2, 7, 7]",
+            "[14,9,2,7,7]"
+          ],
+          "placeholder": "list",
+          "width": "12rem",
+          "show": "[14, 9, 2, 7, 7]"
+        },
+        "final": {
+          "accept": [
+            "[14, 9, 2, 7]",
+            "[14,9,2,7]"
+          ],
+          "placeholder": "list",
+          "width": "12rem",
+          "show": "[14, 9, 2, 7]"
+        }
+      }
+    },
+    "p2-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 20,
+      "rows": 3,
+      "placeholder": "Why the script needs the final pop…",
+      "answer": "VGhlIHNoaWZ0cyByZXBsYWNlIGVsZW1lbnRzIHdpdGhvdXQgY2hhbmdpbmcgdGhlIGxlbmd0aC4gQWZ0ZXIgdGhlIHNoaWZ0cywgdGhlIGxhc3QgdmFsdWUgYXBwZWFycyB0d2ljZS4gVGhlIGZpbmFsIHJlbW92YWwgZGVsZXRlcyB0aGUgcmVwZWF0ZWQgbGFzdCBlbGVtZW50Lg=="
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 13,
+      "starter": "def nonnegative_comp(values):\n    pass\n\ndef nonnegative_loop(values):\n    pass\n\nvalues = [-5, 0, 8, -2, 8]",
+      "cases": [
+        {
+          "name": "values = [-5, 0, 8, -2, 8]",
+          "expected": "[0, 8, 8]\n[0, 8, 8]\n[-5, 0, 8, -2, 8]"
+        },
+        {
+          "name": "values = [7, -1, -1, 0]",
+          "expected": "[7, 0]\n[7, 0]\n[7, -1, -1, 0]",
+          "rewrite": [
+            [
+              "values = [-5, 0, 8, -2, 8]",
+              "values = [7, -1, -1, 0]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"nonnegative_comp\", \"values\")\n_fn(\"nonnegative_loop\", \"values\")\nassert _comps(_body(\"nonnegative_comp\")), \"Write nonnegative_comp with a list comprehension.\"\nassert _loops(_body(\"nonnegative_loop\")) and _calls(\"append\", _body(\"nonnegative_loop\")), \"Write nonnegative_loop with a loop and append.\"\nassert not _calls(\"remove\") and not _calls(\"pop\") and not any(isinstance(n, ast.Delete) for n in ast.walk(_TREE)), \"Build a new list. Do not remove elements from the list you loop through.\"\n_returns('nonnegative_comp', ([-5, 0, 8, -2, 8],), [0, 8, 8])\n_returns('nonnegative_comp', ([],), [])\n_returns('nonnegative_comp', ([-1, -9],), [])\n_returns('nonnegative_comp', ([3, -3, 0, 3],), [3, 0, 3])\n_returns('nonnegative_loop', ([-5, 0, 8, -2, 8],), [0, 8, 8])\n_returns('nonnegative_loop', ([],), [])\n_returns('nonnegative_loop', ([-1, -9],), [])\n_returns('nonnegative_loop', ([3, -3, 0, 3],), [3, 0, 3])\n_keeps(\"nonnegative_comp\", ([-5, 0, 8, -2, 8],))\n_keeps(\"nonnegative_loop\", ([-5, 0, 8, -2, 8],))\n",
+      "answer": "ZGVmIG5vbm5lZ2F0aXZlX2NvbXAodmFsdWVzKToKICAgIHJldHVybiBbdmFsdWUgZm9yIHZhbHVlIGluIHZhbHVlcyBpZiB2YWx1ZSA+PSAwXQoKZGVmIG5vbm5lZ2F0aXZlX2xvb3AodmFsdWVzKToKICAgIHJlc3VsdCA9IFtdCiAgICBmb3IgdmFsdWUgaW4gdmFsdWVzOgogICAgICAgIGlmIHZhbHVlID49IDA6CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQodmFsdWUpCiAgICByZXR1cm4gcmVzdWx0Cgp2YWx1ZXMgPSBbLTUsIDAsIDgsIC0yLCA4XQpwcmludChub25uZWdhdGl2ZV9jb21wKHZhbHVlcykpCnByaW50KG5vbm5lZ2F0aXZlX2xvb3AodmFsdWVzKSkKcHJpbnQodmFsdWVzKQ==",
+      "answerNote": "Both functions keep zero and repeated retained values. Either function returns [] for an empty input or an input containing only negative values."
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "def insert_ordered(values, value):\n    pass\n\nvalues = [2, 6, 6, 12]",
+      "cases": [
+        {
+          "name": "values = [2, 6, 6, 12], insert 6",
+          "expected": "None\n[2, 6, 6, 6, 12]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"insert_ordered\", \"values\", \"value\")\n_f = _body(\"insert_ordered\")\nassert _loops(_f), \"Find the insertion index with a loop.\"\nassert _calls(\"insert\", _f), \"Insert the value with insert.\"\nassert not _calls(\"sort\") and not _func_calls(\"sorted\"), \"Do not call sort or sorted. Find the position with a loop.\"\ndef _ins(given, value, want):\n    call = _shown(\"insert_ordered\", (given, value))\n    values = list(given)\n    result, printed = _call(\"insert_ordered\", values, value)\n    assert result is None, call + \" should change the list and return None, not \" + repr(result) + \".\"\n    assert repr(values) == repr(want), \"After \" + call + \", the list should be \" + repr(want) + \", not \" + repr(values) + \".\"\n_ins([], 5, [5])\n_ins([4, 8], 1, [1, 4, 8])\n_ins([4, 8], 9, [4, 8, 9])\n_ins([1, 3, 3, 7], 3, [1, 3, 3, 3, 7])\n_ins([2, 6, 6, 12], 6.0, [2, 6, 6, 6.0, 12])\n",
+      "answer": "ZGVmIGluc2VydF9vcmRlcmVkKHZhbHVlcywgdmFsdWUpOgogICAgcG9zaXRpb24gPSAwCiAgICB3aGlsZSBwb3NpdGlvbiA8IGxlbih2YWx1ZXMpIGFuZCB2YWx1ZXNbcG9zaXRpb25dIDw9IHZhbHVlOgogICAgICAgIHBvc2l0aW9uID0gcG9zaXRpb24gKyAxCiAgICB2YWx1ZXMuaW5zZXJ0KHBvc2l0aW9uLCB2YWx1ZSkKCnZhbHVlcyA9IFsyLCA2LCA2LCAxMl0KcHJpbnQoaW5zZXJ0X29yZGVyZWQodmFsdWVzLCA2KSkKcHJpbnQodmFsdWVzKQ==",
+      "answerNote": "The loop passes all smaller or equal values. Index len(values) inserts at the end."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 15,
+      "starter": "def ascending_loop(values):\n    pass\n\ndef ascending_comp(values):\n    pass",
+      "cases": [
+        {
+          "name": "[1, 4, 4, 9] and [1, 7, 3]",
+          "expected": "True True\nFalse False"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"ascending_loop\", \"values\")\n_fn(\"ascending_comp\", \"values\")\nassert _loops(_body(\"ascending_loop\")), \"Write ascending_loop with adjacent comparisons in a loop.\"\n_c = _body(\"ascending_comp\")\nassert _comps(_c), \"In ascending_comp, build a list of adjacent comparison results with a comprehension.\"\nassert any(isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops) for n in ast.walk(_c)), \"In ascending_comp, check the comparison results with in or not in.\"\nassert not _calls(\"sort\") and not _func_calls(\"sorted\"), \"Do not sort the list. Compare adjacent elements.\"\n_returns('ascending_loop', ([1, 4, 4, 9],), True)\n_returns('ascending_loop', ([1, 7, 3],), False)\n_returns('ascending_loop', ([],), True)\n_returns('ascending_loop', ([5],), True)\n_returns('ascending_loop', ([3, 3],), True)\n_returns('ascending_loop', ([2, 1],), False)\n_returns('ascending_loop', ([1, 2, 3, 0],), False)\n_returns('ascending_comp', ([1, 4, 4, 9],), True)\n_returns('ascending_comp', ([1, 7, 3],), False)\n_returns('ascending_comp', ([],), True)\n_returns('ascending_comp', ([5],), True)\n_returns('ascending_comp', ([3, 3],), True)\n_returns('ascending_comp', ([2, 1],), False)\n_returns('ascending_comp', ([1, 2, 3, 0],), False)\n",
+      "answer": "ZGVmIGFzY2VuZGluZ19sb29wKHZhbHVlcyk6CiAgICBvcmRlcmVkID0gVHJ1ZQogICAgZm9yIGkgaW4gcmFuZ2UoMSwgbGVuKHZhbHVlcykpOgogICAgICAgIGlmIHZhbHVlc1tpXSA8IHZhbHVlc1tpIC0gMV06CiAgICAgICAgICAgIG9yZGVyZWQgPSBGYWxzZQogICAgcmV0dXJuIG9yZGVyZWQKCmRlZiBhc2NlbmRpbmdfY29tcCh2YWx1ZXMpOgogICAgY2hlY2tzID0gW3ZhbHVlc1tpIC0gMV0gPD0gdmFsdWVzW2ldCiAgICAgICAgICAgICAgZm9yIGkgaW4gcmFuZ2UoMSwgbGVuKHZhbHVlcykpXQogICAgcmV0dXJuIEZhbHNlIG5vdCBpbiBjaGVja3MKCnZhbHVlcyA9IFsxLCA0LCA0LCA5XQpwcmludChhc2NlbmRpbmdfbG9vcCh2YWx1ZXMpLCBhc2NlbmRpbmdfY29tcCh2YWx1ZXMpKQp2YWx1ZXMgPSBbMSwgNywgM10KcHJpbnQoYXNjZW5kaW5nX2xvb3AodmFsdWVzKSwgYXNjZW5kaW5nX2NvbXAodmFsdWVzKSk=",
+      "answerNote": "An empty list of comparisons contains no False result. Equal adjacent values pass the comparison."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 15,
+      "starter": "def longest_run(values):\n    pass",
+      "cases": [
+        {
+          "name": "[5, 5, 1, 1, 1, 2, 2], [] and [4]",
+          "expected": "3\n0\n1"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"longest_run\", \"values\")\nassert _loops(_body(\"longest_run\")) and _func_calls(\"range\", _body(\"longest_run\")), \"Compare adjacent values with an index loop, such as for i in range(1, len(values)).\"\n_returns('longest_run', ([5, 5, 1, 1, 1, 2, 2],), 3)\n_returns('longest_run', ([],), 0)\n_returns('longest_run', ([4],), 1)\n_returns('longest_run', ([1, 2, 2, 2],), 3)\n_returns('longest_run', ([7, 7, 7, 7],), 4)\n_returns('longest_run', ([1, 2, 3],), 1)\n_returns('longest_run', ([3, 3, 1, 3, 3],), 2)\n_keeps(\"longest_run\", ([5, 5, 1, 1, 1, 2, 2],))\n",
+      "answer": "ZGVmIGxvbmdlc3RfcnVuKHZhbHVlcyk6CiAgICBpZiBsZW4odmFsdWVzKSA9PSAwOgogICAgICAgIHJldHVybiAwCiAgICBjdXJyZW50ID0gMQogICAgbG9uZ2VzdCA9IDEKICAgIGZvciBpIGluIHJhbmdlKDEsIGxlbih2YWx1ZXMpKToKICAgICAgICBpZiB2YWx1ZXNbaV0gPT0gdmFsdWVzW2kgLSAxXToKICAgICAgICAgICAgY3VycmVudCA9IGN1cnJlbnQgKyAxCiAgICAgICAgZWxzZToKICAgICAgICAgICAgY3VycmVudCA9IDEKICAgICAgICBpZiBjdXJyZW50ID4gbG9uZ2VzdDoKICAgICAgICAgICAgbG9uZ2VzdCA9IGN1cnJlbnQKICAgIHJldHVybiBsb25nZXN0CgpwcmludChsb25nZXN0X3J1bihbNSwgNSwgMSwgMSwgMSwgMiwgMl0pKQpwcmludChsb25nZXN0X3J1bihbXSkpCnByaW50KGxvbmdlc3RfcnVuKFs0XSkp",
+      "answerNote": "current counts the run ending at the current index. longest keeps the largest run length found so far."
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            ">",
+            "!="
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": ">"
+        },
+        "b": {
+          "accept": [
+            "len(values)"
+          ],
+          "placeholder": "code",
+          "width": "10rem",
+          "show": "len(values)"
+        }
+      }
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "(B)",
+            "B)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "B"
+        }
+      }
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "blue"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "(D)",
+            "D)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "D"
+        }
+      }
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            ">"
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": ">"
+        }
+      }
+    },
+    "q8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "2",
+            "-2"
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": "2"
+        }
+      }
+    },
+    "q11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "(C)",
+            "C)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "C"
+        }
+      }
+    },
+    "q12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        },
+        "t2": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        }
+      }
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[1, 4, 6]",
+            "[1,4,6]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[1, 4, 6]"
+        },
+        "l2": {
+          "accept": [
+            "None"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q14": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "A",
+            "(A)",
+            "A)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "A"
+        }
+      }
+    },
+    "q15": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "list"
+          ],
+          "placeholder": "code",
+          "width": "6rem",
+          "show": "list"
+        }
+      }
+    },
+    "q16": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q17": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "None"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "[4]",
+            "[4]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[4]"
+        }
+      }
+    },
+    "q18": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "values[:]",
+            "values.copy()",
+            "list(values)",
+            "values[0:]"
+          ],
+          "placeholder": "code",
+          "width": "9rem",
+          "show": "values[:]"
+        }
+      }
+    },
+    "q19": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[6, 4, 1]",
+            "[6,4,1]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[6, 4, 1]"
+        },
+        "l2": {
+          "accept": [
+            "[2, 0, -3]",
+            "[2,0,-3]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[2, 0, -3]"
+        }
+      }
+    },
+    "q20": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "A",
+            "(A)",
+            "A)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "A"
+        }
+      }
+    },
+    "q21": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "n * 3",
+            "3 * n",
+            "n*3",
+            "3*n"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": "n * 3"
+        },
+        "b": {
+          "accept": [
+            ">"
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": ">"
+        }
+      }
+    },
+    "q22": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q23": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "(D)",
+            "D)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "D"
+        }
+      }
+    },
+    "q24": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    }
+  }
+}

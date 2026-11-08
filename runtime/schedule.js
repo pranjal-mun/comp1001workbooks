@@ -54,7 +54,7 @@ export const LECTURES = [
   { n: 22, unit: 6, date: "2026-11-04", title: "Tracing recursion; recursive helpers", built: true, bosses: true },
   { n: 23, unit: 6, date: "2026-11-06", title: "Recursion vs iteration; Towers of Hanoi", built: true, bosses: true },
   { n: 24, unit: 7, date: "2026-11-09", title: "Lists: properties and operations", built: true, bosses: true },
-  { n: 25, unit: 7, date: "2026-11-13", title: "List algorithms, slices, comprehensions", built: false },
+  { n: 25, unit: 7, date: "2026-11-13", title: "List algorithms, slices, comprehensions", built: true, bosses: true },
   { n: 26, unit: 7, date: "2026-11-16", title: "Lists with functions; tables", built: false },
   { n: 27, unit: 7, date: "2026-11-18", title: "Linear and binary search", built: false },
   { n: 28, unit: 7, date: "2026-11-20", title: "Selection sort and merge sort", built: false },

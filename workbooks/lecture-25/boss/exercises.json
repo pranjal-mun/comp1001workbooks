@@ -1,0 +1,337 @@
+{
+  "id": "lecture-25-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 25 Boss Problems",
+  "short": "L25 bosses",
+  "subtitle": "List algorithms, slices, and comprehensions",
+  "exercises": {
+    "readings": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 11,
+      "starter": "readings = []\n# Read the values and print the four labeled lists.",
+      "cases": [
+        {
+          "name": "Example 1: typed 7, -2, 7, 3, -999",
+          "inputs": [
+            "7",
+            "-2",
+            "7",
+            "3",
+            "-999"
+          ],
+          "expected": "Original: [7, -2, 7, 3]\nDescending: [7, 7, 3, -2]\nAfter sorted: [7, -2, 7, 3]\nAscending: [-2, 3, 7, 7]"
+        },
+        {
+          "name": "Example 2: typed -999",
+          "inputs": [
+            "-999"
+          ],
+          "expected": "Original: []\nDescending: []\nAfter sorted: []\nAscending: []"
+        },
+        {
+          "name": "Typed 5, -999",
+          "inputs": [
+            "5",
+            "-999"
+          ],
+          "expected": "Original: [5]\nDescending: [5]\nAfter sorted: [5]\nAscending: [5]"
+        },
+        {
+          "name": "Typed 999, -998, 0, -999",
+          "inputs": [
+            "999",
+            "-998",
+            "0",
+            "-999"
+          ],
+          "expected": "Original: [999, -998, 0]\nDescending: [999, 0, -998]\nAfter sorted: [999, -998, 0]\nAscending: [-998, 0, 999]"
+        },
+        {
+          "name": "Typed 4, 4, 4, -999",
+          "inputs": [
+            "4",
+            "4",
+            "4",
+            "-999"
+          ],
+          "expected": "Original: [4, 4, 4]\nDescending: [4, 4, 4]\nAfter sorted: [4, 4, 4]\nAscending: [4, 4, 4]"
+        },
+        {
+          "name": "Typed 1 to 6 in mixed order, then -999",
+          "inputs": [
+            "3",
+            "6",
+            "1",
+            "5",
+            "2",
+            "4",
+            "-999"
+          ],
+          "expected": "Original: [3, 6, 1, 5, 2, 4]\nDescending: [6, 5, 4, 3, 2, 1]\nAfter sorted: [3, 6, 1, 5, 2, 4]\nAscending: [1, 2, 3, 4, 5, 6]"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _comps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.ListComp)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _swaps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple)]\ndef _no_defs():\n    assert not any(isinstance(n, ast.FunctionDef) for n in ast.walk(_TREE)), \"Write a script. Do not define functions with def.\"\n_no_defs()\nassert _calls(\"append\"), \"Store the readings in one list with append.\"\nassert any(any(k.arg == \"reverse\" for k in c.keywords) for c in _func_calls(\"sorted\")), \"Make the descending list with sorted and reverse=True.\"\nassert _calls(\"sort\"), \"Change the stored list to ascending order with sort().\"\n",
+      "hints": [
+        "Read the first reading with `int(input())` before the loop. Repeat `while reading != -999`: append the reading, then read the next one at the end of the loop body.",
+        "Print `\"Original:\"` and the list. Then make a separate list with `sorted(readings, reverse=True)` and print it after `\"Descending:\"`.",
+        "`sorted` does not change `readings`, so `\"After sorted:\"` still shows the input order.",
+        "Call `readings.sort()` without an assignment. Then print `\"Ascending:\"` and `readings`."
+      ],
+      "answer": "cmVhZGluZ3MgPSBbXQpyZWFkaW5nID0gaW50KGlucHV0KCkpCndoaWxlIHJlYWRpbmcgIT0gLTk5OToKICAgIHJlYWRpbmdzLmFwcGVuZChyZWFkaW5nKQogICAgcmVhZGluZyA9IGludChpbnB1dCgpKQpwcmludCgiT3JpZ2luYWw6IiwgcmVhZGluZ3MpCmRlc2NlbmRpbmcgPSBzb3J0ZWQocmVhZGluZ3MsIHJldmVyc2U9VHJ1ZSkKcHJpbnQoIkRlc2NlbmRpbmc6IiwgZGVzY2VuZGluZykKcHJpbnQoIkFmdGVyIHNvcnRlZDoiLCByZWFkaW5ncykKcmVhZGluZ3Muc29ydCgpCnByaW50KCJBc2NlbmRpbmc6IiwgcmVhZGluZ3Mp",
+      "answerNote": "sorted creates the descending copy. The later sort call changes the stored list."
+    },
+    "average": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 15,
+      "starter": "values = []\n# Read the values and print the average and filtered lists.",
+      "cases": [
+        {
+          "name": "Example 1: typed 2, 5, 8, blank",
+          "inputs": [
+            "2",
+            "5",
+            "8",
+            ""
+          ],
+          "expected": "Average: 5.00\nBelow: [2.0]\nEqual: [5.0]\nAbove: [8.0]"
+        },
+        {
+          "name": "Example 2: typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "No values"
+        },
+        {
+          "name": "Typed 4, blank",
+          "inputs": [
+            "4",
+            ""
+          ],
+          "expected": "Average: 4.00\nBelow: []\nEqual: [4.0]\nAbove: []"
+        },
+        {
+          "name": "Typed 1, 2, 2, blank",
+          "inputs": [
+            "1",
+            "2",
+            "2",
+            ""
+          ],
+          "expected": "Average: 1.67\nBelow: [1.0]\nEqual: []\nAbove: [2.0, 2.0]"
+        },
+        {
+          "name": "Typed -3.5, 2, 2, 10, 1, blank",
+          "inputs": [
+            "-3.5",
+            "2",
+            "2",
+            "10",
+            "1",
+            ""
+          ],
+          "expected": "Average: 2.30\nBelow: [-3.5, 2.0, 2.0, 1.0]\nEqual: []\nAbove: [10.0]"
+        },
+        {
+          "name": "Typed 7, 7, 7, blank",
+          "inputs": [
+            "7",
+            "7",
+            "7",
+            ""
+          ],
+          "expected": "Average: 7.00\nBelow: []\nEqual: [7.0, 7.0, 7.0]\nAbove: []"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _comps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.ListComp)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _swaps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple)]\ndef _no_defs():\n    assert not any(isinstance(n, ast.FunctionDef) for n in ast.walk(_TREE)), \"Write a script. Do not define functions with def.\"\n_no_defs()\nassert _func_calls(\"float\"), \"Read each value with float.\"\nassert _func_calls(\"sum\") and _func_calls(\"len\"), \"Calculate the average with sum and len.\"\nassert len(_comps()) >= 3, \"Build the three filtered lists with comprehensions, such as [value for value in values if value < average].\"\n",
+      "hints": [
+        "Read lines with `input()` until a blank line. Append `float(line)` for each nonblank line.",
+        "Check `len(values) == 0` first and print `\"No values\"`. This also prevents a division by zero.",
+        "Calculate `average = sum(values) / len(values)`. Build each list with a comprehension, such as `[value for value in values if value < average]`.",
+        "Print the average with `f\"Average: {average:.2f}\"`. Compare with `average` itself, not the rounded text. For 1, 2, 2 the average is 1.666..., so no value is equal."
+      ],
+      "answer": "dmFsdWVzID0gW10KbGluZSA9IGlucHV0KCkKd2hpbGUgbGluZSAhPSAiIjoKICAgIHZhbHVlcy5hcHBlbmQoZmxvYXQobGluZSkpCiAgICBsaW5lID0gaW5wdXQoKQppZiBsZW4odmFsdWVzKSA9PSAwOgogICAgcHJpbnQoIk5vIHZhbHVlcyIpCmVsc2U6CiAgICBhdmVyYWdlID0gc3VtKHZhbHVlcykgLyBsZW4odmFsdWVzKQogICAgYmVsb3cgPSBbdmFsdWUgZm9yIHZhbHVlIGluIHZhbHVlcyBpZiB2YWx1ZSA8IGF2ZXJhZ2VdCiAgICBlcXVhbCA9IFt2YWx1ZSBmb3IgdmFsdWUgaW4gdmFsdWVzIGlmIHZhbHVlID09IGF2ZXJhZ2VdCiAgICBhYm92ZSA9IFt2YWx1ZSBmb3IgdmFsdWUgaW4gdmFsdWVzIGlmIHZhbHVlID4gYXZlcmFnZV0KICAgIHByaW50KGYiQXZlcmFnZToge2F2ZXJhZ2U6LjJmfSIpCiAgICBwcmludCgiQmVsb3c6IiwgYmVsb3cpCiAgICBwcmludCgiRXF1YWw6IiwgZXF1YWwpCiAgICBwcmludCgiQWJvdmU6IiwgYWJvdmUp",
+      "answerNote": "The length check handles empty input before division. Each condition compares an original value with the unrounded average."
+    },
+    "matched": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 22,
+      "starter": "names = [\"Lia\", \"Omar\", \"Nia\", \"Theo\"]\nmarks = [72, 94, 94, 61]\n# Read the move, then change both lists in the required order.",
+      "cases": [
+        {
+          "name": "Example 1: typed Nia, 0",
+          "inputs": [
+            "Nia",
+            "0"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Nia', 'Omar', 'Lia', 'Theo']\nMove marks: [94, 94, 72, 61]\nReverse names: ['Theo', 'Lia', 'Omar', 'Nia']\nReverse marks: [61, 72, 94, 94]"
+        },
+        {
+          "name": "Example 2: typed Theo, 3",
+          "inputs": [
+            "Theo",
+            "3"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Omar', 'Lia', 'Nia', 'Theo']\nMove marks: [94, 72, 94, 61]\nReverse names: ['Theo', 'Nia', 'Lia', 'Omar']\nReverse marks: [61, 94, 72, 94]"
+        },
+        {
+          "name": "Typed Lia, 3",
+          "inputs": [
+            "Lia",
+            "3"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Omar', 'Nia', 'Theo', 'Lia']\nMove marks: [94, 94, 61, 72]\nReverse names: ['Lia', 'Theo', 'Nia', 'Omar']\nReverse marks: [72, 61, 94, 94]"
+        },
+        {
+          "name": "Typed Omar, 2",
+          "inputs": [
+            "Omar",
+            "2"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Lia', 'Nia', 'Omar', 'Theo']\nMove marks: [72, 94, 94, 61]\nReverse names: ['Theo', 'Omar', 'Nia', 'Lia']\nReverse marks: [61, 94, 94, 72]"
+        },
+        {
+          "name": "Typed Theo, 0",
+          "inputs": [
+            "Theo",
+            "0"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Theo', 'Omar', 'Lia', 'Nia']\nMove marks: [61, 94, 72, 94]\nReverse names: ['Nia', 'Lia', 'Omar', 'Theo']\nReverse marks: [94, 72, 94, 61]"
+        },
+        {
+          "name": "Typed Nia, 1",
+          "inputs": [
+            "Nia",
+            "1"
+          ],
+          "expected": "First highest: Omar 94\nSwap names: ['Omar', 'Lia', 'Nia', 'Theo']\nSwap marks: [94, 72, 94, 61]\nMove names: ['Omar', 'Nia', 'Lia', 'Theo']\nMove marks: [94, 94, 72, 61]\nReverse names: ['Theo', 'Lia', 'Nia', 'Omar']\nReverse marks: [61, 72, 94, 94]"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _comps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.ListComp)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _swaps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple)]\ndef _no_defs():\n    assert not any(isinstance(n, ast.FunctionDef) for n in ast.walk(_TREE)), \"Write a script. Do not define functions with def.\"\n_no_defs()\nassert not _func_calls(\"max\"), \"Find the index of the highest mark with a loop. Do not use max.\"\nassert _loops(), \"Find the index of the highest mark with a loop.\"\nassert len(_swaps()) >= 2, \"Use the swap idiom on each list, such as names[0], names[best] = names[best], names[0].\"\nassert len(_calls(\"pop\")) >= 2 and len(_calls(\"insert\")) >= 2, \"Move the pair with pop and insert on both lists.\"\nassert len(_calls(\"reverse\")) >= 2, \"Reverse both lists with reverse().\"\nassert names[marks.index(94)] in (\"Omar\", \"Nia\") and len(names) == len(marks) == 4, \"Keep both lists the same length, with each name matched to its mark.\"\n",
+      "hints": [
+        "Read the name with `input()` and the index with `int(input())`. Find the highest-mark index with the loop from Section 4: start with `best = 0` and use `>` so the first 94 wins.",
+        "Swap in both lists with the same indexes: `names[0], names[best] = names[best], names[0]`, then the same statement for `marks`.",
+        "Find the named student's index once, for example with `names.index(move_name)`. Pop that index from both lists, then insert each popped value at the new index.",
+        "Call `reverse()` on both lists. Print the two lists after each of the three changes, with the labels in the examples."
+      ],
+      "answer": "bmFtZXMgPSBbIkxpYSIsICJPbWFyIiwgIk5pYSIsICJUaGVvIl0KbWFya3MgPSBbNzIsIDk0LCA5NCwgNjFdCm1vdmVfbmFtZSA9IGlucHV0KCkKbmV3X3Bvc2l0aW9uID0gaW50KGlucHV0KCkpCmJlc3QgPSAwCmZvciBpIGluIHJhbmdlKDEsIGxlbihtYXJrcykpOgogICAgaWYgbWFya3NbaV0gPiBtYXJrc1tiZXN0XToKICAgICAgICBiZXN0ID0gaQpwcmludCgiRmlyc3QgaGlnaGVzdDoiLCBuYW1lc1tiZXN0XSwgbWFya3NbYmVzdF0pCm5hbWVzWzBdLCBuYW1lc1tiZXN0XSA9IG5hbWVzW2Jlc3RdLCBuYW1lc1swXQptYXJrc1swXSwgbWFya3NbYmVzdF0gPSBtYXJrc1tiZXN0XSwgbWFya3NbMF0KcHJpbnQoIlN3YXAgbmFtZXM6IiwgbmFtZXMpCnByaW50KCJTd2FwIG1hcmtzOiIsIG1hcmtzKQpvbGRfcG9zaXRpb24gPSBuYW1lcy5pbmRleChtb3ZlX25hbWUpCm1vdmVkX25hbWUgPSBuYW1lcy5wb3Aob2xkX3Bvc2l0aW9uKQptb3ZlZF9tYXJrID0gbWFya3MucG9wKG9sZF9wb3NpdGlvbikKbmFtZXMuaW5zZXJ0KG5ld19wb3NpdGlvbiwgbW92ZWRfbmFtZSkKbWFya3MuaW5zZXJ0KG5ld19wb3NpdGlvbiwgbW92ZWRfbWFyaykKcHJpbnQoIk1vdmUgbmFtZXM6IiwgbmFtZXMpCnByaW50KCJNb3ZlIG1hcmtzOiIsIG1hcmtzKQpuYW1lcy5yZXZlcnNlKCkKbWFya3MucmV2ZXJzZSgpCnByaW50KCJSZXZlcnNlIG5hbWVzOiIsIG5hbWVzKQpwcmludCgiUmV2ZXJzZSBtYXJrczoiLCBtYXJrcyk=",
+      "answerNote": "The move uses the same old index and destination in both lists. The two reversals preserve the pairs."
+    },
+    "fit": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 28,
+      "starter": "x_values = []\ny_values = []\n# Read points, check the cases, and calculate the fitted line.",
+      "cases": [
+        {
+          "name": "Example 1: points (0, -1), (2, 3), (4, 6)",
+          "inputs": [
+            "0",
+            "-1",
+            "2",
+            "3",
+            "4",
+            "6",
+            ""
+          ],
+          "expected": "y = 1.75x - 0.83"
+        },
+        {
+          "name": "Example 2: typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "Need at least two points"
+        },
+        {
+          "name": "Example 3: points (2, 4), (2, 7)",
+          "inputs": [
+            "2",
+            "4",
+            "2",
+            "7",
+            ""
+          ],
+          "expected": "Cannot fit a line"
+        },
+        {
+          "name": "One point (3, 4)",
+          "inputs": [
+            "3",
+            "4",
+            ""
+          ],
+          "expected": "Need at least two points"
+        },
+        {
+          "name": "Points on a line: (0, 1), (1, 3), (2, 5)",
+          "inputs": [
+            "0",
+            "1",
+            "1",
+            "3",
+            "2",
+            "5",
+            ""
+          ],
+          "expected": "y = 2.00x + 1.00"
+        },
+        {
+          "name": "Negative slope: (0, 5), (2, 1)",
+          "inputs": [
+            "0",
+            "5",
+            "2",
+            "1",
+            ""
+          ],
+          "expected": "y = -2.00x + 5.00"
+        },
+        {
+          "name": "Points (1, 1), (2, 2), (3, 3)",
+          "inputs": [
+            "1",
+            "1",
+            "2",
+            "2",
+            "3",
+            "3",
+            ""
+          ],
+          "expected": "y = 1.00x + 0.00"
+        },
+        {
+          "name": "Points (-2, 3), (1, -4), (5, 0), (6, -2)",
+          "inputs": [
+            "-2",
+            "3",
+            "1",
+            "-4",
+            "5",
+            "0",
+            "6",
+            "-2",
+            ""
+          ],
+          "expected": "y = -0.35x + 0.13"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _comps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.ListComp)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _swaps():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple)]\ndef _no_defs():\n    assert not any(isinstance(n, ast.FunctionDef) for n in ast.walk(_TREE)), \"Write a script. Do not define functions with def.\"\n_no_defs()\nassert len(_func_calls(\"sum\")) >= 4 and len(_comps()) >= 4, \"Compute all four sums with sum and comprehensions over indexes, such as sum([x_values[i] for i in range(n)]).\"\nassert _func_calls(\"round\"), \"Round each coefficient with round(value, 2) before you choose the intercept sign.\"\nassert _calls(\"append\"), \"Store the points in two related lists with append.\"\n",
+      "hints": [
+        "Read an x line. While it is not blank, append `float(line)` to `x_values`, read the y line and append `float(input())` to `y_values`, then read the next x line.",
+        "Let `n = len(x_values)`. If `n < 2`, print `\"Need at least two points\"`. Otherwise compute the four sums, such as `s_xy = sum([x_values[i] * y_values[i] for i in range(n)])`.",
+        "Compute `d = s_xx - s_x ** 2 / n`. If `d == 0`, every x value is equal, so print `\"Cannot fit a line\"`.",
+        "Compute `m` first, then `b` with the unrounded `m`. Round both to two places. If the rounded `b` is negative, print `- ` and `-b`; otherwise print `+ ` and `b`. Turn a rounded `-0.0` into `0.0` first."
+      ],
+      "answer": "eF92YWx1ZXMgPSBbXQp5X3ZhbHVlcyA9IFtdCmxpbmUgPSBpbnB1dCgpCndoaWxlIGxpbmUgIT0gIiI6CiAgICB4X3ZhbHVlcy5hcHBlbmQoZmxvYXQobGluZSkpCiAgICB5X3ZhbHVlcy5hcHBlbmQoZmxvYXQoaW5wdXQoKSkpCiAgICBsaW5lID0gaW5wdXQoKQpuID0gbGVuKHhfdmFsdWVzKQppZiBuIDwgMjoKICAgIHByaW50KCJOZWVkIGF0IGxlYXN0IHR3byBwb2ludHMiKQplbHNlOgogICAgc194ID0gc3VtKFt4X3ZhbHVlc1tpXSBmb3IgaSBpbiByYW5nZShuKV0pCiAgICBzX3kgPSBzdW0oW3lfdmFsdWVzW2ldIGZvciBpIGluIHJhbmdlKG4pXSkKICAgIHNfeHggPSBzdW0oW3hfdmFsdWVzW2ldICoqIDIgZm9yIGkgaW4gcmFuZ2UobildKQogICAgc194eSA9IHN1bShbeF92YWx1ZXNbaV0gKiB5X3ZhbHVlc1tpXSBmb3IgaSBpbiByYW5nZShuKV0pCiAgICBkZW5vbWluYXRvciA9IHNfeHggLSBzX3ggKiogMiAvIG4KICAgIGlmIGRlbm9taW5hdG9yID09IDA6CiAgICAgICAgcHJpbnQoIkNhbm5vdCBmaXQgYSBsaW5lIikKICAgIGVsc2U6CiAgICAgICAgc2xvcGUgPSAoc194eSAtIHNfeCAqIHNfeSAvIG4pIC8gZGVub21pbmF0b3IKICAgICAgICBpbnRlcmNlcHQgPSBzX3kgLyBuIC0gc2xvcGUgKiBzX3ggLyBuCiAgICAgICAgc2xvcGUgPSByb3VuZChzbG9wZSwgMikKICAgICAgICBpbnRlcmNlcHQgPSByb3VuZChpbnRlcmNlcHQsIDIpCiAgICAgICAgaWYgc2xvcGUgPT0gMDoKICAgICAgICAgICAgc2xvcGUgPSAwLjAKICAgICAgICBpZiBpbnRlcmNlcHQgPT0gMDoKICAgICAgICAgICAgaW50ZXJjZXB0ID0gMC4wCiAgICAgICAgaWYgaW50ZXJjZXB0IDwgMDoKICAgICAgICAgICAgcHJpbnQoZiJ5ID0ge3Nsb3BlOi4yZn14IC0gey1pbnRlcmNlcHQ6LjJmfSIpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcHJpbnQoZiJ5ID0ge3Nsb3BlOi4yZn14ICsge2ludGVyY2VwdDouMmZ9Iik=",
+      "answerNote": "The calculation uses the unrounded slope for the intercept. The output handles a negative intercept without printing a plus sign before it."
+    }
+  }
+}
