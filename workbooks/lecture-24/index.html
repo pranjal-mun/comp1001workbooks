@@ -69,6 +69,33 @@
 <wb-example id="ex-length"></wb-example>
 <p><code>marks[4]</code> causes an <code>IndexError</code>. An empty list has a length of <code>0</code>. An empty list has no valid element index.</p>
 
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>nums = [<span class="wb-num">4</span>, <span class="wb-num">8</span>, <span class="wb-num">15</span>, <span class="wb-num">16</span>, <span class="wb-num">23</span>]
+<span class="wb-fn">print</span>(nums[<span class="wb-num">1</span>] + nums[-<span class="wb-num">2</span>])
+<span class="wb-fn">print</span>(<span class="wb-fn">len</span>(nums))</code></pre>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 2.</strong> Write True or False for each statement.</p>
+  <wb-table id="q2">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>For a list <code>a</code> with elements, <code>a[-1]</code> and <code>a[len(a) - 1]</code> give the same element.</td><td data-blank="t1"></td></tr>
+        <tr><td>The empty list <code>[]</code> has one valid index: <code>0</code>.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
 <h2 id="s2">2. Mutable lists and immutable strings</h2>
 <p>A list is mutable. You can replace an element in the same list.</p>
 <wb-example id="ex-replace"></wb-example>
@@ -79,6 +106,34 @@
 <p>To change the text, make a new string:</p>
 <wb-example id="ex-new-string"></wb-example>
 
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 3.</strong> The variable <code>word</code> refers to <code>"cat"</code>. Which statement makes <code>word</code> refer to <code>"bat"</code>?</p>
+  <ol type="A">
+    <li><code>word[0] = "b"</code></li>
+    <li><code>word = "b" + word[1:]</code></li>
+    <li><code>word = "b" + word[0:]</code></li>
+    <li><code>word[0:1] = "b"</code></li>
+  </ol>
+  <wb-table id="q3">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 4.</strong> Write True or False for each statement.</p>
+  <wb-table id="q4">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>After <code>marks[0] = 100</code>, the list <code>marks</code> has the same length as before.</td><td data-blank="t1"></td></tr>
+        <tr><td>A string and a list both allow assignment to an index.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
 <h2 id="s3">3. Loops with values or indexes</h2>
 <p>A loop can read element values. A loop with indexes can replace elements.</p>
 <wb-example id="ex-value-loop"></wb-example>
@@ -87,6 +142,41 @@
 <p>The loop with indexes changes the list:</p>
 <wb-example id="ex-index-loop"></wb-example>
 <p><code>marks[i] = ...</code> replaces the element at index <code>i</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 5.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>nums = [<span class="wb-num">1</span>, <span class="wb-num">2</span>, <span class="wb-num">3</span>]
+<span class="wb-kw">for</span> n <span class="wb-kw">in</span> nums:
+    n = n * <span class="wb-num">10</span>
+<span class="wb-fn">print</span>(nums)
+<span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">range</span>(<span class="wb-fn">len</span>(nums)):
+    nums[i] = nums[i] * <span class="wb-num">10</span>
+<span class="wb-fn">print</span>(nums)</code></pre>
+  <wb-table id="q5">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 6.</strong> Fill in the two gaps so that the loop doubles each element of <code>vals</code>. The program prints <code>[6, 10, 16]</code>.</p>
+  <pre><code>vals = [<span class="wb-num">3</span>, <span class="wb-num">5</span>, <span class="wb-num">8</span>]
+<span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">____</span>(a)____:
+    vals[i] = <span class="wb-fn">____</span>(b)____
+<span class="wb-fn">print</span>(vals)</code></pre>
+  <wb-table id="q6">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 1</div>
@@ -144,6 +234,40 @@
 <wb-example id="ex-append-list"></wb-example>
 <p><code>b</code> has three elements. The last element is a list. <code>a + [50, 60]</code> makes a new list. <code>a.extend([50, 60])</code> changes <code>a</code>.</p>
 
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 7.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>a = [<span class="wb-num">5</span>, <span class="wb-num">6</span>]
+a.<span class="wb-fn">insert</span>(<span class="wb-num">0</span>, <span class="wb-num">4</span>)
+a.<span class="wb-fn">append</span>(<span class="wb-num">7</span>)
+a.<span class="wb-fn">insert</span>(<span class="wb-num">2</span>, <span class="wb-num">9</span>)
+<span class="wb-fn">print</span>(a)
+<span class="wb-fn">print</span>(<span class="wb-fn">len</span>(a))</code></pre>
+  <wb-table id="q7">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 8.</strong> The list <code>a</code> is <code>[1, 2]</code>. Which statement changes <code>a</code> to <code>[1, 2, 3, 4]</code>?</p>
+  <ol type="A">
+    <li><code>a.append([3, 4])</code></li>
+    <li><code>a.extend([3, 4])</code></li>
+    <li><code>a.insert(2, [3, 4])</code></li>
+    <li><code>a + [3, 4]</code></li>
+  </ol>
+  <wb-table id="q8">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
 <h2 id="s5">5. Removing elements</h2>
 <p>Each row uses a new list: <code>items = [10, 20, 10, 30]</code>.</p>
 <div class="wb-table-wrap">
@@ -173,12 +297,78 @@
 </div>
 <p><code>served</code> remains <code>20</code>.</p>
 
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 9.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>items = [<span class="wb-num">3</span>, <span class="wb-num">1</span>, <span class="wb-num">3</span>, <span class="wb-num">5</span>]
+x = items.<span class="wb-fn">pop</span>()
+items.<span class="wb-fn">remove</span>(<span class="wb-num">3</span>)
+<span class="wb-fn">print</span>(x)
+<span class="wb-fn">print</span>(items)</code></pre>
+  <wb-table id="q9">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 10.</strong> Each line starts with a new list <code>items = [10, 20, 30, 40]</code>. Fill in each gap with one word.</p>
+  <pre><code>items.<span class="wb-fn">____</span>(a)<span class="wb-fn">____</span>(<span class="wb-num">30</span>)          <span class="wb-cmt"># remove the value 30</span>
+first = items.<span class="wb-fn">____</span>(b)<span class="wb-fn">____</span>(<span class="wb-num">0</span>)   <span class="wb-cmt"># remove the first element and keep it</span>
+<span class="wb-fn">____</span>(c)____ items[-<span class="wb-num">1</span>]          <span class="wb-cmt"># remove the last element without a method</span></code></pre>
+  <wb-table id="q10">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+        <tr><td>(c)</td><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
 <p class="wb-part" id="part-searches">Searches and slices</p>
 
 <h2 id="s6">6. Searching a list</h2>
 <p><code>in</code> returns <code>True</code> for a value in the list. <code>index</code> gives the first index. <code>count</code> gives the number of matches.</p>
 <wb-example id="ex-search"></wb-example>
 <p>Without the condition, <code>marks.index(63)</code> causes a <code>ValueError</code>. <code>marks.count(63)</code> returns <code>0</code>. The string method <code>.find()</code> returns <code>-1</code> when the value is absent.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 11.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>letters = [<span class="wb-str">"b"</span>, <span class="wb-str">"a"</span>, <span class="wb-str">"b"</span>, <span class="wb-str">"c"</span>]
+<span class="wb-fn">print</span>(letters.<span class="wb-fn">index</span>(<span class="wb-str">"b"</span>))
+<span class="wb-fn">print</span>(letters.<span class="wb-fn">count</span>(<span class="wb-str">"b"</span>))
+<span class="wb-fn">print</span>(<span class="wb-str">"d"</span> <span class="wb-kw">in</span> letters)</code></pre>
+  <wb-table id="q11">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 12.</strong> The list <code>nums</code> is <code>[2, 4, 6]</code>. Which statement causes an error?</p>
+  <ol type="A">
+    <li><code>print(nums.count(5))</code></li>
+    <li><code>print(5 in nums)</code></li>
+    <li><code>print(nums.index(5))</code></li>
+    <li><code>print(nums[-3])</code></li>
+  </ol>
+  <wb-table id="q12">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 2</div>
@@ -210,6 +400,37 @@
 <p>For these lists of numbers, a slice makes a separate list. A change to the slice does not change the original list.</p>
 <wb-example id="ex-slice-copy"></wb-example>
 <p>There are two lists. Each list starts at index <code>0</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 13.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>vals = [<span class="wb-num">10</span>, <span class="wb-num">20</span>, <span class="wb-num">30</span>, <span class="wb-num">40</span>, <span class="wb-num">50</span>]
+<span class="wb-fn">print</span>(vals[<span class="wb-num">1</span>:<span class="wb-num">4</span>])
+<span class="wb-fn">print</span>(vals[:<span class="wb-num">3</span>])
+<span class="wb-fn">print</span>(vals[-<span class="wb-num">2</span>:])</code></pre>
+  <wb-table id="q13">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 14.</strong> The list <code>vals</code> is <code>[10, 20, 30, 40, 50]</code>. Write the slice inside the brackets.</p>
+  <pre><code><span class="wb-fn">print</span>(vals[<span class="wb-fn">____</span>(a)____])   <span class="wb-cmt"># prints [30, 40]</span>
+<span class="wb-fn">print</span>(vals[<span class="wb-fn">____</span>(b)____])   <span class="wb-cmt"># prints [10, 20, 30, 40]</span></code></pre>
+  <wb-table id="q14">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <p class="wb-part" id="part-aliasing">Aliasing and copying</p>
 
@@ -253,10 +474,75 @@
 <p>The name <code>backup</code> does not make a copy.</p>
 <p>A string or number is immutable, like the string in Section 2. The assignment <code>b = a</code> causes no problem for these values because they cannot change in place.</p>
 
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 15.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>a = [<span class="wb-num">1</span>, <span class="wb-num">2</span>, <span class="wb-num">3</span>]
+b = a
+b.<span class="wb-fn">append</span>(<span class="wb-num">4</span>)
+a[<span class="wb-num">0</span>] = <span class="wb-num">0</span>
+<span class="wb-fn">print</span>(a)
+<span class="wb-fn">print</span>(b)</code></pre>
+  <wb-table id="q15">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 16.</strong> Write True or False for each statement.</p>
+  <wb-table id="q16">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>After <code>b = a</code>, the names <code>a</code> and <code>b</code> refer to one list.</td><td data-blank="t1"></td></tr>
+        <tr><td>After <code>b = a</code> and then <code>b = [7, 8]</code>, the list <code>a</code> is also <code>[7, 8]</code>.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
 <h2 id="s9">9. Making a separate copy</h2>
 <p><code>a[:]</code> makes a new list with the same elements. <code>list(a)</code> also makes a new list.</p>
 <wb-example id="ex-copy"></wb-example>
 <p>You can also use <code>b = list(a)</code> to make a separate copy. There are two separate lists. The assignment <code>b = a.copy()</code> also makes a separate copy.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 17.</strong> The list <code>a</code> is <code>[1, 2, 3]</code>. Which statement does not make a separate copy?</p>
+  <ol type="A">
+    <li><code>b = a[:]</code></li>
+    <li><code>b = list(a)</code></li>
+    <li><code>b = a</code></li>
+    <li><code>b = a.copy()</code></li>
+  </ol>
+  <wb-table id="q17">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 18.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>a = [<span class="wb-num">1</span>, <span class="wb-num">2</span>, <span class="wb-num">3</span>]
+b = a[:]
+c = a
+c[<span class="wb-num">1</span>] = <span class="wb-num">7</span>
+b[<span class="wb-num">0</span>] = <span class="wb-num">5</span>
+<span class="wb-fn">print</span>(a)
+<span class="wb-fn">print</span>(b)</code></pre>
+  <wb-table id="q18">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 3</div>
@@ -292,6 +578,34 @@
 <wb-example id="ex-remove-loop"></wb-example>
 <p>The code prints <code>[0, 1]</code>. The loop does not examine the second zero. Do not change the list length during a loop through the same list.</p>
 <p>One safe way is to build a new list. Loop through the old list and <code>append</code> each element to keep.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 19.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>nums = [<span class="wb-num">3</span>, <span class="wb-num">4</span>]
+result = nums.<span class="wb-fn">append</span>(<span class="wb-num">5</span>)
+<span class="wb-fn">print</span>(result)
+<span class="wb-fn">print</span>(nums)</code></pre>
+  <wb-table id="q19">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 20.</strong> Write True or False for each statement.</p>
+  <wb-table id="q20">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>A loop can skip elements when it removes elements from the same list that it loops through.</td><td data-blank="t1"></td></tr>
+        <tr><td>The expression <code>a + [5]</code> changes the list <code>a</code>.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
 

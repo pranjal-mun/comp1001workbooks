@@ -508,6 +508,84 @@ assert not [n for n in _slices() if n.step is not None and isinstance(n.step, as
     "answer": b64(p6),
     "answerNote": "The first line selects positions. The second selects values."}
 
+# ---------------------------------------------------------------- quick checks
+# Understanding questions after each section: predict the output, fill in
+# the gaps, multiple choice, and true or false. Each blank is worth 1 XP.
+# Predict answers come from running the code.
+def predict(code):
+    blanks = {}
+    for i, line in enumerate(out(code).split("\n"), 1):
+        blanks[f"l{i}"] = lst(line, width="12rem", placeholder="output") if line.startswith("[") else accept(line, placeholder="output")
+    return {"type": "table", "xp": 1, "blanks": blanks}
+
+def true_false(*answers):
+    forms = {True: ["True", "T"], False: ["False", "F"]}
+    return {"type": "table", "xp": 1, "blanks": {f"t{i}": accept(*forms[a], width="6rem", placeholder="True or False", show=forms[a][0]) for i, a in enumerate(answers, 1)}}
+
+def choice(letter):
+    return {"type": "table", "xp": 1, "blanks": {"c": accept(letter, f"({letter})", f"{letter})", width="4rem", placeholder="letter", show=letter)}}
+
+def gaps(**blanks):
+    return {"type": "table", "xp": 1, "blanks": {name: accept(*forms, width=width, placeholder="code", show=forms[0]) for name, (forms, width) in blanks.items()}}
+
+E["q1"] = predict('''nums = [4, 8, 15, 16, 23]
+print(nums[1] + nums[-2])
+print(len(nums))''')
+E["q2"] = true_false(True, False)
+E["q3"] = choice("B")
+E["q4"] = true_false(True, False)
+E["q5"] = predict('''nums = [1, 2, 3]
+for n in nums:
+    n = n * 10
+print(nums)
+for i in range(len(nums)):
+    nums[i] = nums[i] * 10
+print(nums)''')
+E["q6"] = gaps(a=(['range(len(vals))', 'range(0, len(vals))'], "12rem"), b=(['vals[i] * 2', '2 * vals[i]', 'vals[i] + vals[i]'], "10rem"))
+E["q7"] = predict('''a = [5, 6]
+a.insert(0, 4)
+a.append(7)
+a.insert(2, 9)
+print(a)
+print(len(a))''')
+E["q8"] = choice("B")
+E["q9"] = predict('''items = [3, 1, 3, 5]
+x = items.pop()
+items.remove(3)
+print(x)
+print(items)''')
+E["q10"] = gaps(a=(['remove'], "7rem"), b=(['pop'], "7rem"), c=(['del'], "7rem"))
+E["q11"] = predict('''letters = ["b", "a", "b", "c"]
+print(letters.index("b"))
+print(letters.count("b"))
+print("d" in letters)''')
+E["q12"] = choice("C")
+E["q13"] = predict('''vals = [10, 20, 30, 40, 50]
+print(vals[1:4])
+print(vals[:3])
+print(vals[-2:])''')
+E["q14"] = gaps(a=(['2:4', '-3:-1', '2:-1', '-3:4'], "7rem"), b=([':4', '0:4', ':-1', '0:-1'], "7rem"))
+E["q15"] = predict('''a = [1, 2, 3]
+b = a
+b.append(4)
+a[0] = 0
+print(a)
+print(b)''')
+E["q16"] = true_false(True, False)
+E["q17"] = choice("C")
+E["q18"] = predict('''a = [1, 2, 3]
+b = a[:]
+c = a
+c[1] = 7
+b[0] = 5
+print(a)
+print(b)''')
+E["q19"] = predict('''nums = [3, 4]
+result = nums.append(5)
+print(result)
+print(nums)''')
+E["q20"] = true_false(True, False)
+
 for spec in E.values():
     if "starter" in spec:
         spec["starter"] = spec["starter"].rstrip("\n")

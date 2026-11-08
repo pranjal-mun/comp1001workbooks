@@ -451,6 +451,467 @@
       "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert not _calls(\"reverse\") and not _func_calls(\"reversed\"), \"Print the reverse order with an index loop that counts down. Do not use reverse or reversed.\"\nassert not [n for n in _slices() if n.step is not None and isinstance(n.step, ast.UnaryOp)], \"Print the reverse order with an index loop that counts down, not with a slice such as values[::-1].\"\n",
       "answer": "dmFsdWVzID0gWzksIDQsIDExLCA2LCAyLCA3LCA4LCA1LCAxMCwgM10KZm9yIGkgaW4gcmFuZ2UoMCwgbGVuKHZhbHVlcyksIDIpOgogICAgcHJpbnQodmFsdWVzW2ldLCBlbmQ9IiAiKQpwcmludCgpCmZvciB2YWx1ZSBpbiB2YWx1ZXM6CiAgICBpZiB2YWx1ZSAlIDIgPT0gMDoKICAgICAgICBwcmludCh2YWx1ZSwgZW5kPSIgIikKcHJpbnQoKQpmb3IgaSBpbiByYW5nZShsZW4odmFsdWVzKSAtIDEsIC0xLCAtMSk6CiAgICBwcmludCh2YWx1ZXNbaV0sIGVuZD0iICIpCnByaW50KCkKcHJpbnQodmFsdWVzWzBdLCB2YWx1ZXNbLTFdKQ==",
       "answerNote": "The first line selects positions. The second selects values."
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "24"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "(B)",
+            "B)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "B"
+        }
+      }
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[1, 2, 3]",
+            "[1,2,3]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[1, 2, 3]"
+        },
+        "l2": {
+          "accept": [
+            "[10, 20, 30]",
+            "[10,20,30]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[10, 20, 30]"
+        }
+      }
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "range(len(vals))",
+            "range(0, len(vals))"
+          ],
+          "placeholder": "code",
+          "width": "12rem",
+          "show": "range(len(vals))"
+        },
+        "b": {
+          "accept": [
+            "vals[i] * 2",
+            "2 * vals[i]",
+            "vals[i] + vals[i]"
+          ],
+          "placeholder": "code",
+          "width": "10rem",
+          "show": "vals[i] * 2"
+        }
+      }
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[4, 5, 9, 6, 7]",
+            "[4,5,9,6,7]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[4, 5, 9, 6, 7]"
+        },
+        "l2": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "(B)",
+            "B)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "B"
+        }
+      }
+    },
+    "q9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "[1, 3]",
+            "[1,3]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[1, 3]"
+        }
+      }
+    },
+    "q10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "remove"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": "remove"
+        },
+        "b": {
+          "accept": [
+            "pop"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": "pop"
+        },
+        "c": {
+          "accept": [
+            "del"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": "del"
+        }
+      }
+    },
+    "q11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l3": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "q12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "(C)",
+            "C)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "C"
+        }
+      }
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[20, 30, 40]",
+            "[20,30,40]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[20, 30, 40]"
+        },
+        "l2": {
+          "accept": [
+            "[10, 20, 30]",
+            "[10,20,30]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[10, 20, 30]"
+        },
+        "l3": {
+          "accept": [
+            "[40, 50]",
+            "[40,50]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[40, 50]"
+        }
+      }
+    },
+    "q14": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "2:4",
+            "-3:-1",
+            "2:-1",
+            "-3:4"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": "2:4"
+        },
+        "b": {
+          "accept": [
+            ":4",
+            "0:4",
+            ":-1",
+            "0:-1"
+          ],
+          "placeholder": "code",
+          "width": "7rem",
+          "show": ":4"
+        }
+      }
+    },
+    "q15": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[0, 2, 3, 4]",
+            "[0,2,3,4]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[0, 2, 3, 4]"
+        },
+        "l2": {
+          "accept": [
+            "[0, 2, 3, 4]",
+            "[0,2,3,4]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[0, 2, 3, 4]"
+        }
+      }
+    },
+    "q16": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q17": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "(C)",
+            "C)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "C"
+        }
+      }
+    },
+    "q18": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[1, 7, 3]",
+            "[1,7,3]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[1, 7, 3]"
+        },
+        "l2": {
+          "accept": [
+            "[5, 2, 3]",
+            "[5,2,3]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[5, 2, 3]"
+        }
+      }
+    },
+    "q19": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "None"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "[3, 4, 5]",
+            "[3,4,5]"
+          ],
+          "placeholder": "output",
+          "width": "12rem",
+          "show": "[3, 4, 5]"
+        }
+      }
+    },
+    "q20": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
     }
   }
 }
