@@ -1,0 +1,456 @@
+{
+  "id": "lecture-24",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 24 Workbook",
+  "subtitle": "Lists: properties and operations",
+  "exercises": {
+    "ex-create": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\nnames = [\"Ada\", \"Alan\", \"Grace\"]\nempty = []\nalso_empty = list()\nletters = list(\"cat\")"
+    },
+    "ex-index": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\nprint(marks[0])\nprint(marks[2])\nprint(marks[-1])",
+      "output": "72\n63\n90"
+    },
+    "ex-length": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\ni = 4\nif 0 <= i and i < len(marks):\n    print(marks[i])\nelse:\n    print(\"Outside the list\")",
+      "output": "Outside the list"
+    },
+    "ex-replace": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\nmarks[0] = 100\nprint(marks)",
+      "output": "[100, 85, 63, 90]"
+    },
+    "ex-string-error": {
+      "type": "example",
+      "code": "word = \"cat\"\nword[0] = \"b\""
+    },
+    "ex-new-string": {
+      "type": "example",
+      "code": "word = \"cat\"\nword = \"b\" + word[1:]\nprint(word)",
+      "output": "bat"
+    },
+    "ex-value-loop": {
+      "type": "example",
+      "code": "marks = [72, 85, 63]\nfor mark in marks:\n    print(mark)",
+      "output": "72\n85\n63"
+    },
+    "ex-value-assign": {
+      "type": "example",
+      "code": "marks = [72, 85, 63]\nfor mark in marks:\n    mark = mark + 5\nprint(marks)",
+      "output": "[72, 85, 63]"
+    },
+    "ex-index-loop": {
+      "type": "example",
+      "code": "marks = [72, 85, 63]\nfor i in range(len(marks)):\n    marks[i] = marks[i] + 5\nprint(marks)",
+      "output": "[77, 90, 68]"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 6,
+      "starter": "marks = [72, 85, 63, 90]\n# Change the elements and print each index and value.",
+      "cases": [
+        {
+          "name": "marks = [72, 85, 63, 90]",
+          "expected": "0 77\n1 90\n2 68\n3 100"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert _loops(), \"Use a loop to add 5 to each element.\"\nassert _index_set(\"marks\"), \"Change the elements of marks with index assignment, such as marks[i] = marks[i] + 5.\"\nassert marks == [77, 90, 68, 100], \"Change the list itself. At the end, marks should be [77, 90, 68, 100], not \" + repr(marks) + \".\"\n",
+      "answer": "bWFya3MgPSBbNzIsIDg1LCA2MywgOTBdCm1hcmtzWy0xXSA9IDk1CmZvciBpIGluIHJhbmdlKGxlbihtYXJrcykpOgogICAgbWFya3NbaV0gPSBtYXJrc1tpXSArIDUKICAgIHByaW50KGksIG1hcmtzW2ldKQ==",
+      "answerNote": "The code sets marks[-1] to 95 before the loop starts."
+    },
+    "cp1-final": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "final": {
+          "accept": [
+            "[77, 90, 68, 100]",
+            "[77,90,68,100]"
+          ],
+          "placeholder": "list",
+          "width": "12rem",
+          "show": "[77, 90, 68, 100]"
+        }
+      }
+    },
+    "ex-append-insert": {
+      "type": "example",
+      "code": "names = [\"Ada\", \"Grace\"]\nnames.append(\"Lin\")\nnames.insert(1, \"Alan\")\nprint(names)",
+      "output": "['Ada', 'Alan', 'Grace', 'Lin']"
+    },
+    "ex-extend": {
+      "type": "example",
+      "code": "a = [10, 20]\na.extend([30, 40])\nprint(a)",
+      "output": "[10, 20, 30, 40]"
+    },
+    "ex-append-list": {
+      "type": "example",
+      "code": "b = [10, 20]\nb.append([30, 40])\nprint(b)",
+      "output": "[10, 20, [30, 40]]"
+    },
+    "ex-pop-remove": {
+      "type": "example",
+      "code": "items = [10, 20, 10, 30]\nserved = items.pop(1)\nitems.remove(10)\ndel items[-1]\nprint(served)\nprint(items)",
+      "output": "20\n[10]"
+    },
+    "ex-search": {
+      "type": "example",
+      "code": "marks = [72, 85, 72, 90]\nprint(72 in marks)\nprint(marks.index(72))\nprint(marks.count(72))\nif 63 in marks:\n    print(marks.index(63))\nelse:\n    print(\"63 is absent\")",
+      "output": "True\n0\n2\n63 is absent"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "queue = [\"Ada\", \"Ben\", \"Ada\"]\n# Change the queue, then print the search results.",
+      "cases": [
+        {
+          "name": "queue = [\"Ada\", \"Ben\", \"Ada\"]",
+          "expected": "Ada\n1\n1\n['Ben', 'Ada', 'Chen']"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert _calls(\"append\"), \"Add Chen at the end with append.\"\nassert _calls(\"pop\"), \"Remove the first name with pop(0).\"\nassert _calls(\"index\"), \"Find the first index of Ada with index.\"\nassert _calls(\"count\"), \"Count the matches of Ada with count.\"\nassert any(isinstance(n, ast.Compare) and any(isinstance(o, ast.In) for o in n.ops) for n in ast.walk(_TREE)), \"Test whether Ada is in queue with in before you call index.\"\n",
+      "answer": "cXVldWUgPSBbIkFkYSIsICJCZW4iLCAiQWRhIl0KcXVldWUuYXBwZW5kKCJDaGVuIikKc2VydmVkID0gcXVldWUucG9wKDApCnByaW50KHNlcnZlZCkKaWYgIkFkYSIgaW4gcXVldWU6CiAgICBwcmludChxdWV1ZS5pbmRleCgiQWRhIikpCiAgICBwcmludChxdWV1ZS5jb3VudCgiQWRhIikpCnByaW50KHF1ZXVlKQ==",
+      "answerNote": "The code removes the first Ada. The second Ada is at index 1."
+    },
+    "ex-slices": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\nprint(marks[1:3])\nprint(marks[:2])\nprint(marks[-2:])\nprint(marks[:])",
+      "output": "[85, 63]\n[72, 85]\n[63, 90]\n[72, 85, 63, 90]"
+    },
+    "ex-slice-copy": {
+      "type": "example",
+      "code": "marks = [72, 85, 63, 90]\npart = marks[1:3]\npart[0] = 100\nprint(marks)\nprint(part)",
+      "output": "[72, 85, 63, 90]\n[100, 63]"
+    },
+    "ex-alias": {
+      "type": "example",
+      "code": "a = [10, 20, 30]\nb = a\nb[1] = 99\nprint(a)\nprint(b)",
+      "output": "[10, 99, 30]\n[10, 99, 30]"
+    },
+    "ex-alias-trace": {
+      "type": "example",
+      "code": "marks = [60, 70, 80]\nbackup = marks\nbackup.append(90)\nmarks[0] = 65\nremoved = backup.pop(1)\nprint(marks)\nprint(removed)",
+      "output": "[65, 80, 90]\n70"
+    },
+    "ex-copy": {
+      "type": "example",
+      "code": "a = [10, 20, 30]\nb = a[:]\nb[1] = 99\nprint(a)\nprint(b)",
+      "output": "[10, 20, 30]\n[10, 99, 30]"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "scores = [60, 70, 80, 90]\n# Make the copy and slice, then change and print the lists.",
+      "cases": [
+        {
+          "name": "scores = [60, 70, 80, 90]",
+          "expected": "[60, 70, 80, 100]\n[60, 70, 80, 90]\n[0, 80]"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert saved is not scores, \"Make saved a separate copy, such as scores[:]. The assignment saved = scores only gives the same list a second name.\"\nassert any(n.lower is not None or n.upper is not None for n in _slices()), \"Use a slice such as scores[1:3] to make middle.\"\nassert middle is not scores and middle is not saved, \"Make middle with a slice. A slice is a new list.\"\n",
+      "answer": "c2NvcmVzID0gWzYwLCA3MCwgODAsIDkwXQpzYXZlZCA9IHNjb3Jlc1s6XQptaWRkbGUgPSBzY29yZXNbMTozXQptaWRkbGVbMF0gPSAwCnNjb3Jlc1stMV0gPSAxMDAKcHJpbnQoc2NvcmVzKQpwcmludChzYXZlZCkKcHJpbnQobWlkZGxlKQ==",
+      "answerNote": "If you use saved = scores, the second output is [60, 70, 80, 100]. middle remains a separate list."
+    },
+    "cp3-alias": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "The output with saved = scores…",
+      "answer": "VGhlIHNlY29uZCBsaW5lIGJlY29tZXMgWzYwLCA3MCwgODAsIDEwMF0uIEJvdGggbmFtZXMgcmVmZXIgdG8gb25lIGxpc3QsIHNvIHRoZSBjaGFuZ2UgdG8gc2NvcmVzWy0xXSBzaG93cyB0aHJvdWdoIHNhdmVkLiBtaWRkbGUgcmVtYWlucyBhIHNlcGFyYXRlIGxpc3Qu"
+    },
+    "ex-append-none": {
+      "type": "example",
+      "code": "marks = [72, 85]\nmarks = marks.append(90)\nprint(marks)",
+      "output": "None"
+    },
+    "ex-append-fix": {
+      "type": "example",
+      "code": "marks = [72, 85]\nmarks.append(90)"
+    },
+    "ex-remove-loop": {
+      "type": "example",
+      "code": "items = [0, 0, 1]\nfor item in items:\n    if item == 0:\n        items.remove(item)\nprint(items)",
+      "output": "[0, 1]"
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 14,
+      "starter": "values = []",
+      "cases": [
+        {
+          "name": "Three lists",
+          "expected": "[0, 3, 6, 9, 12, 15]\n[1, 4, 9, 16, 25]\n[0, 1, 0, 1, 0, 1, 0, 1]"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert len(_loops()) >= 3, \"Write three loops, one for each list.\"\nassert len(_calls(\"append\")) >= 3, \"Use append in each loop to add one element per pass.\"\nassert not _literal_lists(), \"Build each list with append in a loop. Start each list with values = [] and do not type the elements.\"\n",
+      "answer": "dmFsdWVzID0gW10KZm9yIG51bWJlciBpbiByYW5nZSgwLCAxNiwgMyk6CiAgICB2YWx1ZXMuYXBwZW5kKG51bWJlcikKcHJpbnQodmFsdWVzKQoKdmFsdWVzID0gW10KZm9yIG51bWJlciBpbiByYW5nZSgxLCA2KToKICAgIHZhbHVlcy5hcHBlbmQobnVtYmVyICogbnVtYmVyKQpwcmludCh2YWx1ZXMpCgp2YWx1ZXMgPSBbXQpmb3IgaSBpbiByYW5nZSg4KToKICAgIHZhbHVlcy5hcHBlbmQoaSAlIDIpCnByaW50KHZhbHVlcyk=",
+      "answerNote": "Each loop adds one element per pass."
+    },
+    "ex-shift-a": {
+      "type": "example",
+      "code": "values = [5, 8, 2, 9]\nfor i in range(1, len(values)):\n    values[i] = values[i - 1]\nprint(values)"
+    },
+    "ex-shift-b": {
+      "type": "example",
+      "code": "values = [5, 8, 2, 9]\nfor i in range(len(values) - 1, 0, -1):\n    values[i] = values[i - 1]\nprint(values)"
+    },
+    "p2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "ai1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "av1": {
+          "accept": [
+            "[5, 5, 2, 9]",
+            "[5,5,2,9]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 5, 2, 9]"
+        },
+        "ai2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "av2": {
+          "accept": [
+            "[5, 5, 5, 9]",
+            "[5,5,5,9]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 5, 5, 9]"
+        },
+        "ai3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "av3": {
+          "accept": [
+            "[5, 5, 5, 5]",
+            "[5,5,5,5]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 5, 5, 5]"
+        },
+        "bi1": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "bv1": {
+          "accept": [
+            "[5, 8, 2, 2]",
+            "[5,8,2,2]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 8, 2, 2]"
+        },
+        "bi2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "bv2": {
+          "accept": [
+            "[5, 8, 8, 2]",
+            "[5,8,8,2]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 8, 8, 2]"
+        },
+        "bi3": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "i",
+          "width": "4rem"
+        },
+        "bv3": {
+          "accept": [
+            "[5, 5, 8, 2]",
+            "[5,5,8,2]"
+          ],
+          "placeholder": "list",
+          "width": "11rem",
+          "show": "[5, 5, 8, 2]"
+        }
+      }
+    },
+    "p2-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 30,
+      "rows": 4,
+      "placeholder": "Which script moves every element, and why the other does not…",
+      "answer": "U2NyaXB0IEEgcHJpbnRzIFs1LCA1LCA1LCA1XS4gU2NyaXB0IEIgcHJpbnRzIFs1LCA1LCA4LCAyXS4KClNjcmlwdCBCIG1vdmVzIGV2ZXJ5IGVsZW1lbnQgb25lIGluZGV4IHRvIHRoZSByaWdodC4gSW5kZXggMCBrZWVwcyBpdHMgb2xkIHZhbHVlLgoKU2NyaXB0IEEgZ29lcyBmb3J3YXJkLiBFYWNoIHBhc3MgcmVhZHMgYW4gZWxlbWVudCB0aGF0IHRoZSBwcmV2aW91cyBwYXNzIGFscmVhZHkgcmVwbGFjZWQuIFNvIHRoZSB2YWx1ZSA1IGdvZXMgaW50byBldmVyeSBpbmRleC4KClNjcmlwdCBCIGdvZXMgYmFja3dhcmQuIEVhY2ggcGFzcyByZWFkcyBhbiBlbGVtZW50IGJlZm9yZSB0aGUgbG9vcCByZXBsYWNlcyBpdC4="
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 10,
+      "starter": "prices = [8, 12, 5]",
+      "cases": [
+        {
+          "name": "prices = [8, 12, 5]",
+          "expected": "[8, 12, 9]\n[8, 12, 5]\n[8, 12, 5]\n[8, 12, 5]"
+        },
+        {
+          "name": "prices = [4, 7, 1, 20]",
+          "expected": "[4, 7, 1, 9]\n[4, 7, 1, 20]\n[4, 7, 1, 20]\n[4, 7, 1, 20]",
+          "rewrite": [
+            [
+              "prices = [8, 12, 5]",
+              "prices = [4, 7, 1, 20]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert any(n.lower is None and n.upper is None and n.step is None for n in _slices()), \"Make first with a full slice: prices[:].\"\nassert _calls(\"copy\"), \"Make second with prices.copy().\"\nassert _loops() and _calls(\"append\"), \"Make third with a loop and append: start with third = [] and add each price.\"\nassert not _func_calls(\"list\"), \"Do not use list() in this practice.\"\nfor _name in (\"first\", \"second\", \"third\"):\n    assert _name in globals() and isinstance(globals()[_name], list), \"Make a list named \" + _name + \".\"\n    assert globals()[_name] is not prices, \"Make \" + _name + \" a separate copy. Do not assign prices to it.\"\n",
+      "answer": "cHJpY2VzID0gWzgsIDEyLCA1XQpmaXJzdCA9IHByaWNlc1s6XQpzZWNvbmQgPSBwcmljZXMuY29weSgpCnRoaXJkID0gW10KZm9yIHByaWNlIGluIHByaWNlczoKICAgIHRoaXJkLmFwcGVuZChwcmljZSkKcHJpY2VzWy0xXSA9IDkKcHJpbnQocHJpY2VzKQpwcmludChmaXJzdCkKcHJpbnQoc2Vjb25kKQpwcmludCh0aGlyZCk=",
+      "answerNote": "Each copy keeps the original last price."
+    },
+    "ex-bug-a": {
+      "type": "example",
+      "code": "values = [3, 6, 9]\nfor i in range(1, len(values) + 1):\n    values[i] = i * i\nprint(values)"
+    },
+    "ex-bug-b": {
+      "type": "example",
+      "code": "values = []\nfor i in range(3):\n    values[i] = (i + 1) * (i + 1)\nprint(values)"
+    },
+    "p4-errors": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "ai": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "index",
+          "width": "5rem"
+        },
+        "ae": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "error",
+          "width": "9rem"
+        },
+        "bi": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "index",
+          "width": "5rem"
+        },
+        "be": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "error",
+          "width": "9rem"
+        }
+      }
+    },
+    "p4-valid": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "The valid indexes for each script…",
+      "answer": "U2NyaXB0IEE6IGl0cyB2YWxpZCBpbmRleGVzIGFyZSAwLCAxLCAyLCAtMywgLTIsIGFuZCAtMS4KClNjcmlwdCBCOiBpdHMgZW1wdHkgbGlzdCBoYXMgbm8gdmFsaWQgaW5kZXhlcy4="
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "# Script A\nvalues = [3, 6, 9]\nfor i in range(1, len(values) + 1):\n    values[i] = i * i\nprint(values)\n\n# Script B\nvalues = []\nfor i in range(3):\n    values[i] = (i + 1) * (i + 1)\nprint(values)",
+      "cases": [
+        {
+          "name": "Both scripts",
+          "expected": "[1, 4, 9]\n[1, 4, 9]"
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert len(_loops()) >= 2, \"Keep both scripts, each with its loop.\"\nassert _index_set(\"values\"), \"In Script A, replace the existing elements with index assignment, such as values[i] = ...\"\nassert _calls(\"append\"), \"In Script B, add the new elements with append. The empty list has no index to assign.\"\nassert not [n for n in _literal_lists() if len(n.elts) == 3 and all(isinstance(e, ast.Constant) and e.value in (1, 4, 9) for e in n.elts)], \"Compute the squares in the loop. Do not type [1, 4, 9].\"\n",
+      "answer": "dmFsdWVzID0gWzMsIDYsIDldCmZvciBpIGluIHJhbmdlKGxlbih2YWx1ZXMpKToKICAgIHZhbHVlc1tpXSA9IChpICsgMSkgKiAoaSArIDEpCnByaW50KHZhbHVlcykKCnZhbHVlcyA9IFtdCmZvciBpIGluIHJhbmdlKDMpOgogICAgdmFsdWVzLmFwcGVuZCgoaSArIDEpICogKGkgKyAxKSkKcHJpbnQodmFsdWVzKQ==",
+      "answerNote": "Each corrected script prints [1, 4, 9]. The first replaces existing elements. The second adds new elements."
+    },
+    "p5": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 9,
+      "starter": "readings = [14, 9, 18, 7]",
+      "cases": [
+        {
+          "name": "readings = [14, 9, 18, 7]",
+          "expected": "[0, 0, 0, 0]\n[14, 9, 18, 7]\n[]"
+        },
+        {
+          "name": "readings = [3, 5, 8, 13, 21, 34]",
+          "expected": "[0, 0, 0, 0, 0, 0]\n[3, 5, 8, 13, 21, 34]\n[]",
+          "rewrite": [
+            [
+              "readings = [14, 9, 18, 7]",
+              "readings = [3, 5, 8, 13, 21, 34]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert len(_assigned(\"readings\")) == 1, \"Do not assign a new list to readings. Change the elements of the same list.\"\nassert _index_set(\"readings\"), \"Reset each element with index assignment in a loop, such as readings[i] = 0.\"\nassert _calls(\"pop\"), \"Empty the list with pop in a loop.\"\nassert not _calls(\"clear\") and not any(isinstance(n, ast.Delete) for n in ast.walk(_TREE)), \"Remove the elements with pop in a loop, not with clear or del.\"\nassert isinstance(globals().get(\"saved\"), list) and saved is not readings, \"Save a separate copy in saved, such as readings.copy().\"\n",
+      "answer": "cmVhZGluZ3MgPSBbMTQsIDksIDE4LCA3XQpzYXZlZCA9IHJlYWRpbmdzLmNvcHkoKQpmb3IgaSBpbiByYW5nZShsZW4ocmVhZGluZ3MpKToKICAgIHJlYWRpbmdzW2ldID0gMApwcmludChyZWFkaW5ncykKcHJpbnQoc2F2ZWQpCndoaWxlIGxlbihyZWFkaW5ncykgPiAwOgogICAgcmVhZGluZ3MucG9wKCkKcHJpbnQocmVhZGluZ3Mp",
+      "answerNote": "The copy keeps the readings. The removal loop checks the current length before each pop."
+    },
+    "p6": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "values = [9, 4, 11, 6, 2, 7, 8, 5, 10, 3]",
+      "cases": [
+        {
+          "name": "values = [9, 4, 11, 6, 2, 7, 8, 5, 10, 3]",
+          "expected": "9 11 2 8 10 \n4 6 2 8 10 \n3 10 5 8 7 2 6 11 4 9 \n9 3"
+        },
+        {
+          "name": "values = [12, 7, 3, 20, 15, 6, 1]",
+          "expected": "12 3 15 1 \n12 20 6 \n1 6 15 20 3 7 12 \n12 1",
+          "rewrite": [
+            [
+              "values = [9, 4, 11, 6, 2, 7, 8, 5, 10, 3]",
+              "values = [12, 7, 3, 20, 15, 6, 1]"
+            ]
+          ]
+        }
+      ],
+      "check": "import ast\n_TREE = ast.parse(__source__)\ndef _calls(method):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Slice)]\ndef _index_set(name):\n    for n in ast.walk(_TREE):\n        targets = n.targets if isinstance(n, ast.Assign) else [n.target] if isinstance(n, ast.AugAssign) else []\n        for t in targets:\n            if isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name) and t.value.id == name and not isinstance(t.slice, ast.Slice):\n                return True\n    return False\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _literal_lists():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.List) and n.elts]\ndef _assigned(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.Assign, ast.AugAssign, ast.AnnAssign))\n            and any(isinstance(t, ast.Name) and t.id == name for t in (n.targets if isinstance(n, ast.Assign) else [n.target]))]\nassert not _calls(\"reverse\") and not _func_calls(\"reversed\"), \"Print the reverse order with an index loop that counts down. Do not use reverse or reversed.\"\nassert not [n for n in _slices() if n.step is not None and isinstance(n.step, ast.UnaryOp)], \"Print the reverse order with an index loop that counts down, not with a slice such as values[::-1].\"\n",
+      "answer": "dmFsdWVzID0gWzksIDQsIDExLCA2LCAyLCA3LCA4LCA1LCAxMCwgM10KZm9yIGkgaW4gcmFuZ2UoMCwgbGVuKHZhbHVlcyksIDIpOgogICAgcHJpbnQodmFsdWVzW2ldLCBlbmQ9IiAiKQpwcmludCgpCmZvciB2YWx1ZSBpbiB2YWx1ZXM6CiAgICBpZiB2YWx1ZSAlIDIgPT0gMDoKICAgICAgICBwcmludCh2YWx1ZSwgZW5kPSIgIikKcHJpbnQoKQpmb3IgaSBpbiByYW5nZShsZW4odmFsdWVzKSAtIDEsIC0xLCAtMSk6CiAgICBwcmludCh2YWx1ZXNbaV0sIGVuZD0iICIpCnByaW50KCkKcHJpbnQodmFsdWVzWzBdLCB2YWx1ZXNbLTFdKQ==",
+      "answerNote": "The first line selects positions. The second selects values."
+    }
+  }
+}

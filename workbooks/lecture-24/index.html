@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 24 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-24", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 24 Workbook</h1>
+    <div class="wb-subtitle">Lists: properties and operations</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Use indexes to change list elements and slices to make separate lists. Trace how list methods change values, length, and indexes. Check whether two names refer to one list or to separate copies.</p>
+  <p>Reading: §6.1 and §6.2</p>
+  <ul>
+    <li>Create, index, search, and slice a list.</li>
+    <li>Modify a list using assignment and common list methods.</li>
+    <li>Explain the difference between string immutability and list mutability.</li>
+    <li>Distinguish aliasing a list from copying it.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer. Boxes that call <code>input()</code> ask you for the values in a small console under the box.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-basics">List basics</p>
+
+<h2 id="s1">1. Values, indexes, and length</h2>
+<p>A list stores values in a specified order. Each value is an element. A list can contain different types of values. These examples use one type of value in each list.</p>
+<wb-example id="ex-create"></wb-example>
+<p><code>letters</code> is <code>["c", "a", "t"]</code>. The list <code>marks</code> has four elements.</p>
+<p>The first index is <code>0</code>, as in a string. A negative index gives a position from the end.</p>
+<wb-example id="ex-index"></wb-example>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 330 130" width="330" height="130" role="img" aria-label="The list marks drawn as four cells holding 72, 85, 63 and 90. Above the cells are the indexes from the start, 0 to 3. Below them are the indexes from the end, -4 to -1." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="45" y="45" width="60" height="34"/>
+    <rect x="105" y="45" width="60" height="34"/>
+    <rect x="165" y="45" width="60" height="34"/>
+    <rect x="225" y="45" width="60" height="34"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle">
+      <text x="75" y="67">72</text><text x="135" y="67">85</text><text x="195" y="67">63</text><text x="255" y="67">90</text>
+      <text x="75" y="38">0</text><text x="135" y="38">1</text><text x="195" y="38">2</text><text x="255" y="38">3</text>
+      <text x="75" y="98">-4</text><text x="135" y="98">-3</text><text x="195" y="98">-2</text><text x="255" y="98">-1</text>
+    </g>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 13px" text-anchor="middle">
+      <text x="165" y="16">Index from the start</text>
+      <text x="165" y="124">Index from the end</text>
+    </g>
+  </svg>
+</figure>
+<p><code>len(marks)</code> returns the number of elements. In this example, the length is <code>4</code>. For a list with elements, the last index from the start is <code>len(marks) - 1</code>.</p>
+<wb-example id="ex-length"></wb-example>
+<p><code>marks[4]</code> causes an <code>IndexError</code>. An empty list has a length of <code>0</code>. An empty list has no valid element index.</p>
+
+<h2 id="s2">2. Mutable lists and immutable strings</h2>
+<p>A list is mutable. You can replace an element in the same list.</p>
+<wb-example id="ex-replace"></wb-example>
+<p>The list still has four elements.</p>
+<p>A string is immutable. You cannot replace a character in the same string.</p>
+<wb-example id="ex-string-error"></wb-example>
+<p>The assignment causes a <code>TypeError</code>.</p>
+<p>To change the text, make a new string:</p>
+<wb-example id="ex-new-string"></wb-example>
+
+<h2 id="s3">3. Loops with values or indexes</h2>
+<p>A loop can read element values. A loop with indexes can replace elements.</p>
+<wb-example id="ex-value-loop"></wb-example>
+<p>The assignment changes <code>mark</code>. The assignment does not change the list:</p>
+<wb-example id="ex-value-assign"></wb-example>
+<p>The loop with indexes changes the list:</p>
+<wb-example id="ex-index-loop"></wb-example>
+<p><code>marks[i] = ...</code> replaces the element at index <code>i</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Make <code>marks = [72, 85, 63, 90]</code>.</p>
+  <ul>
+    <li>Set the last element to <code>95</code>.</li>
+    <li>Use a loop to add <code>5</code> to each element.</li>
+    <li>For each element, print the index and the new value.</li>
+    <li>Write the final list.</li>
+  </ul>
+  <p>Print each index and its new value on one line, separated by a space. For index 0 the line is <code>0 77</code>.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Use a loop to add 5 to each element.</li>
+      <li>Change the elements of <code>marks</code> with index assignment, such as <code>marks[i] = marks[i] + 5</code>.</li>
+      <li>At the end, <code>marks</code> holds the final list.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+  <p>Write the final list:</p>
+  <wb-table id="cp1-final">
+    <table>
+      <tbody>
+        <tr><th>Final <code>marks</code></th><td data-blank="final"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <details class="wb-answer">
+    <summary>Show the answer</summary>
+    <div class="wb-table-wrap">
+      <table>
+        <thead><tr><th><code>i</code></th><th>Printed</th><th>List after the change</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td><code>0 77</code></td><td><code>[77, 85, 63, 95]</code></td></tr>
+          <tr><td>1</td><td><code>1 90</code></td><td><code>[77, 90, 63, 95]</code></td></tr>
+          <tr><td>2</td><td><code>2 68</code></td><td><code>[77, 90, 68, 95]</code></td></tr>
+          <tr><td>3</td><td><code>3 100</code></td><td><code>[77, 90, 68, 100]</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The code sets <code>marks[-1]</code> to <code>95</code> before the loop starts.</p>
+  </details>
+</div>
+
+<p class="wb-part" id="part-changes">List changes</p>
+
+<h2 id="s4">4. Adding elements</h2>
+<p><code>append</code> adds one element at the end. <code>insert</code> adds one element before an index.</p>
+<wb-example id="ex-append-insert"></wb-example>
+<p>The indexes of later elements increase by one. The length increases by one.</p>
+<p><code>extend</code> adds each element from another sequence to the list.</p>
+<wb-example id="ex-extend"></wb-example>
+<p><code>a</code> has four elements.</p>
+<wb-example id="ex-append-list"></wb-example>
+<p><code>b</code> has three elements. The last element is a list. <code>a + [50, 60]</code> makes a new list. <code>a.extend([50, 60])</code> changes <code>a</code>.</p>
+
+<h2 id="s5">5. Removing elements</h2>
+<p>Each row uses a new list: <code>items = [10, 20, 10, 30]</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Operation</th><th>List after removal</th><th>Result of the operation</th></tr></thead>
+  <tbody>
+    <tr><td><code>items.remove(10)</code></td><td><code>[20, 10, 30]</code></td><td>The method removes the first match. The method returns <code>None</code>.</td></tr>
+    <tr><td><code>items.pop()</code></td><td><code>[10, 20, 10]</code></td><td>The method removes and returns <code>30</code>.</td></tr>
+    <tr><td><code>items.pop(1)</code></td><td><code>[10, 10, 30]</code></td><td>The method removes and returns <code>20</code>.</td></tr>
+    <tr><td><code>del items[1]</code></td><td><code>[10, 10, 30]</code></td><td>The statement removes the element at index <code>1</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>remove(0)</code> searches for the value <code>0</code>. <code>pop(0)</code> removes the first element.</p>
+<p><code>pop</code> returns the removed value. The indexes of later elements decrease by one.</p>
+<wb-example id="ex-pop-remove"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>After statement</th><th><code>items</code></th></tr></thead>
+  <tbody>
+    <tr><td>Create</td><td><code>[10, 20, 10, 30]</code></td></tr>
+    <tr><td><code>pop(1)</code></td><td><code>[10, 10, 30]</code></td></tr>
+    <tr><td><code>remove(10)</code></td><td><code>[10, 30]</code></td></tr>
+    <tr><td><code>del items[-1]</code></td><td><code>[10]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>served</code> remains <code>20</code>.</p>
+
+<p class="wb-part" id="part-searches">Searches and slices</p>
+
+<h2 id="s6">6. Searching a list</h2>
+<p><code>in</code> returns <code>True</code> for a value in the list. <code>index</code> gives the first index. <code>count</code> gives the number of matches.</p>
+<wb-example id="ex-search"></wb-example>
+<p>Without the condition, <code>marks.index(63)</code> causes a <code>ValueError</code>. <code>marks.count(63)</code> returns <code>0</code>. The string method <code>.find()</code> returns <code>-1</code> when the value is absent.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Make <code>queue = ["Ada", "Ben", "Ada"]</code>.</p>
+  <ul>
+    <li>Add <code>"Chen"</code> at the end.</li>
+    <li>Use <code>pop</code> to remove the first name.</li>
+    <li>Print the removed name.</li>
+    <li>If <code>"Ada"</code> is in <code>queue</code>, print the first index and the number of matches.</li>
+    <li>Print the final queue.</li>
+  </ul>
+  <p>Print each result on its own line, in the order of the list above.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Add Chen at the end with <code>append</code>.</li>
+      <li>Remove the first name with <code>pop(0)</code>.</li>
+      <li>Test whether Ada is in <code>queue</code> with <code>in</code> before you call <code>index</code>.</li>
+      <li>Find the first index with <code>index</code> and the number of matches with <code>count</code>.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<h2 id="s7">7. Slices and separate lists</h2>
+<p><code>marks[start:stop]</code> makes a new list. The slice includes <code>start</code> and excludes <code>stop</code>.</p>
+<wb-example id="ex-slices"></wb-example>
+<p>The slice <code>marks[1:3]</code> contains the elements at indexes <code>1</code> and <code>2</code>.</p>
+<p>For these lists of numbers, a slice makes a separate list. A change to the slice does not change the original list.</p>
+<wb-example id="ex-slice-copy"></wb-example>
+<p>There are two lists. Each list starts at index <code>0</code>.</p>
+
+<p class="wb-part" id="part-aliasing">Aliasing and copying</p>
+
+<h2 id="s8">8. Two names for one list</h2>
+<p>A list variable stores a reference to a list. <code>b = a</code> copies that reference.</p>
+<wb-example id="ex-alias"></wb-example>
+<p>This relation is aliasing. A change through either name changes the same list.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 340 150" width="340" height="150" role="img" aria-label="The names a and b each have an arrow to the same list of three cells: 10, 99 and 30. The cell 99 has a thick border. The caption says two names refer to one list." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs>
+      <marker id="l24-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" style="fill: currentColor; stroke: none"/>
+      </marker>
+    </defs>
+    <line x1="42" y1="30" x2="128" y2="58" marker-end="url(#l24-arrow)" style="stroke-width: 2"/>
+    <line x1="42" y1="104" x2="128" y2="76" marker-end="url(#l24-arrow)" style="stroke-width: 2"/>
+    <rect x="130" y="50" width="60" height="34"/>
+    <rect x="190" y="50" width="60" height="34" style="stroke-width: 3"/>
+    <rect x="250" y="50" width="60" height="34"/>
+    <g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle">
+      <text x="30" y="30">a</text>
+      <text x="30" y="110">b</text>
+      <text x="160" y="72">10</text><text x="220" y="72">99</text><text x="280" y="72">30</text>
+    </g>
+    <text x="220" y="135" text-anchor="middle" style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 13px">Two names refer to one list.</text>
+  </svg>
+</figure>
+<p><code>backup</code> refers to the same list as <code>marks</code>.</p>
+<wb-example id="ex-alias-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>After statement</th><th>List for both names</th></tr></thead>
+  <tbody>
+    <tr><td><code>backup = marks</code></td><td><code>[60, 70, 80]</code></td></tr>
+    <tr><td><code>backup.append(90)</code></td><td><code>[60, 70, 80, 90]</code></td></tr>
+    <tr><td><code>marks[0] = 65</code></td><td><code>[65, 70, 80, 90]</code></td></tr>
+    <tr><td><code>backup.pop(1)</code></td><td><code>[65, 80, 90]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The name <code>backup</code> does not make a copy.</p>
+<p>A string or number is immutable, like the string in Section 2. The assignment <code>b = a</code> causes no problem for these values because they cannot change in place.</p>
+
+<h2 id="s9">9. Making a separate copy</h2>
+<p><code>a[:]</code> makes a new list with the same elements. <code>list(a)</code> also makes a new list.</p>
+<wb-example id="ex-copy"></wb-example>
+<p>You can also use <code>b = list(a)</code> to make a separate copy. There are two separate lists. The assignment <code>b = a.copy()</code> also makes a separate copy.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Make <code>scores = [60, 70, 80, 90]</code>.</p>
+  <ul>
+    <li>Make a separate copy named <code>saved</code>.</li>
+    <li>Use a slice to put the middle two elements in <code>middle</code>.</li>
+    <li>Set the first element in <code>middle</code> to <code>0</code>.</li>
+    <li>Set the last element in <code>scores</code> to <code>100</code>.</li>
+    <li>Print the three lists.</li>
+    <li>Give the output for <code>saved = scores</code> instead of a copy.</li>
+  </ul>
+  <p>Print <code>scores</code>, then <code>saved</code>, then <code>middle</code>, each on its own line.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Make <code>saved</code> a separate copy, such as <code>scores[:]</code>.</li>
+      <li>Use a slice such as <code>scores[1:3]</code> to make <code>middle</code>.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+  <p>Give the output for <code>saved = scores</code> instead of a copy:</p>
+  <wb-short id="cp3-alias"></wb-short>
+</div>
+
+<h2 id="s10">10. Common list errors</h2>
+<p><code>append</code> changes the list and returns <code>None</code>.</p>
+<wb-example id="ex-append-none"></wb-example>
+<p>This prints <code>None</code>.</p>
+<p>Use <code>append</code> without an assignment:</p>
+<wb-example id="ex-append-fix"></wb-example>
+<p>A removal moves later elements to lower indexes.</p>
+<wb-example id="ex-remove-loop"></wb-example>
+<p>The code prints <code>[0, 1]</code>. The loop does not examine the second zero. Do not change the list length during a loop through the same list.</p>
+<p>One safe way is to build a new list. Loop through the old list and <code>append</code> each element to keep.</p>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>List operations</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>a = [10, 20]</code>, <code>a = []</code></td><td>The list contains initial values or is empty.</td></tr>
+    <tr><td><code>len(a)</code>, <code>a[i]</code>, <code>a[-1]</code></td><td>These give the length, element <code>i</code>, or the last element.</td></tr>
+    <tr><td><code>a[i] = value</code></td><td>The assignment replaces element <code>i</code>.</td></tr>
+    <tr><td><code>a.append(x)</code></td><td>The method adds one element at the end.</td></tr>
+    <tr><td><code>a.insert(i, x)</code>, <code>a.extend(b)</code></td><td><code>insert</code> adds before <code>i</code>. <code>extend</code> adds the elements of <code>b</code>.</td></tr>
+    <tr><td><code>a.remove(x)</code></td><td>The method removes the first match. No match causes a <code>ValueError</code>.</td></tr>
+    <tr><td><code>x = a.pop(i)</code>, <code>del a[i]</code></td><td>Both remove by index. <code>pop</code> also returns the element.</td></tr>
+    <tr><td><code>x in a</code>, <code>a.index(x)</code>, <code>a.count(x)</code></td><td>The results give presence, the first index, or the number of matches.</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>index</code> needs a match. <code>pop</code> and <code>del</code> need a valid index.</p>
+
+<h3>Loops, slices, and references</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Code or rule</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>for value in a:</code></td><td>The loop reads values. Assignment to <code>value</code> does not change list elements.</td></tr>
+    <tr><td><code>for i in range(len(a)):</code></td><td>Assignment to <code>a[i]</code> replaces an element.</td></tr>
+    <tr><td><code>a[start:stop]</code></td><td>The new list includes <code>start</code> and excludes <code>stop</code>.</td></tr>
+    <tr><td><code>a[:2]</code>, <code>a[-2:]</code></td><td>The slices give the first two or last two elements.</td></tr>
+    <tr><td><code>b = a</code></td><td>Both names refer to one list. Both names show the same changes.</td></tr>
+    <tr><td><code>b = a[:]</code>, <code>b = list(a)</code></td><td>Each form makes a separate copy of a list of numbers or strings.</td></tr>
+    <tr><td>Lists and strings</td><td>A list can change. A string cannot change.</td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>a + b</code> makes a new list. <code>a.extend(b)</code> changes the existing list.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>Each practice starts with the first line of its script in the code box. <strong>Check</strong> compares what your script prints with the expected output.</p>
+
+<h3>1. Build number patterns</h3>
+<p>Write three short scripts. Start each script with <code>values = []</code>. Use <code>append</code> in a loop, then print the list.</p>
+<ul>
+  <li>Build the multiples of 3 from 0 through 15.</li>
+  <li>Build the squares of the integers from 1 through 5.</li>
+  <li>Build eight values that alternate between 0 and 1, starting with 0.</li>
+</ul>
+<p>Write the three scripts one after another in the same code box. The program prints three lists, one per line.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write three loops, one for each list.</li>
+    <li>Use <code>append</code> in each loop to add one element per pass.</li>
+    <li>Start each list with <code>values = []</code>. Do not type the elements in a list.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+
+<h3>2. Shift elements by index</h3>
+<p>Both scripts start with the same list. Each pass copies the element at index <code>i - 1</code> into index <code>i</code>. Only the direction of the loop is different.</p>
+<p>Script A:</p>
+<wb-example id="ex-shift-a"></wb-example>
+<p>Script B:</p>
+<wb-example id="ex-shift-b"></wb-example>
+<p>Trace each script without running it. Write <code>i</code> and the whole list after each pass.</p>
+<wb-table id="p2-table">
+  <table>
+    <thead><tr><th>Script A pass</th><th><code>i</code></th><th><code>values</code> after the pass</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="ai1"></td><td data-blank="av1"></td></tr>
+      <tr><td>2</td><td data-blank="ai2"></td><td data-blank="av2"></td></tr>
+      <tr><td>3</td><td data-blank="ai3"></td><td data-blank="av3"></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Script B pass</th><th><code>i</code></th><th><code>values</code> after the pass</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="bi1"></td><td data-blank="bv1"></td></tr>
+      <tr><td>2</td><td data-blank="bi2"></td><td data-blank="bv2"></td></tr>
+      <tr><td>3</td><td data-blank="bi3"></td><td data-blank="bv3"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Which script moves every element one index to the right? Explain why the other script does not.</p>
+<wb-short id="p2-why"></wb-short>
+
+<h3>3. Keep three independent copies</h3>
+<p>Write a script that starts with <code>prices = [8, 12, 5]</code>. Make three separate copies with these methods:</p>
+<ul>
+  <li>Use a full slice for <code>first</code>.</li>
+  <li>Use <code>.copy()</code> for <code>second</code>.</li>
+  <li>Use a loop and <code>append</code> for <code>third</code>.</li>
+</ul>
+<p>Set the last element of <code>prices</code> to 9. Print <code>prices</code>, then each copy on its own line. Do not use <code>list()</code>.</p>
+<p><strong>Check</strong> runs your script twice. The second run replaces the first line with <code>prices = [4, 7, 1, 20]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Make <code>first</code> with a full slice: <code>prices[:]</code>.</li>
+    <li>Make <code>second</code> with <code>prices.copy()</code>.</li>
+    <li>Make <code>third</code> with a loop and <code>append</code>.</li>
+    <li>Do not use <code>list()</code>.</li>
+    <li>Each of <code>first</code>, <code>second</code>, and <code>third</code> is a separate list.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Repair two index loops</h3>
+<p>Each script should create or update the list, then print <code>[1, 4, 9]</code>. For each script, write the first index that causes an error and the error name. State all valid indexes before the loop starts, including negative indexes. Then write a corrected script.</p>
+<p>Script A:</p>
+<wb-example id="ex-bug-a"></wb-example>
+<p>Script B:</p>
+<wb-example id="ex-bug-b"></wb-example>
+<wb-table id="p4-errors">
+  <table>
+    <thead><tr><th>Script</th><th>First index that causes an error</th><th>Error name</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td data-blank="ai"></td><td data-blank="ae"></td></tr>
+      <tr><td>B</td><td data-blank="bi"></td><td data-blank="be"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>State all valid indexes for each script before the loop starts, including negative indexes:</p>
+<wb-short id="p4-valid"></wb-short>
+<p>The code box holds both scripts. Correct each one. The program prints <code>[1, 4, 9]</code> twice.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep both scripts, each with its loop.</li>
+    <li>In Script A, replace the existing elements with index assignment.</li>
+    <li>In Script B, add the new elements with <code>append</code>.</li>
+    <li>Compute the squares in the loop. Do not type <code>[1, 4, 9]</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Save, reset, and empty</h3>
+<p>Write a script that starts with <code>readings = [14, 9, 18, 7]</code>.</p>
+<ul>
+  <li>Save a separate copy in <code>saved</code>.</li>
+  <li>Replace every element of <code>readings</code> with 0 without changing its length.</li>
+  <li>Print <code>readings</code> and <code>saved</code> on separate lines.</li>
+  <li>Remove every element from <code>readings</code>, then print it again.</li>
+  <li>Do not assign a new list to <code>readings</code>. Change the elements of the same list.</li>
+</ul>
+<p>Use index assignment and a loop for the reset. Use <code>pop</code> in a loop to empty the list.</p>
+<p><strong>Check</strong> runs your script twice. The second run replaces the first line with <code>readings = [3, 5, 8, 13, 21, 34]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Save a separate copy in <code>saved</code>.</li>
+    <li>Do not assign a new list to <code>readings</code> after the first line.</li>
+    <li>Reset each element with index assignment in a loop, such as <code>readings[i] = 0</code>.</li>
+    <li>Empty the list with <code>pop</code> in a loop. Do not use <code>clear</code> or <code>del</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+
+<h3>6. Print four selections</h3>
+<p>Write a script using <code>values = [9, 4, 11, 6, 2, 7, 8, 5, 10, 3]</code>. Print four lines in this order:</p>
+<ul>
+  <li>Print every element at an even index.</li>
+  <li>Print every even element, in its original order.</li>
+  <li>Print all elements in reverse order with an index loop.</li>
+  <li>Print only the first and last elements.</li>
+</ul>
+<p>An even integer has remainder 0 when divided by 2. Separate values with spaces. A trailing space is allowed.</p>
+<p><strong>Check</strong> runs your script twice. The second run replaces the first line with <code>values = [12, 7, 3, 20, 15, 6, 1]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Print the reverse order with an index loop that counts down.</li>
+    <li>Do not use <code>reverse</code>, <code>reversed</code>, or a slice such as <code>values[::-1]</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p6"></wb-exercise>
+
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 24 Workbook.</p>
+</main>
+</body>
+</html>

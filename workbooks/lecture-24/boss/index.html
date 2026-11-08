@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 24 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-24-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 24 Boss Problems</h1>
+    <div class="wb-subtitle">Lists: properties and operations</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use the list operations from Lecture 24:</p>
+  <ul>
+    <li>indexes, <code>len</code>, and index assignment</li>
+    <li><code>append</code>, <code>insert</code>, <code>pop</code>, <code>remove</code>, and <code>del</code></li>
+    <li><code>in</code> tests, slices, and separate copies</li>
+  </ul>
+  <p>They use only what Lectures 4 to 24 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code>, and blank input lines</li>
+    <li>strings and <code>.split()</code></li>
+    <li><code>while</code> and <code>for</code> loops, <code>range</code>, and <code>if</code> statements</li>
+    <li>lists and the list operations above</li>
+  </ul>
+  <p>Each problem is a script: write the statements at the top level, with no functions. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show.</p>
+  <p>Boss 4 also asks you to compare the sieve with an earlier method. That part is under the code box. <strong>Check</strong> grades only the program.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="latest" data-toc-title="👹 Latest reading first">👹 Boss 1: Latest reading first</h2>
+<p>Write a program that stores integer sensor readings until the user enters <code>-999</code>. A sentinel is a value that ends input and is not stored. Print the readings from the last entered to the first entered.</p>
+<ul>
+  <li>Read one integer per line.</li>
+  <li>Keep repeated readings.</li>
+  <li>Print <code>Readings:</code> before the readings.</li>
+  <li>Print each reading on its own line.</li>
+  <li>If there are no readings, print <code>No readings</code> after the heading.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+18
+-4
+18
+-999
+Output:
+Readings:
+18
+-4
+18
+Explanation:
+The sentinel is not stored. Repeated readings stay in the list.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+-999
+Output:
+Readings:
+No readings
+Explanation:
+The first input is the sentinel, so the list is empty.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Every input line is an integer from -999 through 999.</li>
+    <li>Use -999 only as the sentinel.</li>
+    <li>Store readings in one list with <code>append</code>.</li>
+    <li>Display the stored readings with an index loop from the end.</li>
+    <li>Write a script. Do not use <code>reverse</code> or a slice with a step.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>18</code>, <code>-4</code>, <code>18</code>, <code>-999</code></td><td><code>Readings:</code>, <code>18</code>, <code>-4</code>, <code>18</code></td></tr>
+    <tr><td><code>-999</code></td><td><code>Readings:</code>, <code>No readings</code></td></tr>
+    <tr><td><code>5</code>, <code>-999</code></td><td><code>Readings:</code>, <code>5</code></td></tr>
+    <tr><td><code>999</code>, <code>-998</code>, <code>0</code>, <code>-999</code></td><td><code>Readings:</code>, <code>0</code>, <code>-998</code>, <code>999</code></td></tr>
+    <tr><td><code>1</code> to <code>6</code>, then <code>-999</code></td><td><code>Readings:</code>, then <code>6</code> down to <code>1</code></td></tr>
+    <tr><td><code>7</code>, <code>7</code>, <code>7</code>, <code>-999</code></td><td><code>Readings:</code>, <code>7</code>, <code>7</code>, <code>7</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write a script. Do not define functions with <code>def</code>.</li>
+    <li>Store the readings in one list with <code>append</code>.</li>
+    <li>Display the readings with an index loop from the end, such as <code>range(len(readings) - 1, -1, -1)</code>.</li>
+    <li>Do not use <code>reverse</code>, <code>reversed</code>, or a slice with a step.</li>
+  </ul>
+</div>
+<wb-exercise id="latest"></wb-exercise>
+
+<h2 id="words" data-toc-title="👾 One entry per word">👾 Boss 2: One entry per word</h2>
+<p>Write a program that collects words for a shop's label list. Read one word per line until a blank line. Print each word once, in the order of its first appearance.</p>
+<ul>
+  <li>A blank line contains no characters and ends input.</li>
+  <li>Treat uppercase and lowercase letters as different characters.</li>
+  <li>Print <code>Words:</code> before the words.</li>
+  <li>Print each kept word on its own line.</li>
+  <li>If no words were entered, print <code>No words</code> after the heading.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+rice
+tea
+rice
+salt
+tea
+(blank line)
+Output:
+Words:
+rice
+tea
+salt
+Explanation:
+The second rice and the second tea add no new entries.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Words:
+No words
+Explanation:
+A blank first line leaves the list empty.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each nonblank input is one word containing only English letters.</li>
+    <li>Use one list and an <code>in</code> test before <code>append</code>.</li>
+    <li>Keep the first appearance order.</li>
+    <li>Write a script.</li>
+  </ul>
+</div>
+<p>To enter the blank line, press Enter without typing anything.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>rice</code>, <code>tea</code>, <code>rice</code>, <code>salt</code>, <code>tea</code>, blank</td><td><code>Words:</code>, <code>rice</code>, <code>tea</code>, <code>salt</code></td></tr>
+    <tr><td>blank</td><td><code>Words:</code>, <code>No words</code></td></tr>
+    <tr><td><code>Tea</code>, <code>tea</code>, blank</td><td><code>Words:</code>, <code>Tea</code>, <code>tea</code></td></tr>
+    <tr><td><code>bread</code>, blank</td><td><code>Words:</code>, <code>bread</code></td></tr>
+    <tr><td><code>x</code>, <code>y</code>, <code>x</code>, <code>z</code>, <code>y</code>, <code>x</code>, blank</td><td><code>Words:</code>, <code>x</code>, <code>y</code>, <code>z</code></td></tr>
+    <tr><td><code>salt</code>, <code>salt</code>, <code>salt</code>, blank</td><td><code>Words:</code>, <code>salt</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write a script. Do not define functions with <code>def</code>.</li>
+    <li>Use one list. Do not use dictionaries or sets.</li>
+    <li>Test whether the word is already in the list with <code>in</code> or <code>not in</code> before <code>append</code>.</li>
+    <li>Keep each new word with <code>append</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="words"></wb-exercise>
+
+<h2 id="waiting" data-toc-title="🐉 Manage a waiting list">🐉 Boss 3: Manage a waiting list</h2>
+<p>Write a program that manages a shop's waiting list. Start with <code>waiting = ["Mia", "Noor"]</code>. Keep a separate copy of this starting list before reading commands. Read one command per line until a blank line. A name is one word. Repeated names are allowed.</p>
+<p>Use these commands:</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Command</th><th>Required action</th></tr></thead>
+  <tbody>
+    <tr><td><code>add name</code></td><td>Add the name at the end with <code>append</code>.</td></tr>
+    <tr><td><code>front name</code></td><td>Add the name at index 0 with <code>insert</code>.</td></tr>
+    <tr><td><code>serve</code></td><td>Remove the first name with <code>pop</code>. Print <code>Served:</code> and that name.</td></tr>
+    <tr><td><code>cancel name</code></td><td>Remove the first matching name with <code>remove</code>.</td></tr>
+    <tr><td><code>drop i</code></td><td>Delete the name at nonnegative index <code>i</code> with <code>del</code>.</td></tr>
+    <tr><td><code>next n</code></td><td>Print a slice containing up to the first <code>n</code> names as a Python list.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Follow these rules:</p>
+<ul>
+  <li>For <code>serve</code> on an empty list, print <code>Empty list</code>.</li>
+  <li>For <code>cancel</code> with an absent name, print <code>Name absent</code>.</li>
+  <li>For <code>drop</code> with an invalid index, print <code>Invalid index</code>.</li>
+  <li>A failed command leaves the list unchanged.</li>
+  <li>Successful <code>add</code>, <code>front</code>, <code>cancel</code>, and <code>drop</code> commands print nothing.</li>
+  <li>At the end, print <code>Starting:</code> and the saved list on one line.</li>
+  <li>Then print <code>Final:</code> and the current list on one line.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+add Ivo
+front Uma
+serve
+cancel Noor
+drop 1
+next 3
+(blank line)
+Output:
+Served: Uma
+['Mia']
+Starting: ['Mia', 'Noor']
+Final: ['Mia']
+Explanation:
+The saved list keeps both starting names after the current list changes.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Starting: ['Mia', 'Noor']
+Final: ['Mia', 'Noor']
+Explanation:
+No commands change the starting list.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+serve
+serve
+serve
+cancel Mia
+drop 0
+next 2
+(blank line)
+Output:
+Served: Mia
+Served: Noor
+Empty list
+Name absent
+Invalid index
+[]
+Starting: ['Mia', 'Noor']
+Final: []
+Explanation:
+The last four commands leave the empty list unchanged.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Every command has exactly the format shown in the command table.</li>
+    <li>Each name contains only English letters and no spaces.</li>
+    <li>The values <code>i</code> and <code>n</code> are nonnegative integers.</li>
+    <li>Use one current list and one separate starting copy.</li>
+    <li>Use the required list method or statement for each command.</li>
+    <li>Use a slice for <code>next</code>. You may use <code>.split()</code> to read commands.</li>
+    <li>Write a script. Check absent names and invalid indexes before changing the list.</li>
+  </ul>
+</div>
+<p>The examples are the first three rows. Each command is typed on its own line, and the last line is blank.</p>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td>The commands of Example 1</td><td><code>Served: Uma</code>, <code>['Mia']</code>, <code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Mia']</code></td></tr>
+    <tr><td>blank</td><td><code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Mia', 'Noor']</code></td></tr>
+    <tr><td>The commands of Example 3</td><td>The six lines of Example 3, then <code>Starting: ['Mia', 'Noor']</code>, <code>Final: []</code></td></tr>
+    <tr><td><code>add Mia</code>, <code>add Noor</code>, <code>cancel Mia</code>, <code>next 5</code>, blank</td><td><code>['Noor', 'Mia', 'Noor']</code>, <code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Noor', 'Mia', 'Noor']</code></td></tr>
+    <tr><td><code>drop 2</code>, <code>drop 1</code>, <code>next 2</code>, blank</td><td><code>Invalid index</code>, <code>['Mia']</code>, <code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Mia']</code></td></tr>
+    <tr><td><code>next 0</code>, <code>front Ola</code>, <code>front Ari</code>, <code>serve</code>, <code>next 9</code>, blank</td><td><code>[]</code>, <code>Served: Ari</code>, <code>['Ola', 'Mia', 'Noor']</code>, <code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Ola', 'Mia', 'Noor']</code></td></tr>
+    <tr><td><code>cancel Zed</code>, <code>add Zed</code>, <code>cancel Zed</code>, <code>serve</code>, blank</td><td><code>Name absent</code>, <code>Served: Mia</code>, <code>Starting: ['Mia', 'Noor']</code>, <code>Final: ['Noor']</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write a script. Do not define functions with <code>def</code>.</li>
+    <li>Use <code>append</code> for <code>add</code>, <code>insert</code> for <code>front</code>, <code>pop</code> for <code>serve</code>, and <code>remove</code> for <code>cancel</code>.</li>
+    <li>Use <code>del</code> for <code>drop</code>, such as <code>del waiting[i]</code>.</li>
+    <li>Use a slice for <code>next</code>, such as <code>waiting[:n]</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="waiting"></wb-exercise>
+
+<h2 id="sieve" data-toc-title="💀 Cross out composite numbers">💀 Boss 4: Cross out composite numbers</h2>
+<p>Write a program that reads an integer limit and prints every prime number up to that limit. A prime is an integer greater than 1 with no positive divisors except 1 and itself. A composite number is an integer greater than 1 that is not prime. Use the Sieve of Eratosthenes, which crosses out multiples of prime candidates.</p>
+<p>Follow these rules:</p>
+<ul>
+  <li>Build a list containing the integers from 0 through the limit.</li>
+  <li>Keep each number at the index equal to that number.</li>
+  <li>Cross out 0 and 1 before selecting candidates.</li>
+  <li>Cross out a number by replacing its element with 0.</li>
+  <li>Do not remove elements, because each index must keep its meaning.</li>
+  <li>Select candidates from numbers that have not been crossed out.</li>
+  <li>Cross out each candidate's larger multiples. Keep the candidate itself.</li>
+  <li>Print <code>Primes:</code>, then each remaining prime on its own line.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+18
+Output:
+Primes:
+2
+3
+5
+7
+11
+13
+17
+Explanation:
+The remaining nonzero elements greater than 1 are prime.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+2
+Output:
+Primes:
+2
+Explanation:
+The smallest allowed limit includes just one prime.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The limit is an integer from 2 through 10,000.</li>
+    <li>Build the list with <code>append</code> in a loop.</li>
+    <li>Use index assignment to cross out numbers.</li>
+    <li>Use <code>range</code> with a step to visit multiples.</li>
+    <li>Write a script.</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>18</code></td><td><code>Primes:</code>, <code>2</code>, <code>3</code>, <code>5</code>, <code>7</code>, <code>11</code>, <code>13</code>, <code>17</code></td></tr>
+    <tr><td><code>2</code></td><td><code>Primes:</code>, <code>2</code></td></tr>
+    <tr><td><code>3</code></td><td><code>Primes:</code>, <code>2</code>, <code>3</code></td></tr>
+    <tr><td><code>10</code></td><td><code>Primes:</code>, <code>2</code>, <code>3</code>, <code>5</code>, <code>7</code></td></tr>
+    <tr><td><code>49</code></td><td><code>Primes:</code>, then the 15 primes from <code>2</code> to <code>47</code></td></tr>
+    <tr><td><code>100</code></td><td><code>Primes:</code>, then the 25 primes from <code>2</code> to <code>97</code></td></tr>
+    <tr><td><code>10000</code></td><td><code>Primes:</code>, then the 1,229 primes from <code>2</code> to <code>9973</code></td></tr>
+  </tbody>
+</table>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Write a script. Do not define functions with <code>def</code>.</li>
+    <li>Build the list of numbers with <code>append</code> in a loop.</li>
+    <li>Cross out a number by replacing its element with 0, such as <code>values[multiple] = 0</code>.</li>
+    <li>Visit the multiples with <code>range</code> and a step, such as <code>range(p * p, limit + 1, p)</code>.</li>
+    <li>Do not remove elements with <code>remove</code>, <code>pop</code>, or <code>del</code>.</li>
+    <li>Do not test divisors with <code>%</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="sieve"></wb-exercise>
+<div class="wb-block">
+  <div class="wb-block-title">Compare with the divisor method</div>
+  <p>Earlier in the course, you found primes by testing divisors in nested loops. How does the sieve avoid testing every possible divisor of each number?</p>
+  <wb-short id="sieve-why"></wb-short>
+</div>
+
+<hr>
+<p class="wb-meta">End of Lecture 24 Boss Problems.</p>
+</main>
+</body>
+</html>
