@@ -1,0 +1,310 @@
+{
+  "id": "lecture-26-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 26 Boss Problems",
+  "short": "L26 bosses",
+  "subtitle": "Lists with functions and tables",
+  "exercises": {
+    "shop-list": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 16,
+      "starter": "def word_list_text(words):\n    pass\n\nwords = []",
+      "cases": [
+        {
+          "name": "Example 1: typed tea, rice, salt, blank",
+          "inputs": [
+            "tea",
+            "rice",
+            "salt",
+            ""
+          ],
+          "expected": "Words: tea, rice and salt"
+        },
+        {
+          "name": "Example 2: typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "Words: "
+        },
+        {
+          "name": "Example 3: typed bread, blank",
+          "inputs": [
+            "bread",
+            ""
+          ],
+          "expected": "Words: bread"
+        },
+        {
+          "name": "Example 4: typed tea, rice, blank",
+          "inputs": [
+            "tea",
+            "rice",
+            ""
+          ],
+          "expected": "Words: tea and rice"
+        },
+        {
+          "name": "Typed milk, eggs, flour, sugar, blank",
+          "inputs": [
+            "milk",
+            "eggs",
+            "flour",
+            "sugar",
+            ""
+          ],
+          "expected": "Words: milk, eggs, flour and sugar"
+        },
+        {
+          "name": "Typed a, b, c, d, e, blank",
+          "inputs": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            ""
+          ],
+          "expected": "Words: a, b, c, d and e"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed an input list. Keep the inputs unchanged.\"\n_fn(\"word_list_text\", \"words\")\n_f = _body(\"word_list_text\")\nassert not _calls(\"join\"), \"Build the string in a loop. Do not use join.\"\nassert _loops(_f) and _slices(_f), \"In word_list_text, loop over a slice that holds all but the last word, such as words[:-1].\"\n_returns('word_list_text', ([],), '')\n_returns('word_list_text', (['tea'],), 'tea')\n_returns('word_list_text', (['tea', 'rice'],), 'tea and rice')\n_returns('word_list_text', (['a', 'b', 'c', 'd'],), 'a, b, c and d')\n_keeps(\"word_list_text\", ([\"tea\", \"rice\", \"salt\"],))\n",
+      "hints": [
+        "Handle the short lists first: return `\"\"` for no words and `words[0]` for one word.",
+        "For two or more words, start with `text = \"\"` and loop over `words[:-1]`. Put `\", \"` before every word except the first one in the loop.",
+        "After the loop, return `text + \" and \" + words[-1]`. For two words the loop adds only the first word, so no comma appears."
+      ],
+      "answer": "ZGVmIHdvcmRfbGlzdF90ZXh0KHdvcmRzKToKICAgICIiIlJldHVybiBvbmUgc3RyaW5nIGFuZCBrZWVwIHdvcmRzIHVuY2hhbmdlZC4iIiIKICAgIGlmIGxlbih3b3JkcykgPT0gMDoKICAgICAgICByZXR1cm4gIiIKICAgIGlmIGxlbih3b3JkcykgPT0gMToKICAgICAgICByZXR1cm4gd29yZHNbMF0KICAgIHRleHQgPSAiIgogICAgZm9yIHdvcmQgaW4gd29yZHNbOi0xXToKICAgICAgICBpZiB0ZXh0ICE9ICIiOgogICAgICAgICAgICB0ZXh0ID0gdGV4dCArICIsICIKICAgICAgICB0ZXh0ID0gdGV4dCArIHdvcmQKICAgIHJldHVybiB0ZXh0ICsgIiBhbmQgIiArIHdvcmRzWy0xXQoKd29yZHMgPSBbXQp3b3JkID0gaW5wdXQoKQp3aGlsZSB3b3JkICE9ICIiOgogICAgd29yZHMuYXBwZW5kKHdvcmQpCiAgICB3b3JkID0gaW5wdXQoKQpwcmludCgiV29yZHM6Iiwgd29yZF9saXN0X3RleHQod29yZHMpKQ==",
+      "answerNote": "The slice leaves the last word for the final \"and\". The input list stays unchanged."
+    },
+    "trim": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 14,
+      "starter": "def trimmed_copy(values, n):\n    pass\n\nvalues = []",
+      "cases": [
+        {
+          "name": "Example 1: typed 14, 2, 8, 5, 11, 17, blank",
+          "inputs": [
+            "14",
+            "2",
+            "8",
+            "5",
+            "11",
+            "17",
+            ""
+          ],
+          "expected": "Original: [14, 2, 8, 5, 11, 17]\nTrimmed: [8, 11]"
+        },
+        {
+          "name": "Example 2: typed 7, 1, 9, 4, blank",
+          "inputs": [
+            "7",
+            "1",
+            "9",
+            "4",
+            ""
+          ],
+          "expected": "Original: [7, 1, 9, 4]\nTrimmed: []"
+        },
+        {
+          "name": "Example 3: typed blank",
+          "inputs": [
+            ""
+          ],
+          "expected": "Need at least four values"
+        },
+        {
+          "name": "Typed 5, 5, 5, blank",
+          "inputs": [
+            "5",
+            "5",
+            "5",
+            ""
+          ],
+          "expected": "Need at least four values"
+        },
+        {
+          "name": "Typed 3, -1, 3, 8, 3, -1, 1000, blank",
+          "inputs": [
+            "3",
+            "-1",
+            "3",
+            "8",
+            "3",
+            "-1",
+            "1000",
+            ""
+          ],
+          "expected": "Original: [3, -1, 3, 8, 3, -1, 1000]\nTrimmed: [3, 3, 3]"
+        },
+        {
+          "name": "Typed 6, 2, 9, 4, 1, blank",
+          "inputs": [
+            "6",
+            "2",
+            "9",
+            "4",
+            "1",
+            ""
+          ],
+          "expected": "Original: [6, 2, 9, 4, 1]\nTrimmed: [4]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed an input list. Keep the inputs unchanged.\"\n_fn(\"trimmed_copy\", \"values\", \"n\")\n_f = _body(\"trimmed_copy\")\nassert _func_calls(\"sorted\", _f) and _slices(_f), \"In trimmed_copy, make a sorted copy with sorted, then take the middle with the slice [n:len(values) - n].\"\nassert not _calls(\"sort\", _f), \"Use sorted, which keeps the input list unchanged. Do not call sort on the input.\"\n_returns('trimmed_copy', ([4, 1, 3, 2], 0), [1, 2, 3, 4])\n_returns('trimmed_copy', ([4, 1, 3, 2], 1), [2, 3])\n_returns('trimmed_copy', ([4, 1, 3, 2], 2), [])\n_returns('trimmed_copy', ([9, 9, 1, 1, 5], 1), [1, 5, 9])\n_returns('trimmed_copy', ([], 0), [])\n_returns('trimmed_copy', ([7, -3, 2, 7, 0, 5], 2), [2, 5])\n_keeps(\"trimmed_copy\", ([14, 2, 8, 5, 11, 17], 2))\n",
+      "hints": [
+        "Read lines until a blank line and append `int(line)` for each value. Check `len(values) < 4` before you print anything else.",
+        "In `trimmed_copy`, make `ordered = sorted(values)`. This copy is sorted and the input keeps its order.",
+        "Return `ordered[n:len(values) - n]`. With `n = 0` this slice is the whole sorted copy. The slice `[n:-n]` would be empty there."
+      ],
+      "answer": "ZGVmIHRyaW1tZWRfY29weSh2YWx1ZXMsIG4pOgogICAgIiIiUmV0dXJuIGEgc29ydGVkIHRyaW1tZWQgY29weSBhbmQga2VlcCB2YWx1ZXMgdW5jaGFuZ2VkLiIiIgogICAgb3JkZXJlZCA9IHNvcnRlZCh2YWx1ZXMpCiAgICByZXR1cm4gb3JkZXJlZFtuOmxlbih2YWx1ZXMpIC0gbl0KCnZhbHVlcyA9IFtdCmxpbmUgPSBpbnB1dCgpCndoaWxlIGxpbmUgIT0gIiI6CiAgICB2YWx1ZXMuYXBwZW5kKGludChsaW5lKSkKICAgIGxpbmUgPSBpbnB1dCgpCmlmIGxlbih2YWx1ZXMpIDwgNDoKICAgIHByaW50KCJOZWVkIGF0IGxlYXN0IGZvdXIgdmFsdWVzIikKZWxzZToKICAgIHByaW50KCJPcmlnaW5hbDoiLCB2YWx1ZXMpCiAgICBwcmludCgiVHJpbW1lZDoiLCB0cmltbWVkX2NvcHkodmFsdWVzLCAyKSk=",
+      "answerNote": "sorted makes the copy. The end index len(values) - n keeps the whole copy when n is 0."
+    },
+    "scores": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 28,
+      "starter": "def table_with_row(row, table=None):\n    pass\n\n# Read dimensions and scores, then print the required results.",
+      "cases": [
+        {
+          "name": "Example 1: 2 students, 3 tests",
+          "inputs": [
+            "2",
+            "3",
+            "10",
+            "20",
+            "30",
+            "40",
+            "50",
+            "60"
+          ],
+          "expected": "Scores: [[10, 20, 30], [40, 50, 60]]\nRow 1 total: 60\nRow 2 total: 150\nColumn 1 average: 25.00\nColumn 2 average: 35.00\nColumn 3 average: 45.00\nAfter change: [[100, 20, 30], [40, 50, 60]]\nDefault tables: [[0]] [[9]]"
+        },
+        {
+          "name": "Example 2: 1 student, 1 test",
+          "inputs": [
+            "1",
+            "1",
+            "8"
+          ],
+          "expected": "Scores: [[8]]\nRow 1 total: 8\nColumn 1 average: 8.00\nAfter change: [[100]]\nDefault tables: [[0]] [[9]]"
+        },
+        {
+          "name": "3 students, 2 tests",
+          "inputs": [
+            "3",
+            "2",
+            "90",
+            "70",
+            "55",
+            "100",
+            "0",
+            "81"
+          ],
+          "expected": "Scores: [[90, 70], [55, 100], [0, 81]]\nRow 1 total: 160\nRow 2 total: 155\nRow 3 total: 81\nColumn 1 average: 48.33\nColumn 2 average: 83.67\nAfter change: [[100, 70], [55, 100], [0, 81]]\nDefault tables: [[0]] [[9]]"
+        },
+        {
+          "name": "2 students, 1 test",
+          "inputs": [
+            "2",
+            "1",
+            "33",
+            "66"
+          ],
+          "expected": "Scores: [[33], [66]]\nRow 1 total: 33\nRow 2 total: 66\nColumn 1 average: 49.50\nAfter change: [[100], [66]]\nDefault tables: [[0]] [[9]]"
+        },
+        {
+          "name": "1 student, 4 tests",
+          "inputs": [
+            "1",
+            "4",
+            "5",
+            "0",
+            "100",
+            "45"
+          ],
+          "expected": "Scores: [[5, 0, 100, 45]]\nRow 1 total: 150\nColumn 1 average: 5.00\nColumn 2 average: 0.00\nColumn 3 average: 100.00\nColumn 4 average: 45.00\nAfter change: [[100, 0, 100, 45]]\nDefault tables: [[0]] [[9]]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed an input list. Keep the inputs unchanged.\"\n_fn(\"table_with_row\", \"row\", \"table\")\nassert table_with_row.__defaults__ == (None,), \"Give the table parameter the default None, as in def table_with_row(row, table=None):.\"\n_returns('table_with_row', ([7],), [[7]])\n_returns('table_with_row', ([3, 4], [[1, 2]]), [[1, 2], [3, 4]])\n_returns('table_with_row', ([5], [[1], [2], [3]]), [[1], [2], [3], [5]])\n_returns('table_with_row', ([], None), [[]])\n_old = [[1, 2], [5, 6]]\n_row = [3, 4]\n_new = table_with_row(_row, _old)\nassert _old == [[1, 2], [5, 6]] and _row == [3, 4], \"table_with_row([3, 4], [[1, 2], [5, 6]]) changed an input. Keep both inputs unchanged.\"\nassert all(a is not b for a, b in zip(_new, _old)) and _new[-1] is not _row, \"table_with_row returned a row that is also in an input. Copy every row, such as old_row[:] and row[:].\"\n_one = table_with_row([7])\n_two = table_with_row([9])\nassert _two == [[9]], \"Two calls without a table returned \" + repr(_one) + \" and \" + repr(_two) + \". Each call that omits the table must start a new table.\"\nassert _func_calls(\"table_with_row\") and _loops(), \"Read the scores with loops and build the table with table_with_row.\"\n",
+      "hints": [
+        "In `table_with_row`, start with `result = []`. If `table is not None`, append a copy of each old row, such as `old_row[:]`. Then append `row[:]` and return `result`.",
+        "Read the two dimensions. For each student, build a row with an inner loop of `int(input())` calls, then use `table = table_with_row(row, table)`.",
+        "Print each row total with `sum(table[r])`. For column `c`, start `total = 0` and add `row[c]` from every row. Print `total / students` with `:.2f`.",
+        "After the averages, set `table[0][0] = 100` and print the table. Then call `table_with_row([7])` and `table_with_row([9])`, set the first result's `[0][0]` to `0`, and print both after `Default tables:`."
+      ],
+      "answer": "ZGVmIHRhYmxlX3dpdGhfcm93KHJvdywgdGFibGU9Tm9uZSk6CiAgICAiIiJSZXR1cm4gaW5kZXBlbmRlbnQgcm93IGNvcGllcyBhbmQga2VlcCBpbnB1dHMgdW5jaGFuZ2VkLiIiIgogICAgcmVzdWx0ID0gW10KICAgIGlmIHRhYmxlIGlzIG5vdCBOb25lOgogICAgICAgIGZvciBvbGRfcm93IGluIHRhYmxlOgogICAgICAgICAgICByZXN1bHQuYXBwZW5kKG9sZF9yb3dbOl0pCiAgICByZXN1bHQuYXBwZW5kKHJvd1s6XSkKICAgIHJldHVybiByZXN1bHQKCnN0dWRlbnRzID0gaW50KGlucHV0KCkpCnRlc3RzID0gaW50KGlucHV0KCkpCnRhYmxlID0gW10KZm9yIHIgaW4gcmFuZ2Uoc3R1ZGVudHMpOgogICAgcm93ID0gW10KICAgIGZvciBjIGluIHJhbmdlKHRlc3RzKToKICAgICAgICByb3cuYXBwZW5kKGludChpbnB1dCgpKSkKICAgIHRhYmxlID0gdGFibGVfd2l0aF9yb3cocm93LCB0YWJsZSkKcHJpbnQoIlNjb3JlczoiLCB0YWJsZSkKZm9yIHIgaW4gcmFuZ2Uoc3R1ZGVudHMpOgogICAgcHJpbnQoZiJSb3cge3IgKyAxfSB0b3RhbDoge3N1bSh0YWJsZVtyXSl9IikKZm9yIGMgaW4gcmFuZ2UodGVzdHMpOgogICAgdG90YWwgPSAwCiAgICBmb3Igcm93IGluIHRhYmxlOgogICAgICAgIHRvdGFsID0gdG90YWwgKyByb3dbY10KICAgIHByaW50KGYiQ29sdW1uIHtjICsgMX0gYXZlcmFnZToge3RvdGFsIC8gc3R1ZGVudHM6LjJmfSIpCnRhYmxlWzBdWzBdID0gMTAwCnByaW50KCJBZnRlciBjaGFuZ2U6IiwgdGFibGUpCmZpcnN0ID0gdGFibGVfd2l0aF9yb3coWzddKQpzZWNvbmQgPSB0YWJsZV93aXRoX3JvdyhbOV0pCmZpcnN0WzBdWzBdID0gMApwcmludCgiRGVmYXVsdCB0YWJsZXM6IiwgZmlyc3QsIHNlY29uZCk=",
+      "answerNote": "Every returned table holds new row lists, so a change to one row leaves the others unchanged. The None default gives each call without a table its own new table."
+    },
+    "cards": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 32,
+      "starter": "import random\nrandom.seed(26)\n\ndef create_deck():\n    pass\n\ndef shuffle_deck(deck):\n    pass\n\ndef deal(deck, players, cards):\n    pass",
+      "cases": [
+        {
+          "name": "Example 1: 3 players, 2 cards",
+          "inputs": [
+            "3",
+            "2"
+          ],
+          "expected": "Hand 1: ['KH', 'QS']\nHand 2: ['JS', '5D']\nHand 3: ['4S', 'AD']\nRemaining: 46"
+        },
+        {
+          "name": "Example 2: 2 players, 0 cards",
+          "inputs": [
+            "2",
+            "0"
+          ],
+          "expected": "Hand 1: []\nHand 2: []\nRemaining: 52"
+        },
+        {
+          "name": "Example 3: 5 players, 11 cards",
+          "inputs": [
+            "5",
+            "11"
+          ],
+          "expected": "Not enough cards"
+        },
+        {
+          "name": "1 player, 5 cards",
+          "inputs": [
+            "1",
+            "5"
+          ],
+          "expected": "Hand 1: ['KH', 'JS', '4S', 'QS', '5D']\nRemaining: 47"
+        },
+        {
+          "name": "4 players, 13 cards",
+          "inputs": [
+            "4",
+            "13"
+          ],
+          "expected": "Hand 1: ['KH', '5D', '7C', 'JD', '7S', '2C', '8S', '8D', '3D', '4D', '2S', '5C', '2D']\nHand 2: ['JS', 'AD', '6S', '4H', '6D', '7D', 'KD', '8C', '3C', 'AS', '4C', 'TH', '5S']\nHand 3: ['4S', '5H', '3S', '9S', '7H', '9C', 'JH', '6C', 'KS', 'QC', '6H', 'AH', 'AC']\nHand 4: ['QS', 'QD', 'TD', '9H', '9D', 'KC', 'QH', 'JC', '2H', '8H', 'TC', '3H', 'TS']\nRemaining: 0"
+        },
+        {
+          "name": "13 players, 4 cards",
+          "inputs": [
+            "13",
+            "4"
+          ],
+          "expected": "Hand 1: ['KH', '4H', 'JH', '8H']\nHand 2: ['JS', '9S', 'QH', '2S']\nHand 3: ['4S', '9H', '8D', '4C']\nHand 4: ['QS', '7S', '8C', '6H']\nHand 5: ['5D', '6D', '6C', 'TC']\nHand 6: ['AD', '7H', 'JC', '5C']\nHand 7: ['5H', '9D', '3D', 'TH']\nHand 8: ['QD', '2C', '3C', 'AH']\nHand 9: ['7C', '7D', 'KS', '3H']\nHand 10: ['6S', '9C', '2H', '2D']\nHand 11: ['3S', 'KC', '4D', '5S']\nHand 12: ['TD', '8S', 'AS', 'AC']\nHand 13: ['JD', 'KD', 'QC', 'TS']\nRemaining: 0"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed an input list. Keep the inputs unchanged.\"\n_fn(\"create_deck\")\n_fn(\"shuffle_deck\", \"deck\")\n_fn(\"deal\", \"deck\", \"players\", \"cards\")\n_d = create_deck()\nassert len(_d) == 52 and _d[:3] == [\"2C\", \"3C\", \"4C\"] and _d[-1] == \"AS\", \"create_deck() should return the 52 codes in suit order CDHS and rank order 23456789TJQKA, starting ['2C', '3C', '4C'] and ending 'AS'.\"\nassert create_deck() is not create_deck(), \"create_deck() should return a new list on each call.\"\n_s = create_deck()\n_value, _printed = _call(\"shuffle_deck\", _s)\nassert _value is None and sorted(_s) == sorted(create_deck()), \"shuffle_deck should change the deck in place, keep all 52 cards, and return None.\"\nassert _func_calls(\"randint\", _body(\"shuffle_deck\")) or _calls(\"randint\", _body(\"shuffle_deck\")), \"In shuffle_deck, choose each j with random.randint(0, i).\"\nassert not _calls(\"shuffle\"), \"Write the shuffle loop yourself. Do not call random.shuffle.\"\n_deck = [\"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\"]\n_hands = deal(_deck, 2, 3)\nassert _hands == [[\"a\", \"c\", \"e\"], [\"b\", \"d\", \"f\"]], \"deal(['a', 'b', 'c', 'd', 'e', 'f', 'g'], 2, 3) should deal in rounds and return [['a', 'c', 'e'], ['b', 'd', 'f']], not \" + repr(_hands) + \".\"\nassert _deck == [\"g\"], \"After deal(['a', 'b', 'c', 'd', 'e', 'f', 'g'], 2, 3), the deck should be ['g'], not \" + repr(_deck) + \". Remove each dealt card with pop(0).\"\n_hands = deal([\"x\", \"y\"], 3, 0)\n_hands[0].append(\"z\")\nassert _hands[1] == [], \"deal returned hands that share one list. Build the hands with a comprehension of fresh empty lists.\"\nassert _calls(\"pop\", _body(\"deal\")) and _comps(_body(\"deal\")), \"In deal, build the hands with a comprehension and take each card with pop(0).\"\n",
+      "hints": [
+        "In `create_deck`, loop over the suits `\"CDHS\"` in the outer loop and the ranks `\"23456789TJQKA\"` in the inner loop. Append `rank + suit`.",
+        "In `shuffle_deck`, use `for i in range(len(deck) - 1, 0, -1):`. Choose `j = random.randint(0, i)` and swap `deck[i]` and `deck[j]`. Keep `random.seed(26)` at the top.",
+        "In `deal`, make `hands = [[] for player in range(players)]`. The outer loop counts rounds and the inner loop visits players: `hands[player].append(deck.pop(0))`.",
+        "In the main program, check `players * cards > len(deck)` before you shuffle. Otherwise shuffle, deal, print each hand with its number, then print `Remaining:` and `len(deck)`."
+      ],
+      "answer": "aW1wb3J0IHJhbmRvbQpyYW5kb20uc2VlZCgyNikKCmRlZiBjcmVhdGVfZGVjaygpOgogICAgIiIiUmV0dXJuIGEgbmV3IGxpc3Qgb2YgNTIgY2FyZCBjb2Rlcy4iIiIKICAgIGRlY2sgPSBbXQogICAgZm9yIHN1aXQgaW4gIkNESFMiOgogICAgICAgIGZvciByYW5rIGluICIyMzQ1Njc4OVRKUUtBIjoKICAgICAgICAgICAgZGVjay5hcHBlbmQocmFuayArIHN1aXQpCiAgICByZXR1cm4gZGVjawoKZGVmIHNodWZmbGVfZGVjayhkZWNrKToKICAgICIiIlNodWZmbGUgZGVjayBpbiBwbGFjZSBhbmQgcmV0dXJuIE5vbmUuIiIiCiAgICBmb3IgaSBpbiByYW5nZShsZW4oZGVjaykgLSAxLCAwLCAtMSk6CiAgICAgICAgaiA9IHJhbmRvbS5yYW5kaW50KDAsIGkpCiAgICAgICAgZGVja1tpXSwgZGVja1tqXSA9IGRlY2tbal0sIGRlY2tbaV0KCmRlZiBkZWFsKGRlY2ssIHBsYXllcnMsIGNhcmRzKToKICAgICIiIlJlbW92ZSBjYXJkcyBmcm9tIGRlY2sgYW5kIHJldHVybiBpbmRlcGVuZGVudCBoYW5kcy4iIiIKICAgIGhhbmRzID0gW1tdIGZvciBwbGF5ZXIgaW4gcmFuZ2UocGxheWVycyldCiAgICBmb3IgdHVybiBpbiByYW5nZShjYXJkcyk6CiAgICAgICAgZm9yIHBsYXllciBpbiByYW5nZShwbGF5ZXJzKToKICAgICAgICAgICAgaGFuZHNbcGxheWVyXS5hcHBlbmQoZGVjay5wb3AoMCkpCiAgICByZXR1cm4gaGFuZHMKCnBsYXllcnMgPSBpbnQoaW5wdXQoKSkKY2FyZHMgPSBpbnQoaW5wdXQoKSkKZGVjayA9IGNyZWF0ZV9kZWNrKCkKaWYgcGxheWVycyAqIGNhcmRzID4gbGVuKGRlY2spOgogICAgcHJpbnQoIk5vdCBlbm91Z2ggY2FyZHMiKQplbHNlOgogICAgc2h1ZmZsZV9kZWNrKGRlY2spCiAgICBoYW5kcyA9IGRlYWwoZGVjaywgcGxheWVycywgY2FyZHMpCiAgICBmb3IgcGxheWVyIGluIHJhbmdlKHBsYXllcnMpOgogICAgICAgIHByaW50KGYiSGFuZCB7cGxheWVyICsgMX06IiwgaGFuZHNbcGxheWVyXSkKICAgIHByaW50KCJSZW1haW5pbmc6IiwgbGVuKGRlY2spKQ==",
+      "answerNote": "The fixed seed and the fixed shuffle loop give the same deck every run. deal removes cards with pop(0), so the deck shrinks as the hands grow."
+    }
+  }
+}

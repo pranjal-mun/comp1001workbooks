@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 26 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-26-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 26 Boss Problems</h1>
+    <div class="wb-subtitle">Lists with functions and tables</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use lists with functions and tables from Lecture 26:</p>
+  <ul>
+    <li>functions that take a list and either change it or return a new list</li>
+    <li>a <code>None</code> default for a list parameter</li>
+    <li>tables with independent rows, row totals, and column totals</li>
+  </ul>
+  <p>They use only what Lectures 4 to 26 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code>, and blank input lines</li>
+    <li>f-strings with <code>:.2f</code>, and <code>random.seed</code> with <code>random.randint</code></li>
+    <li><code>while</code> and <code>for</code> loops, <code>range</code>, and <code>if</code> statements</li>
+    <li>lists, slices, <code>sorted</code>, <code>pop</code>, and list comprehensions</li>
+  </ul>
+  <p>Each problem names the functions to write. Write the rest of the program at the top level, after the functions. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show. <strong>Check</strong> also calls your functions directly with other lists.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="shop-list" data-toc-title="👹 Format a shop list">👹 Boss 1: Format a shop list</h2>
+<p>Write a program that reads shop words until a blank line. Read one word per line. A blank line contains no characters and ends input. Write <code>word_list_text(words)</code> to return one string.</p>
+<ul>
+  <li>Keep the word order and the input list unchanged.</li>
+  <li>Separate earlier words with a comma and one space. Put one space before and after "and".</li>
+  <li>For two words, use only "and" between them. For one word, return that word.</li>
+  <li>For no words, return an empty string.</li>
+  <li>Print <code>Words:</code>, one space, and the returned string.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+tea
+rice
+salt
+(blank line)
+Output:
+Words: tea, rice and salt
+Explanation:
+Only the final pair uses and.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Words:
+Explanation:
+The function returns an empty string.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+bread
+(blank line)
+Output:
+Words: bread
+Explanation:
+One word needs no separator.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 4</div>
+  <pre class="wb-output">Input:
+tea
+rice
+(blank line)
+Output:
+Words: tea and rice
+Explanation:
+Two words need no comma.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each word contains lowercase English letters. Read at most 20 words.</li>
+    <li>Build the string in a loop. Use a slice for all but the last word.</li>
+    <li>Read input without prompts.</li>
+  </ul>
+</div>
+<p>To enter the blank line, press Enter without typing anything. <strong>Check</strong> types each of these sequences. The examples are the first four rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>tea</code>, <code>rice</code>, <code>salt</code>, blank</td><td><code>Words: tea, rice and salt</code></td></tr>
+    <tr><td>blank</td><td><code>Words: </code></td></tr>
+    <tr><td><code>bread</code>, blank</td><td><code>Words: bread</code></td></tr>
+    <tr><td><code>tea</code>, <code>rice</code>, blank</td><td><code>Words: tea and rice</code></td></tr>
+    <tr><td><code>milk</code>, <code>eggs</code>, <code>flour</code>, <code>sugar</code>, blank</td><td><code>Words: milk, eggs, flour and sugar</code></td></tr>
+    <tr><td><code>a</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, blank</td><td><code>Words: a, b, c, d and e</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>word_list_text(words)</code> with one parameter. It returns the string and keeps its input unchanged.</li>
+    <li>In <code>word_list_text</code>, loop over a slice that holds all but the last word.</li>
+    <li>Do not use <code>join</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="shop-list"></wb-exercise>
+
+<h2 id="trim" data-toc-title="👾 Trim extreme readings">👾 Boss 2: Trim extreme readings</h2>
+<p>Write a program that reads integer sensor readings until a blank line. Read one value per line. A blank line ends input and is not a value. An extreme reading is one of the smallest or largest values.</p>
+<ul>
+  <li>Write <code>trimmed_copy(values, n)</code> to return a sorted copy with <code>n</code> values removed from each end.</li>
+  <li>Keep the input list unchanged. Count repeated values separately.</li>
+  <li>The program uses <code>n = 2</code>.</li>
+  <li>If fewer than four values were entered, print only <code>Need at least four values</code>.</li>
+  <li>Otherwise, print <code>Original:</code> and the input list. Then print <code>Trimmed:</code> and the result.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+14
+2
+8
+5
+11
+17
+(blank line)
+Output:
+Original: [14, 2, 8, 5, 11, 17]
+Trimmed: [8, 11]
+Explanation:
+Two values are removed from each end of the sorted copy.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+7
+1
+9
+4
+(blank line)
+Output:
+Original: [7, 1, 9, 4]
+Trimmed: []
+Explanation:
+Exactly four values leave no middle readings.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Need at least four values
+Explanation:
+No readings were entered.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each reading is an integer from <code>-1000</code> through <code>1000</code>.</li>
+    <li>For function calls, <code>n</code> is a nonnegative integer and <code>2 * n &lt;= len(values)</code>.</li>
+    <li>Use <code>sorted</code> and the slice <code>[n:len(values) - n]</code>.</li>
+    <li>Test the function separately with <code>n = 0</code>. Read input without prompts.</li>
+  </ul>
+</div>
+<p>To enter the blank line, press Enter without typing anything. <strong>Check</strong> types each of these sequences. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>14</code>, <code>2</code>, <code>8</code>, <code>5</code>, <code>11</code>, <code>17</code>, blank</td><td><code>Original: [14, 2, 8, 5, 11, 17]</code>, <code>Trimmed: [8, 11]</code></td></tr>
+    <tr><td><code>7</code>, <code>1</code>, <code>9</code>, <code>4</code>, blank</td><td><code>Original: [7, 1, 9, 4]</code>, <code>Trimmed: []</code></td></tr>
+    <tr><td>blank</td><td><code>Need at least four values</code></td></tr>
+    <tr><td><code>5</code>, <code>5</code>, <code>5</code>, blank</td><td><code>Need at least four values</code></td></tr>
+    <tr><td><code>3</code>, <code>-1</code>, <code>3</code>, <code>8</code>, <code>3</code>, <code>-1</code>, <code>1000</code>, blank</td><td><code>Original: [3, -1, 3, 8, 3, -1, 1000]</code>, <code>Trimmed: [3, 3, 3]</code></td></tr>
+    <tr><td><code>6</code>, <code>2</code>, <code>9</code>, <code>4</code>, <code>1</code>, blank</td><td><code>Original: [6, 2, 9, 4, 1]</code>, <code>Trimmed: [4]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>trimmed_copy(values, n)</code> with two parameters. It returns the trimmed copy, also for <code>n = 0</code>, and keeps its input unchanged.</li>
+    <li>In <code>trimmed_copy</code>, use <code>sorted</code> and a slice. Do not call <code>sort</code> there.</li>
+  </ul>
+</div>
+<wb-exercise id="trim"></wb-exercise>
+
+<h2 id="scores" data-toc-title="🐉 Report a scores table">🐉 Boss 3: Report a scores table</h2>
+<p>Write a program that reads a scores table. Read the number of students, then the number of tests, on separate lines. Then read one integer score per line, in row order. Each row belongs to one student. Each column belongs to one test.</p>
+<ul>
+  <li>Write <code>table_with_row(row, table=None)</code>. Return a new table containing copies of the earlier rows and a copy of <code>row</code>.</li>
+  <li>When the table argument is omitted or <code>None</code>, start a new table. Keep both inputs unchanged.</li>
+  <li>Use the function to build the scores table. Every row must be independent.</li>
+  <li>Print <code>Scores:</code> and the table. Print each row total with row numbers starting at <code>1</code>.</li>
+  <li>Print each column average to two decimal places. An average is the column total divided by the number of students.</li>
+  <li>Then set cell <code>[0][0]</code> to <code>100</code>. Print <code>After change:</code> and the table.</li>
+  <li>Make two separate calls without a table, with rows <code>[7]</code> and <code>[9]</code>.</li>
+  <li>Set the first returned table's cell <code>[0][0]</code> to <code>0</code>. Print both tables after <code>Default tables:</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2
+3
+10
+20
+30
+40
+50
+60
+Output:
+Scores: [[10, 20, 30], [40, 50, 60]]
+Row 1 total: 60
+Row 2 total: 150
+Column 1 average: 25.00
+Column 2 average: 35.00
+Column 3 average: 45.00
+After change: [[100, 20, 30], [40, 50, 60]]
+Default tables: [[0]] [[9]]
+Explanation:
+The second row keeps all its scores after the first row changes.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+1
+1
+8
+Output:
+Scores: [[8]]
+Row 1 total: 8
+Column 1 average: 8.00
+After change: [[100]]
+Default tables: [[0]] [[9]]
+Explanation:
+One score is both the row total and the column average.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each dimension is an integer from <code>1</code> through <code>5</code>.</li>
+    <li>Each score is an integer from <code>0</code> through <code>100</code>.</li>
+    <li>Use a <code>None</code> default and independent row copies.</li>
+    <li>Use loops to read scores and calculate column totals. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these sequences. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2</code>, <code>3</code>, <code>10</code>, <code>20</code>, <code>30</code>, <code>40</code>, <code>50</code>, <code>60</code></td><td><code>Scores: [[10, 20, 30], [40, 50, 60]]</code>, <code>Row 1 total: 60</code>, <code>Row 2 total: 150</code>, <code>Column 1 average: 25.00</code>, <code>Column 2 average: 35.00</code>, <code>Column 3 average: 45.00</code>, <code>After change: [[100, 20, 30], [40, 50, 60]]</code>, <code>Default tables: [[0]] [[9]]</code></td></tr>
+    <tr><td><code>1</code>, <code>1</code>, <code>8</code></td><td><code>Scores: [[8]]</code>, <code>Row 1 total: 8</code>, <code>Column 1 average: 8.00</code>, <code>After change: [[100]]</code>, <code>Default tables: [[0]] [[9]]</code></td></tr>
+    <tr><td><code>3</code>, <code>2</code>, <code>90</code>, <code>70</code>, <code>55</code>, <code>100</code>, <code>0</code>, <code>81</code></td><td><code>Scores: [[90, 70], [55, 100], [0, 81]]</code>, <code>Row 1 total: 160</code>, <code>Row 2 total: 155</code>, <code>Row 3 total: 81</code>, <code>Column 1 average: 48.33</code>, <code>Column 2 average: 83.67</code>, <code>After change: [[100, 70], [55, 100], [0, 81]]</code>, <code>Default tables: [[0]] [[9]]</code></td></tr>
+    <tr><td><code>2</code>, <code>1</code>, <code>33</code>, <code>66</code></td><td><code>Scores: [[33], [66]]</code>, <code>Row 1 total: 33</code>, <code>Row 2 total: 66</code>, <code>Column 1 average: 49.50</code>, <code>After change: [[100], [66]]</code>, <code>Default tables: [[0]] [[9]]</code></td></tr>
+    <tr><td><code>1</code>, <code>4</code>, <code>5</code>, <code>0</code>, <code>100</code>, <code>45</code></td><td><code>Scores: [[5, 0, 100, 45]]</code>, <code>Row 1 total: 150</code>, <code>Column 1 average: 5.00</code>, <code>Column 2 average: 0.00</code>, <code>Column 3 average: 100.00</code>, <code>Column 4 average: 45.00</code>, <code>After change: [[100, 0, 100, 45]]</code>, <code>Default tables: [[0]] [[9]]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>table_with_row(row, table=None)</code> with the default <code>None</code>.</li>
+    <li>It returns a new table of copied rows and keeps both inputs unchanged.</li>
+    <li>Two calls without a table return separate tables.</li>
+    <li>Read the scores with loops and build the table with <code>table_with_row</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="scores"></wb-exercise>
+
+<h2 id="cards" data-toc-title="💀 Deal reproducible card hands">💀 Boss 4: Deal reproducible card hands</h2>
+<p>Write a program that reads a player count and a card count per player on separate lines. A deck contains 52 cards. Each card has a rank and a suit. Use two-character card codes.</p>
+<ul>
+  <li>Ranks are <code>2</code> through <code>9</code>, then <code>T</code>, <code>J</code>, <code>Q</code>, <code>K</code>, and <code>A</code>.</li>
+  <li><code>T</code> means ten. The other letters mean jack, queen, king, and ace.</li>
+  <li>Suits are <code>C</code> for clubs, <code>D</code> for diamonds, <code>H</code> for hearts, and <code>S</code> for spades.</li>
+  <li>For example, <code>QC</code> is the queen of clubs.</li>
+</ul>
+<p>Write these functions:</p>
+<ul>
+  <li><code>create_deck()</code> returns a new list. Use suit order <code>CDHS</code> and rank order <code>23456789TJQKA</code>.</li>
+  <li><code>shuffle_deck(deck)</code> changes the deck in place and returns <code>None</code>.</li>
+  <li><code>deal(deck, players, cards)</code> removes cards from the deck and returns a table of hands with independent rows.</li>
+  <li>Deal in rounds. Give each player one card before starting the next round.</li>
+  <li>Use <code>pop(0)</code> to take the next card.</li>
+  <li>If the deal needs more than 52 cards, print only <code>Not enough cards</code>.</li>
+  <li>Otherwise, print one labeled hand per line, then <code>Remaining:</code> and the number of cards left.</li>
+</ul>
+<p>Use the shuffle rules in Constraints so everyone gets the same model output.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3
+2
+Output:
+Hand 1: ['KH', 'QS']
+Hand 2: ['JS', '5D']
+Hand 3: ['4S', 'AD']
+Remaining: 46
+Explanation:
+Each round removes one card for each of the three players.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+2
+0
+Output:
+Hand 1: []
+Hand 2: []
+Remaining: 52
+Explanation:
+Zero cards leaves the deck full and both hands empty.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+5
+11
+Output:
+Not enough cards
+Explanation:
+Five hands of eleven cards need 55 cards.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The player count is an integer from <code>1</code> through <code>52</code>. The card count per player is an integer from <code>0</code> through <code>52</code>.</li>
+    <li>Call <code>random.seed(26)</code> once at the start of the program.</li>
+    <li>For the shuffle, visit indexes from <code>len(deck) - 1</code> down to <code>1</code>.</li>
+    <li>At each index <code>i</code>, choose <code>j = random.randint(0, i)</code> and swap those cards.</li>
+    <li>Build hands with a comprehension of fresh empty lists. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these sequences. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code>, <code>2</code></td><td><code>Hand 1: ['KH', 'QS']</code>, <code>Hand 2: ['JS', '5D']</code>, <code>Hand 3: ['4S', 'AD']</code>, <code>Remaining: 46</code></td></tr>
+    <tr><td><code>2</code>, <code>0</code></td><td><code>Hand 1: []</code>, <code>Hand 2: []</code>, <code>Remaining: 52</code></td></tr>
+    <tr><td><code>5</code>, <code>11</code></td><td><code>Not enough cards</code></td></tr>
+    <tr><td><code>1</code>, <code>5</code></td><td><code>Hand 1: ['KH', 'JS', '4S', 'QS', '5D']</code>, <code>Remaining: 47</code></td></tr>
+    <tr><td><code>4</code>, <code>13</code></td><td><code>Hand 1: ['KH', '5D', '7C', 'JD', '7S', '2C', '8S', '8D', '3D', '4D', '2S', '5C', '2D']</code>, <code>Hand 2: ['JS', 'AD', '6S', '4H', '6D', '7D', 'KD', '8C', '3C', 'AS', '4C', 'TH', '5S']</code>, <code>Hand 3: ['4S', '5H', '3S', '9S', '7H', '9C', 'JH', '6C', 'KS', 'QC', '6H', 'AH', 'AC']</code>, <code>Hand 4: ['QS', 'QD', 'TD', '9H', '9D', 'KC', 'QH', 'JC', '2H', '8H', 'TC', '3H', 'TS']</code>, <code>Remaining: 0</code></td></tr>
+    <tr><td><code>13</code>, <code>4</code></td><td><code>Hand 1: ['KH', '4H', 'JH', '8H']</code>, <code>Hand 2: ['JS', '9S', 'QH', '2S']</code>, <code>Hand 3: ['4S', '9H', '8D', '4C']</code>, <code>Hand 4: ['QS', '7S', '8C', '6H']</code>, <code>Hand 5: ['5D', '6D', '6C', 'TC']</code>, <code>Hand 6: ['AD', '7H', 'JC', '5C']</code>, <code>Hand 7: ['5H', '9D', '3D', 'TH']</code>, <code>Hand 8: ['QD', '2C', '3C', 'AH']</code>, <code>Hand 9: ['7C', '7D', 'KS', '3H']</code>, <code>Hand 10: ['6S', '9C', '2H', '2D']</code>, <code>Hand 11: ['3S', 'KC', '4D', '5S']</code>, <code>Hand 12: ['TD', '8S', 'AS', 'AC']</code>, <code>Hand 13: ['JD', 'KD', 'QC', 'TS']</code>, <code>Remaining: 0</code></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>create_deck()</code>, <code>shuffle_deck(deck)</code>, and <code>deal(deck, players, cards)</code>.</li>
+    <li><code>create_deck</code> returns a new list of the 52 codes in the stated order.</li>
+    <li><code>shuffle_deck</code> uses <code>random.randint</code>, changes the deck in place, and returns <code>None</code>. Do not call <code>random.shuffle</code>.</li>
+    <li><code>deal</code> builds the hands with a comprehension, takes each card with <code>pop(0)</code>, and deals in rounds.</li>
+  </ul>
+</div>
+<wb-exercise id="cards"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 26 Boss Problems.</p>
+</main>
+</body>
+</html>
