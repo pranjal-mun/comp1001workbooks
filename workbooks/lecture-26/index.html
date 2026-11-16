@@ -40,6 +40,11 @@
 </section>
 <hr>
 
+<div class="wb-callout is-good">
+  <div class="wb-callout-title">One-hour plan</div>
+  <p>Read sections 1 to 12 and run the examples. Answer each Quick check and do the three Checkpoints. This core work takes about one hour. The Coding Practice and Boss Problems at the end are optional. If you have more time, do Coding Practice 5 and Boss Problem 3 first.</p>
+</div>
+
 <p class="wb-part" id="part-functions">Lists with functions</p>
 
 <h2 id="s1">1. Shared list parameters and local assignment</h2>
@@ -114,16 +119,6 @@ values = [<span class="wb-num">3</span>, <span class="wb-num">5</span>]</code></
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 4.</strong> Write True or False for each statement.</p>
-  <wb-table id="q4">
-    <table>
-      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
-      <tbody>
-        <tr><td>A function that appends to its list parameter and has no return statement returns <code>None</code>.</td><td data-blank="t1"></td></tr>
-        <tr><td>Returning a slice of a flat numeric list makes later element changes affect the input list.</td><td data-blank="t2"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
 </div>
 
 <h2 id="s3">3. A list default persists</h2>
@@ -142,33 +137,18 @@ values = [<span class="wb-num">3</span>, <span class="wb-num">5</span>]</code></
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Quick check 3</div>
-  <p><strong>Question 5.</strong> Predict the output. Write each printed line.</p>
+  <p><strong>Question 4.</strong> Predict the output. Write each printed line.</p>
   <pre><code><span class="wb-kw">def</span> <span class="wb-fn">collect</span>(item, items=[]):
     items.<span class="wb-fn">append</span>(item)
     <span class="wb-kw">return</span> items
 <span class="wb-fn">print</span>(<span class="wb-fn">collect</span>(<span class="wb-num">4</span>))
 <span class="wb-fn">print</span>(<span class="wb-fn">collect</span>(<span class="wb-num">7</span>))</code></pre>
-  <wb-table id="q5">
+  <wb-table id="q4">
     <table>
       <thead><tr><th>Line</th><th>Output</th></tr></thead>
       <tbody>
         <tr><td>1</td><td data-blank="l1"></td></tr>
         <tr><td>2</td><td data-blank="l2"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p><strong>Question 6.</strong> Complete the second call. The program must print <code>[3] [8]</code>.</p>
-  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">collect</span>(item, items=[]):
-    items.<span class="wb-fn">append</span>(item)
-    <span class="wb-kw">return</span> items
-first = <span class="wb-fn">collect</span>(<span class="wb-num">3</span>)
-second = <span class="wb-fn">collect</span>(<span class="wb-num">8</span>, ____(a)____)
-<span class="wb-fn">print</span>(first, second)</code></pre>
-  <wb-table id="q6">
-    <table>
-      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
-      <tbody>
-        <tr><td>(a)</td><td data-blank="a"></td></tr>
       </tbody>
     </table>
   </wb-table>
@@ -190,27 +170,17 @@ second = <span class="wb-fn">collect</span>(<span class="wb-num">8</span>, ____(
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Quick check 4</div>
-  <p><strong>Question 7.</strong> Which condition selects a new list for <code>None</code> while keeping an explicit empty list?</p>
+  <p><strong>Question 5.</strong> Which condition selects a new list for <code>None</code> while keeping an explicit empty list?</p>
   <ol type="A">
     <li><code>not items</code></li>
     <li><code>items is None</code></li>
     <li><code>items is not None</code></li>
     <li><code>items is False</code></li>
   </ol>
-  <wb-table id="q7">
+  <wb-table id="q5">
     <table>
       <tbody>
         <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p><strong>Question 8.</strong> Write True or False for each statement.</p>
-  <wb-table id="q8">
-    <table>
-      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
-      <tbody>
-        <tr><td>Using <code>if not items</code> preserves the caller's explicit empty list before appending.</td><td data-blank="t1"></td></tr>
-        <tr><td>Two calls that omit the list argument can create separate lists when the default is <code>None</code>.</td><td data-blank="t2"></td></tr>
       </tbody>
     </table>
   </wb-table>
@@ -251,92 +221,17 @@ second = <span class="wb-fn">collect</span>(<span class="wb-num">8</span>, ____(
   <wb-exercise id="cp1"></wb-exercise>
 </div>
 
-<p class="wb-part" id="part-cards">Algorithms by hand</p>
-
-<h2 id="s5">5. Work out an algorithm with cards</h2>
-<p>Use cards to find the steps before you write the code. This task exchanges two equal halves. For an even length, set <code>half = len(values) // 2</code>. Pair each index <code>i</code> in the first half with <code>i + half</code>.</p>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-  <tbody>
-    <tr><th>Before</th><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td></tr>
-    <tr><th>After all three swaps</th><td>8</td><td>10</td><td>12</td><td>2</td><td>4</td><td>6</td></tr>
-  </tbody>
-</table>
-</div>
-<p>Do the task by hand with cards. Write down what you do at each step. Swap positions <code>0</code> and <code>3</code>. Then swap <code>1</code> and <code>4</code>. Then swap <code>2</code> and <code>5</code>. Later lectures use this method to work out sorting algorithms.</p>
-<wb-example id="ex-halves"></wb-example>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th>Step to record</th><th>For this task</th></tr></thead>
-  <tbody>
-    <tr><td>Card to look at</td><td>The loop selects position <code>i</code> in the first half.</td></tr>
-    <tr><td>What to compare</td><td>Record what you compare. Here, pair the two positions <code>i</code> and <code>i + half</code>.</td></tr>
-    <tr><td>What to move</td><td>The assignment swaps <code>0</code> and <code>3</code>, then <code>1</code> and <code>4</code>, then <code>2</code> and <code>5</code>.</td></tr>
-    <tr><td>When to stop</td><td>The loop stops after <code>half</code> swaps.</td></tr>
-  </tbody>
-</table>
-</div>
-
-<div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 5</div>
-  <p><strong>Question 9.</strong> Predict the output. Write each printed line.</p>
-  <pre><code>values = [<span class="wb-num">1</span>, <span class="wb-num">3</span>, <span class="wb-num">7</span>, <span class="wb-num">9</span>]
-half = <span class="wb-fn">len</span>(values) // <span class="wb-num">2</span>
-<span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">range</span>(half):
-    values[i], values[i + half] = values[i + half], values[i]
-<span class="wb-fn">print</span>(values)</code></pre>
-  <wb-table id="q9">
-    <table>
-      <thead><tr><th>Line</th><th>Output</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td data-blank="l1"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p><strong>Question 10.</strong> Complete the stopping point. The program must print <code>3</code>.</p>
-  <pre><code>values = [<span class="wb-num">1</span>, <span class="wb-num">3</span>, <span class="wb-num">5</span>, <span class="wb-num">7</span>, <span class="wb-num">9</span>, <span class="wb-num">11</span>]
-half = <span class="wb-fn">len</span>(values) // <span class="wb-num">2</span>
-swaps = <span class="wb-num">0</span>
-<span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">range</span>(____(a)____):
-    swaps = swaps + <span class="wb-num">1</span>
-<span class="wb-fn">print</span>(swaps)</code></pre>
-  <wb-table id="q10">
-    <table>
-      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
-      <tbody>
-        <tr><td>(a)</td><td data-blank="a"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-</div>
-
 <p class="wb-part" id="part-tables">Tables</p>
 
-<h2 id="s6">6. A table is a list of rows</h2>
+<h2 id="s5">5. A table is a list of rows</h2>
 <p>A table stores values in rows and columns. Each element of the outer list is a row list. This rectangular table has two rows and three columns.</p>
 <wb-example id="ex-table"></wb-example>
 <p>The outer list has two elements, at indexes <code>0</code> and <code>1</code>. Each element refers to one row list.</p>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 6</div>
-  <p><strong>Question 11.</strong> The table is <code>[[8, 1], [6, 3], [9, 4]]</code>. Which expression counts its rows?</p>
-  <pre><code>table = [[<span class="wb-num">8</span>, <span class="wb-num">1</span>], [<span class="wb-num">6</span>, <span class="wb-num">3</span>], [<span class="wb-num">9</span>, <span class="wb-num">4</span>]]</code></pre>
-  <ol type="A">
-    <li><code>len(table[0])</code></li>
-    <li><code>len(table[1])</code></li>
-    <li><code>len(table[0][0:1])</code></li>
-    <li><code>len(table)</code></li>
-  </ol>
-  <wb-table id="q11">
-    <table>
-      <tbody>
-        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p><strong>Question 12.</strong> Write True or False for each statement.</p>
-  <wb-table id="q12">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 6.</strong> Write True or False for each statement.</p>
+  <wb-table id="q6">
     <table>
       <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
       <tbody>
@@ -347,7 +242,7 @@ swaps = <span class="wb-num">0</span>
   </wb-table>
 </div>
 
-<h2 id="s7">7. Row first, then column</h2>
+<h2 id="s6">6. Row first, then column</h2>
 <p><code>table[row][col]</code> selects a row, then an element of that row. Both indexes start at <code>0</code>. <code>len(table)</code> counts rows. <code>len(table[row])</code> counts elements in that row. An empty table has no row <code>0</code>.</p>
 <p>For this table, valid row indexes are <code>0</code> and <code>1</code>. Valid column indexes are <code>0</code>, <code>1</code>, and <code>2</code>.</p>
 <wb-example id="ex-index"></wb-example>
@@ -364,13 +259,13 @@ swaps = <span class="wb-num">0</span>
 <wb-example id="ex-square"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 7</div>
-  <p><strong>Question 13.</strong> Predict the output. Write each printed line.</p>
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 7.</strong> Predict the output. Write each printed line.</p>
   <pre><code>table = [[<span class="wb-num">8</span>, <span class="wb-num">6</span>, <span class="wb-num">4</span>, <span class="wb-num">2</span>], [<span class="wb-num">9</span>, <span class="wb-num">7</span>, <span class="wb-num">5</span>, <span class="wb-num">3</span>]]
 <span class="wb-fn">print</span>(table[<span class="wb-num">1</span>][<span class="wb-num">3</span>])
 table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span class="wb-num">11</span>
 <span class="wb-fn">print</span>(table[<span class="wb-num">0</span>])</code></pre>
-  <wb-table id="q13">
+  <wb-table id="q7">
     <table>
       <thead><tr><th>Line</th><th>Output</th></tr></thead>
       <tbody>
@@ -379,20 +274,9 @@ table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span clas
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 14.</strong> Fill the column index. The program must print <code>13</code>.</p>
-  <pre><code>table = [[<span class="wb-num">5</span>, <span class="wb-num">8</span>, <span class="wb-num">11</span>], [<span class="wb-num">7</span>, <span class="wb-num">10</span>, <span class="wb-num">13</span>]]
-<span class="wb-fn">print</span>(table[<span class="wb-num">1</span>][____(a)____])</code></pre>
-  <wb-table id="q14">
-    <table>
-      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
-      <tbody>
-        <tr><td>(a)</td><td data-blank="a"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
 </div>
 
-<h2 id="s8">8. Nested loops visit each cell</h2>
+<h2 id="s7">7. Nested loops visit each cell</h2>
 <p>The outer loop selects the row. The inner loop visits that row's columns. The last <code>print()</code> ends each output row. It runs after the inner loop. When <code>r</code> changes to <code>1</code>, the inner loop starts again at <code>c = 0</code>.</p>
 <wb-example id="ex-nested"></wb-example>
 <div class="wb-table-wrap">
@@ -410,8 +294,8 @@ table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span clas
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 8</div>
-  <p><strong>Question 15.</strong> Which replacement for the final line prints each row on a separate line?</p>
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 8.</strong> Which replacement for the final line prints each row on a separate line?</p>
   <pre><code>table = [[<span class="wb-num">7</span>, <span class="wb-num">8</span>], [<span class="wb-num">9</span>, <span class="wb-num">1</span>]]
 <span class="wb-kw">for</span> row <span class="wb-kw">in</span> table:
     <span class="wb-kw">for</span> value <span class="wb-kw">in</span> row:
@@ -423,15 +307,15 @@ table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span clas
     <li><code>print(end="")</code></li>
     <li><code>print(value)</code></li>
   </ol>
-  <wb-table id="q15">
+  <wb-table id="q8">
     <table>
       <tbody>
         <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 16.</strong> Write True or False for each statement.</p>
-  <wb-table id="q16">
+  <p><strong>Question 9.</strong> Write True or False for each statement.</p>
+  <wb-table id="q9">
     <table>
       <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
       <tbody>
@@ -442,7 +326,7 @@ table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span clas
   </wb-table>
 </div>
 
-<h2 id="s9">9. Shared rows and independent rows</h2>
+<h2 id="s8">8. Shared rows and independent rows</h2>
 <p>Repeating the outer list copies row references. This construction does not create independent rows. Only one row list exists. Both outer elements refer to it. Changing the cell through either reference changes that same row.</p>
 <wb-example id="ex-shared"></wb-example>
 <p>Create each row inside the loop. Each evaluation of <code>[0] * 3</code> makes a separate row list. A comprehension can create the same independent rows. For numeric cells, repeating <code>0</code> within one row is safe. Repeating the row reference causes the problem.</p>
@@ -450,28 +334,16 @@ table[<span class="wb-num">0</span>][<span class="wb-num">2</span>] = <span clas
 <wb-example id="ex-independent-comp"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 9</div>
-  <p><strong>Question 17.</strong> Predict the output. Write each printed line.</p>
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 10.</strong> Predict the output. Write each printed line.</p>
   <pre><code>table = [[<span class="wb-num">0</span>] * <span class="wb-num">2</span>] * <span class="wb-num">3</span>
 table[<span class="wb-num">2</span>][<span class="wb-num">0</span>] = <span class="wb-num">6</span>
 <span class="wb-fn">print</span>(table)</code></pre>
-  <wb-table id="q17">
+  <wb-table id="q10">
     <table>
       <thead><tr><th>Line</th><th>Output</th></tr></thead>
       <tbody>
         <tr><td>1</td><td data-blank="l1"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p><strong>Question 18.</strong> Complete the construction. The program must print <code>[[0, 6], [0, 0], [0, 0]]</code>.</p>
-  <pre><code>table = [[<span class="wb-num">0</span>] * <span class="wb-num">2</span> <span class="wb-kw">for</span> r <span class="wb-kw">in</span> ____(a)____]
-table[<span class="wb-num">0</span>][<span class="wb-num">1</span>] = <span class="wb-num">6</span>
-<span class="wb-fn">print</span>(table)</code></pre>
-  <wb-table id="q18">
-    <table>
-      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
-      <tbody>
-        <tr><td>(a)</td><td data-blank="a"></td></tr>
       </tbody>
     </table>
   </wb-table>
@@ -517,15 +389,15 @@ table[<span class="wb-num">0</span>][<span class="wb-num">1</span>] = <span clas
 
 <p class="wb-part" id="part-operations">Table operations</p>
 
-<h2 id="s10">10. Copy each numeric row</h2>
+<h2 id="s9">9. Copy each numeric row</h2>
 <p>For a numeric table, copy each row to make independent cells. An outer slice alone keeps the row references. <code>table[0]</code> and <code>outer[0]</code> refer to one row.</p>
 <wb-example id="ex-outer"></wb-example>
 <p>Each <code>row[:]</code> creates a new row list. These cells contain numbers. More deeply nested data can require further copying.</p>
 <wb-example id="ex-rowcopy"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 10</div>
-  <p><strong>Question 19.</strong> Which statement makes independent numeric rows in <code>copy</code>?</p>
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 11.</strong> Which statement makes independent numeric rows in <code>copy</code>?</p>
   <pre><code>table = [[<span class="wb-num">8</span>, <span class="wb-num">6</span>], [<span class="wb-num">4</span>, <span class="wb-num">2</span>]]</code></pre>
   <ol type="A">
     <li><code>copy = table</code></li>
@@ -533,26 +405,16 @@ table[<span class="wb-num">0</span>][<span class="wb-num">1</span>] = <span clas
     <li><code>copy = [row[:] for row in table]</code></li>
     <li><code>copy = [row for row in table]</code></li>
   </ol>
-  <wb-table id="q19">
+  <wb-table id="q11">
     <table>
       <tbody>
         <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 20.</strong> Write True or False for each statement.</p>
-  <wb-table id="q20">
-    <table>
-      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
-      <tbody>
-        <tr><td>After <code>copy = table[:]</code>, replacing <code>copy[0]</code> with a new row leaves <code>table[0]</code> unchanged.</td><td data-blank="t1"></td></tr>
-        <tr><td>After <code>copy = table[:]</code>, changing <code>copy[0][1]</code> leaves <code>table[0][1]</code> unchanged.</td><td data-blank="t2"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
 </div>
 
-<h2 id="s11">11. Row totals</h2>
+<h2 id="s10">10. Row totals</h2>
 <p><code>row_totals</code> returns a new list with one total per row. It leaves the table unchanged. <code>sum(table[1])</code> gives the second row's total. <code>sum(row)</code> starts a separate calculation for each row. For <code>[]</code>, this function returns <code>[]</code>.</p>
 <wb-example id="ex-rowtotals"></wb-example>
 <div class="wb-table-wrap">
@@ -566,14 +428,14 @@ table[<span class="wb-num">0</span>][<span class="wb-num">1</span>] = <span clas
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 11</div>
-  <p><strong>Question 21.</strong> Predict the output. Write each printed line.</p>
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 12.</strong> Predict the output. Write each printed line.</p>
   <pre><code>table = [[<span class="wb-num">3</span>, <span class="wb-num">8</span>], [<span class="wb-num">2</span>, <span class="wb-num">5</span>], []]
 totals = []
 <span class="wb-kw">for</span> row <span class="wb-kw">in</span> table:
     totals.<span class="wb-fn">append</span>(<span class="wb-fn">sum</span>(row))
 <span class="wb-fn">print</span>(totals)</code></pre>
-  <wb-table id="q21">
+  <wb-table id="q12">
     <table>
       <thead><tr><th>Line</th><th>Output</th></tr></thead>
       <tbody>
@@ -581,23 +443,9 @@ totals = []
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 22.</strong> Complete the row total. The program must print <code>[7, 13]</code>.</p>
-  <pre><code>table = [[<span class="wb-num">2</span>, <span class="wb-num">5</span>], [<span class="wb-num">6</span>, <span class="wb-num">7</span>]]
-totals = []
-<span class="wb-kw">for</span> row <span class="wb-kw">in</span> table:
-    totals.<span class="wb-fn">append</span>(____(a)____)
-<span class="wb-fn">print</span>(totals)</code></pre>
-  <wb-table id="q22">
-    <table>
-      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
-      <tbody>
-        <tr><td>(a)</td><td data-blank="a"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
 </div>
 
-<h2 id="s12">12. A column total</h2>
+<h2 id="s11">11. A column total</h2>
 <p><code>column_total</code> adds the value at column <code>col</code> from every row. It leaves the table unchanged. Column <code>1</code> means the second column. <code>total</code> starts at <code>0</code> before the loop. It continues across rows.</p>
 <p>Every row must contain column <code>col</code>. Otherwise, indexing causes an <code>IndexError</code>. For an empty table, the function returns <code>0</code>.</p>
 <p>A row total needs only <code>sum(table[r])</code>, but a column total needs a loop over every row.</p>
@@ -613,8 +461,8 @@ totals = []
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 12</div>
-  <p><strong>Question 23.</strong> Which expression adds column 2 of <code>[[4, 6, 8], [1, 3, 5]]</code>?</p>
+  <div class="wb-block-title">Quick check 11</div>
+  <p><strong>Question 13.</strong> Which expression adds column 2 of <code>[[4, 6, 8], [1, 3, 5]]</code>?</p>
   <pre><code>table = [[<span class="wb-num">4</span>, <span class="wb-num">6</span>, <span class="wb-num">8</span>], [<span class="wb-num">1</span>, <span class="wb-num">3</span>, <span class="wb-num">5</span>]]</code></pre>
   <ol type="A">
     <li><code>sum(table[0])</code></li>
@@ -622,26 +470,16 @@ totals = []
     <li><code>sum(table[1])</code></li>
     <li><code>table[0][2] + table[1][2]</code></li>
   </ol>
-  <wb-table id="q23">
+  <wb-table id="q13">
     <table>
       <tbody>
         <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 24.</strong> Write True or False for each statement.</p>
-  <wb-table id="q24">
-    <table>
-      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
-      <tbody>
-        <tr><td>Resetting <code>total</code> to 0 inside each row iteration preserves the earlier column values.</td><td data-blank="t1"></td></tr>
-        <tr><td>Starting a column total at 0 before the row loop gives 0 for an empty table.</td><td data-blank="t2"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
 </div>
 
-<h2 id="s13">13. All cells and changes in place</h2>
+<h2 id="s12">12. All cells and changes in place</h2>
 <p><code>table_total</code> adds every cell value. It leaves the table unchanged. Initialize <code>total</code> before both loops. If you reset it inside the outer loop, you lose earlier row totals.</p>
 <wb-example id="ex-alltotal"></wb-example>
 <div class="wb-table-wrap">
@@ -661,15 +499,15 @@ totals = []
 <wb-example id="ex-clearcells"></wb-example>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 13</div>
-  <p><strong>Question 25.</strong> Predict the output. Write each printed line.</p>
+  <div class="wb-block-title">Quick check 12</div>
+  <p><strong>Question 14.</strong> Predict the output. Write each printed line.</p>
   <pre><code>table = [[<span class="wb-num">1</span>, <span class="wb-num">5</span>], [<span class="wb-num">2</span>, <span class="wb-num">8</span>]]
 total = <span class="wb-num">0</span>
 <span class="wb-kw">for</span> row <span class="wb-kw">in</span> table:
     <span class="wb-kw">for</span> value <span class="wb-kw">in</span> row:
         total = total + value
 <span class="wb-fn">print</span>(total)</code></pre>
-  <wb-table id="q25">
+  <wb-table id="q14">
     <table>
       <thead><tr><th>Line</th><th>Output</th></tr></thead>
       <tbody>
@@ -677,14 +515,14 @@ total = <span class="wb-num">0</span>
       </tbody>
     </table>
   </wb-table>
-  <p><strong>Question 26.</strong> Complete the shared-cell assignment. The program must print <code>[[3, 8], [5, 8]]</code>.</p>
+  <p><strong>Question 15.</strong> Complete the shared-cell assignment. The program must print <code>[[3, 8], [5, 8]]</code>.</p>
   <pre><code><span class="wb-kw">def</span> <span class="wb-fn">set_last</span>(table):
     <span class="wb-kw">for</span> row <span class="wb-kw">in</span> table:
         ____(a)____ = <span class="wb-num">8</span>
 table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span class="wb-num">5</span>, <span class="wb-num">2</span>]]
 <span class="wb-fn">set_last</span>(table)
 <span class="wb-fn">print</span>(table)</code></pre>
-  <wb-table id="q26">
+  <wb-table id="q15">
     <table>
       <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
       <tbody>
@@ -750,7 +588,6 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
   </tbody>
 </table>
 </div>
-<p>With cards, record each operation and the stopping condition.</p>
 
 <h3>Tables</h3>
 <div class="wb-table-wrap">
@@ -773,6 +610,7 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
 </div>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p><strong>These items are optional.</strong> Do them after the core work. If you have time for only one, do Coding Practice 5.</p>
 <p>Each practice starts with the first lines of its program in the code box. <strong>Check</strong> compares what your program prints with the expected output. For the practices with functions, <strong>Check</strong> also calls your functions with other lists and tables, including the edge cases named in the task.</p>
 
 <h3>1. Repair a local assignment</h3>
@@ -802,28 +640,7 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
 </div>
 <wb-exercise id="p1"></wb-exercise>
 
-<h3>2. Choose a function style</h3>
-<p>For each task, choose "changes the list" or "returns a new list". Write a function header with a fitting verb or noun name. Add a one-line description that states the effect on the input.</p>
-<ul>
-  <li>Put the elements in decreasing order. Change the existing list.</li>
-  <li>Remove every element below a limit. Change the existing list.</li>
-  <li>Copy the elements below a limit to a new list. Keep their order.</li>
-  <li>Build a new list of squared element values. Keep their order.</li>
-</ul>
-<p>Use <code>values</code> for the list parameter and <code>limit</code> when a limit is needed.</p>
-<wb-short id="p2-headers"></wb-short>
-<p>Implement the first and third tasks as <code>sort_decreasing(values)</code> and <code>below_limit_copy(values, limit)</code>. The first function must return <code>None</code>. The third must leave its input unchanged. Test both with <code>[7, 2, 9, 2]</code> and <code>[]</code>. Use a limit of <code>7</code> for the third task.</p>
-<p>Make <code>values = [7, 2, 9, 2]</code> and print <code>below_limit_copy(values, 7)</code>, <code>values</code>, <code>sort_decreasing(values)</code>, and <code>values</code>. Then make <code>empty = []</code> and print <code>below_limit_copy(empty, 7)</code>, <code>sort_decreasing(empty)</code>, and <code>empty</code>. Print each result on its own line.</p>
-<div class="wb-block">
-  <div class="wb-block-title">Rules the checker enforces</div>
-  <ul>
-    <li><code>sort_decreasing</code> changes its list and returns <code>None</code>.</li>
-    <li><code>below_limit_copy</code> returns a new list and keeps its input unchanged.</li>
-  </ul>
-</div>
-<wb-exercise id="p2"></wb-exercise>
-
-<h3>3. Alternate two lists</h3>
+<h3>2. Alternate two lists</h3>
 <p>Write <code>alternating_copy(first, second)</code> to return a new list. Alternate elements from the two inputs, starting with <code>first</code>. When one input ends, append the rest of the other input in its original order. Keep both input lists unchanged.</p>
 <ul>
   <li>Test <code>first = [3, 8]</code> and <code>second = [6, 1, 5, 9]</code>.</li>
@@ -839,9 +656,9 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
     <li>Return a new list and keep both inputs unchanged.</li>
   </ul>
 </div>
-<wb-exercise id="p3"></wb-exercise>
+<wb-exercise id="p2"></wb-exercise>
 
-<h3>4. Build table patterns</h3>
+<h3>3. Build table patterns</h3>
 <p>Write statements for a table with <code>m</code> rows and <code>n</code> columns. Both dimensions are positive integers. Test with <code>m = 3</code> and <code>n = 5</code>.</p>
 <ul>
   <li>Build a table of zeros with independent rows.</li>
@@ -858,9 +675,9 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
     <li>Use nested loops to fill each table and to print its rows.</li>
   </ul>
 </div>
-<wb-exercise id="p4"></wb-exercise>
+<wb-exercise id="p3"></wb-exercise>
 
-<h3>5. Print a flood map</h3>
+<h3>4. Print a flood map</h3>
 <p>Write <code>print_flood_map(heights, water_level)</code>. Each cell contains a height. A cell floods when its height is at or below the water level.</p>
 <ul>
   <li>Print <code>*</code> for a flooded cell.</li>
@@ -876,9 +693,9 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
     <li>The function prints the map, returns <code>None</code>, and keeps the table unchanged.</li>
   </ul>
 </div>
-<wb-exercise id="p5"></wb-exercise>
+<wb-exercise id="p4"></wb-exercise>
 
-<h3>6. Average nearby cells</h3>
+<h3>5. Average nearby cells</h3>
 <p>Write <code>neighbor_average(table, row, col)</code>. A neighbor touches the selected cell along an edge or at a corner. There are up to eight neighbors.</p>
 <ul>
   <li>Count only neighbors inside the table. Do not include the selected cell.</li>
@@ -894,8 +711,9 @@ table = [[<span class="wb-num">3</span>, <span class="wb-num">1</span>], [<span 
     <li>Return the average as a <code>float</code> and keep the table unchanged.</li>
   </ul>
 </div>
-<wb-exercise id="p6"></wb-exercise>
+<wb-exercise id="p5"></wb-exercise>
 
+<p><strong>The Boss Problems are optional test practice.</strong> Boss Problem 3 uses the most ideas from this lecture.</p>
 <wb-bosses></wb-bosses>
 
 <hr>

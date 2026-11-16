@@ -91,11 +91,6 @@
         }
       }
     },
-    "ex-halves": {
-      "type": "example",
-      "code": "values = [2, 4, 6, 8, 10, 12]\nhalf = len(values) // 2\nfor i in range(half):\n    values[i], values[i + half] = values[i + half], values[i]\nprint(values)",
-      "output": "[8, 10, 12, 2, 4, 6]"
-    },
     "ex-table": {
       "type": "example",
       "code": "table = [\n    [2, 4, 6],\n    [1, 3, 5]\n]\nprint(len(table))\nprint(len(table[0]))",
@@ -341,30 +336,7 @@
       "answer": "ZGVmIGZpbGxfc3F1YXJlcyh2YWx1ZXMpOgogICAgIiIiQ2hhbmdlIHZhbHVlcyBpbiBwbGFjZSBhbmQgcmV0dXJuIE5vbmUuIiIiCiAgICBmb3IgaSBpbiByYW5nZShsZW4odmFsdWVzKSk6CiAgICAgICAgdmFsdWVzW2ldID0gaSAqIGkKCmRlZiBpbmRleF9zcXVhcmVzKHZhbHVlcyk6CiAgICAiIiJSZXR1cm4gYSBuZXcgbGlzdCBhbmQga2VlcCB2YWx1ZXMgdW5jaGFuZ2VkLiIiIgogICAgcmVzdWx0ID0gW10KICAgIGZvciBpIGluIHJhbmdlKGxlbih2YWx1ZXMpKToKICAgICAgICByZXN1bHQuYXBwZW5kKGkgKiBpKQogICAgcmV0dXJuIHJlc3VsdAoKdmFsdWVzID0gWzgsIDgsIDgsIDhdCnByaW50KGluZGV4X3NxdWFyZXModmFsdWVzKSkKcHJpbnQodmFsdWVzKQpwcmludChmaWxsX3NxdWFyZXModmFsdWVzKSkKcHJpbnQodmFsdWVzKQpwcmludChpbmRleF9zcXVhcmVzKFtdKSkKcHJpbnQoZmlsbF9zcXVhcmVzKFtdKSk=",
       "answerNote": "fill_squares assigns to elements of the shared list. index_squares builds and returns a separate list."
     },
-    "p2-headers": {
-      "type": "short",
-      "xp": 2,
-      "minChars": 60,
-      "rows": 6,
-      "placeholder": "Four headers, each with a one-line description…",
-      "answer": "YGRlZiBzb3J0X2RlY3JlYXNpbmcodmFsdWVzKTpgIFNvcnQgdmFsdWVzIGluIHBsYWNlIGFuZCByZXR1cm4gTm9uZS4KCmBkZWYgcmVtb3ZlX2JlbG93KHZhbHVlcywgbGltaXQpOmAgUmVtb3ZlIHZhbHVlcyBiZWxvdyBsaW1pdCBpbiBwbGFjZSBhbmQgcmV0dXJuIE5vbmUuCgpgZGVmIGJlbG93X2xpbWl0X2NvcHkodmFsdWVzLCBsaW1pdCk6YCBSZXR1cm4gYSBuZXcgbGlzdCBvZiB2YWx1ZXMgYmVsb3cgbGltaXQgYW5kIGtlZXAgdGhlIGlucHV0IHVuY2hhbmdlZC4KCmBkZWYgc3F1YXJlZF9jb3B5KHZhbHVlcyk6YCBSZXR1cm4gYSBuZXcgbGlzdCBvZiBzcXVhcmVkIHZhbHVlcyBhbmQga2VlcCB0aGUgaW5wdXQgdW5jaGFuZ2VkLg=="
-    },
     "p2": {
-      "type": "code",
-      "xp": 5,
-      "minLines": 16,
-      "starter": "def sort_decreasing(values):\n    pass\n\ndef below_limit_copy(values, limit):\n    pass",
-      "cases": [
-        {
-          "name": "[7, 2, 9, 2] and []",
-          "expected": "[2, 2]\n[7, 2, 9, 2]\nNone\n[9, 7, 2, 2]\n[]\nNone\n[]"
-        }
-      ],
-      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\n_fn(\"sort_decreasing\", \"values\")\n_fn(\"below_limit_copy\", \"values\", \"limit\")\ndef _sorts(given, want):\n    values = list(given)\n    result, printed = _call(\"sort_decreasing\", values)\n    assert result is None, \"sort_decreasing(\" + repr(given) + \") should change the list and return None, not \" + repr(result) + \".\"\n    assert values == want, \"After sort_decreasing(\" + repr(given) + \"), the list should be \" + repr(want) + \", not \" + repr(values) + \".\"\n_sorts([7, 2, 9, 2], [9, 7, 2, 2])\n_sorts([], [])\n_sorts([1, 5, 3], [5, 3, 1])\n_returns('below_limit_copy', ([7, 2, 9, 2], 7), [2, 2])\n_returns('below_limit_copy', ([], 7), [])\n_returns('below_limit_copy', ([1, 8, 3, 8], 8), [1, 3])\n_returns('below_limit_copy', ([9, 10], 5), [])\n_src = [7, 2, 9, 2]\nbelow_limit_copy(_src, 7)\nassert _src == [7, 2, 9, 2], \"below_limit_copy([7, 2, 9, 2], 7) changed its input list to \" + repr(_src) + \". Keep the input unchanged.\"\n",
-      "answer": "ZGVmIHNvcnRfZGVjcmVhc2luZyh2YWx1ZXMpOgogICAgIiIiU29ydCB2YWx1ZXMgaW4gcGxhY2UgYW5kIHJldHVybiBOb25lLiIiIgogICAgdmFsdWVzLnNvcnQocmV2ZXJzZT1UcnVlKQoKZGVmIGJlbG93X2xpbWl0X2NvcHkodmFsdWVzLCBsaW1pdCk6CiAgICAiIiJSZXR1cm4gYSBuZXcgbGlzdCBhbmQga2VlcCB2YWx1ZXMgdW5jaGFuZ2VkLiIiIgogICAgcmV0dXJuIFt2IGZvciB2IGluIHZhbHVlcyBpZiB2IDwgbGltaXRdCgp2YWx1ZXMgPSBbNywgMiwgOSwgMl0KcHJpbnQoYmVsb3dfbGltaXRfY29weSh2YWx1ZXMsIDcpKQpwcmludCh2YWx1ZXMpCnByaW50KHNvcnRfZGVjcmVhc2luZyh2YWx1ZXMpKQpwcmludCh2YWx1ZXMpCmVtcHR5ID0gW10KcHJpbnQoYmVsb3dfbGltaXRfY29weShlbXB0eSwgNykpCnByaW50KHNvcnRfZGVjcmVhc2luZyhlbXB0eSkpCnByaW50KGVtcHR5KQ==",
-      "answerNote": "The verb name changes the list and returns None. The noun name returns a new list."
-    },
-    "p3": {
       "type": "code",
       "xp": 5,
       "minLines": 18,
@@ -379,7 +351,7 @@
       "answer": "ZGVmIGFsdGVybmF0aW5nX2NvcHkoZmlyc3QsIHNlY29uZCk6CiAgICAiIiJSZXR1cm4gYSBuZXcgbGlzdCBhbmQga2VlcCBib3RoIGlucHV0cyB1bmNoYW5nZWQuIiIiCiAgICByZXN1bHQgPSBbXQogICAgaSA9IDAKICAgIHdoaWxlIGkgPCBsZW4oZmlyc3QpIG9yIGkgPCBsZW4oc2Vjb25kKToKICAgICAgICBpZiBpIDwgbGVuKGZpcnN0KToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChmaXJzdFtpXSkKICAgICAgICBpZiBpIDwgbGVuKHNlY29uZCk6CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQoc2Vjb25kW2ldKQogICAgICAgIGkgPSBpICsgMQogICAgcmV0dXJuIHJlc3VsdAoKZmlyc3QgPSBbMywgOF0Kc2Vjb25kID0gWzYsIDEsIDUsIDldCnByaW50KGFsdGVybmF0aW5nX2NvcHkoZmlyc3QsIHNlY29uZCkpCnByaW50KGZpcnN0KQpwcmludChzZWNvbmQpCnByaW50KGFsdGVybmF0aW5nX2NvcHkoW10sIFs0LCA3XSkpCnByaW50KGFsdGVybmF0aW5nX2NvcHkoWzQsIDddLCBbXSkpCnByaW50KGFsdGVybmF0aW5nX2NvcHkoW10sIFtdKSk=",
       "answerNote": "Each index can supply an element from either input. The length checks prevent access beyond an input."
     },
-    "p4": {
+    "p3": {
       "type": "code",
       "xp": 5,
       "minLines": 24,
@@ -428,7 +400,7 @@
       "answer": "bSA9IDMKbiA9IDUKdGFibGUgPSBbWzBdICogbiBmb3IgciBpbiByYW5nZShtKV0KZm9yIHIgaW4gcmFuZ2UobSk6CiAgICBmb3IgYyBpbiByYW5nZShuKToKICAgICAgICB0YWJsZVtyXVtjXSA9IChyICsgYykgJSAyCnByaW50KCJDaGVja2VyYm9hcmQ6IikKZm9yIHJvdyBpbiB0YWJsZToKICAgIGZvciB2YWx1ZSBpbiByb3c6CiAgICAgICAgcHJpbnQodmFsdWUsIGVuZD0iICIpCiAgICBwcmludCgpCnRhYmxlID0gW1swXSAqIG4gZm9yIHIgaW4gcmFuZ2UobSldCmZvciByIGluIHJhbmdlKG0pOgogICAgZm9yIGMgaW4gcmFuZ2Uobik6CiAgICAgICAgaWYgciA9PSAwIG9yIHIgPT0gbSAtIDEgb3IgYyA9PSAwIG9yIGMgPT0gbiAtIDE6CiAgICAgICAgICAgIHRhYmxlW3JdW2NdID0gMQp0b3RhbCA9IDAKZm9yIHJvdyBpbiB0YWJsZToKICAgIHRvdGFsID0gdG90YWwgKyBzdW0ocm93KQpwcmludCgiQm9yZGVyOiIpCmZvciByb3cgaW4gdGFibGU6CiAgICBmb3IgdmFsdWUgaW4gcm93OgogICAgICAgIHByaW50KHZhbHVlLCBlbmQ9IiAiKQogICAgcHJpbnQoKQpwcmludCgiQm9yZGVyIHRvdGFsOiIsIHRvdGFsKQ==",
       "answerNote": "Each construction evaluates a new row list for every row."
     },
-    "p5": {
+    "p4": {
       "type": "code",
       "xp": 5,
       "minLines": 18,
@@ -443,7 +415,7 @@
       "answer": "ZGVmIHByaW50X2Zsb29kX21hcChoZWlnaHRzLCB3YXRlcl9sZXZlbCk6CiAgICAiIiJQcmludCB0aGUgbWFwLCBrZWVwIGhlaWdodHMgdW5jaGFuZ2VkLCBhbmQgcmV0dXJuIE5vbmUuIiIiCiAgICBmb3Igcm93IGluIGhlaWdodHM6CiAgICAgICAgZm9yIGhlaWdodCBpbiByb3c6CiAgICAgICAgICAgIGlmIGhlaWdodCA8PSB3YXRlcl9sZXZlbDoKICAgICAgICAgICAgICAgIHByaW50KCIqIiwgZW5kPSIiKQogICAgICAgICAgICBlbHNlOgogICAgICAgICAgICAgICAgcHJpbnQoIi4iLCBlbmQ9IiIpCiAgICAgICAgcHJpbnQoKQoKaGVpZ2h0cyA9IFtbMSwgMywgNSwgMiwgNl0sCiAgICAgICAgICAgWzQsIDIsIDAsIDUsIDNdLAogICAgICAgICAgIFs2LCA1LCAzLCAxLCA0XSwKICAgICAgICAgICBbMiwgNCwgNiwgMCwgNV1dCnByaW50KCJMZXZlbCAyOiIpCnByaW50X2Zsb29kX21hcChoZWlnaHRzLCAyKQpwcmludCgiTGV2ZWwgNDoiKQpwcmludF9mbG9vZF9tYXAoaGVpZ2h0cywgNCk=",
       "answerNote": "Equality with the level counts as flooded. The final print call ends each row."
     },
-    "p6": {
+    "p5": {
       "type": "code",
       "xp": 5,
       "minLines": 18,
@@ -515,30 +487,6 @@
       "type": "table",
       "xp": 1,
       "blanks": {
-        "t1": {
-          "accept": [
-            "True",
-            "T"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "True"
-        },
-        "t2": {
-          "accept": [
-            "False",
-            "F"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "False"
-        }
-      }
-    },
-    "q5": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
         "l1": {
           "accept": [
             "[4]",
@@ -559,22 +507,7 @@
         }
       }
     },
-    "q6": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "a": {
-          "accept": [
-            "[]",
-            "list()"
-          ],
-          "placeholder": "code",
-          "width": "6rem",
-          "show": "[]"
-        }
-      }
-    },
-    "q7": {
+    "q5": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -590,79 +523,7 @@
         }
       }
     },
-    "q8": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "t1": {
-          "accept": [
-            "False",
-            "F"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "False"
-        },
-        "t2": {
-          "accept": [
-            "True",
-            "T"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "True"
-        }
-      }
-    },
-    "q9": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "l1": {
-          "accept": [
-            "[7, 9, 1, 3]",
-            "[7,9,1,3]"
-          ],
-          "placeholder": "output",
-          "width": "14rem",
-          "show": "[7, 9, 1, 3]"
-        }
-      }
-    },
-    "q10": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "a": {
-          "accept": [
-            "half",
-            "3",
-            "len(values) // 2",
-            "len(values)//2"
-          ],
-          "placeholder": "code",
-          "width": "10rem",
-          "show": "half"
-        }
-      }
-    },
-    "q11": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "c": {
-          "accept": [
-            "D",
-            "(D)",
-            "D)"
-          ],
-          "placeholder": "letter",
-          "width": "4rem",
-          "show": "D"
-        }
-      }
-    },
-    "q12": {
+    "q6": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -686,7 +547,7 @@
         }
       }
     },
-    "q13": {
+    "q7": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -708,22 +569,7 @@
         }
       }
     },
-    "q14": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "a": {
-          "accept": [
-            "2",
-            "-1"
-          ],
-          "placeholder": "code",
-          "width": "5rem",
-          "show": "2"
-        }
-      }
-    },
-    "q15": {
+    "q8": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -739,7 +585,7 @@
         }
       }
     },
-    "q16": {
+    "q9": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -763,7 +609,7 @@
         }
       }
     },
-    "q17": {
+    "q10": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -778,22 +624,7 @@
         }
       }
     },
-    "q18": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "a": {
-          "accept": [
-            "range(3)",
-            "range(0, 3)"
-          ],
-          "placeholder": "code",
-          "width": "8rem",
-          "show": "range(3)"
-        }
-      }
-    },
-    "q19": {
+    "q11": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -809,31 +640,7 @@
         }
       }
     },
-    "q20": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "t1": {
-          "accept": [
-            "True",
-            "T"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "True"
-        },
-        "t2": {
-          "accept": [
-            "False",
-            "F"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "False"
-        }
-      }
-    },
-    "q21": {
+    "q12": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -848,21 +655,7 @@
         }
       }
     },
-    "q22": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "a": {
-          "accept": [
-            "sum(row)"
-          ],
-          "placeholder": "code",
-          "width": "8rem",
-          "show": "sum(row)"
-        }
-      }
-    },
-    "q23": {
+    "q13": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -878,31 +671,7 @@
         }
       }
     },
-    "q24": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "t1": {
-          "accept": [
-            "False",
-            "F"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "False"
-        },
-        "t2": {
-          "accept": [
-            "True",
-            "T"
-          ],
-          "placeholder": "True or False",
-          "width": "6rem",
-          "show": "True"
-        }
-      }
-    },
-    "q25": {
+    "q14": {
       "type": "table",
       "xp": 1,
       "blanks": {
@@ -915,7 +684,7 @@
         }
       }
     },
-    "q26": {
+    "q15": {
       "type": "table",
       "xp": 1,
       "blanks": {

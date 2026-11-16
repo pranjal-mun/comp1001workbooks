@@ -190,18 +190,11 @@ print(add_item("a"))
 print(add_item("b"))
 print(add_item("c"))
 '''
-SRC['quick_5'] = '''def collect(item, items=[]):
+SRC['quick_4'] = '''def collect(item, items=[]):
     items.append(item)
     return items
 print(collect(4))
 print(collect(7))
-'''
-SRC['quick_6'] = '''def collect(item, items=[]):
-    items.append(item)
-    return items
-first = collect(3)
-second = collect(8, ____(a)____)
-print(first, second)
 '''
 SRC['slide_7'] = '''def add_item(item, items=None):
     if items is None:
@@ -234,33 +227,12 @@ third = with_mark(90, source)
 print(first, second)
 print(source, third)
 '''
-SRC['slide_11'] = '''values = [2, 4, 6, 8, 10, 12]
-half = len(values) // 2
-for i in range(half):
-    values[i], values[i + half] = values[i + half], values[i]
-print(values)
-'''
-SRC['quick_9'] = '''values = [1, 3, 7, 9]
-half = len(values) // 2
-for i in range(half):
-    values[i], values[i + half] = values[i + half], values[i]
-print(values)
-'''
-SRC['quick_10'] = '''values = [1, 3, 5, 7, 9, 11]
-half = len(values) // 2
-swaps = 0
-for i in range(____(a)____):
-    swaps = swaps + 1
-print(swaps)
-'''
 SRC['slide_12'] = '''table = [
     [2, 4, 6],
     [1, 3, 5]
 ]
 print(len(table))
 print(len(table[0]))
-'''
-SRC['quick_11'] = '''table = [[8, 1], [6, 3], [9, 4]]
 '''
 SRC['slide_13'] = '''table = [[2, 4, 6], [1, 3, 5]]
 print(table[1])
@@ -272,13 +244,10 @@ SRC['slide_14'] = '''grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 print(grid[0][2])
 print(grid[2][0])
 '''
-SRC['quick_13'] = '''table = [[8, 6, 4, 2], [9, 7, 5, 3]]
+SRC['quick_7'] = '''table = [[8, 6, 4, 2], [9, 7, 5, 3]]
 print(table[1][3])
 table[0][2] = 11
 print(table[0])
-'''
-SRC['quick_14'] = '''table = [[5, 8, 11], [7, 10, 13]]
-print(table[1][____(a)____])
 '''
 SRC['slide_15'] = '''table = [[2, 4, 6], [1, 3, 5]]
 for r in range(len(table)):
@@ -286,7 +255,7 @@ for r in range(len(table)):
         print(table[r][c], end=" ")
     print()
 '''
-SRC['quick_15'] = '''table = [[7, 8], [9, 1]]
+SRC['quick_8'] = '''table = [[7, 8], [9, 1]]
 for row in table:
     for value in row:
         print(value, end=" ")
@@ -305,12 +274,8 @@ print(grid)
 '''
 SRC['slide_17_2'] = '''grid = [[0] * 3 for row in range(2)]
 '''
-SRC['quick_17'] = '''table = [[0] * 2] * 3
+SRC['quick_10'] = '''table = [[0] * 2] * 3
 table[2][0] = 6
-print(table)
-'''
-SRC['quick_18'] = '''table = [[0] * 2 for r in ____(a)____]
-table[0][1] = 6
 print(table)
 '''
 SRC['checkpoint_2_starter'] = '''def number_grid(rows, cols):
@@ -339,7 +304,7 @@ copy[0][0] = 9
 print(table)
 print(copy)
 '''
-SRC['quick_19'] = '''table = [[8, 6], [4, 2]]
+SRC['quick_11'] = '''table = [[8, 6], [4, 2]]
 '''
 SRC['slide_21'] = '''def row_totals(table):
     totals = []
@@ -350,16 +315,10 @@ SRC['slide_21'] = '''def row_totals(table):
 table = [[2, 4, 6], [1, 3, 5]]
 print(row_totals(table))
 '''
-SRC['quick_21'] = '''table = [[3, 8], [2, 5], []]
+SRC['quick_12'] = '''table = [[3, 8], [2, 5], []]
 totals = []
 for row in table:
     totals.append(sum(row))
-print(totals)
-'''
-SRC['quick_22'] = '''table = [[2, 5], [6, 7]]
-totals = []
-for row in table:
-    totals.append(____(a)____)
 print(totals)
 '''
 SRC['slide_22'] = '''def column_total(table, col):
@@ -371,7 +330,7 @@ SRC['slide_22'] = '''def column_total(table, col):
 table = [[2, 4, 6], [1, 3, 5]]
 print(column_total(table, 1))
 '''
-SRC['quick_23'] = '''table = [[4, 6, 8], [1, 3, 5]]
+SRC['quick_13'] = '''table = [[4, 6, 8], [1, 3, 5]]
 '''
 SRC['slide_23'] = '''def table_total(table):
     total = 0
@@ -394,14 +353,14 @@ table = [[-2, 4, -1], [3, -5, 6]]
 clear_cells(table)
 print(table)
 '''
-SRC['quick_25'] = '''table = [[1, 5], [2, 8]]
+SRC['quick_14'] = '''table = [[1, 5], [2, 8]]
 total = 0
 for row in table:
     for value in row:
         total = total + value
 print(total)
 '''
-SRC['quick_26'] = '''def set_last(table):
+SRC['quick_15'] = '''def set_last(table):
     for row in table:
         ____(a)____ = 8
 table = [[3, 1], [5, 2]]
@@ -475,30 +434,10 @@ print(values)
 print(index_squares([]))
 print(fill_squares([]))
 '''
-SRC['practice_2_starter'] = '''# Write four headers and descriptions above your implementations.
-'''
-SRC['practice_2'] = '''def sort_decreasing(values):
-    """Sort values in place and return None."""
-    values.sort(reverse=True)
-
-def below_limit_copy(values, limit):
-    """Return a new list and keep values unchanged."""
-    return [v for v in values if v < limit]
-
-values = [7, 2, 9, 2]
-print(below_limit_copy(values, 7))
-print(values)
-print(sort_decreasing(values))
-print(values)
-empty = []
-print(below_limit_copy(empty, 7))
-print(sort_decreasing(empty))
-print(empty)
-'''
-SRC['practice_3_starter'] = '''def alternating_copy(first, second):
+SRC['practice_2_starter'] = '''def alternating_copy(first, second):
     pass
 '''
-SRC['practice_3'] = '''def alternating_copy(first, second):
+SRC['practice_2'] = '''def alternating_copy(first, second):
     """Return a new list and keep both inputs unchanged."""
     result = []
     i = 0
@@ -519,11 +458,11 @@ print(alternating_copy([], [4, 7]))
 print(alternating_copy([4, 7], []))
 print(alternating_copy([], []))
 '''
-SRC['practice_4_starter'] = '''m = 3
+SRC['practice_3_starter'] = '''m = 3
 n = 5
 # Build, fill, total, and print the two tables.
 '''
-SRC['practice_4'] = '''m = 3
+SRC['practice_3'] = '''m = 3
 n = 5
 table = [[0] * n for r in range(m)]
 for r in range(m):
@@ -549,15 +488,15 @@ for row in table:
     print()
 print("Border total:", total)
 '''
-SRC['practice_5_data'] = '''heights = [[1, 3, 5, 2, 6],
+SRC['practice_4_data'] = '''heights = [[1, 3, 5, 2, 6],
            [4, 2, 0, 5, 3],
            [6, 5, 3, 1, 4],
            [2, 4, 6, 0, 5]]
 '''
-SRC['practice_5_starter'] = '''def print_flood_map(heights, water_level):
+SRC['practice_4_starter'] = '''def print_flood_map(heights, water_level):
     pass
 '''
-SRC['practice_5'] = '''def print_flood_map(heights, water_level):
+SRC['practice_4'] = '''def print_flood_map(heights, water_level):
     """Print the map, keep heights unchanged, and return None."""
     for row in heights:
         for height in row:
@@ -576,10 +515,10 @@ print_flood_map(heights, 2)
 print("Level 4:")
 print_flood_map(heights, 4)
 '''
-SRC['practice_6_starter'] = '''def neighbor_average(table, row, col):
+SRC['practice_5_starter'] = '''def neighbor_average(table, row, col):
     pass
 '''
-SRC['practice_6'] = '''def neighbor_average(table, row, col):
+SRC['practice_5'] = '''def neighbor_average(table, row, col):
     """Return the neighbor average and keep table unchanged."""
     total = 0
     count = 0
@@ -778,20 +717,17 @@ E["cp1-predict"] = {"type": "table", "xp": 1, "blanks": {
     "first": lst("[70]", width="9rem"), "second": lst("[80]", width="9rem"),
     "third": lst("[50, 90]", width="9rem"), "source": lst("[50]", width="9rem")}}
 
-# ============================================================ 5. Work out an algorithm with cards
-assert ex("ex-halves", "slide_11")["output"] == "[8, 10, 12, 2, 4, 6]"
-
-# ============================================================ 6. A table is a list of rows
+# ============================================================ 5. A table is a list of rows
 assert ex("ex-table", "slide_12")["output"] == "2\n3"
 
-# ============================================================ 7. Row first, then column
+# ============================================================ 6. Row first, then column
 assert ex("ex-index", "slide_13")["output"] == "[1, 3, 5]\n5\n[2, 9, 6]"
 assert ex("ex-square", "slide_14")["output"] == "3\n7"
 
-# ============================================================ 8. Nested loops visit each cell
+# ============================================================ 7. Nested loops visit each cell
 assert ex("ex-nested", "slide_15")["output"] == "2 4 6 \n1 3 5 "
 
-# ============================================================ 9. Shared rows and independent rows
+# ============================================================ 8. Shared rows and independent rows
 assert ex("ex-shared", "slide_16")["output"] == "[[0, 9, 0], [0, 9, 0]]"
 assert ex("ex-independent", "slide_17_1")["output"] == "[[0, 9, 0], [0, 0, 0]]"
 E["ex-independent-comp"] = example(SRC["slide_17_2"] + "grid[0][1] = 9\nprint(grid)\n")
@@ -816,17 +752,17 @@ assert _g[1][0] == 10 and _g[2][0] == 20, "Changing number_grid(3, 2)[0][0] also
 E["cp2-trace"] = {"type": "table", "xp": 1, "blanks": {
     f"v{i}": accept(v, width="4rem", placeholder="value") for i, v in enumerate(["0", "1", "2", "10", "11", "12"], 1)}}
 
-# ============================================================ 10. Copy each numeric row
+# ============================================================ 9. Copy each numeric row
 assert ex("ex-outer", "slide_20_1")["output"] == "[[9, 4], [1, 3]]"
 assert ex("ex-rowcopy", "slide_20_2")["output"] == "[[2, 4], [1, 3]]\n[[9, 4], [1, 3]]"
 
-# ============================================================ 11. Row totals
+# ============================================================ 10. Row totals
 assert ex("ex-rowtotals", "slide_21")["output"] == "[12, 9]"
 
-# ============================================================ 12. A column total
+# ============================================================ 11. A column total
 assert ex("ex-coltotal", "slide_22")["output"] == "7"
 
-# ============================================================ 13. All cells and changes in place
+# ============================================================ 12. All cells and changes in place
 assert ex("ex-alltotal", "slide_23")["output"] == "21"
 assert ex("ex-clearcells", "slide_24")["output"] == "[[0, 4, 0], [3, 0, 6]]"
 
@@ -881,74 +817,44 @@ _fill([5], [0])
     "answer": b64(p1),
     "answerNote": "fill_squares assigns to elements of the shared list. index_squares builds and returns a separate list."}
 
-# 2. Choose a function style (R6.12)
-E["p2-headers"] = short(
-    "`def sort_decreasing(values):` Sort values in place and return None.\n\n"
-    "`def remove_below(values, limit):` Remove values below limit in place and return None.\n\n"
-    "`def below_limit_copy(values, limit):` Return a new list of values below limit and keep the input unchanged.\n\n"
-    "`def squared_copy(values):` Return a new list of squared values and keep the input unchanged.",
-    min_chars=60, rows=6, placeholder="Four headers, each with a one-line description…")
+# 2. Alternate two lists (P6.30)
 p2 = SRC["practice_2"]
-assert out(p2) == "[2, 2]\n[7, 2, 9, 2]\nNone\n[9, 7, 2, 2]\n[]\nNone\n[]"
+assert out(p2) == "[3, 6, 8, 1, 5, 9]\n[3, 8]\n[6, 1, 5, 9]\n[4, 7]\n[4, 7]\n[]"
 p2_ns = namespace(p2)
-E["p2"] = {"type": "code", "xp": 5, "minLines": 16,
-    "starter": "def sort_decreasing(values):\n    pass\n\ndef below_limit_copy(values, limit):\n    pass\n",
-    "cases": [case("[7, 2, 9, 2] and []", p2)],
-    "check": AST + '''_fn("sort_decreasing", "values")
-_fn("below_limit_copy", "values", "limit")
-def _sorts(given, want):
-    values = list(given)
-    result, printed = _call("sort_decreasing", values)
-    assert result is None, "sort_decreasing(" + repr(given) + ") should change the list and return None, not " + repr(result) + "."
-    assert values == want, "After sort_decreasing(" + repr(given) + "), the list should be " + repr(want) + ", not " + repr(values) + "."
-_sorts([7, 2, 9, 2], [9, 7, 2, 2])
-_sorts([], [])
-_sorts([1, 5, 3], [5, 3, 1])
-''' + returns("below_limit_copy", p2_ns, ([7, 2, 9, 2], 7), ([], 7), ([1, 8, 3, 8], 8), ([9, 10], 5)) + '''_src = [7, 2, 9, 2]
-below_limit_copy(_src, 7)
-assert _src == [7, 2, 9, 2], "below_limit_copy([7, 2, 9, 2], 7) changed its input list to " + repr(_src) + ". Keep the input unchanged."
-''',
-    "answer": b64(p2),
-    "answerNote": "The verb name changes the list and returns None. The noun name returns a new list."}
-
-# 3. Alternate two lists (P6.30)
-p3 = SRC["practice_3"]
-assert out(p3) == "[3, 6, 8, 1, 5, 9]\n[3, 8]\n[6, 1, 5, 9]\n[4, 7]\n[4, 7]\n[]"
-p3_ns = namespace(p3)
-E["p3"] = {"type": "code", "xp": 5, "minLines": 18,
-    "starter": SRC["practice_3_starter"],
-    "cases": [case("[3, 8] with [6, 1, 5, 9], then the empty inputs", p3)],
+E["p2"] = {"type": "code", "xp": 5, "minLines": 18,
+    "starter": SRC["practice_2_starter"],
+    "cases": [case("[3, 8] with [6, 1, 5, 9], then the empty inputs", p2)],
     "check": AST + '''_fn("alternating_copy", "first", "second")
-''' + returns("alternating_copy", p3_ns, ([3, 8], [6, 1, 5, 9]), ([], [4, 7]), ([4, 7], []), ([], []), ([1, 2, 3, 4], [9]), ([5], [6])) + '''_a = [3, 8]
+''' + returns("alternating_copy", p2_ns, ([3, 8], [6, 1, 5, 9]), ([], [4, 7]), ([4, 7], []), ([], []), ([1, 2, 3, 4], [9]), ([5], [6])) + '''_a = [3, 8]
 _b = [6, 1, 5, 9]
 alternating_copy(_a, _b)
 assert _a == [3, 8] and _b == [6, 1, 5, 9], "alternating_copy([3, 8], [6, 1, 5, 9]) changed an input list. Keep both inputs unchanged."
 ''',
-    "answer": b64(p3),
+    "answer": b64(p2),
     "answerNote": "Each index can supply an element from either input. The length checks prevent access beyond an input."}
 
-# 4. Build table patterns (R6.28)
-p4 = SRC["practice_4"]
-assert out(p4) == "Checkerboard:\n0 1 0 1 0 \n1 0 1 0 1 \n0 1 0 1 0 \nBorder:\n1 1 1 1 1 \n1 0 0 0 1 \n1 1 1 1 1 \nBorder total: 12"
+# 3. Build table patterns (R6.28)
+p3 = SRC["practice_3"]
+assert out(p3) == "Checkerboard:\n0 1 0 1 0 \n1 0 1 0 1 \n0 1 0 1 0 \nBorder:\n1 1 1 1 1 \n1 0 0 0 1 \n1 1 1 1 1 \nBorder total: 12"
 P4_ROW = [("m = 3", "m = 1")]
 P4_COL = [("n = 5", "n = 1")]
 P4_SQ = [("m = 3", "m = 4"), ("n = 5", "n = 4")]
-assert out(rewritten(p4, P4_ROW)).endswith("Border total: 5")
-assert out(rewritten(p4, P4_SQ)).endswith("Border total: 12")
-E["p4"] = {"type": "code", "xp": 5, "minLines": 24,
-    "starter": SRC["practice_4_starter"],
-    "cases": [case("m = 3, n = 5", p4), case("m = 1, n = 5", p4, P4_ROW), case("m = 3, n = 1", p4, P4_COL), case("m = 4, n = 4", p4, P4_SQ)],
+assert out(rewritten(p3, P4_ROW)).endswith("Border total: 5")
+assert out(rewritten(p3, P4_SQ)).endswith("Border total: 12")
+E["p3"] = {"type": "code", "xp": 5, "minLines": 24,
+    "starter": SRC["practice_3_starter"],
+    "cases": [case("m = 3, n = 5", p3), case("m = 1, n = 5", p3, P4_ROW), case("m = 3, n = 1", p3, P4_COL), case("m = 4, n = 4", p3, P4_SQ)],
     "check": AST + '''assert len(_loops()) >= 4, "Use nested loops to fill each table and to print its rows."
 ''',
-    "answer": b64(p4),
+    "answer": b64(p3),
     "answerNote": "Each construction evaluates a new row list for every row."}
 
-# 5. Print a flood map (P6.35)
-p5 = SRC["practice_5"]
-assert out(p5) == "Level 2:\n*..*.\n.**..\n...*.\n*..*.\nLevel 4:\n**.*.\n***.*\n..***\n**.*."
-E["p5"] = {"type": "code", "xp": 5, "minLines": 18,
-    "starter": SRC["practice_5_starter"] + "\nheights = [[1, 3, 5, 2, 6],\n           [4, 2, 0, 5, 3],\n           [6, 5, 3, 1, 4],\n           [2, 4, 6, 0, 5]]\n",
-    "cases": [case("levels 2 and 4", p5)],
+# 4. Print a flood map (P6.35)
+p4 = SRC["practice_4"]
+assert out(p4) == "Level 2:\n*..*.\n.**..\n...*.\n*..*.\nLevel 4:\n**.*.\n***.*\n..***\n**.*."
+E["p4"] = {"type": "code", "xp": 5, "minLines": 18,
+    "starter": SRC["practice_4_starter"] + "\nheights = [[1, 3, 5, 2, 6],\n           [4, 2, 0, 5, 3],\n           [6, 5, 3, 1, 4],\n           [2, 4, 6, 0, 5]]\n",
+    "cases": [case("levels 2 and 4", p4)],
     "check": AST + '''_fn("print_flood_map", "heights", "water_level")
 _h = [[1, 3], [0, 5]]
 _value, _printed = _call("print_flood_map", _h, -1)
@@ -958,23 +864,23 @@ _value, _printed = _call("print_flood_map", _h, 9)
 assert _printed == "**\\n**\\n", "print_flood_map([[1, 3], [0, 5]], 9) should print two rows of stars, not " + repr(_printed) + "."
 assert _h == [[1, 3], [0, 5]], "print_flood_map changed the height table. Keep it unchanged."
 ''',
-    "answer": b64(p5),
+    "answer": b64(p4),
     "answerNote": "Equality with the level counts as flooded. The final print call ends each row."}
 
-# 6. Average nearby cells (P6.23)
-p6 = SRC["practice_6"]
-assert out(p6) == "7.33\n11.20\n11.75"
-p6_ns = namespace(p6)
+# 5. Average nearby cells (P6.23)
+p5 = SRC["practice_5"]
+assert out(p5) == "7.33\n11.20\n11.75"
+p5_ns = namespace(p5)
 P6_T = [[2, 4, 8, 10], [6, 12, 14, 16], [18, 20, 22, 24]]
-E["p6"] = {"type": "code", "xp": 5, "minLines": 18,
-    "starter": SRC["practice_6_starter"] + "\ntable = [[2, 4, 8, 10], [6, 12, 14, 16], [18, 20, 22, 24]]\n",
-    "cases": [case("[0][0], [0][2] and [1][1]", p6)],
+E["p5"] = {"type": "code", "xp": 5, "minLines": 18,
+    "starter": SRC["practice_5_starter"] + "\ntable = [[2, 4, 8, 10], [6, 12, 14, 16], [18, 20, 22, 24]]\n",
+    "cases": [case("[0][0], [0][2] and [1][1]", p5)],
     "check": AST + '''_fn("neighbor_average", "table", "row", "col")
-''' + returns("neighbor_average", p6_ns, (P6_T, 0, 0), (P6_T, 0, 2), (P6_T, 1, 1), (P6_T, 2, 3), ([[1, 5, 9]], 0, 1), ([[4], [6], [8]], 2, 0), ([[7]], 0, 0)) + '''_keeps("neighbor_average", (''' + repr(P6_T) + ''', 1, 1))
+''' + returns("neighbor_average", p5_ns, (P6_T, 0, 0), (P6_T, 0, 2), (P6_T, 1, 1), (P6_T, 2, 3), ([[1, 5, 9]], 0, 1), ([[4], [6], [8]], 2, 0), ([[7]], 0, 0)) + '''_keeps("neighbor_average", (''' + repr(P6_T) + ''', 1, 1))
 ''',
-    "answer": b64(p6),
+    "answer": b64(p5),
     "answerNote": "Check both bounds before accessing a cell. A negative Python index would otherwise select a cell from the opposite edge."}
-assert namespace(p6)["neighbor_average"]([[7]], 0, 0) == 0.0
+assert namespace(p5)["neighbor_average"]([[7]], 0, 0) == 0.0
 
 # ---------------------------------------------------------------- quick checks
 def predict(code):
@@ -1009,35 +915,24 @@ E["q1"] = predict(SRC["quick_1"])
 E["q2"] = gap("quick_2", ["0", "-2"], "[0, 3]", "5rem")
 E["q3"] = mcq(SRC["quick_3"], ["values[:]", "double_values(values)", "doubled_copy(values)", "values.reverse()"], "C",
               "result == [6, 10] and values == [3, 5]")
-E["q4"] = true_false(True, False)
-E["q5"] = predict(SRC["quick_5"])
-E["q6"] = gap("quick_6", ["[]", "list()"], "[3] [8]", "6rem")
-E["q7"] = choice("B")
+E["q4"] = predict(SRC["quick_4"])
+E["q5"] = choice("B")
 for fixture, want in (([], False), (None, True), ([4], False)):
     assert out(f"items = {fixture!r}\nprint(items is None)") == str(want)
-E["q8"] = true_false(False, True)
-E["q9"] = predict(SRC["quick_9"])
-E["q10"] = gap("quick_10", ["half", "3", "len(values) // 2", "len(values)//2"], "3", "10rem")
-E["q11"] = mcq(SRC["quick_11"], ["len(table[0])", "len(table[1])", "len(table[0][0:1])", "len(table)"], "D", "result == 3")
-E["q12"] = true_false(True, False)
+E["q6"] = true_false(True, False)
 assert "IndexError" in run("table = []\nprint(len(table[0]))", ok=False)[1]
-E["q13"] = predict(SRC["quick_13"])
-E["q14"] = gap("quick_14", ["2", "-1"], "13", "5rem")
-E["q15"] = choice("A")
-assert out(SRC["quick_15"].replace("    # Replace this comment.", "    print()")) == "7 8 \n9 1 "
-E["q16"] = true_false(False, True)
-E["q17"] = predict(SRC["quick_17"])
-E["q18"] = gap("quick_18", ["range(3)", "range(0, 3)"], "[[0, 6], [0, 0], [0, 0]]", "8rem")
-E["q19"] = choice("C")
+E["q7"] = predict(SRC["quick_7"])
+E["q8"] = choice("A")
+assert out(SRC["quick_8"].replace("    # Replace this comment.", "    print()")) == "7 8 \n9 1 "
+E["q9"] = true_false(False, True)
+E["q10"] = predict(SRC["quick_10"])
+E["q11"] = choice("C")
 assert out("table = [[8, 6], [4, 2]]\ncopy = [row[:] for row in table]\ncopy[0][0] = 1\nprint(table)") == "[[8, 6], [4, 2]]"
 assert out("table = [[8, 6], [4, 2]]\ncopy = [row for row in table]\ncopy[0][0] = 1\nprint(table)") == "[[1, 6], [4, 2]]"
-E["q20"] = true_false(True, False)
-E["q21"] = predict(SRC["quick_21"])
-E["q22"] = gap("quick_22", ["sum(row)"], "[7, 13]", "8rem")
-E["q23"] = mcq(SRC["quick_23"], ["sum(table[0])", "table[0][1] + table[1][1]", "sum(table[1])", "table[0][2] + table[1][2]"], "D", "result == 13")
-E["q24"] = true_false(False, True)
-E["q25"] = predict(SRC["quick_25"])
-E["q26"] = gap("quick_26", ["row[-1]", "row[1]", "row[len(row) - 1]", "row[len(row)-1]"], "[[3, 8], [5, 8]]", "9rem")
+E["q12"] = predict(SRC["quick_12"])
+E["q13"] = mcq(SRC["quick_13"], ["sum(table[0])", "table[0][1] + table[1][1]", "sum(table[1])", "table[0][2] + table[1][2]"], "D", "result == 13")
+E["q14"] = predict(SRC["quick_14"])
+E["q15"] = gap("quick_15", ["row[-1]", "row[1]", "row[len(row) - 1]", "row[len(row)-1]"], "[[3, 8], [5, 8]]", "9rem")
 
 for spec in E.values():
     if "starter" in spec:
