@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 27 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-27-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 27 Boss Problems</h1>
+    <div class="wb-subtitle">Linear and binary search</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use linear and binary search from Lecture 27:</p>
+  <ul>
+    <li>a linear pass that visits every element, or stops at the first match</li>
+    <li>the sorted-data precondition of binary search</li>
+    <li>counting the element checks that each search makes</li>
+  </ul>
+  <p>They use only what Lectures 4 to 27 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code>, <code>split()</code>, and blank input lines</li>
+    <li>f-strings with field widths such as <code>:7d</code> and <code>:&gt;7</code></li>
+    <li><code>while</code> and <code>for</code> loops, <code>range</code>, and <code>if</code> statements</li>
+    <li>lists, indexes, and functions that return a value</li>
+  </ul>
+  <p>Each problem names the functions to write. Write the rest of the program at the top level, after the functions. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show. <strong>Check</strong> also calls your functions directly with other lists.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="in-range" data-toc-title="👹 Count readings within limits">👹 Boss 1: Count readings within limits</h2>
+<p>Write a program that reads sensor readings until a blank line. Read one number per line. The blank line ends the readings. Then read a lower limit and an upper limit on separate lines. Print how many readings are at least the lower limit and less than the upper limit.</p>
+<ul>
+  <li>Write <code>count_in_range(values, low, high)</code> to return the count.</li>
+  <li>Keep the input list unchanged. Count repeated values separately.</li>
+  <li>Use one linear pass that counts matches instead of stopping.</li>
+  <li>An empty list or a range containing no readings has count 0.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+1.5
+4
+4
+9
+(blank line)
+4
+9
+Output:
+Count: 2
+Explanation:
+Both readings equal to 4 are included. The reading 9 is excluded.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+0
+10
+Output:
+Count: 0
+Explanation:
+No readings were entered.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+2
+5
+(blank line)
+7
+8
+Output:
+Count: 0
+Explanation:
+Neither reading is within the limits.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Readings and limits are valid numbers from <code>-1000</code> through <code>1000</code>.</li>
+    <li>The lower limit is at most the upper limit.</li>
+    <li>Use a loop and a counter. Do not use <code>count()</code> or a comprehension with <code>len</code>.</li>
+    <li>Read input without prompts. Print the count after <code>Count:</code>.</li>
+  </ul>
+</div>
+<p>To enter the blank line, press Enter without typing anything. <strong>Check</strong> types each of these sequences. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1.5</code>, <code>4</code>, <code>4</code>, <code>9</code>, blank, <code>4</code>, <code>9</code></td><td><pre class="wb-output" style="margin:0">Count: 2</pre></td></tr>
+    <tr><td>blank, <code>0</code>, <code>10</code></td><td><pre class="wb-output" style="margin:0">Count: 0</pre></td></tr>
+    <tr><td><code>2</code>, <code>5</code>, blank, <code>7</code>, <code>8</code></td><td><pre class="wb-output" style="margin:0">Count: 0</pre></td></tr>
+    <tr><td><code>-3</code>, <code>0</code>, <code>2.5</code>, <code>7</code>, <code>7</code>, <code>10</code>, blank, <code>0</code>, <code>7</code></td><td><pre class="wb-output" style="margin:0">Count: 2</pre></td></tr>
+    <tr><td><code>5</code>, <code>5</code>, <code>5</code>, blank, <code>5</code>, <code>5</code></td><td><pre class="wb-output" style="margin:0">Count: 0</pre></td></tr>
+    <tr><td><code>-1000</code>, <code>1000</code>, blank, <code>-1000</code>, <code>1000</code></td><td><pre class="wb-output" style="margin:0">Count: 1</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>count_in_range(values, low, high)</code> with three parameters. It returns the count and keeps its input unchanged.</li>
+    <li>In <code>count_in_range</code>, use a loop and a counter.</li>
+    <li>Do not use <code>count()</code> or a comprehension.</li>
+  </ul>
+</div>
+<wb-exercise id="in-range"></wb-exercise>
+
+<h2 id="order" data-toc-title="👾 Check the order before searching">👾 Boss 2: Check the order before searching</h2>
+<p>Write a program that reads numbers until a blank line. Read one number per line. Report whether their order meets a binary search precondition. Ascending order allows equal neighbors and never decreases. Descending order allows equal neighbors and never increases.</p>
+<ul>
+  <li>Write <code>is_sorted(values)</code>. Return <code>True</code> for ascending or descending order, and <code>False</code> otherwise.</li>
+  <li>Keep the input list unchanged. Empty and one-element lists are sorted.</li>
+  <li>Print <code>Ascending binary search can be used</code> when ascending order holds.</li>
+  <li>Otherwise, print <code>Descending binary search can be used</code> when descending order holds.</li>
+  <li>Otherwise, print <code>Binary search cannot be used</code>.</li>
+  <li>If both orders hold, use the ascending message. A descending search must reverse the direction of the bound updates.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+18
+12
+12
+3
+(blank line)
+Output:
+Descending binary search can be used
+Explanation:
+The values never increase. Equal neighbors are allowed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Ascending binary search can be used
+Explanation:
+An empty list satisfies both orders. The ascending message has priority.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+3
+8
+5
+(blank line)
+Output:
+Binary search cannot be used
+Explanation:
+The values increase and then decrease.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each value is a valid number from <code>-1000</code> through <code>1000</code>.</li>
+    <li>Check neighboring values with loops. Do not sort the input.</li>
+    <li>Use <code>is_sorted</code> in the main program. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these sequences. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>18</code>, <code>12</code>, <code>12</code>, <code>3</code>, blank</td><td><pre class="wb-output" style="margin:0">Descending binary search can be used</pre></td></tr>
+    <tr><td>blank</td><td><pre class="wb-output" style="margin:0">Ascending binary search can be used</pre></td></tr>
+    <tr><td><code>3</code>, <code>8</code>, <code>5</code>, blank</td><td><pre class="wb-output" style="margin:0">Binary search cannot be used</pre></td></tr>
+    <tr><td><code>1</code>, <code>4</code>, <code>4</code>, <code>9.5</code>, blank</td><td><pre class="wb-output" style="margin:0">Ascending binary search can be used</pre></td></tr>
+    <tr><td><code>6</code>, <code>6</code>, <code>6</code>, blank</td><td><pre class="wb-output" style="margin:0">Ascending binary search can be used</pre></td></tr>
+    <tr><td><code>7</code>, blank</td><td><pre class="wb-output" style="margin:0">Ascending binary search can be used</pre></td></tr>
+    <tr><td><code>9</code>, <code>2</code>, <code>5</code>, blank</td><td><pre class="wb-output" style="margin:0">Binary search cannot be used</pre></td></tr>
+    <tr><td><code>1</code>, <code>2</code>, <code>3</code>, <code>2</code>, blank</td><td><pre class="wb-output" style="margin:0">Binary search cannot be used</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>is_sorted(values)</code> with one parameter. It returns <code>True</code> or <code>False</code> and keeps its input unchanged.</li>
+    <li>In <code>is_sorted</code>, compare neighboring values with a loop. Do not use <code>sort</code> or <code>sorted</code>.</li>
+    <li>Call <code>is_sorted</code> in the main program.</li>
+  </ul>
+</div>
+<wb-exercise id="order"></wb-exercise>
+
+<h2 id="work" data-toc-title="🐉 Compare the work of two searches">🐉 Boss 3: Compare the work of two searches</h2>
+<p>Write a program that compares linear and binary search on the same ascending list. Build the multiples of 3 from 3 through 300 with <code>list(range(3, 301, 3))</code>. Read integer targets until a blank line. Print one table row per target.</p>
+<ul>
+  <li>Write <code>linear_checks(values, target)</code> and <code>binary_checks(values, target)</code>.</li>
+  <li>Use the searches from this lecture with counters added. Keep the input list unchanged.</li>
+  <li>Each function returns only its number of element checks. Count an element once when the search visits its index.</li>
+  <li>Decide presence with a separate call to <code>binary_search</code> or with <code>in</code>.</li>
+  <li>Print the target, presence, linear count, and binary count in that order.</li>
+  <li>Use four right-aligned columns of width 7, separated by one space. Print the header even when there are no targets.</li>
+  <li>Think about why the binary count stays at most 7 for this list of 100 elements. The model answer explains it.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3
+300
+4
+303
+(blank line)
+Output:
+ Target Present  Linear  Binary
+      3    True       1       6
+    300    True     100       7
+      4   False     100       7
+    303   False     100       7
+Explanation:
+The first target stops linear search immediately. Each absent target requires all 100 linear checks.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+ Target Present  Linear  Binary
+Explanation:
+There are no targets, so only the header is printed.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each target is an integer from <code>-1000</code> through <code>1000</code>.</li>
+    <li>Use <code>for</code> for linear search and <code>while</code> for binary search.</li>
+    <li>A match ends the counting function with <code>return</code>. Do not return an index as well.</li>
+    <li>Use fixed-width formatting. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these sequences. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code>, <code>300</code>, <code>4</code>, <code>303</code>, blank</td><td><pre class="wb-output" style="margin:0"> Target Present  Linear  Binary
+      3    True       1       6
+    300    True     100       7
+      4   False     100       7
+    303   False     100       7</pre></td></tr>
+    <tr><td>blank</td><td><pre class="wb-output" style="margin:0"> Target Present  Linear  Binary</pre></td></tr>
+    <tr><td><code>150</code>, <code>1</code>, <code>151</code>, blank</td><td><pre class="wb-output" style="margin:0"> Target Present  Linear  Binary
+    150    True      50       1
+      1   False     100       6
+    151   False     100       6</pre></td></tr>
+    <tr><td><code>-1000</code>, <code>1000</code>, <code>297</code>, <code>6</code>, blank</td><td><pre class="wb-output" style="margin:0"> Target Present  Linear  Binary
+  -1000   False     100       6
+   1000   False     100       7
+    297    True      99       6
+      6    True       2       7</pre></td></tr>
+    <tr><td><code>153</code>, <code>99</code>, <code>0</code>, blank</td><td><pre class="wb-output" style="margin:0"> Target Present  Linear  Binary
+    153    True      51       6
+     99    True      33       7
+      0   False     100       6</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>linear_checks(values, target)</code> and <code>binary_checks(values, target)</code> with two parameters each. Each returns a count and keeps its input unchanged.</li>
+    <li>Use a <code>for</code> loop in <code>linear_checks</code> and a <code>while</code> loop in <code>binary_checks</code>.</li>
+    <li>Do not use <code>index</code> or <code>count</code>. <strong>Check</strong> also calls both functions with other lists, including an empty list.</li>
+  </ul>
+</div>
+<wb-exercise id="work"></wb-exercise>
+
+<h2 id="pattern" data-toc-title="💀 Find a consecutive pattern">💀 Boss 4: Find a consecutive pattern</h2>
+<p>Write a program that reads two lines of integers separated by spaces. The first line is the larger list. The second line is the smaller list. Use <code>split()</code> to read each line. A sublist is a list whose elements appear next to each other, in the same order, inside another list.</p>
+<ul>
+  <li>Write <code>is_sublist(larger, smaller)</code> to return whether the smaller list is a sublist.</li>
+  <li>Write <code>sublist_start(larger, smaller)</code> to return its first start index, or <code>-1</code> when absent.</li>
+  <li>Keep both input lists unchanged. Neither function returns two values.</li>
+  <li>Check start positions from 0 through <code>len(larger) - len(smaller)</code> in order. Compare elements one at a time.</li>
+  <li>The empty list is a sublist of every list, at index 0. A list is a sublist of itself.</li>
+  <li>Print <code>Found:</code> and the Boolean result. When found, print <code>Start:</code> and the first start index on the next line.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+8 3 8 3 6
+8 3 6
+Output:
+Found: True
+Start: 2
+Explanation:
+The first candidate fails at its third element. The pattern begins at index 2.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+5 9
+(blank line)
+Output:
+Found: True
+Start: 0
+Explanation:
+The empty pattern starts at index 0.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+2 4 7
+2 7
+Output:
+Found: False
+Explanation:
+The values occur in order, but they are not next to each other.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each line contains zero through 100 integers from <code>-1000</code> through <code>1000</code>.</li>
+    <li>A blank line represents an empty list. The smaller list may be longer than the larger list.</li>
+    <li>Use loops and element comparisons. Do not compare slices or whole lists with <code>==</code>.</li>
+    <li>Call both functions in the main program. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these pairs of lines. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>8 3 8 3 6</code>, <code>8 3 6</code></td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 2</pre></td></tr>
+    <tr><td><code>5 9</code>, blank</td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 0</pre></td></tr>
+    <tr><td><code>2 4 7</code>, <code>2 7</code></td><td><pre class="wb-output" style="margin:0">Found: False</pre></td></tr>
+    <tr><td><code>1 2 3</code>, <code>1 2 3</code></td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 0</pre></td></tr>
+    <tr><td>blank, blank</td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 0</pre></td></tr>
+    <tr><td><code>4 5</code>, <code>4 5 6</code></td><td><pre class="wb-output" style="margin:0">Found: False</pre></td></tr>
+    <tr><td><code>7 1 7 1 7 2</code>, <code>7 1 7 2</code></td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 2</pre></td></tr>
+    <tr><td><code>-3 0 -3</code>, <code>-3</code></td><td><pre class="wb-output" style="margin:0">Found: True
+Start: 0</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>sublist_start(larger, smaller)</code> and <code>is_sublist(larger, smaller)</code> with two parameters each. Both keep their inputs unchanged.</li>
+    <li>In <code>sublist_start</code>, check each start position with a loop. Do not use slices, and do not compare a whole list with <code>==</code>.</li>
+    <li>Call both functions in the main program.</li>
+  </ul>
+</div>
+<wb-exercise id="pattern"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 27 Boss Problems.</p>
+</main>
+</body>
+</html>

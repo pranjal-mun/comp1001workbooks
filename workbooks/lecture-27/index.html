@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 27 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-27", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 27 Workbook</h1>
+    <div class="wb-subtitle">Linear and binary search</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Find a value in a list and return its position. Use linear search for data in any order. Use binary search for data in ascending order, and count the elements that each search checks.</p>
+  <p>Reading: §12.6</p>
+  <ul>
+    <li>Implement and trace linear search.</li>
+    <li>Implement and trace binary search while maintaining <code>low</code> and <code>high</code>.</li>
+    <li>State and check binary search's sorted-data precondition.</li>
+    <li>Compare the number of comparisons used by linear and binary search.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-linear">Linear search</p>
+
+<h2 id="s1">1. A search returns a position</h2>
+<p>A search finds a target value in a list. Its result can tell us where the value occurs.</p>
+<wb-example id="ex-position"></wb-example>
+<p>Membership gives a Boolean result. A position gives an index.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 300 130" width="300" height="130" role="img" aria-label="A list of four cells: 18, 5, 12 and 5 at indices 0 to 3. A thick border marks index 1, the first 5. The caption says target 5, result 1." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="62" y="30" width="44" height="32"/><rect x="106" y="30" width="44" height="32" style="stroke-width: 3.5"/><rect x="150" y="30" width="44" height="32"/><rect x="194" y="30" width="44" height="32"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="84" y="20">0</text><text x="128" y="20">1</text><text x="172" y="20">2</text><text x="216" y="20">3</text><text x="84" y="51">18</text><text x="128" y="51">5</text><text x="172" y="51">12</text><text x="216" y="51">5</text><text x="150" y="100">target 5 → result 1</text></g>
+  </svg>
+</figure>
+<p>Our functions return a matching index, or <code>-1</code> for no match.</p>
+<p><code>index</code> raises <code>ValueError</code> when no match exists.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>values = [<span class="wb-num">13</span>, <span class="wb-num">6</span>, <span class="wb-num">9</span>, <span class="wb-num">6</span>]
+<span class="wb-fn">print</span>(<span class="wb-num">7</span> <span class="wb-kw">in</span> values)
+<span class="wb-fn">print</span>(values.<span class="wb-fn">index</span>(<span class="wb-num">6</span>))</code></pre>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Linear search checks each element</h2>
+<p>Linear search starts at index <code>0</code>. It checks elements in order until it finds a match.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 320 140" width="320" height="140" role="img" aria-label="A list of five cells: 18, 5, 12, 5 and 9. Arrows point to indices 0, 1 and 2 in order. A thick border marks index 2, which holds 12. Indices 3 and 4 are faded because the search stops at 12." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="52" y="30" width="44" height="32"/><rect x="96" y="30" width="44" height="32"/><rect x="140" y="30" width="44" height="32" style="stroke-width: 3.5"/><rect x="184" y="30" width="44" height="32" opacity="0.35"/><rect x="228" y="30" width="44" height="32" opacity="0.35"/><path d="M74 88 v-20 M69 73 l5 -5 l5 5"/><path d="M118 88 v-20 M113 73 l5 -5 l5 5"/><path d="M162 88 v-20 M157 73 l5 -5 l5 5"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="74" y="20">0</text><text x="118" y="20">1</text><text x="162" y="20">2</text><text x="206" y="20">3</text><text x="250" y="20">4</text><text x="74" y="51">18</text><text x="118" y="51">5</text><text x="162" y="51">12</text><text x="206" y="51" opacity="0.35">5</text><text x="250" y="51" opacity="0.35">9</text><text x="160" y="120">target 12: checks 18, 5, 12</text></g>
+  </svg>
+</figure>
+<p>The list can be in any order. A match stops the search. A missing target requires a check of every element.</p>
+<p><code>linear_search</code> returns the first matching index. It returns <code>-1</code> if the target is absent.</p>
+<wb-example id="ex-linear"></wb-example>
+<p><code>return i</code> ends the function at the first match.</p>
+<p><code>return -1</code> is outside the loop. It runs after every element fails to match.</p>
+<p>The function reads the list. It leaves the list unchanged.</p>
+<p>For an empty list, the function returns <code>-1</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 2.</strong> Complete the missing result. The program must print <code>-1</code>.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">find</span>(values, target):
+    <span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">range</span>(<span class="wb-fn">len</span>(values)):
+        <span class="wb-kw">if</span> values[i] == target:
+            <span class="wb-kw">return</span> i
+    <span class="wb-kw">return</span> ____(a)____
+<span class="wb-fn">print</span>(<span class="wb-fn">find</span>([<span class="wb-num">2</span>, <span class="wb-num">11</span>], <span class="wb-num">8</span>))</code></pre>
+  <wb-table id="q2">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. Trace a linear search</h2>
+<p><code>linear_search</code> checks elements in order. Here, it finds <code>12</code> at index <code>2</code>.</p>
+<wb-example id="ex-present"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Step</th><th><code>i</code></th><th>Value</th><th>Match?</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>18</td><td>False</td></tr>
+    <tr><td>2</td><td>1</td><td>5</td><td>False</td></tr>
+    <tr><td>3</td><td>2</td><td>12</td><td>True</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The third check returns <code>2</code>. The function never checks indices <code>3</code> and <code>4</code>.</p>
+<p><code>linear_search</code> returns <code>-1</code> after it checks all elements without a match.</p>
+<wb-example id="ex-absent"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Step</th><th><code>i</code></th><th>Value</th><th>Match?</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>18</td><td>False</td></tr>
+    <tr><td>2</td><td>1</td><td>5</td><td>False</td></tr>
+    <tr><td>3</td><td>2</td><td>12</td><td>False</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A failed check only rules out one element. An early <code>return -1</code> inside the loop would miss later matches.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 3.</strong> Predict the output. Use the earlier <code>linear_search</code>.</p>
+  <pre><code>values = [<span class="wb-num">14</span>, <span class="wb-num">3</span>, <span class="wb-num">14</span>, <span class="wb-num">8</span>]
+<span class="wb-fn">print</span>(<span class="wb-fn">linear_search</span>(values, <span class="wb-num">14</span>))
+<span class="wb-fn">print</span>(<span class="wb-fn">linear_search</span>(values, <span class="wb-num">8</span>))</code></pre>
+  <wb-table id="q3">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write <code>first_at_least(values, limit)</code>.</p>
+  <ul>
+    <li>Return the first index whose value is at least <code>limit</code>.</li>
+    <li>Return <code>-1</code> if no value qualifies.</li>
+    <li>Keep the list unchanged.</li>
+  </ul>
+  <p>For <code>[32, 48, 51, 48, 65]</code> and limit <code>50</code>, return <code>2</code>.</p>
+  <p>Use a linear search. Test a first match, a last match, no match, and an empty list.</p>
+  <p>State the maximum number of element checks for a list of length <code>n</code>.</p>
+  <wb-table id="cp1-max">
+    <table>
+      <tbody>
+        <tr><th>Maximum element checks</th><td data-blank="n"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>In the code box, print <code>first_at_least(values, 50)</code>. Then, with limit <code>50</code>, print the result for each of these lists on its own line: <code>[50, 32]</code>, <code>[32, 65]</code>, <code>[32]</code> and <code>[]</code>. <strong>Check</strong> also calls <code>first_at_least</code> with other lists and limits.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>first_at_least(values, limit)</code> with two parameters.</li>
+      <li>Use a loop. Do not call <code>index</code>.</li>
+      <li>Keep the input list unchanged.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+</div>
+
+<h2 id="s4">4. The cost of linear search</h2>
+<p>Let <code>n</code> be the list length. Count one element check for each visited index.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Target position</th><th>Element checks</th></tr></thead>
+  <tbody>
+    <tr><td>First element</td><td>1</td></tr>
+    <tr><td>Last element</td><td><code>n</code></td></tr>
+    <tr><td>Absent</td><td><code>n</code></td></tr>
+    <tr><td>Empty list</td><td>0</td></tr>
+  </tbody>
+</table>
+</div>
+<p>If each position is equally likely, a successful search averages (<i>n</i> + 1) / 2 checks.</p>
+<p>Twice as many elements can require twice as many checks.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 4.</strong> How many element checks does linear search make for <code>19</code> in <code>[4, 7, 2, 8, 6, 19, 1]</code>?</p>
+  <ol type="A">
+    <li><code>5</code></li>
+    <li><code>6</code></li>
+    <li><code>7</code></li>
+    <li><code>19</code></li>
+  </ol>
+  <wb-table id="q4">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-binary">Binary search</p>
+
+<h2 id="s5">5. Binary search removes half the range</h2>
+<p>Binary search requires data in ascending order. A middle value tells us which part can still contain the target.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 540 240" width="540" height="240" role="img" aria-label="Four rows show binary search for 17 in the list 1, 4, 5, 8, 9, 12, 17, 20, 24, 32. Row 1: low 0, high 9, mid 4 holds 9. Row 2: indices 0 to 4 are faded; low 5, high 9, mid 7 holds 20. Row 3: indices 7 to 9 are also faded; low 5, high 6, mid 5 holds 12. Row 4: only index 6 remains; it holds 17, a match." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="10" y="30" width="34" height="28"/><rect x="44" y="30" width="34" height="28"/><rect x="78" y="30" width="34" height="28"/><rect x="112" y="30" width="34" height="28"/><rect x="146" y="30" width="34" height="28" style="stroke-width: 3.5"/><rect x="180" y="30" width="34" height="28"/><rect x="214" y="30" width="34" height="28"/><rect x="248" y="30" width="34" height="28"/><rect x="282" y="30" width="34" height="28"/><rect x="316" y="30" width="34" height="28"/><rect x="10" y="82" width="34" height="28" opacity="0.35"/><rect x="44" y="82" width="34" height="28" opacity="0.35"/><rect x="78" y="82" width="34" height="28" opacity="0.35"/><rect x="112" y="82" width="34" height="28" opacity="0.35"/><rect x="146" y="82" width="34" height="28" opacity="0.35"/><rect x="180" y="82" width="34" height="28"/><rect x="214" y="82" width="34" height="28"/><rect x="248" y="82" width="34" height="28" style="stroke-width: 3.5"/><rect x="282" y="82" width="34" height="28"/><rect x="316" y="82" width="34" height="28"/><rect x="10" y="134" width="34" height="28" opacity="0.35"/><rect x="44" y="134" width="34" height="28" opacity="0.35"/><rect x="78" y="134" width="34" height="28" opacity="0.35"/><rect x="112" y="134" width="34" height="28" opacity="0.35"/><rect x="146" y="134" width="34" height="28" opacity="0.35"/><rect x="180" y="134" width="34" height="28" style="stroke-width: 3.5"/><rect x="214" y="134" width="34" height="28"/><rect x="248" y="134" width="34" height="28" opacity="0.35"/><rect x="282" y="134" width="34" height="28" opacity="0.35"/><rect x="316" y="134" width="34" height="28" opacity="0.35"/><rect x="10" y="186" width="34" height="28" opacity="0.35"/><rect x="44" y="186" width="34" height="28" opacity="0.35"/><rect x="78" y="186" width="34" height="28" opacity="0.35"/><rect x="112" y="186" width="34" height="28" opacity="0.35"/><rect x="146" y="186" width="34" height="28" opacity="0.35"/><rect x="180" y="186" width="34" height="28" opacity="0.35"/><rect x="214" y="186" width="34" height="28" style="stroke-width: 3.5"/><rect x="248" y="186" width="34" height="28" opacity="0.35"/><rect x="282" y="186" width="34" height="28" opacity="0.35"/><rect x="316" y="186" width="34" height="28" opacity="0.35"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="27" y="49">1</text><text x="61" y="49">4</text><text x="95" y="49">5</text><text x="129" y="49">8</text><text x="163" y="49">9</text><text x="197" y="49">12</text><text x="231" y="49">17</text><text x="265" y="49">20</text><text x="299" y="49">24</text><text x="333" y="49">32</text><text x="530" y="49" text-anchor="end" style="font-size: 13px">low 0, high 9, mid 4</text><text x="27" y="101" opacity="0.35">1</text><text x="61" y="101" opacity="0.35">4</text><text x="95" y="101" opacity="0.35">5</text><text x="129" y="101" opacity="0.35">8</text><text x="163" y="101" opacity="0.35">9</text><text x="197" y="101">12</text><text x="231" y="101">17</text><text x="265" y="101">20</text><text x="299" y="101">24</text><text x="333" y="101">32</text><text x="530" y="101" text-anchor="end" style="font-size: 13px">low 5, high 9, mid 7</text><text x="27" y="153" opacity="0.35">1</text><text x="61" y="153" opacity="0.35">4</text><text x="95" y="153" opacity="0.35">5</text><text x="129" y="153" opacity="0.35">8</text><text x="163" y="153" opacity="0.35">9</text><text x="197" y="153">12</text><text x="231" y="153">17</text><text x="265" y="153" opacity="0.35">20</text><text x="299" y="153" opacity="0.35">24</text><text x="333" y="153" opacity="0.35">32</text><text x="530" y="153" text-anchor="end" style="font-size: 13px">low 5, high 6, mid 5</text><text x="27" y="205" opacity="0.35">1</text><text x="61" y="205" opacity="0.35">4</text><text x="95" y="205" opacity="0.35">5</text><text x="129" y="205" opacity="0.35">8</text><text x="163" y="205" opacity="0.35">9</text><text x="197" y="205" opacity="0.35">12</text><text x="231" y="205">17</text><text x="265" y="205" opacity="0.35">20</text><text x="299" y="205" opacity="0.35">24</text><text x="333" y="205" opacity="0.35">32</text><text x="530" y="205" text-anchor="end" style="font-size: 13px">low 6, high 6, mid 6</text><text x="27" y="20">0</text><text x="61" y="20">1</text><text x="95" y="20">2</text><text x="129" y="20">3</text><text x="163" y="20">4</text><text x="197" y="20">5</text><text x="231" y="20">6</text><text x="265" y="20">7</text><text x="299" y="20">8</text><text x="333" y="20">9</text></g>
+  </svg>
+</figure>
+<p>A thick border marks the middle element. Faded elements are outside the current range.</p>
+<p><code>binary_search</code> returns a matching index in an ascending list. It returns <code>-1</code> if no match exists. The two <code>print</code> lines at the end are for you to try.</p>
+<wb-example id="ex-binary"></wb-example>
+<p><code>low</code> and <code>high</code> are inclusive bounds. If the target exists, it is within these bounds.</p>
+<p><code>mid</code> is the middle index. Floor division gives an integer index.</p>
+<p>Each failed check removes <code>mid</code> and one side of the range. The loop ends when <code>low &gt; high</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 5.</strong> Complete the midpoint calculation. The program must print <code>5</code>.</p>
+  <pre><code>low = <span class="wb-num">2</span>
+high = <span class="wb-num">9</span>
+mid = (low + high) ____(a)____ <span class="wb-num">2</span>
+<span class="wb-fn">print</span>(mid)</code></pre>
+  <wb-table id="q5">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s6">6. Trace a binary search</h2>
+<p><code>binary_search</code> finds <code>17</code> at its original index, <code>6</code>.</p>
+<wb-example id="ex-trace17"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Step</th><th><code>low</code></th><th><code>high</code></th><th><code>mid</code></th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>9</td><td>4</td><td>9</td></tr>
+    <tr><td>2</td><td>5</td><td>9</td><td>7</td><td>20</td></tr>
+    <tr><td>3</td><td>5</td><td>6</td><td>5</td><td>12</td></tr>
+    <tr><td>4</td><td>6</td><td>6</td><td>6</td><td>17</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The final range contains only index <code>6</code>. The loop still checks it.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 6.</strong> Search for <code>22</code> in <code>[2, 6, 10, 14, 18, 22, 26]</code>. Which update follows the first failed middle check?</p>
+  <ol type="A">
+    <li><code>low = 3</code></li>
+    <li><code>high = 2</code></li>
+    <li><code>high = 4</code></li>
+    <li><code>low = 4</code></li>
+  </ol>
+  <wb-table id="q6">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 7.</strong> Write True or False for each statement.</p>
+  <wb-table id="q7">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>With bounds 4 and 4, binary search checks index 4.</td><td data-blank="t1"></td></tr>
+        <tr><td>With bounds 3 and 7, the first midpoint is index 6.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s7">7. Sorted data and a smaller range</h2>
+<p><code>binary_search</code> can discard a target when the input is unsorted.</p>
+<wb-example id="ex-unsorted"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Step</th><th><code>low</code></th><th><code>high</code></th><th><code>mid</code></th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>4</td><td>2</td><td>4</td></tr>
+    <tr><td>2</td><td>3</td><td>4</td><td>3</td><td>12</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The first check discards index <code>1</code>, which contains <code>8</code>.</p>
+<p>Final bounds: <code>low = 3</code>, <code>high = 2</code>. The wrong result raises no error.</p>
+<p>Every failed middle check must reduce the number of possible indices.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Code</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td><code>high = len(values) - 1</code></td><td>The last index is one less than the length.</td></tr>
+    <tr><td><code>low &lt;= high</code></td><td>A one-element range still needs a check.</td></tr>
+    <tr><td><code>mid = (low + high) // 2</code></td><td>Floor division gives an integer index.</td></tr>
+    <tr><td><code>low = mid + 1</code></td><td>A larger target cannot be at or before <code>mid</code>.</td></tr>
+    <tr><td><code>high = mid - 1</code></td><td>A smaller target cannot be at or after <code>mid</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>With bounds <code>0</code> and <code>1</code>, the middle index is <code>0</code>. If the target is larger, <code>low = mid</code> keeps the same bounds forever.</p>
+<p>An empty list starts with <code>low = 0</code> and <code>high = -1</code>. The loop never starts.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 8.</strong> Write True or False for each statement.</p>
+  <wb-table id="q8">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>Binary search finds 9 in <code>[2, 9, 5, 13, 21]</code>.</td><td data-blank="t1"></td></tr>
+        <tr><td>With bounds 2 and 3, replacing <code>low = mid + 1</code> by <code>low = mid</code> can leave both bounds unchanged.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write <code>binary_search(values, target)</code> with a loop.</p>
+  <ul>
+    <li>The input list is in ascending order.</li>
+    <li>Return a matching index, or <code>-1</code> if no match exists.</li>
+    <li>Keep the list unchanged.</li>
+  </ul>
+  <p>Use <code>low</code>, <code>high</code>, and <code>mid</code>. Explain each change to the bounds.</p>
+  <p>Search for <code>15</code> in this list. Record each middle check and the final bounds.</p>
+  <pre><code>values = [<span class="wb-num">1</span>, <span class="wb-num">4</span>, <span class="wb-num">5</span>, <span class="wb-num">8</span>, <span class="wb-num">9</span>, <span class="wb-num">12</span>, <span class="wb-num">17</span>, <span class="wb-num">20</span>, <span class="wb-num">24</span>, <span class="wb-num">32</span>]</code></pre>
+  <p>How many elements does binary search check? How many does linear search check?</p>
+  <wb-table id="cp2-trace">
+    <table>
+      <thead><tr><th>Step</th><th><code>low</code></th><th><code>high</code></th><th><code>mid</code></th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="low1"></td><td data-blank="high1"></td><td data-blank="mid1"></td><td data-blank="val1"></td></tr>
+        <tr><td>2</td><td data-blank="low2"></td><td data-blank="high2"></td><td data-blank="mid2"></td><td data-blank="val2"></td></tr>
+        <tr><td>3</td><td data-blank="low3"></td><td data-blank="high3"></td><td data-blank="mid3"></td><td data-blank="val3"></td></tr>
+        <tr><td>4</td><td data-blank="low4"></td><td data-blank="high4"></td><td data-blank="mid4"></td><td data-blank="val4"></td></tr>
+        <tr><td>Final bounds</td><td data-blank="flow"></td><td data-blank="fhigh"></td><td></td><td></td></tr>
+        <tr><th colspan="4">Elements binary search checks</th><td data-blank="nbin"></td></tr>
+        <tr><th colspan="4">Elements linear search checks</th><td data-blank="nlin"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>In the code box, print <code>binary_search(values, 15)</code>. <strong>Check</strong> also searches for other targets and other lists, and counts the elements your search visits.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>binary_search(values, target)</code> with two parameters.</li>
+      <li>Use a <code>while</code> loop. Do not use <code>in</code>, <code>index</code>, <code>count</code> or <code>find</code>.</li>
+      <li>Visit at most as many elements as a binary search does. Keep the list unchanged.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-cost">Cost and recursion</p>
+
+<h2 id="s8">8. The cost of binary search and the choice</h2>
+<p>Each failed middle check removes about half the remaining elements.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>List length</th><th>Linear maximum</th><th>Binary maximum</th></tr></thead>
+  <tbody>
+    <tr><td>10</td><td>10</td><td>4</td></tr>
+    <tr><td>1,000</td><td>1,000</td><td>10</td></tr>
+    <tr><td>1,000,000</td><td>1,000,000</td><td>20</td></tr>
+    <tr><td>1,000,000,000</td><td>1,000,000,000</td><td>30</td></tr>
+  </tbody>
+</table>
+</div>
+<p>These counts measure visited elements. A binary iteration can use both <code>==</code> and <code>&lt;</code> comparisons.</p>
+<p>For <i>n</i> &gt; 0, the binary maximum is ⌊log<sub>2</sub> <i>n</i>⌋ + 1 element checks. Doubling the length adds one check to this maximum.</p>
+<p>Use linear search for one search of unsorted data. Use binary search when the data is already sorted.</p>
+<p>Many searches can justify sorting once. The number of searches must cover the sorting cost.</p>
+<p>A very small list often needs only a simple linear search.</p>
+<p>Sorting can change positions. A result for a sorted copy refers to that copy.</p>
+<p><code>sorted</code> creates an ascending copy. It leaves the original list unchanged. The code box repeats the two search functions so that it can run on its own.</p>
+<wb-example id="ex-choice"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 9.</strong> What is the maximum number of binary search element checks for a nonempty list of length 16?</p>
+  <ol type="A">
+    <li><code>5</code></li>
+    <li><code>4</code></li>
+    <li><code>8</code></li>
+    <li><code>16</code></li>
+  </ol>
+  <wb-table id="q9">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 10.</strong> Write True or False for each statement.</p>
+  <wb-table id="q10">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td><code>sorted(values)</code> leaves <code>values</code> unchanged.</td><td data-blank="t1"></td></tr>
+        <tr><td>After sorting <code>[27, 7, 17]</code>, the matching index for 27 is still 0.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9">9. Recursive binary search</h2>
+<p><code>search_range</code> searches an inclusive range of an ascending list. <code>binary_search_rec</code> starts with the whole list. The two <code>print</code> lines at the end are for you to try.</p>
+<wb-example id="ex-recursive"></wb-example>
+<p>The helper returns an original index, or <code>-1</code> for an empty range.</p>
+<p>Each call passes new bounds. It passes the same list without slicing.</p>
+<p>Each recursive <code>return</code> sends the answer back to its caller.</p>
+<p><code>search_range</code> searches for <code>15</code>. It passes a smaller range to each new call.</p>
+<wb-example id="ex-rec-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th><code>low</code></th><th><code>high</code></th><th><code>mid</code></th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>0</td><td>9</td><td>4</td><td>9</td></tr>
+    <tr><td>2</td><td>5</td><td>9</td><td>7</td><td>20</td></tr>
+    <tr><td>3</td><td>5</td><td>6</td><td>5</td><td>12</td></tr>
+    <tr><td>4</td><td>6</td><td>6</td><td>6</td><td>17</td></tr>
+    <tr><td>5</td><td>6</td><td>5</td><td colspan="2">empty range</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Every call returns <code>-1</code>. Five calls make four element checks.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 11.</strong> Complete the result for an empty range. The program must print <code>-1</code>.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">empty_result</span>(low, high):
+    <span class="wb-kw">if</span> low ____(a)____ high:
+        <span class="wb-kw">return</span> -<span class="wb-num">1</span>
+    <span class="wb-kw">return</span> <span class="wb-num">0</span>
+<span class="wb-fn">print</span>(<span class="wb-fn">empty_result</span>(<span class="wb-num">5</span>, <span class="wb-num">4</span>))</code></pre>
+  <wb-table id="q11">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write <code>first_shared(values, ordered)</code>.</p>
+  <ul>
+    <li>The second list is in ascending order.</li>
+    <li>Return the first index in <code>values</code> whose value also occurs in <code>ordered</code>.</li>
+    <li>Return <code>-1</code> if none exists.</li>
+  </ul>
+  <p>Call the earlier <code>binary_search_rec</code> for each candidate. Keep both lists unchanged.</p>
+  <pre><code>values = [<span class="wb-num">6</span>, <span class="wb-num">4</span>, <span class="wb-num">11</span>]
+ordered = [<span class="wb-num">1</span>, <span class="wb-num">4</span>, <span class="wb-num">7</span>, <span class="wb-num">11</span>]</code></pre>
+  <p>The result must be <code>1</code>. Trace the search result for each candidate that the function checks.</p>
+  <wb-table id="cp3-trace">
+    <table>
+      <thead><tr><th>Call number</th><th><code>i</code></th><th>Target</th><th>Search result</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>0</td><td data-blank="t1"></td><td data-blank="r1"></td></tr>
+        <tr><td>2</td><td>1</td><td data-blank="t2"></td><td data-blank="r2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Also test a list with no shared value and an empty first list.</p>
+  <p>In the code box, print <code>first_shared(values, ordered)</code>, then <code>first_shared([6, 9], ordered)</code>, then <code>first_shared([], ordered)</code>. <strong>Check</strong> also calls <code>first_shared</code> with other lists.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>first_shared(values, ordered)</code> with two parameters.</li>
+      <li>Call <code>binary_search_rec</code> inside <code>first_shared</code>. Do not use <code>in</code>, <code>index</code> or <code>count</code>.</li>
+      <li>Keep both lists unchanged.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="s10">10. Duplicate values and result checks</h2>
+<p>Linear search returns the first matching index. This binary search can return any matching index. The code box repeats the search functions so that it can run on its own.</p>
+<wb-example id="ex-duplicates"></wb-example>
+<p>Check <code>pos != -1</code> before indexing. In Python, <code>values[-1]</code> is the last element.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 300 140" width="300" height="140" role="img" aria-label="A list of three cells, each holding 4, at indices 0 to 2. An arrow labelled linear points to index 0. An arrow labelled binary points to index 1. Both indices hold the target." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="84" y="30" width="44" height="32"/><rect x="128" y="30" width="44" height="32"/><rect x="172" y="30" width="44" height="32"/><path d="M106 90 v-24 M101 71 l5 -5 l5 5"/><path d="M150 90 v-24 M145 71 l5 -5 l5 5"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="106" y="20">0</text><text x="150" y="20">1</text><text x="194" y="20">2</text><text x="106" y="51">4</text><text x="150" y="51">4</text><text x="194" y="51">4</text><text x="90" y="110">linear: 0</text><text x="170" y="128">binary: 1</text></g>
+  </svg>
+</figure>
+<p>Test empty input, both endpoints, and a missing target.</p>
+<p>For duplicates, check that the returned index contains the target.</p>
+<p>Index <code>0</code> is a valid result. Avoid <code>if pos:</code> as a success test.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 12.</strong> Predict the output. Use the earlier search functions.</p>
+  <pre><code>values = [<span class="wb-num">3</span>, <span class="wb-num">5</span>, <span class="wb-num">5</span>, <span class="wb-num">5</span>, <span class="wb-num">9</span>, <span class="wb-num">11</span>]
+<span class="wb-fn">print</span>(<span class="wb-fn">linear_search</span>(values, <span class="wb-num">5</span>))
+pos = <span class="wb-fn">binary_search</span>(values, <span class="wb-num">5</span>)
+<span class="wb-fn">print</span>(pos)
+<span class="wb-fn">print</span>(values[pos])</code></pre>
+  <wb-table id="q12">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Search results and linear search</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Term or rule</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Target</td><td>The value to find.</td></tr>
+    <tr><td>Successful result</td><td>An index where the list contains the target.</td></tr>
+    <tr><td>Missing result</td><td><code>-1</code>. Check this before indexing the list.</td></tr>
+    <tr><td>Index <code>0</code></td><td>A successful result. It is false in a Boolean test.</td></tr>
+    <tr><td>Linear search</td><td>Visit indices from <code>0</code> to <code>len(values) - 1</code>.</td></tr>
+    <tr><td>Match in a linear search</td><td>Return the index immediately. This gives the first match.</td></tr>
+    <tr><td>No match</td><td>Return <code>-1</code> after the loop.</td></tr>
+    <tr><td>Data order</td><td>Linear search works with any order.</td></tr>
+    <tr><td>Element checks</td><td>At most <code>n</code>. An empty list needs zero checks.</td></tr>
+    <tr><td>Input list</td><td>Both search functions leave it unchanged.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Use <code>pos != -1</code> to test success. Use <code>values[pos]</code> only after that check.</p>
+
+<h3>Binary search and the choice</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Rule</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Precondition</td><td>The list is in ascending order. Duplicates are allowed.</td></tr>
+    <tr><td>Initial bounds</td><td><code>low = 0</code>, <code>high = len(values) - 1</code>.</td></tr>
+    <tr><td>Nonempty range</td><td><code>low &lt;= high</code>. Both bounds are inclusive.</td></tr>
+    <tr><td>Middle index</td><td><code>mid = (low + high) // 2</code>.</td></tr>
+    <tr><td>Target is larger</td><td>Set <code>low = mid + 1</code>.</td></tr>
+    <tr><td>Target is smaller</td><td>Set <code>high = mid - 1</code>.</td></tr>
+    <tr><td>Result</td><td>Return <code>mid</code> for a match, or <code>-1</code> for an empty range.</td></tr>
+    <tr><td>Recursive version</td><td>Pass the new bounds. Return the result of the recursive call.</td></tr>
+    <tr><td>Maximum checks</td><td>⌊log<sub>2</sub> <i>n</i>⌋ + 1 for <i>n</i> &gt; 0. Zero for an empty list.</td></tr>
+    <tr><td>Practical choice</td><td>One unsorted search favors linear search. Repeated searches can justify sorting once.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A binary result can be any match. A result after sorting refers to the sorted order.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>These items give more practice with linear and binary search.</p>
+<p>Each practice starts with the first lines of its program in the code box. <strong>Check</strong> compares what your program prints with the expected output. It also calls your functions with other lists, including the edge cases named in the task.</p>
+
+<h3>1. Collect matching indexes</h3>
+<p>The function returns a new list of indexes for values below 8. It keeps the input list unchanged.</p>
+<wb-example id="ex-p1-trace"></wb-example>
+<p>Fill one row after each loop iteration. State the returned list.</p>
+<wb-table id="p1-trace">
+  <table>
+    <thead><tr><th>Index</th><th>Element</th><th>Test result</th><th>Result list</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>9</td><td data-blank="t1"></td><td data-blank="r1"></td></tr>
+      <tr><td>1</td><td>4</td><td data-blank="t2"></td><td data-blank="r2"></td></tr>
+      <tr><td>2</td><td>8</td><td data-blank="t3"></td><td data-blank="r3"></td></tr>
+      <tr><td>3</td><td>2</td><td data-blank="t4"></td><td data-blank="r4"></td></tr>
+      <tr><td>4</td><td>6</td><td data-blank="t5"></td><td data-blank="r5"></td></tr>
+      <tr><th colspan="3">Returned list</th><td data-blank="ret"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Write <code>first_below_eight(values)</code> to return only the first matching index. Use <code>return</code> to stop at that match. Return <code>-1</code> when no element qualifies. Keep the input unchanged. Test each case:</p>
+<ul>
+  <li>A list with a match.</li>
+  <li>A list with no match.</li>
+  <li>An empty list.</li>
+</ul>
+<p>In the code box, print the result for <code>[9, 4, 8, 2, 6]</code>, then for <code>[8, 10]</code>, then for <code>[]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>first_below_eight(values)</code> with one parameter.</li>
+    <li>Use a loop that stops at the first match with <code>return</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+
+<h3>2. Count visits while finding extremes</h3>
+<p>This function returns the smallest value, or <code>None</code> for an empty list. It keeps the input list unchanged.</p>
+<wb-example id="ex-p2-min"></wb-example>
+<ul>
+  <li>Count the visited elements for lengths 1, 10, and 1000.</li>
+  <li>Write <code>extremes(values)</code> to find both the smallest and largest values in one loop.</li>
+  <li>Return a two-element list with the smallest value first. Return <code>[]</code> for empty input.</li>
+  <li>Keep the input unchanged. Count visits for the same three lengths.</li>
+  <li>Compare these counts with linear search when the target is first and when it is absent.</li>
+</ul>
+<wb-table id="p2-counts">
+  <table>
+    <thead><tr><th>Length</th><th>Smallest</th><th>Both extremes</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td data-blank="s1"></td><td data-blank="b1"></td></tr>
+      <tr><td>10</td><td data-blank="s10"></td><td data-blank="b10"></td></tr>
+      <tr><td>1000</td><td data-blank="s1000"></td><td data-blank="b1000"></td></tr>
+      <tr><th colspan="2">Linear search, length 1000, target first</th><td data-blank="lfirst"></td></tr>
+      <tr><th colspan="2">Linear search, length 1000, target absent</th><td data-blank="labsent"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>In the code box, print <code>extremes</code> for <code>[16, 3, 25, 7]</code>, then for <code>[6]</code>, then for <code>[]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>extremes(values)</code> with one parameter.</li>
+    <li>Use one loop. Do not use <code>min</code>, <code>max</code> or sorting.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p2"></wb-exercise>
+
+<h3>3. Return an insertion position</h3>
+<p>Write <code>search_or_position(values, target)</code> for an ascending list.</p>
+<ul>
+  <li>Return a matching index when the target is present.</li>
+  <li>When it is absent, return <code>-k - 1</code>. Here, <code>k</code> is the index where insertion would keep ascending order.</li>
+  <li>Keep the input list unchanged.</li>
+</ul>
+<p>For <code>[6, 14, 23]</code>, target <code>10</code> belongs before index <code>1</code>. The result is <code>-1 - 1</code>, which is <code>-2</code>. A caller recovers the insertion index with <code>k = -result - 1</code>.</p>
+<ul>
+  <li>Use binary search with inclusive bounds.</li>
+  <li>Test target <code>2</code> before the first element.</li>
+  <li>Test target <code>18</code> between two elements.</li>
+  <li>Test target <code>30</code> after the last element.</li>
+  <li>Also test a present target and an empty list.</li>
+  <li>Write a caller that prints each result and decodes each negative result.</li>
+</ul>
+<p>In the code box, search <code>values</code> for <code>2</code>, <code>18</code>, <code>30</code> and <code>14</code>, in that order. Print each result. After a negative result, print <code>Insert at</code> and <code>k</code> on the next line. Then print <code>search_or_position([], 5)</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>search_or_position(values, target)</code> with two parameters.</li>
+    <li>Use a binary search with a <code>while</code> loop. Do not use <code>in</code>, <code>index</code>, <code>count</code> or <code>find</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+
+<h3>4. Look up a phone number</h3>
+<p>Write <code>phone_number(names, numbers, target)</code>.</p>
+<ul>
+  <li>The names are unique and in ascending order.</li>
+  <li>The number at each index belongs to the name at that index.</li>
+  <li>Use binary search on <code>names</code>.</li>
+  <li>Return the matching number, or <code>None</code> when the name is absent.</li>
+  <li>Keep both lists unchanged.</li>
+</ul>
+<p>Use the lists in the code box in a short main program. Print the numbers for <code>"Bea"</code>, <code>"Nia"</code>, and <code>"Zed"</code>, each on its own line. Then print the result for two empty lists and the name <code>"Ada"</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>phone_number(names, numbers, target)</code> with three parameters.</li>
+    <li>Use a binary search with a <code>while</code> loop on <code>names</code>. Do not use <code>in</code>, <code>index</code>, <code>count</code> or <code>find</code>.</li>
+    <li>Keep both lists unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Find two values with a given sum</h3>
+<p>Write <code>has_pair(values, v)</code> for a list in ascending order.</p>
+<ul>
+  <li>Return <code>True</code> when two elements at different indexes add up to <code>v</code>.</li>
+  <li>Return <code>False</code> when no such pair exists.</li>
+  <li>Keep the input list unchanged.</li>
+  <li>For each element, use binary search to find <code>v</code> minus that element.</li>
+  <li>The second index must differ from the first. Equal values at different indexes can form a pair.</li>
+</ul>
+<p>In the code box, print the result for each test in this order:</p>
+<ul>
+  <li><code>[2, 7, 11, 16]</code> with <code>v = 18</code>.</li>
+  <li>The same list with <code>v = 10</code>.</li>
+  <li><code>[5, 5]</code> with <code>v = 10</code>.</li>
+  <li><code>[5]</code> with <code>v = 10</code>.</li>
+  <li>An empty list with <code>v = 10</code>.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>has_pair(values, v)</code> with two parameters.</li>
+    <li>Find each partner with a binary search in a <code>while</code> loop. Do not use <code>in</code>, <code>index</code>, <code>count</code> or <code>find</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+<p>For a list of 16 elements, one binary search checks at most 5 elements. Answer these two questions and compare the numbers.</p>
+<wb-table id="p5-cost">
+  <table>
+    <tbody>
+      <tr><th>Largest number of element checks for 16 binary searches</th><td data-blank="bin"></td></tr>
+      <tr><th>Number of pairs of different indexes in a list of 16 elements</th><td data-blank="pairs"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<p>The Boss Problems are test-level practice. Boss Problem 3 uses the most ideas from this lecture.</p>
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 27 Workbook.</p>
+</main>
+</body>
+</html>

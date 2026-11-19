@@ -56,7 +56,7 @@ export const LECTURES = [
   { n: 24, unit: 7, date: "2026-11-09", title: "Lists: properties and operations", built: true, bosses: true },
   { n: 25, unit: 7, date: "2026-11-13", title: "List algorithms, slices, comprehensions", built: true, bosses: true },
   { n: 26, unit: 7, date: "2026-11-16", title: "Lists with functions; tables", built: true, bosses: true },
-  { n: 27, unit: 7, date: "2026-11-18", title: "Linear and binary search", built: false },
+  { n: 27, unit: 7, date: "2026-11-18", title: "Linear and binary search", built: true, bosses: true },
   { n: 28, unit: 7, date: "2026-11-20", title: "Selection sort and merge sort", built: false },
   { n: 29, unit: 8, date: "2026-11-23", title: "Exceptions: what they are; <code>try</code> / <code>except</code>", built: false },
   { n: 30, unit: 8, date: "2026-11-25", title: "<code>raise</code>, <code>else</code>, <code>finally</code>; reading tracebacks", built: false },
