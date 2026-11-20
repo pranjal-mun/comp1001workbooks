@@ -110,15 +110,20 @@
       "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\ndef merge_sort(values):\n    if len(values) <= 1:\n        return values[:]\n    mid = len(values) // 2\n    left = merge_sort(values[:mid])\n    right = merge_sort(values[mid:])\n    return merge(left, right)\n\nprint(merge_sort([8, 3, 6, 1]))",
       "output": "[1, 3, 6, 8]"
     },
-    "ex-sort-method": {
+    "ex-bigo-1": {
       "type": "example",
-      "code": "values = [8, 3, 6, 1]\nresult = values.sort()\nprint(values)\nprint(result)",
-      "output": "[1, 3, 6, 8]\nNone"
+      "code": "n = 8\nsteps = 0\nfor i in range(n):\n    steps = steps + 1\nprint(steps)",
+      "output": "8"
     },
-    "ex-sorted": {
+    "ex-bigo-2": {
       "type": "example",
-      "code": "values = [8, 3, 6, 1]\nresult = sorted(values)\nprint(values)\nprint(result)",
-      "output": "[8, 3, 6, 1]\n[1, 3, 6, 8]"
+      "code": "n = 8\nsteps = 0\nfor i in range(n):\n    for j in range(n):\n        steps = steps + 1\nprint(steps)",
+      "output": "64"
+    },
+    "ex-bigo-3": {
+      "type": "example",
+      "code": "n = 8\nsteps = 0\nwhile n > 1:\n    n = n // 2\n    steps = steps + 1\nprint(steps)",
+      "output": "3"
     },
     "cp3": {
       "type": "code",
@@ -984,37 +989,6 @@
           "placeholder": "letter",
           "width": "4rem",
           "show": "D"
-        }
-      }
-    },
-    "q13": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "l1": {
-          "accept": [
-            "[6, 1, 4]",
-            "[6,1,4]"
-          ],
-          "placeholder": "output",
-          "width": "14rem",
-          "show": "[6, 1, 4]"
-        },
-        "l2": {
-          "accept": [
-            "[1, 4, 6, 0]",
-            "[1,4,6,0]"
-          ],
-          "placeholder": "output",
-          "width": "14rem",
-          "show": "[1, 4, 6, 0]"
-        },
-        "l3": {
-          "accept": [
-            "None"
-          ],
-          "placeholder": "output",
-          "width": "8rem"
         }
       }
     }

@@ -215,20 +215,23 @@ SRC['slide_18'] = '''def merge_sort(values):
     left = merge_sort(values[:mid])
     right = merge_sort(values[mid:])
     return merge(left, right)'''
-SRC['slide_21_1'] = '''values = [8, 3, 6, 1]
-result = values.sort()
-print(values)
-print(result)'''
-SRC['slide_21_2'] = '''values = [8, 3, 6, 1]
-result = sorted(values)
-print(values)
-print(result)'''
-SRC['quick_13'] = '''values = [6, 1, 4]
-ordered = sorted(values)
-ordered.append(0)
-print(values)
-print(ordered)
-print(values.sort())'''
+SRC['big_o_1'] = '''n = 8
+steps = 0
+for i in range(n):
+    steps = steps + 1
+print(steps)'''
+SRC['big_o_2'] = '''n = 8
+steps = 0
+for i in range(n):
+    for j in range(n):
+        steps = steps + 1
+print(steps)'''
+SRC['big_o_3'] = '''n = 8
+steps = 0
+while n > 1:
+    n = n // 2
+    steps = steps + 1
+print(steps)'''
 SRC['checkpoint_2_starter'] = '''def merge(left, right):
     result = []
     i = 0
@@ -664,9 +667,10 @@ def merge_sort(values):
 assert out(MERGE + "\n\n" + CALL_TRACE + "\nmerge_sort([8, 3, 6, 1])\n").split("\n")[-1] == "call 1 returns [1, 3, 6, 8]"
 assert ex("ex-calls", MERGE + "\n\n" + MERGE_SORT + "\n\nprint(merge_sort([8, 3, 6, 1]))\n")["output"] == "[1, 3, 6, 8]"
 
-# ============================================================ 10. Python sorting in practice
-assert ex("ex-sort-method", SRC["slide_21_1"])["output"] == "[1, 3, 6, 8]\nNone"
-assert ex("ex-sorted", SRC["slide_21_2"])["output"] == "[8, 3, 6, 1]\n[1, 3, 6, 8]"
+# ============================================================ 10. Big O: how the time and memory requirements grow
+assert ex("ex-bigo-1", SRC["big_o_1"])["output"] == "8"
+assert ex("ex-bigo-2", SRC["big_o_2"])["output"] == "64"
+assert ex("ex-bigo-3", SRC["big_o_3"])["output"] == "3"
 
 # Checkpoint 2 (ids cp3 and cp3-trace keep saved progress)
 cp3 = SRC["checkpoint_2_starter"].split("def merge_sort")[0] + MERGE_SORT + "\n\n" + SRC["checkpoint_2_test"]
@@ -893,8 +897,6 @@ E["q10"] = gap("quick_10", ["2"], "[9, 4]\n[6, 2, 5]", "5rem")
 E["q11"] = true_false(True, False)
 assert levels(16) == 4
 E["q12"] = choice("D")
-E["q13"] = predict(SRC["quick_13"])
-assert out(SRC["quick_13"]) == "[6, 1, 4]\n[1, 4, 6, 0]\nNone"
 
 for spec in E.values():
     if "starter" in spec:

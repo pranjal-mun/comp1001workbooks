@@ -34,7 +34,7 @@
     <li>Trace selection sort, including selection and swapping steps.</li>
     <li>Trace merge sort and carry out its merge step.</li>
     <li>Explain why merge sort is recursive.</li>
-    <li>Compare selection sort, merge sort, and Python's built-in sorting at a practical level.</li>
+    <li>Use Big O to compare linear search, binary search, selection sort, and merge sort.</li>
   </ul>
   <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
 </section>
@@ -410,33 +410,54 @@ mid = <span class="wb-fn">len</span>(values) // ____(a)____
   </wb-table>
 </div>
 
-<h2 id="s10">10. Python sorting in practice</h2>
-<p>For routine Python programs, use one of the built-in sorting operations.</p>
-<p>The <code>sort</code> method changes the list and returns <code>None</code>.</p>
-<wb-example id="ex-sort-method"></wb-example>
-<p>The <code>sorted</code> function returns a new sorted list.</p>
-<wb-example id="ex-sorted"></wb-example>
-
-<div class="wb-checkpoint">
-  <div class="wb-block-title">Quick check 10</div>
-  <p><strong>Question 13.</strong> Predict the output. Write each printed line.</p>
-  <pre><code>values = [<span class="wb-num">6</span>, <span class="wb-num">1</span>, <span class="wb-num">4</span>]
-ordered = <span class="wb-fn">sorted</span>(values)
-ordered.<span class="wb-fn">append</span>(<span class="wb-num">0</span>)
-<span class="wb-fn">print</span>(values)
-<span class="wb-fn">print</span>(ordered)
-<span class="wb-fn">print</span>(values.<span class="wb-fn">sort</span>())</code></pre>
-  <wb-table id="q13">
-    <table>
-      <thead><tr><th>Line</th><th>Output</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td data-blank="l1"></td></tr>
-        <tr><td>2</td><td data-blank="l2"></td></tr>
-        <tr><td>3</td><td data-blank="l3"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
+<h2 id="s10">10. Big O: how the time and memory requirements grow</h2>
+<p>Big O describes how the work of an algorithm grows when the input grows.</p>
+<p>The letter <i>n</i> is the size of the input. For a sort or a search, <i>n</i> is the length of the list.</p>
+<p>To find the Big O of an algorithm:</p>
+<ol>
+  <li>Count the steps, for example the value comparisons.</li>
+  <li>Keep only the term that grows fastest.</li>
+  <li>Remove the constant factor.</li>
+</ol>
+<p>Selection sort makes <i>n</i>(<i>n</i> − 1) / 2 = ½<i>n</i><sup>2</sup> − ½<i>n</i> comparisons. The fastest term is ½<i>n</i><sup>2</sup>. Remove the ½. Selection sort is O(<i>n</i><sup>2</sup>).</p>
+<p>Big O does not give the time in seconds. It shows how the time changes when <i>n</i> becomes large.</p>
+<p>Each program below counts its steps for a list length of <code>n = 8</code>.</p>
+<p>One loop over <code>n</code> values: O(<i>n</i>)</p>
+<wb-example id="ex-bigo-1"></wb-example>
+<p>A loop inside a loop: O(<i>n</i><sup>2</sup>)</p>
+<wb-example id="ex-bigo-2"></wb-example>
+<p>The inner loop runs <code>n</code> times for each pass of the outer loop. That gives <i>n</i> × <i>n</i> = <i>n</i><sup>2</sup> steps.</p>
+<p>Two loops one after the other give <i>n</i> + <i>n</i> = 2<i>n</i> steps. That is still O(<i>n</i>).</p>
+<p>A loop that halves <code>n</code>: O(log <i>n</i>)</p>
+<wb-example id="ex-bigo-3"></wb-example>
+<p>Each pass halves <code>n</code>: 8, 4, 2, 1. The loop runs 3 times. For <code>n = 1024</code>, the loop runs 10 times.</p>
+<p>The number of passes is about log<sub>2</sub> <i>n</i>. This loop is O(log <i>n</i>).</p>
+<p>Binary search halves the search range after each check. Binary search is O(log <i>n</i>).</p>
+<p>Merge sort has about log<sub>2</sub> <i>n</i> levels. Each level writes all <i>n</i> elements once. That gives <i>n</i> log<sub>2</sub> <i>n</i> steps, so merge sort is O(<i>n</i> log <i>n</i>).</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Algorithm</th><th>Big O</th><th>Reason</th><th>Steps for <i>n</i> = 1,024</th></tr></thead>
+  <tbody>
+    <tr><td>Binary search</td><td>O(log <i>n</i>)</td><td>Halves the range</td><td>10</td></tr>
+    <tr><td>Linear search</td><td>O(<i>n</i>)</td><td>One loop</td><td>1,024</td></tr>
+    <tr><td>Merge sort</td><td>O(<i>n</i> log <i>n</i>)</td><td>log<sub>2</sub> <i>n</i> levels of <i>n</i></td><td>10,240</td></tr>
+    <tr><td>Selection sort</td><td>O(<i>n</i><sup>2</sup>)</td><td>A loop inside a loop</td><td>1,048,576</td></tr>
+  </tbody>
+</table>
 </div>
+<p>The step counts use log<sub>2</sub> <i>n</i>, <i>n</i>, <i>n</i> log<sub>2</sub> <i>n</i> and <i>n</i><sup>2</sup>. A real program does a different number of steps. Big O shows the growth.</p>
+<p>When <i>n</i> doubles:</p>
+<ul>
+  <li>O(log <i>n</i>) work grows by one step.</li>
+  <li>O(<i>n</i>) work doubles.</li>
+  <li>O(<i>n</i><sup>2</sup>) work becomes four times as large.</li>
+</ul>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 600 310" width="600" height="310" role="img" aria-label="A graph of steps against list length n from 0 to 13. The O(n squared) curve rises fastest and passes 45 steps near n = 7. The dashed O(n log n) curve reaches about 45 steps at n = 13. The dotted O(n) line reaches 13. The O(log n) curve stays below 4." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-grow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><path d="M70.0 250.0 H 505.2" marker-end="url(#a-grow)"/><path d="M70.0 250.0 V 19.600000000000023" marker-end="url(#a-grow)"/><path d="M198.0 250.0 v 6"/><path d="M326.0 250.0 v 6"/><path d="M454.0 250.0 v 6"/><path d="M70.0 154.0 h -6"/><path d="M70.0 58.0 h -6"/><path d="M70.0 250.0 L73.2 250.0 L76.4 249.8 L79.6 249.6 L82.8 249.2 L86.0 248.8 L89.2 248.3 L92.4 247.6 L95.6 246.9 L98.8 246.1 L102.0 245.2 L105.2 244.2 L108.4 243.1 L111.6 241.9 L114.8 240.6 L118.0 239.2 L121.2 237.7 L124.4 236.1 L127.6 234.4 L130.8 232.7 L134.0 230.8 L137.2 228.8 L140.4 226.8 L143.6 224.6 L146.8 222.4 L150.0 220.0 L153.2 217.6 L156.4 215.0 L159.6 212.4 L162.8 209.6 L166.0 206.8 L169.2 203.9 L172.4 200.8 L175.6 197.7 L178.8 194.5 L182.0 191.2 L185.2 187.8 L188.4 184.3 L191.6 180.7 L194.8 177.0 L198.0 173.2 L201.2 169.3 L204.4 165.3 L207.6 161.2 L210.8 157.1 L214.0 152.8 L217.2 148.4 L220.4 144.0 L223.6 139.4 L226.8 134.8 L230.0 130.0 L233.2 125.2 L236.4 120.2 L239.6 115.2 L242.8 110.0 L246.0 104.8 L249.2 99.5 L252.4 94.0 L255.6 88.5 L258.8 82.9 L262.0 77.2 L265.2 71.4 L268.4 65.5 L271.6 59.5 L274.8 53.4 L278.0 47.2 L281.2 40.9 L284.4 34.5" style="stroke-width: 2.5"/><path d="M102.0 250.0 L105.2 249.3 L108.4 248.5 L111.6 247.6 L114.8 246.7 L118.0 245.8 L121.2 244.8 L124.4 243.8 L127.6 242.7 L130.8 241.6 L134.0 240.4 L137.2 239.2 L140.4 238.0 L143.6 236.7 L146.8 235.4 L150.0 234.1 L153.2 232.8 L156.4 231.4 L159.6 230.0 L162.8 228.6 L166.0 227.2 L169.2 225.7 L172.4 224.2 L175.6 222.7 L178.8 221.2 L182.0 219.6 L185.2 218.1 L188.4 216.5 L191.6 214.9 L194.8 213.2 L198.0 211.6 L201.2 209.9 L204.4 208.3 L207.6 206.6 L210.8 204.9 L214.0 203.1 L217.2 201.4 L220.4 199.6 L223.6 197.9 L226.8 196.1 L230.0 194.3 L233.2 192.5 L236.4 190.6 L239.6 188.8 L242.8 186.9 L246.0 185.1 L249.2 183.2 L252.4 181.3 L255.6 179.4 L258.8 177.5 L262.0 175.6 L265.2 173.6 L268.4 171.7 L271.6 169.7 L274.8 167.7 L278.0 165.7 L281.2 163.8 L284.4 161.7 L287.6 159.7 L290.8 157.7 L294.0 155.7 L297.2 153.6 L300.4 151.6 L303.6 149.5 L306.8 147.4 L310.0 145.4 L313.2 143.3 L316.4 141.2 L319.6 139.0 L322.8 136.9 L326.0 134.8 L329.2 132.7 L332.4 130.5 L335.6 128.4 L338.8 126.2 L342.0 124.0 L345.2 121.9 L348.4 119.7 L351.6 117.5 L354.8 115.3 L358.0 113.1 L361.2 110.8 L364.4 108.6 L367.6 106.4 L370.8 104.1 L374.0 101.9 L377.2 99.6 L380.4 97.4 L383.6 95.1 L386.8 92.8 L390.0 90.5 L393.2 88.3 L396.4 86.0 L399.6 83.7 L402.8 81.3 L406.0 79.0 L409.2 76.7 L412.4 74.4 L415.6 72.0 L418.8 69.7 L422.0 67.3 L425.2 65.0 L428.4 62.6 L431.6 60.3 L434.8 57.9 L438.0 55.5 L441.2 53.1 L444.4 50.7 L447.6 48.3 L450.8 45.9 L454.0 43.5 L457.2 41.1 L460.4 38.7 L463.6 36.2" style="stroke-width: 2.5; stroke-dasharray: 9 5"/><path d="M70.0 250.0 L73.2 249.5 L76.4 249.0 L79.6 248.6 L82.8 248.1 L86.0 247.6 L89.2 247.1 L92.4 246.6 L95.6 246.2 L98.8 245.7 L102.0 245.2 L105.2 244.7 L108.4 244.2 L111.6 243.8 L114.8 243.3 L118.0 242.8 L121.2 242.3 L124.4 241.8 L127.6 241.4 L130.8 240.9 L134.0 240.4 L137.2 239.9 L140.4 239.4 L143.6 239.0 L146.8 238.5 L150.0 238.0 L153.2 237.5 L156.4 237.0 L159.6 236.6 L162.8 236.1 L166.0 235.6 L169.2 235.1 L172.4 234.6 L175.6 234.2 L178.8 233.7 L182.0 233.2 L185.2 232.7 L188.4 232.2 L191.6 231.8 L194.8 231.3 L198.0 230.8 L201.2 230.3 L204.4 229.8 L207.6 229.4 L210.8 228.9 L214.0 228.4 L217.2 227.9 L220.4 227.4 L223.6 227.0 L226.8 226.5 L230.0 226.0 L233.2 225.5 L236.4 225.0 L239.6 224.6 L242.8 224.1 L246.0 223.6 L249.2 223.1 L252.4 222.6 L255.6 222.2 L258.8 221.7 L262.0 221.2 L265.2 220.7 L268.4 220.2 L271.6 219.8 L274.8 219.3 L278.0 218.8 L281.2 218.3 L284.4 217.8 L287.6 217.4 L290.8 216.9 L294.0 216.4 L297.2 215.9 L300.4 215.4 L303.6 215.0 L306.8 214.5 L310.0 214.0 L313.2 213.5 L316.4 213.0 L319.6 212.6 L322.8 212.1 L326.0 211.6 L329.2 211.1 L332.4 210.6 L335.6 210.2 L338.8 209.7 L342.0 209.2 L345.2 208.7 L348.4 208.2 L351.6 207.8 L354.8 207.3 L358.0 206.8 L361.2 206.3 L364.4 205.8 L367.6 205.4 L370.8 204.9 L374.0 204.4 L377.2 203.9 L380.4 203.4 L383.6 203.0 L386.8 202.5 L390.0 202.0 L393.2 201.5 L396.4 201.0 L399.6 200.6 L402.8 200.1 L406.0 199.6 L409.2 199.1 L412.4 198.6 L415.6 198.2 L418.8 197.7 L422.0 197.2 L425.2 196.7 L428.4 196.2 L431.6 195.8 L434.8 195.3 L438.0 194.8 L441.2 194.3 L444.4 193.8 L447.6 193.4 L450.8 192.9 L454.0 192.4 L457.2 191.9 L460.4 191.4 L463.6 191.0 L466.8 190.5 L470.0 190.0 L473.2 189.5 L476.4 189.0 L479.6 188.6 L482.8 188.1 L486.0 187.6" style="stroke-width: 2.5; stroke-dasharray: 2 4"/><path d="M102.0 250.0 L105.2 249.3 L108.4 248.7 L111.6 248.2 L114.8 247.7 L118.0 247.2 L121.2 246.7 L124.4 246.3 L127.6 245.9 L130.8 245.6 L134.0 245.2 L137.2 244.9 L140.4 244.5 L143.6 244.2 L146.8 243.9 L150.0 243.7 L153.2 243.4 L156.4 243.1 L159.6 242.9 L162.8 242.6 L166.0 242.4 L169.2 242.2 L172.4 241.9 L175.6 241.7 L178.8 241.5 L182.0 241.3 L185.2 241.1 L188.4 240.9 L191.6 240.8 L194.8 240.6 L198.0 240.4 L201.2 240.2 L204.4 240.1 L207.6 239.9 L210.8 239.7 L214.0 239.6 L217.2 239.4 L220.4 239.3 L223.6 239.1 L226.8 239.0 L230.0 238.9 L233.2 238.7 L236.4 238.6 L239.6 238.5 L242.8 238.3 L246.0 238.2 L249.2 238.1 L252.4 237.9 L255.6 237.8 L258.8 237.7 L262.0 237.6 L265.2 237.5 L268.4 237.4 L271.6 237.3 L274.8 237.1 L278.0 237.0 L281.2 236.9 L284.4 236.8 L287.6 236.7 L290.8 236.6 L294.0 236.5 L297.2 236.4 L300.4 236.3 L303.6 236.2 L306.8 236.1 L310.0 236.0 L313.2 236.0 L316.4 235.9 L319.6 235.8 L322.8 235.7 L326.0 235.6 L329.2 235.5 L332.4 235.4 L335.6 235.3 L338.8 235.3 L342.0 235.2 L345.2 235.1 L348.4 235.0 L351.6 234.9 L354.8 234.9 L358.0 234.8 L361.2 234.7 L364.4 234.6 L367.6 234.6 L370.8 234.5 L374.0 234.4 L377.2 234.3 L380.4 234.3 L383.6 234.2 L386.8 234.1 L390.0 234.1 L393.2 234.0 L396.4 233.9 L399.6 233.9 L402.8 233.8 L406.0 233.7 L409.2 233.7 L412.4 233.6 L415.6 233.5 L418.8 233.5 L422.0 233.4 L425.2 233.3 L428.4 233.3 L431.6 233.2 L434.8 233.1 L438.0 233.1 L441.2 233.0 L444.4 233.0 L447.6 232.9 L450.8 232.9 L454.0 232.8 L457.2 232.7 L460.4 232.7 L463.6 232.6 L466.8 232.6 L470.0 232.5 L473.2 232.5 L476.4 232.4 L479.6 232.3 L482.8 232.3 L486.0 232.2" style="stroke-width: 2.5; stroke-dasharray: 10 4 2 4"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="198" y="272">4</text><text x="326" y="272">8</text><text x="454" y="272">12</text><text x="60" y="159.0" text-anchor="end">20</text><text x="60" y="63.0" text-anchor="end">40</text><text x="278.0" y="294">list length n</text><text x="70" y="10.0">steps</text><text x="284.6625258399798" y="26.0">O(n²)</text><text x="460.4" y="28.80000000000001" text-anchor="start">O(n log n)</text><text x="492.4" y="192.6" text-anchor="start">O(n)</text><text x="492.4" y="237.24" text-anchor="start">O(log n)</text></g>
+  </svg>
+</figure>
+<p>A lower curve means less work. For large lists, merge sort is much faster than selection sort, because <i>n</i> log <i>n</i> grows much more slowly than <i>n</i><sup>2</sup>.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 2</div>
@@ -470,6 +491,58 @@ ordered.<span class="wb-fn">append</span>(<span class="wb-num">0</span>)
     </ul>
   </div>
   <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+
+<h3>Selection sort and merge sort</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th></th><th>Selection sort</th><th>Merge sort</th></tr></thead>
+  <tbody>
+    <tr><th>Idea</th><td>Find the smallest value in the unsorted part. Swap it to the front of the unsorted part.</td><td>Split the list into two halves. Sort each half. Merge the two sorted halves.</td></tr>
+    <tr><th>Code</th><td>Outer loop: <code>i</code> from <code>0</code> to <code>n - 2</code>. Inner loop: find <code>smallest</code>. Then swap the values at <code>i</code> and <code>smallest</code>.</td><td>Length <code>0</code> or <code>1</code>: return <code>values[:]</code>. Else split at <code>len(values) // 2</code>, sort both slices, and return <code>merge(left, right)</code>.</td></tr>
+    <tr><th>Comparisons</th><td>Always <i>n</i>(<i>n</i> − 1) / 2</td><td>At most about <i>n</i> log<sub>2</sub> <i>n</i></td></tr>
+    <tr><th>Big O</th><td>O(<i>n</i><sup>2</sup>)</td><td>O(<i>n</i> log <i>n</i>)</td></tr>
+    <tr><th>Input list</th><td>Changed in place</td><td>Unchanged. Returns a new list.</td></tr>
+    <tr><th>Extra space</th><td>A few index variables</td><td>Extra lists</td></tr>
+    <tr><th>Stable</th><td>No</td><td>Yes</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Merge two sorted lists</h3>
+<ul>
+  <li>Compare the first unused value in each list.</li>
+  <li>Append the smaller value. Advance only its index.</li>
+  <li>For equal values, take the left value first (<code>&lt;=</code>).</li>
+  <li>When one list is used up, <code>extend</code> the result with the rest.</li>
+  <li>A merge of <i>m</i> elements makes at most <i>m</i> − 1 comparisons.</li>
+</ul>
+<p>Example: <code>[2, 6]</code> and <code>[1, 4, 8]</code> give <code>[1, 2, 4, 6, 8]</code>.</p>
+
+<h3>Big O</h3>
+<p>Big O shows how the work grows when <i>n</i> grows. Count the steps. Keep the fastest term. Remove the constant.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Loop shape</th><th>Big O</th></tr></thead>
+  <tbody>
+    <tr><td>One loop</td><td>O(<i>n</i>)</td></tr>
+    <tr><td>A loop inside a loop</td><td>O(<i>n</i><sup>2</sup>)</td></tr>
+    <tr><td>A loop that halves <i>n</i></td><td>O(log <i>n</i>)</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Algorithm</th><th>Big O</th></tr></thead>
+  <tbody>
+    <tr><td>Binary search</td><td>O(log <i>n</i>)</td></tr>
+    <tr><td>Linear search</td><td>O(<i>n</i>)</td></tr>
+    <tr><td>Merge sort</td><td>O(<i>n</i> log <i>n</i>)</td></tr>
+    <tr><td>Selection sort</td><td>O(<i>n</i><sup>2</sup>)</td></tr>
+  </tbody>
+</table>
 </div>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
