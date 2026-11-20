@@ -65,13 +65,13 @@
 </div>
 
 <h2 id="s2">2. Selection sort selects and swaps</h2>
-<p>Find the smallest value in the list. Swap it with the value at index <code>0</code>.</p>
+<p>Each step finds the smallest value in the unsorted part. A swap moves that value to the front of the unsorted part.</p>
 <figure style="margin: 1rem auto; text-align: center">
-  <svg viewBox="0 0 340 175" width="340" height="175" role="img" aria-label="Before the swap, the list is 5, 2, 9, 1 at indices 0 to 3, with a thick border on index 3, which holds the smallest value 1. Arrows show 1 moving to index 0 and 5 moving to index 3. After the swap, the list is 1, 2, 9, 5, with a thick border on index 0." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
-    <defs><marker id="a-swap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="150" y="30" width="44" height="32"/><rect x="194" y="30" width="44" height="32"/><rect x="238" y="30" width="44" height="32"/><rect x="282" y="30" width="44" height="32" style="stroke-width: 3.5"/><rect x="150" y="130" width="44" height="32" style="stroke-width: 3.5"/><rect x="194" y="130" width="44" height="32"/><rect x="238" y="130" width="44" height="32"/><rect x="282" y="130" width="44" height="32"/><path d="M304 64 C 300 110, 176 110, 172 126" marker-end="url(#a-swap)"/><path d="M172 64 C 190 90, 282 90, 298 126" marker-end="url(#a-swap)" opacity="0.6"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="172" y="20">0</text><text x="216" y="20">1</text><text x="260" y="20">2</text><text x="304" y="20">3</text><text x="172" y="51">5</text><text x="216" y="51">2</text><text x="260" y="51">9</text><text x="304" y="51">1</text><text x="172" y="151">1</text><text x="216" y="151">2</text><text x="260" y="151">9</text><text x="304" y="151">5</text><g style="font-family: var(--font-sans, sans-serif); font-size: 14px"><text x="135" y="51" text-anchor="end">Before the swap</text><text x="135" y="151" text-anchor="end">After the swap</text></g></g>
+  <svg viewBox="0 0 640 345" width="640" height="345" role="img" aria-label="Selection sort on 5, 2, 9, 1 in four rows. Step 1: the smallest value 1 is at index 3. Swap 5 and 1 to get 1, 2, 9, 5, with 1 in the sorted part. Step 2: the smallest unsorted value 2 is already first, so there is no swap. Step 3: the smallest unsorted value 5 is at index 3. Swap 9 and 5 to get 1, 2, 5, 9. End: the last value is in place, and the whole list 1, 2, 5, 9 is sorted. Shaded boxes are the sorted part." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-sel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="80" y="30" width="34" height="28"/><rect x="114" y="30" width="34" height="28"/><rect x="148" y="30" width="34" height="28"/><rect x="182" y="30" width="34" height="28" style="stroke-width: 3.5"/><rect x="285" y="30" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="329" y="30" width="34" height="28"/><rect x="363" y="30" width="34" height="28"/><rect x="397" y="30" width="34" height="28"/><rect x="80" y="112" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="124" y="112" width="34" height="28" style="stroke-width: 3.5"/><rect x="158" y="112" width="34" height="28"/><rect x="192" y="112" width="34" height="28"/><rect x="285" y="112" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="319" y="112" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="363" y="112" width="34" height="28"/><rect x="397" y="112" width="34" height="28"/><rect x="80" y="194" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="114" y="194" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="158" y="194" width="34" height="28"/><rect x="192" y="194" width="34" height="28" style="stroke-width: 3.5"/><rect x="285" y="194" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="319" y="194" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="353" y="194" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="397" y="194" width="34" height="28"/><rect x="80" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="114" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="148" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="192" y="276" width="34" height="28"/><rect x="285" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="319" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="353" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="387" y="276" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><path d="M97.0 27 V 16 H 199.0 V 27" marker-start="url(#a-sel)" marker-end="url(#a-sel)"/><path d="M199.0 74 V 62" marker-end="url(#a-sel)"/><path d="M232 44 H 272" style="stroke-width: 2" marker-end="url(#a-sel)"/><path d="M141.0 156 V 144" marker-end="url(#a-sel)"/><path d="M232 126 H 272" style="stroke-width: 2" marker-end="url(#a-sel)"/><path d="M175.0 191 V 180 H 209.0 V 191" marker-start="url(#a-sel)" marker-end="url(#a-sel)"/><path d="M209.0 238 V 226" marker-end="url(#a-sel)"/><path d="M232 208 H 272" style="stroke-width: 2" marker-end="url(#a-sel)"/><path d="M232 290 H 272" style="stroke-width: 2" marker-end="url(#a-sel)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="97.0" y="49">5</text><text x="131.0" y="49">2</text><text x="165.0" y="49">9</text><text x="199.0" y="49">1</text><text x="302.0" y="49">1</text><text x="346.0" y="49">2</text><text x="380.0" y="49">9</text><text x="414.0" y="49">5</text><text x="97.0" y="131">1</text><text x="141.0" y="131">2</text><text x="175.0" y="131">9</text><text x="209.0" y="131">5</text><text x="302.0" y="131">1</text><text x="336.0" y="131">2</text><text x="380.0" y="131">9</text><text x="414.0" y="131">5</text><text x="97.0" y="213">1</text><text x="131.0" y="213">2</text><text x="175.0" y="213">9</text><text x="209.0" y="213">5</text><text x="302.0" y="213">1</text><text x="336.0" y="213">2</text><text x="370.0" y="213">5</text><text x="414.0" y="213">9</text><text x="97.0" y="295">1</text><text x="131.0" y="295">2</text><text x="165.0" y="295">5</text><text x="209.0" y="295">9</text><text x="302.0" y="295">1</text><text x="336.0" y="295">2</text><text x="370.0" y="295">5</text><text x="404.0" y="295">9</text></g><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="204.0" y="84" text-anchor="start">smallest</text><text x="302.0" y="76">Sorted</text><text x="380.0" y="76">Unsorted</text><text x="68" y="49" text-anchor="end" style="font-weight: bold">Step 1</text><text x="445" y="49" text-anchor="start">Swap 5 and 1.</text><text x="146.0" y="166" text-anchor="start">smallest</text><text x="319.0" y="158">Sorted</text><text x="397.0" y="158">Unsorted</text><text x="68" y="131" text-anchor="end" style="font-weight: bold">Step 2</text><text x="445" y="131" text-anchor="start">2 is first. No swap.</text><text x="214.0" y="248" text-anchor="start">smallest</text><text x="336.0" y="240">Sorted</text><text x="414.0" y="240">Unsorted</text><text x="68" y="213" text-anchor="end" style="font-weight: bold">Step 3</text><text x="445" y="213" text-anchor="start">Swap 9 and 5.</text><text x="353.0" y="322">Sorted</text><text x="68" y="295" text-anchor="end" style="font-weight: bold">End</text><text x="445" y="295" text-anchor="start">The last value is in place.</text></g>
   </svg>
 </figure>
-<p>The first position is complete. The next pass starts at index <code>1</code>.</p>
+<p>Shaded boxes are the sorted part. A thick box is the smallest value in the unsorted part.</p>
 <p>A swap exchanges the values at two indices.</p>
 <wb-example id="ex-swap"></wb-example>
 <p>Python reads both values on the right before it assigns either value on the left.</p>
@@ -84,8 +84,7 @@
   <pre><code>values = [<span class="wb-num">6</span>, <span class="wb-num">4</span>, <span class="wb-num">1</span>]
 i = <span class="wb-num">0</span>
 smallest = ____(a)____
-values[i], values[smallest] = (
-    values[smallest], values[i])
+values[i], values[smallest] = values[smallest], values[i]
 <span class="wb-fn">print</span>(values)</code></pre>
   <wb-table id="q2">
     <table>
@@ -97,39 +96,18 @@ values[i], values[smallest] = (
   </wb-table>
 </div>
 
-<h2 id="s3">3. The selection sort function and its traces</h2>
-<p><code>selection_sort</code> puts the input list in ascending order. The function sorts in place.</p>
+<h2 id="s3">3. The selection sort algorithm and function</h2>
+<p>Selection sort puts a list of length <code>n</code> in ascending order. It changes the input list.</p>
+<ol>
+  <li>For each position <code>i</code> from <code>0</code> to <code>n - 2</code>, do steps 2 to 4.</li>
+  <li>Set <code>smallest</code> to <code>i</code>.</li>
+  <li>For each index <code>j</code> from <code>i + 1</code> to <code>n - 1</code>: if <code>values[j]</code> is less than <code>values[smallest]</code>, set <code>smallest</code> to <code>j</code>.</li>
+  <li>Swap the values at <code>i</code> and <code>smallest</code>.</li>
+</ol>
+<p>After step 4, the positions from <code>0</code> to <code>i</code> contain the smallest values in order.</p>
+<p>After <code>n - 1</code> passes, the last value is in place. A list of length <code>0</code> or <code>1</code> needs no passes.</p>
+<p>The function <code>selection_sort</code> follows these steps.</p>
 <wb-example id="ex-selection"></wb-example>
-<p>The outer loop selects the next position, <code>i</code>.</p>
-<p><code>smallest</code> holds the index of the smallest value found so far.</p>
-<p>The inner loop checks indices from <code>i + 1</code> to <code>n - 1</code>. Then the swap runs.</p>
-<p>After each pass, the positions through <code>i</code> contain the smallest values in order.</p>
-<p><code>selection_sort</code> starts with <code>smallest = i</code>. This trace shows pass <code>i = 0</code> for <code>[5, 2, 9, 1]</code>.</p>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th><code>j</code></th><th>Value</th><th>Smaller?</th><th>New <code>smallest</code></th></tr></thead>
-  <tbody>
-    <tr><td>1</td><td>2</td><td>True</td><td>1</td></tr>
-    <tr><td>2</td><td>9</td><td>False</td><td>1</td></tr>
-    <tr><td>3</td><td>1</td><td>True</td><td>3</td></tr>
-  </tbody>
-</table>
-</div>
-<p>Compare each value with the current minimum. The minimum index changes from <code>0</code> to <code>1</code> and then to <code>3</code>.</p>
-<p>The swap puts <code>1</code> at index <code>0</code>.</p>
-<p><code>selection_sort</code> fills one more position per pass. The input is <code>[5, 2, 9, 1]</code>.</p>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th><code>i</code></th><th><code>smallest</code></th><th>List after the swap</th></tr></thead>
-  <tbody>
-    <tr><td>0</td><td>3</td><td><code>[1, 2, 9, 5]</code></td></tr>
-    <tr><td>1</td><td>1</td><td><code>[1, 2, 9, 5]</code></td></tr>
-    <tr><td>2</td><td>3</td><td><code>[1, 2, 5, 9]</code></td></tr>
-  </tbody>
-</table>
-</div>
-<p>At <code>i = 1</code>, both swap indices are <code>1</code>. The list stays the same.</p>
-<p>A list of length <code>0</code> or <code>1</code> needs no passes.</p>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Quick check 3</div>
@@ -240,11 +218,11 @@ values[i], values[smallest] = (
 <h2 id="s5">5. Merging two sorted lists</h2>
 <p>A merge combines two sorted lists into one sorted list. Compare the first unused value in each list.</p>
 <figure style="margin: 1rem auto; text-align: center">
-  <svg viewBox="0 0 470 185" width="470" height="185" role="img" aria-label="Left list 2, 6 with a thick border on 2. Right list 1, 4, 8 with 1 faded because it is used. An arrow takes 1 down into the result list. The notes say: compare 2 with 1, take 1 from the right list, next compare 2 with 4." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
-    <defs><marker id="a-merge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="80" y="20" width="44" height="32" style="stroke-width: 3.5"/><rect x="124" y="20" width="44" height="32"/><rect x="80" y="70" width="44" height="32" opacity="0.35"/><rect x="124" y="70" width="44" height="32"/><rect x="168" y="70" width="44" height="32"/><rect x="80" y="140" width="44" height="32" style="stroke-width: 3.5"/><path d="M102 104 V 136" marker-end="url(#a-merge)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="102" y="41">2</text><text x="146" y="41">6</text><text x="102" y="91" opacity="0.35">1</text><text x="146" y="91">4</text><text x="190" y="91">8</text><text x="102" y="161">1</text><g style="font-family: var(--font-sans, sans-serif); font-size: 14px"><text x="65" y="41" text-anchor="end">Left</text><text x="65" y="91" text-anchor="end">Right</text><text x="65" y="161" text-anchor="end">Result</text><g text-anchor="start"><text x="230" y="41">Compare 2 with 1.</text><text x="230" y="91">Take 1 from the right list.</text><text x="230" y="161">Next, compare 2 with 4.</text></g></g></g>
+  <svg viewBox="0 0 720 265" width="720" height="265" role="img" aria-label="Merge 2, 6 with 1, 4, 8 in five steps. Step 1: compare 2 and 1, take 1. Step 2: compare 2 and 4, take 2. Step 3: compare 6 and 4, take 4. Step 4: compare 6 and 8, take 6. Step 5: the left list is used up, so add the rest of the right list, 8. The result is 1, 2, 4, 6, 8. Faded values are used. A thick box is the value taken in that step." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-mst" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="83" y="30" width="34" height="28"/><rect x="117" y="30" width="34" height="28"/><rect x="170" y="30" width="34" height="28" style="stroke-width: 3.5"/><rect x="204" y="30" width="34" height="28"/><rect x="238" y="30" width="34" height="28"/><rect x="335" y="30" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="83" y="76" width="34" height="28" style="stroke-width: 3.5"/><rect x="117" y="76" width="34" height="28"/><rect x="170" y="76" width="34" height="28" opacity="0.35"/><rect x="204" y="76" width="34" height="28"/><rect x="238" y="76" width="34" height="28"/><rect x="335" y="76" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="369" y="76" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="83" y="122" width="34" height="28" opacity="0.35"/><rect x="117" y="122" width="34" height="28"/><rect x="170" y="122" width="34" height="28" opacity="0.35"/><rect x="204" y="122" width="34" height="28" style="stroke-width: 3.5"/><rect x="238" y="122" width="34" height="28"/><rect x="335" y="122" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="369" y="122" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="403" y="122" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="83" y="168" width="34" height="28" opacity="0.35"/><rect x="117" y="168" width="34" height="28" style="stroke-width: 3.5"/><rect x="170" y="168" width="34" height="28" opacity="0.35"/><rect x="204" y="168" width="34" height="28" opacity="0.35"/><rect x="238" y="168" width="34" height="28"/><rect x="335" y="168" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="369" y="168" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="403" y="168" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="437" y="168" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="83" y="214" width="34" height="28" opacity="0.35"/><rect x="117" y="214" width="34" height="28" opacity="0.35"/><rect x="170" y="214" width="34" height="28" opacity="0.35"/><rect x="204" y="214" width="34" height="28" opacity="0.35"/><rect x="238" y="214" width="34" height="28" style="stroke-width: 3.5"/><rect x="335" y="214" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="369" y="214" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="403" y="214" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="437" y="214" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><rect x="471" y="214" width="34" height="28" style="fill: currentColor; fill-opacity: 0.15"/><path d="M285 44 H 325" style="stroke-width: 2" marker-end="url(#a-mst)"/><path d="M285 90 H 325" style="stroke-width: 2" marker-end="url(#a-mst)"/><path d="M285 136 H 325" style="stroke-width: 2" marker-end="url(#a-mst)"/><path d="M285 182 H 325" style="stroke-width: 2" marker-end="url(#a-mst)"/><path d="M285 228 H 325" style="stroke-width: 2" marker-end="url(#a-mst)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="100.0" y="49">2</text><text x="134.0" y="49">6</text><text x="187.0" y="49">1</text><text x="221.0" y="49">4</text><text x="255.0" y="49">8</text><text x="352.0" y="49">1</text><text x="100.0" y="95">2</text><text x="134.0" y="95">6</text><text x="187.0" y="95" opacity="0.35">1</text><text x="221.0" y="95">4</text><text x="255.0" y="95">8</text><text x="352.0" y="95">1</text><text x="386.0" y="95">2</text><text x="100.0" y="141" opacity="0.35">2</text><text x="134.0" y="141">6</text><text x="187.0" y="141" opacity="0.35">1</text><text x="221.0" y="141">4</text><text x="255.0" y="141">8</text><text x="352.0" y="141">1</text><text x="386.0" y="141">2</text><text x="420.0" y="141">4</text><text x="100.0" y="187" opacity="0.35">2</text><text x="134.0" y="187">6</text><text x="187.0" y="187" opacity="0.35">1</text><text x="221.0" y="187" opacity="0.35">4</text><text x="255.0" y="187">8</text><text x="352.0" y="187">1</text><text x="386.0" y="187">2</text><text x="420.0" y="187">4</text><text x="454.0" y="187">6</text><text x="100.0" y="233" opacity="0.35">2</text><text x="134.0" y="233" opacity="0.35">6</text><text x="187.0" y="233" opacity="0.35">1</text><text x="221.0" y="233" opacity="0.35">4</text><text x="255.0" y="233">8</text><text x="352.0" y="233">1</text><text x="386.0" y="233">2</text><text x="420.0" y="233">4</text><text x="454.0" y="233">6</text><text x="488.0" y="233">8</text></g><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="117" y="18" style="font-weight: bold">Left</text><text x="221" y="18" style="font-weight: bold">Right</text><text x="420" y="18" style="font-weight: bold">Result</text><text x="68" y="49" text-anchor="end" style="font-weight: bold">Step 1</text><text x="520" y="49" text-anchor="start">Compare 2 and 1. Take 1.</text><text x="68" y="95" text-anchor="end" style="font-weight: bold">Step 2</text><text x="520" y="95" text-anchor="start">Compare 2 and 4. Take 2.</text><text x="68" y="141" text-anchor="end" style="font-weight: bold">Step 3</text><text x="520" y="141" text-anchor="start">Compare 6 and 4. Take 4.</text><text x="68" y="187" text-anchor="end" style="font-weight: bold">Step 4</text><text x="520" y="187" text-anchor="start">Compare 6 and 8. Take 6.</text><text x="68" y="233" text-anchor="end" style="font-weight: bold">Step 5</text><text x="520" y="233" text-anchor="start">Left is used up. Add [8].</text></g>
   </svg>
 </figure>
-<p>After each comparison, advance the index of the list that supplied the value.</p>
+<p>After each comparison, advance the index of the list that supplied the value. The result is <code>[1, 2, 4, 6, 8]</code>.</p>
 <p><code>merge</code> takes two ascending lists and returns a new ascending list.</p>
 <wb-example id="ex-merge"></wb-example>
 <p><code>i</code> and <code>j</code> identify the next unused values. The loop runs while both indices are valid.</p>
@@ -317,39 +295,6 @@ result.<span class="wb-fn">extend</span>(____(a)____)
   </wb-table>
 </div>
 
-<div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 2</div>
-  <p>Write <code>merge(left, right)</code>.</p>
-  <ul>
-    <li>Return a new sorted list and keep all copies of equal values.</li>
-  </ul>
-  <p>Use <code>left = [1, 4, 4]</code> and <code>right = [2, 4, 8]</code>. Both lists are in ascending order.</p>
-  <p>Take the left value first when two values are equal. Record each value and the list that supplied it.</p>
-  <wb-table id="cp2-trace">
-    <table>
-      <thead><tr><th>Step</th><th>Appended value</th><th>Source list</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td data-blank="v1"></td><td data-blank="f1"></td></tr>
-        <tr><td>2</td><td data-blank="v2"></td><td data-blank="f2"></td></tr>
-        <tr><td>3</td><td data-blank="v3"></td><td data-blank="f3"></td></tr>
-        <tr><td>4</td><td data-blank="v4"></td><td data-blank="f4"></td></tr>
-        <tr><td>5</td><td data-blank="v5"></td><td data-blank="f5"></td></tr>
-        <tr><td>6</td><td data-blank="v6"></td><td data-blank="f6"></td></tr>
-      </tbody>
-    </table>
-  </wb-table>
-  <p>In the code box, keep the given <code>print</code>. Then test the function with an empty left list and a right list of <code>[2, 8]</code>: print <code>merge([], [2, 8])</code>. <strong>Check</strong> also calls <code>merge</code> with other pairs of lists.</p>
-  <div class="wb-block">
-    <div class="wb-block-title">Rules the checker enforces</div>
-    <ul>
-      <li>Define <code>merge(left, right)</code> with two parameters.</li>
-      <li>Use a loop. Do not use <code>sort</code> or <code>sorted</code>.</li>
-      <li>Keep both input lists unchanged.</li>
-    </ul>
-  </div>
-  <wb-exercise id="cp2"></wb-exercise>
-</div>
-
 <p class="wb-part" id="part-merge-sort">Merge sort</p>
 
 <h2 id="s7">7. Merge sort splits and combines</h2>
@@ -360,6 +305,12 @@ result.<span class="wb-fn">extend</span>(____(a)____)
   </svg>
 </figure>
 <p>The upper branches show splits. The lower branches show merges.</p>
+<p>Merge sort, step by step: split until each part has length <code>1</code>. Then merge each pair of sorted parts.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 640 376" width="640" height="376" role="img" aria-label="Merge sort on 6, 2, 9, 4, 7, 1, 5. The list splits into 6, 2, 9 and 4, 7, 1, 5. These split into 6, then 2, 9, then 4, 7, then 1, 5. The parts of length 2 split into single values. Shaded rows show the merges: 6, then 2, 9, then 4, 7, then 1, 5; next 2, 6, 9 and 1, 4, 5, 7; last the whole list 1, 2, 4, 5, 6, 7, 9 with thick boxes." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-mtree" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="243.0" y="12" width="30" height="26"/><rect x="273.0" y="12" width="30" height="26"/><rect x="303.0" y="12" width="30" height="26"/><rect x="333.0" y="12" width="30" height="26"/><rect x="363.0" y="12" width="30" height="26"/><rect x="393.0" y="12" width="30" height="26"/><rect x="423.0" y="12" width="30" height="26"/><rect x="171.0" y="64" width="30" height="26"/><rect x="201.0" y="64" width="30" height="26"/><rect x="231.0" y="64" width="30" height="26"/><rect x="387.0" y="64" width="30" height="26"/><rect x="417.0" y="64" width="30" height="26"/><rect x="447.0" y="64" width="30" height="26"/><rect x="477.0" y="64" width="30" height="26"/><rect x="135.0" y="116" width="30" height="26"/><rect x="219.0" y="116" width="30" height="26"/><rect x="249.0" y="116" width="30" height="26"/><rect x="351.0" y="116" width="30" height="26"/><rect x="381.0" y="116" width="30" height="26"/><rect x="483.0" y="116" width="30" height="26"/><rect x="513.0" y="116" width="30" height="26"/><rect x="201.0" y="168" width="30" height="26"/><rect x="267.0" y="168" width="30" height="26"/><rect x="333.0" y="168" width="30" height="26"/><rect x="399.0" y="168" width="30" height="26"/><rect x="465.0" y="168" width="30" height="26"/><rect x="531.0" y="168" width="30" height="26"/><rect x="135.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="219.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="249.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="351.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="381.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="483.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="513.0" y="220" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="171.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="201.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="231.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="387.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="417.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="447.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="477.0" y="272" width="30" height="26" style="fill: currentColor; fill-opacity: 0.15"/><rect x="243.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="273.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="303.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="333.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="363.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="393.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><rect x="423.0" y="324" width="30" height="26" style="stroke-width: 3.5; fill: currentColor; fill-opacity: 0.15"/><path d="M348.0 40 L216.0 61" marker-end="url(#a-mtree)"/><path d="M348.0 40 L447.0 61" marker-end="url(#a-mtree)"/><path d="M216.0 92 L150.0 113" marker-end="url(#a-mtree)"/><path d="M216.0 92 L249.0 113" marker-end="url(#a-mtree)"/><path d="M447.0 92 L381.0 113" marker-end="url(#a-mtree)"/><path d="M447.0 92 L513.0 113" marker-end="url(#a-mtree)"/><path d="M150.0 144 L150.0 217" marker-end="url(#a-mtree)"/><path d="M249.0 144 L216.0 165" marker-end="url(#a-mtree)"/><path d="M249.0 144 L282.0 165" marker-end="url(#a-mtree)"/><path d="M381.0 144 L348.0 165" marker-end="url(#a-mtree)"/><path d="M381.0 144 L414.0 165" marker-end="url(#a-mtree)"/><path d="M513.0 144 L480.0 165" marker-end="url(#a-mtree)"/><path d="M513.0 144 L546.0 165" marker-end="url(#a-mtree)"/><path d="M216.0 196 L249.0 217" marker-end="url(#a-mtree)"/><path d="M282.0 196 L249.0 217" marker-end="url(#a-mtree)"/><path d="M348.0 196 L381.0 217" marker-end="url(#a-mtree)"/><path d="M414.0 196 L381.0 217" marker-end="url(#a-mtree)"/><path d="M480.0 196 L513.0 217" marker-end="url(#a-mtree)"/><path d="M546.0 196 L513.0 217" marker-end="url(#a-mtree)"/><path d="M150.0 248 L216.0 269" marker-end="url(#a-mtree)"/><path d="M249.0 248 L216.0 269" marker-end="url(#a-mtree)"/><path d="M381.0 248 L447.0 269" marker-end="url(#a-mtree)"/><path d="M513.0 248 L447.0 269" marker-end="url(#a-mtree)"/><path d="M216.0 300 L348.0 321" marker-end="url(#a-mtree)"/><path d="M447.0 300 L348.0 321" marker-end="url(#a-mtree)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="258.0" y="30">6</text><text x="288.0" y="30">2</text><text x="318.0" y="30">9</text><text x="348.0" y="30">4</text><text x="378.0" y="30">7</text><text x="408.0" y="30">1</text><text x="438.0" y="30">5</text><text x="186.0" y="82">6</text><text x="216.0" y="82">2</text><text x="246.0" y="82">9</text><text x="402.0" y="82">4</text><text x="432.0" y="82">7</text><text x="462.0" y="82">1</text><text x="492.0" y="82">5</text><text x="150.0" y="134">6</text><text x="234.0" y="134">2</text><text x="264.0" y="134">9</text><text x="366.0" y="134">4</text><text x="396.0" y="134">7</text><text x="498.0" y="134">1</text><text x="528.0" y="134">5</text><text x="216.0" y="186">2</text><text x="282.0" y="186">9</text><text x="348.0" y="186">4</text><text x="414.0" y="186">7</text><text x="480.0" y="186">1</text><text x="546.0" y="186">5</text><text x="150.0" y="238">6</text><text x="234.0" y="238">2</text><text x="264.0" y="238">9</text><text x="366.0" y="238">4</text><text x="396.0" y="238">7</text><text x="498.0" y="238">1</text><text x="528.0" y="238">5</text><text x="186.0" y="290">2</text><text x="216.0" y="290">6</text><text x="246.0" y="290">9</text><text x="402.0" y="290">1</text><text x="432.0" y="290">4</text><text x="462.0" y="290">5</text><text x="492.0" y="290">7</text><text x="258.0" y="342">1</text><text x="288.0" y="342">2</text><text x="318.0" y="342">4</text><text x="348.0" y="342">5</text><text x="378.0" y="342">6</text><text x="408.0" y="342">7</text><text x="438.0" y="342">9</text></g><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="100" y="82" text-anchor="end" style="font-weight: bold">Split</text><text x="100" y="134" text-anchor="end" style="font-weight: bold">Split</text><text x="100" y="186" text-anchor="end" style="font-weight: bold">Length 1</text><text x="100" y="238" text-anchor="end" style="font-weight: bold">Merge</text><text x="100" y="290" text-anchor="end" style="font-weight: bold">Merge</text><text x="100" y="342" text-anchor="end" style="font-weight: bold">Merge</text></g>
+  </svg>
+</figure>
 <p><code>merge_sort</code> returns a new ascending list. It keeps the input list unchanged.</p>
 <wb-example id="ex-merge-sort"></wb-example>
 <p>The base case returns a copy of a list of length <code>0</code> or <code>1</code>.</p>
@@ -488,7 +439,7 @@ ordered.<span class="wb-fn">append</span>(<span class="wb-num">0</span>)
 </div>
 
 <div class="wb-checkpoint">
-  <div class="wb-block-title">Checkpoint 3</div>
+  <div class="wb-block-title">Checkpoint 2</div>
   <p>Write <code>merge_sort(values)</code>.</p>
   <ul>
     <li>Use the earlier <code>merge</code> function. Return a new ascending list.</li>
@@ -520,46 +471,6 @@ ordered.<span class="wb-fn">append</span>(<span class="wb-num">0</span>)
   </div>
   <wb-exercise id="cp3"></wb-exercise>
 </div>
-
-<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
-
-<h3>Selection sort</h3>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th>Rule</th><th>Meaning</th></tr></thead>
-  <tbody>
-    <tr><td>Sorting</td><td>Put the elements in order and keep duplicate values.</td></tr>
-    <tr><td>Outer loop</td><td>Fill position <code>i</code> on each pass.</td></tr>
-    <tr><td>Start of each pass</td><td>Set <code>smallest = i</code>.</td></tr>
-    <tr><td>Inner loop</td><td>Check <code>j</code> from <code>i + 1</code> to <code>n - 1</code>.</td></tr>
-    <tr><td>Selection</td><td>If <code>values[j] &lt; values[smallest]</code>, set <code>smallest = j</code>.</td></tr>
-    <tr><td>Swap</td><td>Exchange the values at <code>i</code> and <code>smallest</code>.</td></tr>
-    <tr><td>Last position</td><td>After <code>n - 1</code> passes, the last value is in place.</td></tr>
-    <tr><td>Comparison count</td><td><i>n</i>(<i>n</i> − 1) / 2. The input order does not change the count.</td></tr>
-    <tr><td>Effect</td><td>The function changes the input list in place.</td></tr>
-  </tbody>
-</table>
-</div>
-<p>For descending order, select the largest remaining value on each pass.</p>
-
-<h3>Merge sort and Python sorting</h3>
-<div class="wb-table-wrap">
-<table>
-  <thead><tr><th>Rule</th><th>Meaning</th></tr></thead>
-  <tbody>
-    <tr><td>Base case</td><td>Return a copy for length <code>0</code> or <code>1</code>.</td></tr>
-    <tr><td>Split</td><td>Use <code>mid = len(values) // 2</code>. Sort both slices.</td></tr>
-    <tr><td>Merge</td><td>Compare the first unused values in the two sorted lists.</td></tr>
-    <tr><td>Advance</td><td>Append the smaller value. Advance only its index.</td></tr>
-    <tr><td>Equal values</td><td>Take the left value first to keep the original order.</td></tr>
-    <tr><td>End of the merge</td><td>Add both remaining slices with <code>extend</code>.</td></tr>
-    <tr><td>Cost</td><td>About <i>n</i> log<sub>2</sub> <i>n</i> work. This version uses extra lists.</td></tr>
-    <tr><td><code>values.sort()</code></td><td>Change the input list. The method returns <code>None</code>.</td></tr>
-    <tr><td><code>sorted(values)</code></td><td>Return a new sorted list. Keep the input list unchanged.</td></tr>
-  </tbody>
-</table>
-</div>
-<p>For large lists, the comparison count grows more slowly for merge sort than for selection sort.</p>
 
 <h2 id="coding-practice" data-toc-group>Coding Practice</h2>
 <p>These items give more practice with selection sort and merge sort. Count comparisons between values. Do not count loop-bound tests or index calculations.</p>

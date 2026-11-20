@@ -132,14 +132,12 @@ print(values)'''
 SRC['slide_4'] = '''values = [5, 2, 9, 1]
 i = 0
 smallest = 3
-values[i], values[smallest] = (
-    values[smallest], values[i])
+values[i], values[smallest] = values[smallest], values[i]
 print(values)'''
 SRC['quick_2'] = '''values = [6, 4, 1]
 i = 0
 smallest = ____(a)____
-values[i], values[smallest] = (
-    values[smallest], values[i])
+values[i], values[smallest] = values[smallest], values[i]
 print(values)'''
 SRC['slide_5'] = '''def selection_sort(values):
     n = len(values)
@@ -148,26 +146,7 @@ SRC['slide_5'] = '''def selection_sort(values):
         for j in range(i + 1, n):
             if values[j] < values[smallest]:
                 smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])'''
-SRC['slide_6'] = '''def selection_sort(values):
-    n = len(values)
-    for i in range(n - 1):
-        smallest = i
-        for j in range(i + 1, n):
-            if values[j] < values[smallest]:
-                smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])'''
-SRC['slide_7'] = '''def selection_sort(values):
-    n = len(values)
-    for i in range(n - 1):
-        smallest = i
-        for j in range(i + 1, n):
-            if values[j] < values[smallest]:
-                smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])'''
+        values[i], values[smallest] = values[smallest], values[i]'''
 SRC['checkpoint_1_starter'] = '''def selection_desc(values):
     pass
 
@@ -179,8 +158,7 @@ SRC['slide_10'] = '''def selection_desc(values):
         for j in range(i + 1, n):
             if values[j] > values[largest]:
                 largest = j
-        values[i], values[largest] = (
-            values[largest], values[i])'''
+        values[i], values[largest] = values[largest], values[i]'''
 SRC['checkpoint_1_test'] = '''values = [3, 7, 2, 7]
 selection_desc(values)
 print(values)'''
@@ -219,28 +197,6 @@ SRC['slide_13'] = '''def merge(left, right):
     return result'''
 SRC['quick_9'] = '''print(merge([3, 7], [2, 8, 9]))
 print(merge([], [6]))'''
-SRC['checkpoint_2_starter'] = '''def merge(left, right):
-    pass
-
-left = [1, 4, 4]
-right = [2, 4, 8]
-print(merge(left, right))'''
-SRC['slide_15'] = '''def merge(left, right):
-    result = []
-    i = 0
-    j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
-            i = i + 1
-        else:
-            result.append(right[j])
-            j = j + 1
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result'''
-SRC['checkpoint_2_test'] = '''print(merge([1, 4, 4], [2, 4, 8]))
-print(merge([], [2, 8]))'''
 SRC['slide_17'] = '''def merge_sort(values):
     if len(values) <= 1:
         return values[:]
@@ -273,7 +229,7 @@ ordered.append(0)
 print(values)
 print(ordered)
 print(values.sort())'''
-SRC['checkpoint_3_starter'] = '''def merge(left, right):
+SRC['checkpoint_2_starter'] = '''def merge(left, right):
     result = []
     i = 0
     j = 0
@@ -299,7 +255,7 @@ SRC['slide_23'] = '''def merge_sort(values):
     left = merge_sort(values[:mid])
     right = merge_sort(values[mid:])
     return merge(left, right)'''
-SRC['checkpoint_3_test'] = '''values = [7, 2, 7]
+SRC['checkpoint_2_test'] = '''values = [7, 2, 7]
 print(merge_sort(values))
 print(values)'''
 SRC['practice_1_starter'] = '''def merge_desc(left, right):
@@ -436,8 +392,7 @@ SRC['boss_1_1'] = '''def selection_sort(values):
         for j in range(i + 1, n):
             if values[j] < values[smallest]:
                 smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])'''
+        values[i], values[smallest] = values[smallest], values[i]'''
 SRC['boss_1_2'] = '''import random
 
 seed = int(input())
@@ -498,8 +453,7 @@ SRC['boss_3_1'] = '''def selection_sort_count(values):
             comparisons = comparisons + 1
             if values[j] < values[smallest]:
                 smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])
+        values[i], values[smallest] = values[smallest], values[i]
         print(values)
     return comparisons'''
 SRC['boss_3_2'] = '''def selection_sort_desc_count(values):
@@ -511,8 +465,7 @@ SRC['boss_3_2'] = '''def selection_sort_desc_count(values):
             comparisons = comparisons + 1
             if values[j] > values[largest]:
                 largest = j
-        values[i], values[largest] = (
-            values[largest], values[i])
+        values[i], values[largest] = values[largest], values[i]
         print(values)
     return comparisons'''
 SRC['boss_3_3'] = '''values = []
@@ -610,7 +563,7 @@ def ex(name, code, output=True):
 SELECTION = SRC["slide_5"]
 MERGE = SRC["slide_12"]
 MERGE_SORT = SRC["slide_17"]
-assert SRC["slide_6"] == SRC["slide_7"] == SELECTION and SRC["slide_13"] == SRC["slide_15"] == MERGE
+assert SRC["slide_13"] == MERGE
 assert SRC["slide_18"] == SRC["slide_23"] == MERGE_SORT
 
 # Extra check helpers for sorting. `_stores(name)` is true when a function
@@ -644,7 +597,7 @@ LISTS = [[], [4], [2, 1], [1, 2], [3, 7, 2, 7], [5, 2, 9, 1], [9, 8, 7, 6, 5], [
 # ============================================================ 2. Selection sort selects and swaps
 assert ex("ex-swap", SRC["slide_4"])["output"] == "[1, 2, 9, 5]"
 
-# ============================================================ 3. The selection sort function and its traces
+# ============================================================ 3. The selection sort algorithm and function
 assert ex("ex-selection", SELECTION + "\n\nvalues = [5, 2, 9, 1]\nselection_sort(values)\nprint(values)\n")["output"] == "[1, 2, 5, 9]"
 
 # Checkpoint 1
@@ -687,29 +640,6 @@ assert ex("ex-merge", MERGE + "\n\nprint(merge([2, 6], [1, 4, 8]))\n")["output"]
 # ============================================================ 6. Trace a merge
 assert ex("ex-merge-trace", MERGE + "\n\nleft = [2, 6]\nright = [1, 4, 8]\nprint(merge(left, right))\n")["output"] == "[1, 2, 4, 6, 8]"
 
-# Checkpoint 2
-cp2 = MERGE + "\n\nleft = [1, 4, 4]\nright = [2, 4, 8]\nprint(merge(left, right))\nprint(merge([], [2, 8]))\n"
-assert out(cp2) == "[1, 2, 4, 4, 4, 8]\n[2, 8]"
-cp2_ns = namespace(cp2)
-PAIRS = [([1, 4, 4], [2, 4, 8]), ([], [2, 8]), ([2, 8], []), ([], []), ([3, 7], [2, 8, 9]), ([1, 2, 3], [4, 5]),
-         ([4, 5], [1, 2, 3]), ([5], [5]), ([1, 1, 1], [1]), ([-2, 0, 6], [-5, 0, 7, 9])]
-E["cp2"] = {"type": "code", "xp": 5, "minLines": 16,
-    "starter": SRC["checkpoint_2_starter"],
-    "cases": [case("[1, 4, 4] with [2, 4, 8], then [] with [2, 8]", cp2)],
-    "check": AST + SORTING + '''_fn("merge", "left", "right")
-assert _loops(_body("merge")), "Use a loop in merge that compares the first unused value in each list."
-''' + no_builtin_sort("merge") + returns("merge", cp2_ns, *PAIRS) + '''_keeps_all("merge", ([1, 4, 4], [2, 4, 8]))
-''',
-    "answer": b64(cp2),
-    "answerNote": "The <= test takes the left value first when two values are equal. After the loop, at most one remaining slice has values, and extend adds them."}
-CP2_TRACE = [("1", "Left"), ("2", "Right"), ("4", "Left"), ("4", "Left"), ("4", "Right"), ("8", "Right")]
-blanks = {}
-for i, (value, source) in enumerate(CP2_TRACE, 1):
-    blanks[f"v{i}"] = accept(value, width="3.5rem", placeholder="")
-    forms = [source, source + " list", source[0]] + (["Right slice"] if i >= 5 else [])
-    blanks[f"f{i}"] = accept(*forms, width="7rem", placeholder="Left or Right", show=source)
-E["cp2-trace"] = {"type": "table", "xp": 1, "blanks": blanks}
-
 # ============================================================ 7. Merge sort splits and combines
 assert ex("ex-merge-sort", MERGE + "\n\n" + MERGE_SORT + "\n\nvalues = [8, 3, 6, 1]\nprint(merge_sort(values))\nprint(values)\n")["output"] == "[1, 3, 6, 8]\n[8, 3, 6, 1]"
 
@@ -738,12 +668,12 @@ assert ex("ex-calls", MERGE + "\n\n" + MERGE_SORT + "\n\nprint(merge_sort([8, 3,
 assert ex("ex-sort-method", SRC["slide_21_1"])["output"] == "[1, 3, 6, 8]\nNone"
 assert ex("ex-sorted", SRC["slide_21_2"])["output"] == "[8, 3, 6, 1]\n[1, 3, 6, 8]"
 
-# Checkpoint 3
-cp3 = SRC["checkpoint_3_starter"].split("def merge_sort")[0] + MERGE_SORT + "\n\n" + SRC["checkpoint_3_test"]
+# Checkpoint 2 (ids cp3 and cp3-trace keep saved progress)
+cp3 = SRC["checkpoint_2_starter"].split("def merge_sort")[0] + MERGE_SORT + "\n\n" + SRC["checkpoint_2_test"]
 assert out(cp3) == "[2, 7, 7]\n[7, 2, 7]"
 cp3_ns = namespace(cp3)
 E["cp3"] = {"type": "code", "xp": 5, "minLines": 26,
-    "starter": SRC["checkpoint_3_starter"],
+    "starter": SRC["checkpoint_2_starter"],
     "cases": [case("values = [7, 2, 7]", cp3)],
     "check": AST + SORTING + '''_fn("merge_sort", "values")
 assert _func_calls("merge_sort", _body("merge_sort")), "merge_sort should call itself on each half of the list."

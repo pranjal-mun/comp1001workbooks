@@ -52,8 +52,7 @@ SRC['boss_1_1'] = '''def selection_sort(values):
         for j in range(i + 1, n):
             if values[j] < values[smallest]:
                 smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])
+        values[i], values[smallest] = values[smallest], values[i]
 '''
 SRC['boss_1_2'] = '''import random
 
@@ -120,8 +119,7 @@ SRC['boss_3_1'] = '''def selection_sort_count(values):
             comparisons = comparisons + 1
             if values[j] < values[smallest]:
                 smallest = j
-        values[i], values[smallest] = (
-            values[smallest], values[i])
+        values[i], values[smallest] = values[smallest], values[i]
         print(values)
     return comparisons
 '''
@@ -134,8 +132,7 @@ SRC['boss_3_2'] = '''def selection_sort_desc_count(values):
             comparisons = comparisons + 1
             if values[j] > values[largest]:
                 largest = j
-        values[i], values[largest] = (
-            values[largest], values[i])
+        values[i], values[largest] = values[largest], values[i]
         print(values)
     return comparisons
 '''

@@ -6,12 +6,12 @@
   "exercises": {
     "ex-swap": {
       "type": "example",
-      "code": "values = [5, 2, 9, 1]\ni = 0\nsmallest = 3\nvalues[i], values[smallest] = (\n    values[smallest], values[i])\nprint(values)",
+      "code": "values = [5, 2, 9, 1]\ni = 0\nsmallest = 3\nvalues[i], values[smallest] = values[smallest], values[i]\nprint(values)",
       "output": "[1, 2, 9, 5]"
     },
     "ex-selection": {
       "type": "example",
-      "code": "def selection_sort(values):\n    n = len(values)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if values[j] < values[smallest]:\n                smallest = j\n        values[i], values[smallest] = (\n            values[smallest], values[i])\n\nvalues = [5, 2, 9, 1]\nselection_sort(values)\nprint(values)",
+      "code": "def selection_sort(values):\n    n = len(values)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if values[j] < values[smallest]:\n                smallest = j\n        values[i], values[smallest] = values[smallest], values[i]\n\nvalues = [5, 2, 9, 1]\nselection_sort(values)\nprint(values)",
       "output": "[1, 2, 5, 9]"
     },
     "cp1": {
@@ -26,7 +26,7 @@
         }
       ],
       "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"selection_desc\", \"values\")\nassert len(_loops(_body(\"selection_desc\"))) >= 2, \"Use selection sort in selection_desc: an outer loop over the positions and an inner loop that finds the largest remaining value.\"\nassert _stores(\"selection_desc\"), \"Swap the values inside the list in selection_desc, for example values[i], values[largest] = values[largest], values[i].\"\nassert not _func_calls(\"sorted\", _body('selection_desc')) and not _calls(\"sort\", _body('selection_desc')), \"Sort the values yourself in selection_desc. Do not use sort or sorted.\"\nassert not _func_calls(\"max\", _body(\"selection_desc\")), \"Find the largest value with the inner loop in selection_desc. Do not use max.\"\n_sorts_in_place('selection_desc', [], [])\n_sorts_in_place('selection_desc', [4], [4])\n_sorts_in_place('selection_desc', [2, 1], [2, 1])\n_sorts_in_place('selection_desc', [1, 2], [2, 1])\n_sorts_in_place('selection_desc', [3, 7, 2, 7], [7, 7, 3, 2])\n_sorts_in_place('selection_desc', [5, 2, 9, 1], [9, 5, 2, 1])\n_sorts_in_place('selection_desc', [9, 8, 7, 6, 5], [9, 8, 7, 6, 5])\n_sorts_in_place('selection_desc', [1, 2, 3, 4], [4, 3, 2, 1])\n_sorts_in_place('selection_desc', [4, 4, 4], [4, 4, 4])\n_sorts_in_place('selection_desc', [-3, 10, 0, -3, 8, 2], [10, 8, 2, 0, -3, -3])\n",
-      "answer": "ZGVmIHNlbGVjdGlvbl9kZXNjKHZhbHVlcyk6CiAgICBuID0gbGVuKHZhbHVlcykKICAgIGZvciBpIGluIHJhbmdlKG4gLSAxKToKICAgICAgICBsYXJnZXN0ID0gaQogICAgICAgIGZvciBqIGluIHJhbmdlKGkgKyAxLCBuKToKICAgICAgICAgICAgaWYgdmFsdWVzW2pdID4gdmFsdWVzW2xhcmdlc3RdOgogICAgICAgICAgICAgICAgbGFyZ2VzdCA9IGoKICAgICAgICB2YWx1ZXNbaV0sIHZhbHVlc1tsYXJnZXN0XSA9ICgKICAgICAgICAgICAgdmFsdWVzW2xhcmdlc3RdLCB2YWx1ZXNbaV0pCgp2YWx1ZXMgPSBbMywgNywgMiwgN10Kc2VsZWN0aW9uX2Rlc2ModmFsdWVzKQpwcmludCh2YWx1ZXMp",
+      "answer": "ZGVmIHNlbGVjdGlvbl9kZXNjKHZhbHVlcyk6CiAgICBuID0gbGVuKHZhbHVlcykKICAgIGZvciBpIGluIHJhbmdlKG4gLSAxKToKICAgICAgICBsYXJnZXN0ID0gaQogICAgICAgIGZvciBqIGluIHJhbmdlKGkgKyAxLCBuKToKICAgICAgICAgICAgaWYgdmFsdWVzW2pdID4gdmFsdWVzW2xhcmdlc3RdOgogICAgICAgICAgICAgICAgbGFyZ2VzdCA9IGoKICAgICAgICB2YWx1ZXNbaV0sIHZhbHVlc1tsYXJnZXN0XSA9IHZhbHVlc1tsYXJnZXN0XSwgdmFsdWVzW2ldCgp2YWx1ZXMgPSBbMywgNywgMiwgN10Kc2VsZWN0aW9uX2Rlc2ModmFsdWVzKQpwcmludCh2YWx1ZXMp",
       "answerNote": "Each pass selects the largest remaining value with a strict > test. The swap puts it at index i."
     },
     "cp1-trace": {
@@ -99,131 +99,6 @@
       "type": "example",
       "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\nleft = [2, 6]\nright = [1, 4, 8]\nprint(merge(left, right))",
       "output": "[1, 2, 4, 6, 8]"
-    },
-    "cp2": {
-      "type": "code",
-      "xp": 5,
-      "minLines": 16,
-      "starter": "def merge(left, right):\n    pass\n\nleft = [1, 4, 4]\nright = [2, 4, 8]\nprint(merge(left, right))",
-      "cases": [
-        {
-          "name": "[1, 4, 4] with [2, 4, 8], then [] with [2, 8]",
-          "expected": "[1, 2, 4, 4, 4, 8]\n[2, 8]"
-        }
-      ],
-      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"merge\", \"left\", \"right\")\nassert _loops(_body(\"merge\")), \"Use a loop in merge that compares the first unused value in each list.\"\nassert not _func_calls(\"sorted\", _body('merge')) and not _calls(\"sort\", _body('merge')), \"Sort the values yourself in merge. Do not use sort or sorted.\"\n_returns('merge', ([1, 4, 4], [2, 4, 8]), [1, 2, 4, 4, 4, 8])\n_returns('merge', ([], [2, 8]), [2, 8])\n_returns('merge', ([2, 8], []), [2, 8])\n_returns('merge', ([], []), [])\n_returns('merge', ([3, 7], [2, 8, 9]), [2, 3, 7, 8, 9])\n_returns('merge', ([1, 2, 3], [4, 5]), [1, 2, 3, 4, 5])\n_returns('merge', ([4, 5], [1, 2, 3]), [1, 2, 3, 4, 5])\n_returns('merge', ([5], [5]), [5, 5])\n_returns('merge', ([1, 1, 1], [1]), [1, 1, 1, 1])\n_returns('merge', ([-2, 0, 6], [-5, 0, 7, 9]), [-5, -2, 0, 0, 6, 7, 9])\n_keeps_all(\"merge\", ([1, 4, 4], [2, 4, 8]))\n",
-      "answer": "ZGVmIG1lcmdlKGxlZnQsIHJpZ2h0KToKICAgIHJlc3VsdCA9IFtdCiAgICBpID0gMAogICAgaiA9IDAKICAgIHdoaWxlIGkgPCBsZW4obGVmdCkgYW5kIGogPCBsZW4ocmlnaHQpOgogICAgICAgIGlmIGxlZnRbaV0gPD0gcmlnaHRbal06CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQobGVmdFtpXSkKICAgICAgICAgICAgaSA9IGkgKyAxCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChyaWdodFtqXSkKICAgICAgICAgICAgaiA9IGogKyAxCiAgICByZXN1bHQuZXh0ZW5kKGxlZnRbaTpdKQogICAgcmVzdWx0LmV4dGVuZChyaWdodFtqOl0pCiAgICByZXR1cm4gcmVzdWx0CgpsZWZ0ID0gWzEsIDQsIDRdCnJpZ2h0ID0gWzIsIDQsIDhdCnByaW50KG1lcmdlKGxlZnQsIHJpZ2h0KSkKcHJpbnQobWVyZ2UoW10sIFsyLCA4XSkp",
-      "answerNote": "The <= test takes the left value first when two values are equal. After the loop, at most one remaining slice has values, and extend adds them."
-    },
-    "cp2-trace": {
-      "type": "table",
-      "xp": 1,
-      "blanks": {
-        "v1": {
-          "accept": [
-            "1"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f1": {
-          "accept": [
-            "Left",
-            "Left list",
-            "L"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Left"
-        },
-        "v2": {
-          "accept": [
-            "2"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f2": {
-          "accept": [
-            "Right",
-            "Right list",
-            "R"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Right"
-        },
-        "v3": {
-          "accept": [
-            "4"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f3": {
-          "accept": [
-            "Left",
-            "Left list",
-            "L"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Left"
-        },
-        "v4": {
-          "accept": [
-            "4"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f4": {
-          "accept": [
-            "Left",
-            "Left list",
-            "L"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Left"
-        },
-        "v5": {
-          "accept": [
-            "4"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f5": {
-          "accept": [
-            "Right",
-            "Right list",
-            "R",
-            "Right slice"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Right"
-        },
-        "v6": {
-          "accept": [
-            "8"
-          ],
-          "placeholder": "",
-          "width": "3.5rem"
-        },
-        "f6": {
-          "accept": [
-            "Right",
-            "Right list",
-            "R",
-            "Right slice"
-          ],
-          "placeholder": "Left or Right",
-          "width": "7rem",
-          "show": "Right"
-        }
-      }
     },
     "ex-merge-sort": {
       "type": "example",
