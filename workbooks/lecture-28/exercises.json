@@ -1,0 +1,1147 @@
+{
+  "id": "lecture-28",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 28 Workbook",
+  "subtitle": "Selection sort and merge sort",
+  "exercises": {
+    "ex-swap": {
+      "type": "example",
+      "code": "values = [5, 2, 9, 1]\ni = 0\nsmallest = 3\nvalues[i], values[smallest] = (\n    values[smallest], values[i])\nprint(values)",
+      "output": "[1, 2, 9, 5]"
+    },
+    "ex-selection": {
+      "type": "example",
+      "code": "def selection_sort(values):\n    n = len(values)\n    for i in range(n - 1):\n        smallest = i\n        for j in range(i + 1, n):\n            if values[j] < values[smallest]:\n                smallest = j\n        values[i], values[smallest] = (\n            values[smallest], values[i])\n\nvalues = [5, 2, 9, 1]\nselection_sort(values)\nprint(values)",
+      "output": "[1, 2, 5, 9]"
+    },
+    "cp1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 14,
+      "starter": "def selection_desc(values):\n    pass\n\nvalues = [3, 7, 2, 7]",
+      "cases": [
+        {
+          "name": "values = [3, 7, 2, 7]",
+          "expected": "[7, 7, 3, 2]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"selection_desc\", \"values\")\nassert len(_loops(_body(\"selection_desc\"))) >= 2, \"Use selection sort in selection_desc: an outer loop over the positions and an inner loop that finds the largest remaining value.\"\nassert _stores(\"selection_desc\"), \"Swap the values inside the list in selection_desc, for example values[i], values[largest] = values[largest], values[i].\"\nassert not _func_calls(\"sorted\", _body('selection_desc')) and not _calls(\"sort\", _body('selection_desc')), \"Sort the values yourself in selection_desc. Do not use sort or sorted.\"\nassert not _func_calls(\"max\", _body(\"selection_desc\")), \"Find the largest value with the inner loop in selection_desc. Do not use max.\"\n_sorts_in_place('selection_desc', [], [])\n_sorts_in_place('selection_desc', [4], [4])\n_sorts_in_place('selection_desc', [2, 1], [2, 1])\n_sorts_in_place('selection_desc', [1, 2], [2, 1])\n_sorts_in_place('selection_desc', [3, 7, 2, 7], [7, 7, 3, 2])\n_sorts_in_place('selection_desc', [5, 2, 9, 1], [9, 5, 2, 1])\n_sorts_in_place('selection_desc', [9, 8, 7, 6, 5], [9, 8, 7, 6, 5])\n_sorts_in_place('selection_desc', [1, 2, 3, 4], [4, 3, 2, 1])\n_sorts_in_place('selection_desc', [4, 4, 4], [4, 4, 4])\n_sorts_in_place('selection_desc', [-3, 10, 0, -3, 8, 2], [10, 8, 2, 0, -3, -3])\n",
+      "answer": "ZGVmIHNlbGVjdGlvbl9kZXNjKHZhbHVlcyk6CiAgICBuID0gbGVuKHZhbHVlcykKICAgIGZvciBpIGluIHJhbmdlKG4gLSAxKToKICAgICAgICBsYXJnZXN0ID0gaQogICAgICAgIGZvciBqIGluIHJhbmdlKGkgKyAxLCBuKToKICAgICAgICAgICAgaWYgdmFsdWVzW2pdID4gdmFsdWVzW2xhcmdlc3RdOgogICAgICAgICAgICAgICAgbGFyZ2VzdCA9IGoKICAgICAgICB2YWx1ZXNbaV0sIHZhbHVlc1tsYXJnZXN0XSA9ICgKICAgICAgICAgICAgdmFsdWVzW2xhcmdlc3RdLCB2YWx1ZXNbaV0pCgp2YWx1ZXMgPSBbMywgNywgMiwgN10Kc2VsZWN0aW9uX2Rlc2ModmFsdWVzKQpwcmludCh2YWx1ZXMp",
+      "answerNote": "Each pass selects the largest remaining value with a strict > test. The swap puts it at index i."
+    },
+    "cp1-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "s1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "l1": {
+          "accept": [
+            "[7, 3, 2, 7]",
+            "[7,3,2,7]"
+          ],
+          "placeholder": "list",
+          "width": "10rem",
+          "show": "[7, 3, 2, 7]"
+        },
+        "s2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "l2": {
+          "accept": [
+            "[7, 7, 2, 3]",
+            "[7,7,2,3]"
+          ],
+          "placeholder": "list",
+          "width": "10rem",
+          "show": "[7, 7, 2, 3]"
+        },
+        "s3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "l3": {
+          "accept": [
+            "[7, 7, 3, 2]",
+            "[7,7,3,2]"
+          ],
+          "placeholder": "list",
+          "width": "10rem",
+          "show": "[7, 7, 3, 2]"
+        },
+        "cmp": {
+          "accept": [
+            "6"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        }
+      }
+    },
+    "ex-merge": {
+      "type": "example",
+      "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\nprint(merge([2, 6], [1, 4, 8]))",
+      "output": "[1, 2, 4, 6, 8]"
+    },
+    "ex-merge-trace": {
+      "type": "example",
+      "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\nleft = [2, 6]\nright = [1, 4, 8]\nprint(merge(left, right))",
+      "output": "[1, 2, 4, 6, 8]"
+    },
+    "cp2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 16,
+      "starter": "def merge(left, right):\n    pass\n\nleft = [1, 4, 4]\nright = [2, 4, 8]\nprint(merge(left, right))",
+      "cases": [
+        {
+          "name": "[1, 4, 4] with [2, 4, 8], then [] with [2, 8]",
+          "expected": "[1, 2, 4, 4, 4, 8]\n[2, 8]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"merge\", \"left\", \"right\")\nassert _loops(_body(\"merge\")), \"Use a loop in merge that compares the first unused value in each list.\"\nassert not _func_calls(\"sorted\", _body('merge')) and not _calls(\"sort\", _body('merge')), \"Sort the values yourself in merge. Do not use sort or sorted.\"\n_returns('merge', ([1, 4, 4], [2, 4, 8]), [1, 2, 4, 4, 4, 8])\n_returns('merge', ([], [2, 8]), [2, 8])\n_returns('merge', ([2, 8], []), [2, 8])\n_returns('merge', ([], []), [])\n_returns('merge', ([3, 7], [2, 8, 9]), [2, 3, 7, 8, 9])\n_returns('merge', ([1, 2, 3], [4, 5]), [1, 2, 3, 4, 5])\n_returns('merge', ([4, 5], [1, 2, 3]), [1, 2, 3, 4, 5])\n_returns('merge', ([5], [5]), [5, 5])\n_returns('merge', ([1, 1, 1], [1]), [1, 1, 1, 1])\n_returns('merge', ([-2, 0, 6], [-5, 0, 7, 9]), [-5, -2, 0, 0, 6, 7, 9])\n_keeps_all(\"merge\", ([1, 4, 4], [2, 4, 8]))\n",
+      "answer": "ZGVmIG1lcmdlKGxlZnQsIHJpZ2h0KToKICAgIHJlc3VsdCA9IFtdCiAgICBpID0gMAogICAgaiA9IDAKICAgIHdoaWxlIGkgPCBsZW4obGVmdCkgYW5kIGogPCBsZW4ocmlnaHQpOgogICAgICAgIGlmIGxlZnRbaV0gPD0gcmlnaHRbal06CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQobGVmdFtpXSkKICAgICAgICAgICAgaSA9IGkgKyAxCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChyaWdodFtqXSkKICAgICAgICAgICAgaiA9IGogKyAxCiAgICByZXN1bHQuZXh0ZW5kKGxlZnRbaTpdKQogICAgcmVzdWx0LmV4dGVuZChyaWdodFtqOl0pCiAgICByZXR1cm4gcmVzdWx0CgpsZWZ0ID0gWzEsIDQsIDRdCnJpZ2h0ID0gWzIsIDQsIDhdCnByaW50KG1lcmdlKGxlZnQsIHJpZ2h0KSkKcHJpbnQobWVyZ2UoW10sIFsyLCA4XSkp",
+      "answerNote": "The <= test takes the left value first when two values are equal. After the loop, at most one remaining slice has values, and extend adds them."
+    },
+    "cp2-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "v1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f1": {
+          "accept": [
+            "Left",
+            "Left list",
+            "L"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Left"
+        },
+        "v2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f2": {
+          "accept": [
+            "Right",
+            "Right list",
+            "R"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Right"
+        },
+        "v3": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f3": {
+          "accept": [
+            "Left",
+            "Left list",
+            "L"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Left"
+        },
+        "v4": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f4": {
+          "accept": [
+            "Left",
+            "Left list",
+            "L"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Left"
+        },
+        "v5": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f5": {
+          "accept": [
+            "Right",
+            "Right list",
+            "R",
+            "Right slice"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Right"
+        },
+        "v6": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "",
+          "width": "3.5rem"
+        },
+        "f6": {
+          "accept": [
+            "Right",
+            "Right list",
+            "R",
+            "Right slice"
+          ],
+          "placeholder": "Left or Right",
+          "width": "7rem",
+          "show": "Right"
+        }
+      }
+    },
+    "ex-merge-sort": {
+      "type": "example",
+      "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\ndef merge_sort(values):\n    if len(values) <= 1:\n        return values[:]\n    mid = len(values) // 2\n    left = merge_sort(values[:mid])\n    right = merge_sort(values[mid:])\n    return merge(left, right)\n\nvalues = [8, 3, 6, 1]\nprint(merge_sort(values))\nprint(values)",
+      "output": "[1, 3, 6, 8]\n[8, 3, 6, 1]"
+    },
+    "ex-calls": {
+      "type": "example",
+      "code": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\ndef merge_sort(values):\n    if len(values) <= 1:\n        return values[:]\n    mid = len(values) // 2\n    left = merge_sort(values[:mid])\n    right = merge_sort(values[mid:])\n    return merge(left, right)\n\nprint(merge_sort([8, 3, 6, 1]))",
+      "output": "[1, 3, 6, 8]"
+    },
+    "ex-sort-method": {
+      "type": "example",
+      "code": "values = [8, 3, 6, 1]\nresult = values.sort()\nprint(values)\nprint(result)",
+      "output": "[1, 3, 6, 8]\nNone"
+    },
+    "ex-sorted": {
+      "type": "example",
+      "code": "values = [8, 3, 6, 1]\nresult = sorted(values)\nprint(values)\nprint(result)",
+      "output": "[8, 3, 6, 1]\n[1, 3, 6, 8]"
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 26,
+      "starter": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\ndef merge_sort(values):\n    pass\n\nvalues = [7, 2, 7]",
+      "cases": [
+        {
+          "name": "values = [7, 2, 7]",
+          "expected": "[2, 7, 7]\n[7, 2, 7]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"merge_sort\", \"values\")\nassert _func_calls(\"merge_sort\", _body(\"merge_sort\")), \"merge_sort should call itself on each half of the list.\"\nassert _func_calls(\"merge\", _body(\"merge_sort\")), \"Combine the two sorted halves with the merge function in merge_sort.\"\nassert not _func_calls(\"sorted\", _body('merge_sort')) and not _calls(\"sort\", _body('merge_sort')), \"Sort the values yourself in merge_sort. Do not use sort or sorted.\"\nassert not _func_calls(\"sorted\", _body('merge')) and not _calls(\"sort\", _body('merge')), \"Sort the values yourself in merge. Do not use sort or sorted.\"\n_returns('merge_sort', ([],), [])\n_returns('merge_sort', ([4],), [4])\n_returns('merge_sort', ([2, 1],), [1, 2])\n_returns('merge_sort', ([1, 2],), [1, 2])\n_returns('merge_sort', ([3, 7, 2, 7],), [2, 3, 7, 7])\n_returns('merge_sort', ([5, 2, 9, 1],), [1, 2, 5, 9])\n_returns('merge_sort', ([9, 8, 7, 6, 5],), [5, 6, 7, 8, 9])\n_returns('merge_sort', ([1, 2, 3, 4],), [1, 2, 3, 4])\n_returns('merge_sort', ([4, 4, 4],), [4, 4, 4])\n_returns('merge_sort', ([-3, 10, 0, -3, 8, 2],), [-3, -3, 0, 2, 8, 10])\n_keeps(\"merge_sort\", ([7, 2, 7],))\nfor _v in ([], [5]):\n    assert _call(\"merge_sort\", _v)[0] is not _v, \"merge_sort(\" + repr(_v) + \") returned the input list itself. Return a copy, values[:], in the base case.\"\n",
+      "answer": "ZGVmIG1lcmdlKGxlZnQsIHJpZ2h0KToKICAgIHJlc3VsdCA9IFtdCiAgICBpID0gMAogICAgaiA9IDAKICAgIHdoaWxlIGkgPCBsZW4obGVmdCkgYW5kIGogPCBsZW4ocmlnaHQpOgogICAgICAgIGlmIGxlZnRbaV0gPD0gcmlnaHRbal06CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQobGVmdFtpXSkKICAgICAgICAgICAgaSA9IGkgKyAxCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChyaWdodFtqXSkKICAgICAgICAgICAgaiA9IGogKyAxCiAgICByZXN1bHQuZXh0ZW5kKGxlZnRbaTpdKQogICAgcmVzdWx0LmV4dGVuZChyaWdodFtqOl0pCiAgICByZXR1cm4gcmVzdWx0CgpkZWYgbWVyZ2Vfc29ydCh2YWx1ZXMpOgogICAgaWYgbGVuKHZhbHVlcykgPD0gMToKICAgICAgICByZXR1cm4gdmFsdWVzWzpdCiAgICBtaWQgPSBsZW4odmFsdWVzKSAvLyAyCiAgICBsZWZ0ID0gbWVyZ2Vfc29ydCh2YWx1ZXNbOm1pZF0pCiAgICByaWdodCA9IG1lcmdlX3NvcnQodmFsdWVzW21pZDpdKQogICAgcmV0dXJuIG1lcmdlKGxlZnQsIHJpZ2h0KQoKdmFsdWVzID0gWzcsIDIsIDddCnByaW50KG1lcmdlX3NvcnQodmFsdWVzKSkKcHJpbnQodmFsdWVzKQ==",
+      "answerNote": "The base case returns a copy. Each recursive call sorts one slice, and merge combines the two results."
+    },
+    "cp3-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "[7, 2, 7]",
+            "[7,2,7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[7, 2, 7]"
+        },
+        "r1": {
+          "accept": [
+            "[2, 7, 7]",
+            "[2,7,7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[2, 7, 7]"
+        },
+        "i2": {
+          "accept": [
+            "[7]",
+            "[7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[7]"
+        },
+        "r2": {
+          "accept": [
+            "[7]",
+            "[7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[7]"
+        },
+        "i3": {
+          "accept": [
+            "[2, 7]",
+            "[2,7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[2, 7]"
+        },
+        "r3": {
+          "accept": [
+            "[2, 7]",
+            "[2,7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[2, 7]"
+        },
+        "i4": {
+          "accept": [
+            "[2]",
+            "[2]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[2]"
+        },
+        "r4": {
+          "accept": [
+            "[2]",
+            "[2]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[2]"
+        },
+        "i5": {
+          "accept": [
+            "[7]",
+            "[7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[7]"
+        },
+        "r5": {
+          "accept": [
+            "[7]",
+            "[7]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[7]"
+        },
+        "op": {
+          "accept": [
+            "sorted(values)",
+            "sorted",
+            "sorted()",
+            "sorted(values[:])"
+          ],
+          "placeholder": "code",
+          "width": "10rem",
+          "show": "sorted(values)"
+        }
+      }
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 24,
+      "starter": "def merge_desc(left, right):\n    pass\n\ndef merge_sort_desc(values):\n    pass\n\n# Print each result and its input for the four test lists.",
+      "cases": [
+        {
+          "name": "[], [5], [6, 2, 6, 9, 1] and [9, 6, 4, 1]",
+          "expected": "[]\n[]\n[5]\n[5]\n[9, 6, 6, 2, 1]\n[6, 2, 6, 9, 1]\n[9, 6, 4, 1]\n[9, 6, 4, 1]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"merge_desc\", \"left\", \"right\")\n_fn(\"merge_sort_desc\", \"values\")\nassert _func_calls(\"merge_sort_desc\", _body(\"merge_sort_desc\")), \"merge_sort_desc should call itself on each half of the list.\"\nassert _func_calls(\"merge_desc\", _body(\"merge_sort_desc\")), \"Combine the two sorted halves with merge_desc in merge_sort_desc.\"\nassert not _calls(\"reverse\", _body(\"merge_sort_desc\")) and not _calls(\"reverse\", _body(\"merge_desc\")), \"Build the descending order with the comparison in merge_desc. Do not reverse a list.\"\nassert not _func_calls(\"sorted\", _body('merge_desc')) and not _calls(\"sort\", _body('merge_desc')), \"Sort the values yourself in merge_desc. Do not use sort or sorted.\"\nassert not _func_calls(\"sorted\", _body('merge_sort_desc')) and not _calls(\"sort\", _body('merge_sort_desc')), \"Sort the values yourself in merge_sort_desc. Do not use sort or sorted.\"\n_returns('merge_desc', ([6, 2], [9, 6, 1]), [9, 6, 6, 2, 1])\n_returns('merge_desc', ([], [4]), [4])\n_returns('merge_desc', ([3], []), [3])\n_returns('merge_desc', ([5, 5], [5]), [5, 5, 5])\n_returns('merge_desc', ([9, 1], [8, 7, 0]), [9, 8, 7, 1, 0])\n_returns('merge_sort_desc', ([],), [])\n_returns('merge_sort_desc', ([4],), [4])\n_returns('merge_sort_desc', ([2, 1],), [2, 1])\n_returns('merge_sort_desc', ([1, 2],), [2, 1])\n_returns('merge_sort_desc', ([3, 7, 2, 7],), [7, 7, 3, 2])\n_returns('merge_sort_desc', ([5, 2, 9, 1],), [9, 5, 2, 1])\n_returns('merge_sort_desc', ([9, 8, 7, 6, 5],), [9, 8, 7, 6, 5])\n_returns('merge_sort_desc', ([1, 2, 3, 4],), [4, 3, 2, 1])\n_returns('merge_sort_desc', ([4, 4, 4],), [4, 4, 4])\n_returns('merge_sort_desc', ([-3, 10, 0, -3, 8, 2],), [10, 8, 2, 0, -3, -3])\n_keeps(\"merge_sort_desc\", ([6, 2, 6, 9, 1],))\n_keeps_all(\"merge_desc\", ([6, 2], [9, 6, 1]))\n",
+      "answer": "ZGVmIG1lcmdlX2Rlc2MobGVmdCwgcmlnaHQpOgogICAgcmVzdWx0ID0gW10KICAgIGkgPSAwCiAgICBqID0gMAogICAgd2hpbGUgaSA8IGxlbihsZWZ0KSBhbmQgaiA8IGxlbihyaWdodCk6CiAgICAgICAgaWYgbGVmdFtpXSA+PSByaWdodFtqXToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChsZWZ0W2ldKQogICAgICAgICAgICBpID0gaSArIDEKICAgICAgICBlbHNlOgogICAgICAgICAgICByZXN1bHQuYXBwZW5kKHJpZ2h0W2pdKQogICAgICAgICAgICBqID0gaiArIDEKICAgIHJlc3VsdC5leHRlbmQobGVmdFtpOl0pCiAgICByZXN1bHQuZXh0ZW5kKHJpZ2h0W2o6XSkKICAgIHJldHVybiByZXN1bHQKCmRlZiBtZXJnZV9zb3J0X2Rlc2ModmFsdWVzKToKICAgIGlmIGxlbih2YWx1ZXMpIDw9IDE6CiAgICAgICAgcmV0dXJuIHZhbHVlc1s6XQogICAgbWlkID0gbGVuKHZhbHVlcykgLy8gMgogICAgbGVmdCA9IG1lcmdlX3NvcnRfZGVzYyh2YWx1ZXNbOm1pZF0pCiAgICByaWdodCA9IG1lcmdlX3NvcnRfZGVzYyh2YWx1ZXNbbWlkOl0pCiAgICByZXR1cm4gbWVyZ2VfZGVzYyhsZWZ0LCByaWdodCkKCmZvciBjYXNlIGluIFtbXSwgWzVdLCBbNiwgMiwgNiwgOSwgMV0sIFs5LCA2LCA0LCAxXV06CiAgICBwcmludChtZXJnZV9zb3J0X2Rlc2MoY2FzZSkpCiAgICBwcmludChjYXNlKQ==",
+      "answerNote": "Only the comparison changes: >= takes the larger front value, and the left value first when they are equal."
+    },
+    "p1-cmp": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "cmp": {
+          "accept": [
+            "left[i] >= right[j]",
+            "left[i]>=right[j]",
+            ">=",
+            "right[j] <= left[i]"
+          ],
+          "placeholder": "code",
+          "width": "12rem",
+          "show": "left[i] >= right[j]"
+        }
+      }
+    },
+    "p1-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "RWFjaCByZW1haW5pbmcgc2xpY2UgaXMgYWxyZWFkeSBpbiBkZXNjZW5kaW5nIG9yZGVyLiBJdHMgdmFsdWVzIGFyZSBubyBsYXJnZXIgdGhhbiBldmVyeSB2YWx1ZSBhbHJlYWR5IGluIHRoZSByZXN1bHQsIHNvIHRoZXkgYmVsb25nIGF0IHRoZSBlbmQu"
+    },
+    "ex-p2": {
+      "type": "example",
+      "code": "def unique_counting(values):\n    result = values[:]\n    i = 0\n    while i < len(result):\n        copies = result.count(result[i])\n        if copies > 1:\n            result.pop(i)\n        else:\n            i = i + 1\n    return result\n\nvalues = [4, 2, 4, 7, 2]\nprint(unique_counting(values))\nprint(values)",
+      "output": "[4, 7, 2]\n[4, 2, 4, 7, 2]"
+    },
+    "p2-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "c1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a1": {
+          "accept": [
+            "Remove"
+          ],
+          "placeholder": "action",
+          "width": "6rem"
+        },
+        "r1": {
+          "accept": [
+            "[2, 4, 7, 2]",
+            "[2,4,7,2]"
+          ],
+          "placeholder": "list",
+          "width": "9rem",
+          "show": "[2, 4, 7, 2]"
+        },
+        "e2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "c2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a2": {
+          "accept": [
+            "Remove"
+          ],
+          "placeholder": "action",
+          "width": "6rem"
+        },
+        "r2": {
+          "accept": [
+            "[4, 7, 2]",
+            "[4,7,2]"
+          ],
+          "placeholder": "list",
+          "width": "9rem",
+          "show": "[4, 7, 2]"
+        },
+        "e3": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "c3": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a3": {
+          "accept": [
+            "Advance"
+          ],
+          "placeholder": "action",
+          "width": "6rem"
+        },
+        "r3": {
+          "accept": [
+            "[4, 7, 2]",
+            "[4,7,2]"
+          ],
+          "placeholder": "list",
+          "width": "9rem",
+          "show": "[4, 7, 2]"
+        },
+        "e4": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "c4": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a4": {
+          "accept": [
+            "Advance"
+          ],
+          "placeholder": "action",
+          "width": "6rem"
+        },
+        "r4": {
+          "accept": [
+            "[4, 7, 2]",
+            "[4,7,2]"
+          ],
+          "placeholder": "list",
+          "width": "9rem",
+          "show": "[4, 7, 2]"
+        },
+        "e5": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "c5": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a5": {
+          "accept": [
+            "Advance"
+          ],
+          "placeholder": "action",
+          "width": "6rem"
+        },
+        "r5": {
+          "accept": [
+            "[4, 7, 2]",
+            "[4,7,2]"
+          ],
+          "placeholder": "list",
+          "width": "9rem",
+          "show": "[4, 7, 2]"
+        },
+        "survive": {
+          "accept": [
+            "last",
+            "the last",
+            "the last copy",
+            "last copy",
+            "last one",
+            "the last one"
+          ],
+          "placeholder": "first or last",
+          "width": "9rem",
+          "show": "The last copy"
+        },
+        "total": {
+          "accept": [
+            "n*n",
+            "n * n",
+            "n^2",
+            "n**2",
+            "n ** 2",
+            "n²"
+          ],
+          "placeholder": "formula",
+          "width": "6rem",
+          "show": "n * n"
+        }
+      }
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "def unique_sorted(values):\n    pass\n\n# Print the result for [8, 3, 8, 1, 3], then [], then [5, 5, 5].",
+      "cases": [
+        {
+          "name": "[8, 3, 8, 1, 3], [] and [5, 5, 5]",
+          "expected": "[1, 3, 8]\n[]\n[5]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"unique_sorted\", \"values\")\n_f = _body(\"unique_sorted\")\nassert _func_calls(\"sorted\", _f), \"Call sorted(values) in unique_sorted. Then compare neighbors in the sorted list.\"\nassert len(_loops(_f)) == 1, \"Use one loop over the sorted list in unique_sorted.\"\nassert not _uses_in(\"unique_sorted\"), \"Compare each value with the last value added in unique_sorted. Do not use in to test membership.\"\nassert not _calls(\"count\", _f) and not _func_calls(\"set\", _f), \"Compare neighbors in unique_sorted. Do not use count or set.\"\n_returns('unique_sorted', ([],), [])\n_returns('unique_sorted', ([4],), [4])\n_returns('unique_sorted', ([2, 1],), [1, 2])\n_returns('unique_sorted', ([1, 2],), [1, 2])\n_returns('unique_sorted', ([3, 7, 2, 7],), [2, 3, 7])\n_returns('unique_sorted', ([5, 2, 9, 1],), [1, 2, 5, 9])\n_returns('unique_sorted', ([9, 8, 7, 6, 5],), [5, 6, 7, 8, 9])\n_returns('unique_sorted', ([1, 2, 3, 4],), [1, 2, 3, 4])\n_returns('unique_sorted', ([4, 4, 4],), [4])\n_returns('unique_sorted', ([-3, 10, 0, -3, 8, 2],), [-3, 0, 2, 8, 10])\n_returns('unique_sorted', ([8, 3, 8, 1, 3],), [1, 3, 8])\n_returns('unique_sorted', ([5, 5, 5],), [5])\n_keeps(\"unique_sorted\", ([8, 3, 8, 1, 3],))\n",
+      "answer": "ZGVmIHVuaXF1ZV9zb3J0ZWQodmFsdWVzKToKICAgIG9yZGVyZWQgPSBzb3J0ZWQodmFsdWVzKQogICAgcmVzdWx0ID0gW10KICAgIGZvciB2YWx1ZSBpbiBvcmRlcmVkOgogICAgICAgIGlmIGxlbihyZXN1bHQpID09IDAgb3IgdmFsdWUgIT0gcmVzdWx0Wy0xXToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZCh2YWx1ZSkKICAgIHJldHVybiByZXN1bHQKCmZvciBjYXNlIGluIFtbOCwgMywgOCwgMSwgM10sIFtdLCBbNSwgNSwgNV1dOgogICAgcHJpbnQodW5pcXVlX3NvcnRlZChjYXNlKSk=",
+      "answerNote": "After sorting, equal values sit next to each other. A value enters the result only when it differs from result[-1]."
+    },
+    "p3-trace": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a1": {
+          "accept": [
+            "Add"
+          ],
+          "placeholder": "action",
+          "width": "5rem"
+        },
+        "r1": {
+          "accept": [
+            "[1]",
+            "[1]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[1]"
+        },
+        "e2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a2": {
+          "accept": [
+            "Add"
+          ],
+          "placeholder": "action",
+          "width": "5rem"
+        },
+        "r2": {
+          "accept": [
+            "[1, 3]",
+            "[1,3]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[1, 3]"
+        },
+        "e3": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a3": {
+          "accept": [
+            "Skip"
+          ],
+          "placeholder": "action",
+          "width": "5rem"
+        },
+        "r3": {
+          "accept": [
+            "[1, 3]",
+            "[1,3]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[1, 3]"
+        },
+        "e4": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a4": {
+          "accept": [
+            "Add"
+          ],
+          "placeholder": "action",
+          "width": "5rem"
+        },
+        "r4": {
+          "accept": [
+            "[1, 3, 8]",
+            "[1,3,8]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[1, 3, 8]"
+        },
+        "e5": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "a5": {
+          "accept": [
+            "Skip"
+          ],
+          "placeholder": "action",
+          "width": "5rem"
+        },
+        "r5": {
+          "accept": [
+            "[1, 3, 8]",
+            "[1,3,8]"
+          ],
+          "placeholder": "list",
+          "width": "8rem",
+          "show": "[1, 3, 8]"
+        }
+      }
+    },
+    "p3-cost": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "pass": {
+          "accept": [
+            "n-1",
+            "n - 1"
+          ],
+          "placeholder": "formula",
+          "width": "5rem",
+          "show": "n - 1"
+        },
+        "pass1000": {
+          "accept": [
+            "999"
+          ],
+          "placeholder": "",
+          "width": "6rem"
+        },
+        "total": {
+          "accept": [
+            "10999",
+            "10,999"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "10,999"
+        }
+      }
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 28,
+      "starter": "def merge(left, right):\n    result = []\n    i = 0\n    j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i = i + 1\n        else:\n            result.append(right[j])\n            j = j + 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result\n\ndef merge_sort_loop(values):\n    pass\n\n# Print the result for [4], then [7, 2], then [9, 4, 7, 2, 8, 3, 6, 1].",
+      "cases": [
+        {
+          "name": "[4], [7, 2] and [9, 4, 7, 2, 8, 3, 6, 1]",
+          "expected": "[4]\n[2, 7]\n[1, 2, 3, 4, 6, 7, 8, 9]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"merge_sort_loop\", \"values\")\n_f = _body(\"merge_sort_loop\")\nassert not _func_calls(\"merge_sort_loop\", _f), \"Write merge_sort_loop without recursion. Use a while loop that doubles width.\"\nassert [n for n in ast.walk(_f) if isinstance(n, ast.While)], \"Use a while loop in merge_sort_loop that runs while width is less than the length.\"\nassert _func_calls(\"merge\", _f), \"Combine each pair of neighboring runs with merge in merge_sort_loop.\"\nassert not _func_calls(\"sorted\", _body('merge_sort_loop')) and not _calls(\"sort\", _body('merge_sort_loop')), \"Sort the values yourself in merge_sort_loop. Do not use sort or sorted.\"\nassert not _func_calls(\"sorted\", _body('merge')) and not _calls(\"sort\", _body('merge')), \"Sort the values yourself in merge. Do not use sort or sorted.\"\n_returns('merge_sort_loop', ([4],), [4])\n_returns('merge_sort_loop', ([7, 2],), [2, 7])\n_returns('merge_sort_loop', ([9, 4, 7, 2, 8, 3, 6, 1],), [1, 2, 3, 4, 6, 7, 8, 9])\n_returns('merge_sort_loop', ([1, 2],), [1, 2])\n_returns('merge_sort_loop', ([5, 5, 1, 1],), [1, 1, 5, 5])\n_returns('merge_sort_loop', ([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3],), [1, 1, 2, 3, 3, 3, 4, 5, 5, 5, 6, 7, 8, 9, 9, 9])\n_keeps(\"merge_sort_loop\", ([9, 4, 7, 2, 8, 3, 6, 1],))\n",
+      "answer": "ZGVmIG1lcmdlKGxlZnQsIHJpZ2h0KToKICAgIHJlc3VsdCA9IFtdCiAgICBpID0gMAogICAgaiA9IDAKICAgIHdoaWxlIGkgPCBsZW4obGVmdCkgYW5kIGogPCBsZW4ocmlnaHQpOgogICAgICAgIGlmIGxlZnRbaV0gPD0gcmlnaHRbal06CiAgICAgICAgICAgIHJlc3VsdC5hcHBlbmQobGVmdFtpXSkKICAgICAgICAgICAgaSA9IGkgKyAxCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZChyaWdodFtqXSkKICAgICAgICAgICAgaiA9IGogKyAxCiAgICByZXN1bHQuZXh0ZW5kKGxlZnRbaTpdKQogICAgcmVzdWx0LmV4dGVuZChyaWdodFtqOl0pCiAgICByZXR1cm4gcmVzdWx0CgpkZWYgbWVyZ2Vfc29ydF9sb29wKHZhbHVlcyk6CiAgICByZXN1bHQgPSB2YWx1ZXNbOl0KICAgIHdpZHRoID0gMQogICAgd2hpbGUgd2lkdGggPCBsZW4ocmVzdWx0KToKICAgICAgICBuZXh0X3Jlc3VsdCA9IFtdCiAgICAgICAgZm9yIHN0YXJ0IGluIHJhbmdlKDAsIGxlbihyZXN1bHQpLCAyICogd2lkdGgpOgogICAgICAgICAgICBsZWZ0ID0gcmVzdWx0W3N0YXJ0OnN0YXJ0ICsgd2lkdGhdCiAgICAgICAgICAgIHJpZ2h0ID0gcmVzdWx0W3N0YXJ0ICsgd2lkdGg6c3RhcnQgKyAyICogd2lkdGhdCiAgICAgICAgICAgIG5leHRfcmVzdWx0LmV4dGVuZChtZXJnZShsZWZ0LCByaWdodCkpCiAgICAgICAgcmVzdWx0ID0gbmV4dF9yZXN1bHQKICAgICAgICB3aWR0aCA9IHdpZHRoICogMgogICAgcmV0dXJuIHJlc3VsdAoKZm9yIGNhc2UgaW4gW1s0XSwgWzcsIDJdLCBbOSwgNCwgNywgMiwgOCwgMywgNiwgMV1dOgogICAgcHJpbnQobWVyZ2Vfc29ydF9sb29wKGNhc2UpKQ==",
+      "answerNote": "Each round merges runs of length width into runs of length 2 * width. Eight elements need three rounds."
+    },
+    "p4-rounds": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "w1": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "l1": {
+          "accept": [
+            "[4, 9, 2, 7, 3, 8, 1, 6]",
+            "[4,9,2,7,3,8,1,6]"
+          ],
+          "placeholder": "list",
+          "width": "15rem",
+          "show": "[4, 9, 2, 7, 3, 8, 1, 6]"
+        },
+        "w2": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "l2": {
+          "accept": [
+            "[2, 4, 7, 9, 1, 3, 6, 8]",
+            "[2,4,7,9,1,3,6,8]"
+          ],
+          "placeholder": "list",
+          "width": "15rem",
+          "show": "[2, 4, 7, 9, 1, 3, 6, 8]"
+        },
+        "w3": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        },
+        "l3": {
+          "accept": [
+            "[1, 2, 3, 4, 6, 7, 8, 9]",
+            "[1,2,3,4,6,7,8,9]"
+          ],
+          "placeholder": "list",
+          "width": "15rem",
+          "show": "[1, 2, 3, 4, 6, 7, 8, 9]"
+        },
+        "levels": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "",
+          "width": "3rem"
+        }
+      }
+    },
+    "p5": {
+      "type": "code",
+      "xp": 10,
+      "minLines": 40,
+      "starter": "def unique_sorted(values):\n    ordered = sorted(values)\n    result = []\n    for value in ordered:\n        if len(result) == 0 or value != result[-1]:\n            result.append(value)\n    return result\n\n\ndef binary_search(values, target):\n    low = 0\n    high = len(values) - 1\n    while low <= high:\n        mid = (low + high) // 2\n        if values[mid] == target:\n            return mid\n        elif values[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1\n\n\ndef unique_in_order(values):\n    pass\n\n# Print the result for [4, 2, 4, 7, 2], then [], then [9, 3, 6].",
+      "cases": [
+        {
+          "name": "[4, 2, 4, 7, 2], [] and [9, 3, 6]",
+          "expected": "[4, 2, 7]\n[]\n[9, 3, 6]"
+        }
+      ],
+      "check": "import ast, copy, types, io, contextlib\n_TREE = ast.parse(__source__)\ndef _calls(method, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == method]\ndef _func_calls(name, tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name]\ndef _slices(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.Slice)]\ndef _loops(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, (ast.For, ast.While))]\ndef _comps(tree=None):\n    return [n for n in ast.walk(tree or _TREE) if isinstance(n, ast.ListComp)]\ndef _swap():\n    return any(isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Tuple) and isinstance(n.value, ast.Tuple) for n in ast.walk(_TREE))\ndef _body(name):\n    for node in _TREE.body:\n        if isinstance(node, ast.FunctionDef) and node.name == name:\n            return node\n    return ast.Module(body=[], type_ignores=[])\n_WORDS = [\"empty parentheses\", \"one parameter\", \"two parameters\", \"three parameters\"]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \") with \" + _WORDS[len(params)] + \".\"\n    return f\ndef _call(name, *args):\n    buffer = io.StringIO()\n    with contextlib.redirect_stdout(buffer):\n        value = globals()[name](*args)\n    return value, buffer.getvalue()\ndef _shown(name, args):\n    return name + \"(\" + \", \".join(repr(a) for a in args) + \")\"\ndef _returns(name, args, want):\n    call = _shown(name, args)\n    value, printed = _call(name, *copy.deepcopy(list(args)))\n    if value is None and want is not None:\n        raise AssertionError(call + \" returned None. Send the result back with return.\")\n    assert value == want and type(value) is type(want), call + \" should return \" + repr(want) + \", not \" + repr(value) + \".\"\ndef _keeps(name, args):\n    call = _shown(name, args)\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), call + \" changed its input list to \" + repr(given[0]) + \". Keep the input unchanged.\"\ndef _stores(name):\n    return any(isinstance(n, ast.Subscript) and isinstance(n.ctx, ast.Store) for n in ast.walk(_body(name)))\ndef _sorts_in_place(name, items, want):\n    data = list(items)\n    value, printed = _call(name, data)\n    assert data == want, name + \"(\" + repr(list(items)) + \") left the list as \" + repr(data) + \". It should become \" + repr(want) + \".\"\n    assert value is None, name + \" should change the list in place and return nothing, not \" + repr(value) + \".\"\ndef _keeps_all(name, args):\n    given = copy.deepcopy(list(args))\n    _call(name, *given)\n    assert given == list(args), _shown(name, args) + \" changed an input list. Keep every input list unchanged.\"\ndef _uses_in(name):\n    return [n for n in ast.walk(_body(name)) if isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops)]\n_fn(\"unique_in_order\", \"values\")\n_f = _body(\"unique_in_order\")\nassert _func_calls(\"unique_sorted\", _f), \"Build keys with unique_sorted(values) in unique_in_order.\"\nassert _func_calls(\"binary_search\", _f), \"Find each value's index in keys with binary_search in unique_in_order.\"\nassert not _uses_in(\"unique_in_order\"), \"Use the used flags to skip later copies in unique_in_order. Do not use in to test membership.\"\nassert not _calls(\"index\", _f) and not _calls(\"count\", _f) and not _func_calls(\"set\", _f), \"Use binary_search and the used flags in unique_in_order. Do not use index, count or set.\"\n_returns('unique_in_order', ([],), [])\n_returns('unique_in_order', ([4],), [4])\n_returns('unique_in_order', ([2, 1],), [2, 1])\n_returns('unique_in_order', ([1, 2],), [1, 2])\n_returns('unique_in_order', ([3, 7, 2, 7],), [3, 7, 2])\n_returns('unique_in_order', ([5, 2, 9, 1],), [5, 2, 9, 1])\n_returns('unique_in_order', ([9, 8, 7, 6, 5],), [9, 8, 7, 6, 5])\n_returns('unique_in_order', ([1, 2, 3, 4],), [1, 2, 3, 4])\n_returns('unique_in_order', ([4, 4, 4],), [4])\n_returns('unique_in_order', ([-3, 10, 0, -3, 8, 2],), [-3, 10, 0, 8, 2])\n_returns('unique_in_order', ([4, 2, 4, 7, 2],), [4, 2, 7])\n_returns('unique_in_order', ([9, 3, 6],), [9, 3, 6])\n_returns('unique_in_order', ([7, 7, 1, 7, 1],), [7, 1])\n_keeps(\"unique_in_order\", ([4, 2, 4, 7, 2],))\n",
+      "answer": "ZGVmIHVuaXF1ZV9zb3J0ZWQodmFsdWVzKToKICAgIG9yZGVyZWQgPSBzb3J0ZWQodmFsdWVzKQogICAgcmVzdWx0ID0gW10KICAgIGZvciB2YWx1ZSBpbiBvcmRlcmVkOgogICAgICAgIGlmIGxlbihyZXN1bHQpID09IDAgb3IgdmFsdWUgIT0gcmVzdWx0Wy0xXToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZCh2YWx1ZSkKICAgIHJldHVybiByZXN1bHQKCgpkZWYgYmluYXJ5X3NlYXJjaCh2YWx1ZXMsIHRhcmdldCk6CiAgICBsb3cgPSAwCiAgICBoaWdoID0gbGVuKHZhbHVlcykgLSAxCiAgICB3aGlsZSBsb3cgPD0gaGlnaDoKICAgICAgICBtaWQgPSAobG93ICsgaGlnaCkgLy8gMgogICAgICAgIGlmIHZhbHVlc1ttaWRdID09IHRhcmdldDoKICAgICAgICAgICAgcmV0dXJuIG1pZAogICAgICAgIGVsaWYgdmFsdWVzW21pZF0gPCB0YXJnZXQ6CiAgICAgICAgICAgIGxvdyA9IG1pZCArIDEKICAgICAgICBlbHNlOgogICAgICAgICAgICBoaWdoID0gbWlkIC0gMQogICAgcmV0dXJuIC0xCgoKZGVmIHVuaXF1ZV9pbl9vcmRlcih2YWx1ZXMpOgogICAga2V5cyA9IHVuaXF1ZV9zb3J0ZWQodmFsdWVzKQogICAgdXNlZCA9IFtGYWxzZV0gKiBsZW4oa2V5cykKICAgIHJlc3VsdCA9IFtdCiAgICBmb3IgdmFsdWUgaW4gdmFsdWVzOgogICAgICAgIHBvcyA9IGJpbmFyeV9zZWFyY2goa2V5cywgdmFsdWUpCiAgICAgICAgaWYgbm90IHVzZWRbcG9zXToKICAgICAgICAgICAgcmVzdWx0LmFwcGVuZCh2YWx1ZSkKICAgICAgICAgICAgdXNlZFtwb3NdID0gVHJ1ZQogICAgcmV0dXJuIHJlc3VsdAoKZm9yIGNhc2UgaW4gW1s0LCAyLCA0LCA3LCAyXSwgW10sIFs5LCAzLCA2XV06CiAgICBwcmludCh1bmlxdWVfaW5fb3JkZXIoY2FzZSkp",
+      "answerNote": "The first copy of a value sets its flag. Later copies find the same index in keys and are skipped."
+    },
+    "p5-cost": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "search": {
+          "accept": [
+            "20000",
+            "20,000"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "20,000"
+        },
+        "total": {
+          "accept": [
+            "30999",
+            "30,999"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "30,999"
+        },
+        "item2": {
+          "accept": [
+            "1000000",
+            "1,000,000"
+          ],
+          "placeholder": "",
+          "width": "7rem",
+          "show": "1,000,000"
+        }
+      }
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[2, 4, 9, 9]",
+            "[2,4,9,9]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[2, 4, 9, 9]"
+        },
+        "l2": {
+          "accept": [
+            "[9, 2, 9, 4]",
+            "[9,2,9,4]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[9, 2, 9, 4]"
+        }
+      }
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": "2"
+        }
+      }
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "(B)",
+            "B)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "B"
+        }
+      }
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "(C)",
+            "C)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "C"
+        }
+      }
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        },
+        "t2": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        }
+      }
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "right[j:]",
+            "right[1:]"
+          ],
+          "placeholder": "code",
+          "width": "8rem",
+          "show": "right[j:]"
+        }
+      }
+    },
+    "q8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "A",
+            "(A)",
+            "A)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "A"
+        }
+      }
+    },
+    "q9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[2, 3, 7, 8, 9]",
+            "[2,3,7,8,9]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[2, 3, 7, 8, 9]"
+        },
+        "l2": {
+          "accept": [
+            "[6]",
+            "[6]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[6]"
+        }
+      }
+    },
+    "q10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "code",
+          "width": "5rem",
+          "show": "2"
+        }
+      }
+    },
+    "q11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "T"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "F"
+          ],
+          "placeholder": "True or False",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "(D)",
+            "D)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "D"
+        }
+      }
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "[6, 1, 4]",
+            "[6,1,4]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[6, 1, 4]"
+        },
+        "l2": {
+          "accept": [
+            "[1, 4, 6, 0]",
+            "[1,4,6,0]"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "[1, 4, 6, 0]"
+        },
+        "l3": {
+          "accept": [
+            "None"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    }
+  }
+}

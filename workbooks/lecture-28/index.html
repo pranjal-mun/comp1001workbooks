@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 28 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-28", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 28 Workbook</h1>
+    <div class="wb-subtitle">Selection sort and merge sort</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Trace how selection sort selects and swaps values. Follow the recursive calls in merge sort and merge their results. Count comparisons between values to compare the two sorts.</p>
+  <p>Reading: §12.1 and §12.4</p>
+  <ul>
+    <li>Trace selection sort, including selection and swapping steps.</li>
+    <li>Trace merge sort and carry out its merge step.</li>
+    <li>Explain why merge sort is recursive.</li>
+    <li>Compare selection sort, merge sort, and Python's built-in sorting at a practical level.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-selection">Selection sort</p>
+
+<h2 id="s1">1. Sorting a list</h2>
+<p>Sorting puts the elements of a list in order. Ascending order puts smaller values first. The input <code>[8, 3, 6, 3, 1]</code> becomes <code>[1, 3, 3, 6, 8]</code>.</p>
+<p>The sorted list has the same elements. Both copies of <code>3</code> stay in the list.</p>
+<p>Lecture 27 used sorted lists for binary search.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>values = [<span class="wb-num">9</span>, <span class="wb-num">2</span>, <span class="wb-num">9</span>, <span class="wb-num">4</span>]
+<span class="wb-fn">print</span>(<span class="wb-fn">sorted</span>(values))
+<span class="wb-fn">print</span>(values)</code></pre>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s2">2. Selection sort selects and swaps</h2>
+<p>Find the smallest value in the list. Swap it with the value at index <code>0</code>.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 340 175" width="340" height="175" role="img" aria-label="Before the swap, the list is 5, 2, 9, 1 at indices 0 to 3, with a thick border on index 3, which holds the smallest value 1. Arrows show 1 moving to index 0 and 5 moving to index 3. After the swap, the list is 1, 2, 9, 5, with a thick border on index 0." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-swap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="150" y="30" width="44" height="32"/><rect x="194" y="30" width="44" height="32"/><rect x="238" y="30" width="44" height="32"/><rect x="282" y="30" width="44" height="32" style="stroke-width: 3.5"/><rect x="150" y="130" width="44" height="32" style="stroke-width: 3.5"/><rect x="194" y="130" width="44" height="32"/><rect x="238" y="130" width="44" height="32"/><rect x="282" y="130" width="44" height="32"/><path d="M304 64 C 300 110, 176 110, 172 126" marker-end="url(#a-swap)"/><path d="M172 64 C 190 90, 282 90, 298 126" marker-end="url(#a-swap)" opacity="0.6"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="172" y="20">0</text><text x="216" y="20">1</text><text x="260" y="20">2</text><text x="304" y="20">3</text><text x="172" y="51">5</text><text x="216" y="51">2</text><text x="260" y="51">9</text><text x="304" y="51">1</text><text x="172" y="151">1</text><text x="216" y="151">2</text><text x="260" y="151">9</text><text x="304" y="151">5</text><g style="font-family: var(--font-sans, sans-serif); font-size: 14px"><text x="135" y="51" text-anchor="end">Before the swap</text><text x="135" y="151" text-anchor="end">After the swap</text></g></g>
+  </svg>
+</figure>
+<p>The first position is complete. The next pass starts at index <code>1</code>.</p>
+<p>A swap exchanges the values at two indices.</p>
+<wb-example id="ex-swap"></wb-example>
+<p>Python reads both values on the right before it assigns either value on the left.</p>
+<p>Index <code>0</code> gets <code>1</code>. Index <code>3</code> gets <code>5</code>.</p>
+<p>The same list now contains the values in their new positions.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 2.</strong> Complete the index for the first swap. The program must print <code>[1, 4, 6]</code>.</p>
+  <pre><code>values = [<span class="wb-num">6</span>, <span class="wb-num">4</span>, <span class="wb-num">1</span>]
+i = <span class="wb-num">0</span>
+smallest = ____(a)____
+values[i], values[smallest] = (
+    values[smallest], values[i])
+<span class="wb-fn">print</span>(values)</code></pre>
+  <wb-table id="q2">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. The selection sort function and its traces</h2>
+<p><code>selection_sort</code> puts the input list in ascending order. The function sorts in place.</p>
+<wb-example id="ex-selection"></wb-example>
+<p>The outer loop selects the next position, <code>i</code>.</p>
+<p><code>smallest</code> holds the index of the smallest value found so far.</p>
+<p>The inner loop checks indices from <code>i + 1</code> to <code>n - 1</code>. Then the swap runs.</p>
+<p>After each pass, the positions through <code>i</code> contain the smallest values in order.</p>
+<p><code>selection_sort</code> starts with <code>smallest = i</code>. This trace shows pass <code>i = 0</code> for <code>[5, 2, 9, 1]</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>j</code></th><th>Value</th><th>Smaller?</th><th>New <code>smallest</code></th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>2</td><td>True</td><td>1</td></tr>
+    <tr><td>2</td><td>9</td><td>False</td><td>1</td></tr>
+    <tr><td>3</td><td>1</td><td>True</td><td>3</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Compare each value with the current minimum. The minimum index changes from <code>0</code> to <code>1</code> and then to <code>3</code>.</p>
+<p>The swap puts <code>1</code> at index <code>0</code>.</p>
+<p><code>selection_sort</code> fills one more position per pass. The input is <code>[5, 2, 9, 1]</code>.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>i</code></th><th><code>smallest</code></th><th>List after the swap</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>3</td><td><code>[1, 2, 9, 5]</code></td></tr>
+    <tr><td>1</td><td>1</td><td><code>[1, 2, 9, 5]</code></td></tr>
+    <tr><td>2</td><td>3</td><td><code>[1, 2, 5, 9]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>At <code>i = 1</code>, both swap indices are <code>1</code>. The list stays the same.</p>
+<p>A list of length <code>0</code> or <code>1</code> needs no passes.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 3.</strong> For <code>[6, 2, 2, 5]</code>, which index does the first pass select before the swap?</p>
+  <ol type="A">
+    <li><code>0</code></li>
+    <li><code>1</code></li>
+    <li><code>2</code></li>
+    <li><code>3</code></li>
+  </ol>
+  <wb-table id="q3">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 4.</strong> Write True or False for each statement.</p>
+  <wb-table id="q4">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>A list of length 6 needs five passes.</td><td data-blank="t1"></td></tr>
+        <tr><td>An empty list needs one pass.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s4">4. The cost of selection sort</h2>
+<p>Count one comparison each time the inner loop tests two values.</p>
+<p class="wb-callout">Comparisons across the passes: (<i>n</i> − 1) + (<i>n</i> − 2) + … + 1 = <i>n</i>(<i>n</i> − 1) / 2</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>List length</th><th>Passes</th><th>Value comparisons</th></tr></thead>
+  <tbody>
+    <tr><td>4</td><td>3</td><td>6</td></tr>
+    <tr><td>1,000</td><td>999</td><td>499,500</td></tr>
+    <tr><td>2,000</td><td>1,999</td><td>1,999,000</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A sorted list and a reversed list of the same length require the same number of comparisons.</p>
+<p>For large lists, doubling the length makes the comparison count about four times as large.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 5.</strong> How many value comparisons does selection sort make for a list of length 5?</p>
+  <ol type="A">
+    <li><code>5</code></li>
+    <li><code>20</code></li>
+    <li><code>10</code></li>
+    <li><code>15</code></li>
+  </ol>
+  <wb-table id="q5">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 6.</strong> Write True or False for each statement.</p>
+  <wb-table id="q6">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>An ascending list of length 10 uses fewer than 45 value comparisons.</td><td data-blank="t1"></td></tr>
+        <tr><td>A descending list of length 10 uses 45 value comparisons.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Write <code>selection_desc(values)</code>.</p>
+  <ul>
+    <li>Sort the input list in place with the largest values first.</li>
+  </ul>
+  <p>Use <code>[3, 7, 2, 7]</code> as the input. Use a strict comparison when you select the maximum.</p>
+  <p>Record the selected index and the list after each pass. Count the value comparisons.</p>
+  <wb-table id="cp1-trace">
+    <table>
+      <thead><tr><th><code>i</code></th><th>Selected index</th><th>List after the swap</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td data-blank="s1"></td><td data-blank="l1"></td></tr>
+        <tr><td>1</td><td data-blank="s2"></td><td data-blank="l2"></td></tr>
+        <tr><td>2</td><td data-blank="s3"></td><td data-blank="l3"></td></tr>
+        <tr><th colspan="2">Value comparisons</th><td data-blank="cmp"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>In the code box, call <code>selection_desc(values)</code> and then print <code>values</code>. <strong>Check</strong> also sorts other lists with your function, including an empty list and a list of one element.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>selection_desc(values)</code> with one parameter.</li>
+      <li>Use an outer loop, an inner loop, and a swap inside the list.</li>
+      <li>Do not use <code>sort</code>, <code>sorted</code> or <code>max</code>.</li>
+      <li>Change the input list in place and return nothing.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp1"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-merge">Merge</p>
+
+<h2 id="s5">5. Merging two sorted lists</h2>
+<p>A merge combines two sorted lists into one sorted list. Compare the first unused value in each list.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 470 185" width="470" height="185" role="img" aria-label="Left list 2, 6 with a thick border on 2. Right list 1, 4, 8 with 1 faded because it is used. An arrow takes 1 down into the result list. The notes say: compare 2 with 1, take 1 from the right list, next compare 2 with 4." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-merge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="80" y="20" width="44" height="32" style="stroke-width: 3.5"/><rect x="124" y="20" width="44" height="32"/><rect x="80" y="70" width="44" height="32" opacity="0.35"/><rect x="124" y="70" width="44" height="32"/><rect x="168" y="70" width="44" height="32"/><rect x="80" y="140" width="44" height="32" style="stroke-width: 3.5"/><path d="M102 104 V 136" marker-end="url(#a-merge)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="102" y="41">2</text><text x="146" y="41">6</text><text x="102" y="91" opacity="0.35">1</text><text x="146" y="91">4</text><text x="190" y="91">8</text><text x="102" y="161">1</text><g style="font-family: var(--font-sans, sans-serif); font-size: 14px"><text x="65" y="41" text-anchor="end">Left</text><text x="65" y="91" text-anchor="end">Right</text><text x="65" y="161" text-anchor="end">Result</text><g text-anchor="start"><text x="230" y="41">Compare 2 with 1.</text><text x="230" y="91">Take 1 from the right list.</text><text x="230" y="161">Next, compare 2 with 4.</text></g></g></g>
+  </svg>
+</figure>
+<p>After each comparison, advance the index of the list that supplied the value.</p>
+<p><code>merge</code> takes two ascending lists and returns a new ascending list.</p>
+<wb-example id="ex-merge"></wb-example>
+<p><code>i</code> and <code>j</code> identify the next unused values. The loop runs while both indices are valid.</p>
+<p>If the values are equal, the function takes the left value first.</p>
+<p>When the loop ends, the two slices contain the unused values. At most one slice has elements.</p>
+<p><code>extend</code> adds each remaining value to the result.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 7.</strong> Complete the remaining slice. The program must print <code>[1, 4, 8, 9]</code>.</p>
+  <pre><code>right = [<span class="wb-num">4</span>, <span class="wb-num">8</span>, <span class="wb-num">9</span>]
+j = <span class="wb-num">1</span>
+result = [<span class="wb-num">1</span>, <span class="wb-num">4</span>]
+result.<span class="wb-fn">extend</span>(____(a)____)
+<span class="wb-fn">print</span>(result)</code></pre>
+  <wb-table id="q7">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 8.</strong> A merge compares a left value of 5 with a right value of 5. Which value enters the result first?</p>
+  <ol type="A">
+    <li>Left value</li>
+    <li>Right value</li>
+    <li>Both at once</li>
+    <li>Neither value</li>
+  </ol>
+  <wb-table id="q8">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s6">6. Trace a merge</h2>
+<p><code>merge</code> combines <code>left = [2, 6]</code> and <code>right = [1, 4, 8]</code>.</p>
+<wb-example id="ex-merge-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>i</code></th><th><code>j</code></th><th>Next values</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td>2, 1</td><td><code>[1]</code></td></tr>
+    <tr><td>0</td><td>1</td><td>2, 4</td><td><code>[1, 2]</code></td></tr>
+    <tr><td>1</td><td>1</td><td>6, 4</td><td><code>[1, 2, 4]</code></td></tr>
+    <tr><td>1</td><td>2</td><td>6, 8</td><td><code>[1, 2, 4, 6]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The left list has no unused values. The right slice contains <code>[8]</code>.</p>
+<p>The result is <code>[1, 2, 4, 6, 8]</code>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 9.</strong> Predict the output. Use the earlier <code>merge</code> function.</p>
+  <pre><code><span class="wb-fn">print</span>(<span class="wb-fn">merge</span>([<span class="wb-num">3</span>, <span class="wb-num">7</span>], [<span class="wb-num">2</span>, <span class="wb-num">8</span>, <span class="wb-num">9</span>]))
+<span class="wb-fn">print</span>(<span class="wb-fn">merge</span>([], [<span class="wb-num">6</span>]))</code></pre>
+  <wb-table id="q9">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Write <code>merge(left, right)</code>.</p>
+  <ul>
+    <li>Return a new sorted list and keep all copies of equal values.</li>
+  </ul>
+  <p>Use <code>left = [1, 4, 4]</code> and <code>right = [2, 4, 8]</code>. Both lists are in ascending order.</p>
+  <p>Take the left value first when two values are equal. Record each value and the list that supplied it.</p>
+  <wb-table id="cp2-trace">
+    <table>
+      <thead><tr><th>Step</th><th>Appended value</th><th>Source list</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="v1"></td><td data-blank="f1"></td></tr>
+        <tr><td>2</td><td data-blank="v2"></td><td data-blank="f2"></td></tr>
+        <tr><td>3</td><td data-blank="v3"></td><td data-blank="f3"></td></tr>
+        <tr><td>4</td><td data-blank="v4"></td><td data-blank="f4"></td></tr>
+        <tr><td>5</td><td data-blank="v5"></td><td data-blank="f5"></td></tr>
+        <tr><td>6</td><td data-blank="v6"></td><td data-blank="f6"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>In the code box, keep the given <code>print</code>. Then test the function with an empty left list and a right list of <code>[2, 8]</code>: print <code>merge([], [2, 8])</code>. <strong>Check</strong> also calls <code>merge</code> with other pairs of lists.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>merge(left, right)</code> with two parameters.</li>
+      <li>Use a loop. Do not use <code>sort</code> or <code>sorted</code>.</li>
+      <li>Keep both input lists unchanged.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp2"></wb-exercise>
+</div>
+
+<p class="wb-part" id="part-merge-sort">Merge sort</p>
+
+<h2 id="s7">7. Merge sort splits and combines</h2>
+<p>The function calls itself on each half. A list of length <code>0</code> or <code>1</code> is already in order.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 560 290" width="560" height="290" role="img" aria-label="A tree for merge sort on 8, 3, 6, 1. The list splits into 8, 3 and 6, 1. These split into the base cases 8, 3, 6 and 1. Merges with thick borders combine them into 3, 8 and 1, 6, and then into 1, 3, 6, 8." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-tree" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="239.0" y="10" width="122" height="28" rx="4"/><rect x="156.0" y="70" width="68" height="28" rx="4"/><rect x="376.0" y="70" width="68" height="28" rx="4"/><rect x="114.5" y="130" width="41" height="28" rx="4"/><rect x="224.5" y="130" width="41" height="28" rx="4"/><rect x="334.5" y="130" width="41" height="28" rx="4"/><rect x="444.5" y="130" width="41" height="28" rx="4"/><rect x="156.0" y="190" width="68" height="28" rx="4" style="stroke-width: 3"/><rect x="376.0" y="190" width="68" height="28" rx="4" style="stroke-width: 3"/><rect x="239.0" y="250" width="122" height="28" rx="4" style="stroke-width: 3"/><path d="M300 38 L190 70" marker-end="url(#a-tree)"/><path d="M300 38 L410 70" marker-end="url(#a-tree)"/><path d="M190 98 L135 130" marker-end="url(#a-tree)"/><path d="M190 98 L245 130" marker-end="url(#a-tree)"/><path d="M410 98 L355 130" marker-end="url(#a-tree)"/><path d="M410 98 L465 130" marker-end="url(#a-tree)"/><path d="M135 158 L190 190" marker-end="url(#a-tree)"/><path d="M245 158 L190 190" marker-end="url(#a-tree)"/><path d="M355 158 L410 190" marker-end="url(#a-tree)"/><path d="M465 158 L410 190" marker-end="url(#a-tree)"/><path d="M190 218 L300 250" marker-end="url(#a-tree)"/><path d="M410 218 L300 250" marker-end="url(#a-tree)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="300" y="29">[8, 3, 6, 1]</text><text x="190" y="89">[8, 3]</text><text x="410" y="89">[6, 1]</text><text x="135" y="149">[8]</text><text x="245" y="149">[3]</text><text x="355" y="149">[6]</text><text x="465" y="149">[1]</text><text x="190" y="209">[3, 8]</text><text x="410" y="209">[1, 6]</text><text x="300" y="269">[1, 3, 6, 8]</text></g><g text-anchor="end" style="font-family: var(--font-sans, sans-serif); font-size: 14px"><text x="95" y="89">Split</text><text x="95" y="149">Base cases</text><text x="95" y="209">Merge</text></g>
+  </svg>
+</figure>
+<p>The upper branches show splits. The lower branches show merges.</p>
+<p><code>merge_sort</code> returns a new ascending list. It keeps the input list unchanged.</p>
+<wb-example id="ex-merge-sort"></wb-example>
+<p>The base case returns a copy of a list of length <code>0</code> or <code>1</code>.</p>
+<p><code>values[:mid]</code> and <code>values[mid:]</code> cover separate parts of the list.</p>
+<p>Each recursive call sorts one part. <code>merge</code> combines the two results after both calls return.</p>
+<p>For an odd length, the right part has one extra element.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 10.</strong> Complete the split. The program must print <code>[9, 4]</code> and then <code>[6, 2, 5]</code>.</p>
+  <pre><code>values = [<span class="wb-num">9</span>, <span class="wb-num">4</span>, <span class="wb-num">6</span>, <span class="wb-num">2</span>, <span class="wb-num">5</span>]
+mid = <span class="wb-fn">len</span>(values) // ____(a)____
+<span class="wb-fn">print</span>(values[:mid])
+<span class="wb-fn">print</span>(values[mid:])</code></pre>
+  <wb-table id="q10">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s8">8. Trace the recursive calls</h2>
+<p><code>merge_sort</code> sorts <code>[8, 3, 6, 1]</code>. The table lists calls in the order they start.</p>
+<wb-example id="ex-calls"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call number</th><th>Input</th><th>Return value</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>[8, 3, 6, 1]</code></td><td><code>[1, 3, 6, 8]</code></td></tr>
+    <tr><td>2</td><td><code>[8, 3]</code></td><td><code>[3, 8]</code></td></tr>
+    <tr><td>3</td><td><code>[8]</code></td><td><code>[8]</code></td></tr>
+    <tr><td>4</td><td><code>[3]</code></td><td><code>[3]</code></td></tr>
+    <tr><td>5</td><td><code>[6, 1]</code></td><td><code>[1, 6]</code></td></tr>
+    <tr><td>6</td><td><code>[6]</code></td><td><code>[6]</code></td></tr>
+    <tr><td>7</td><td><code>[1]</code></td><td><code>[1]</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Call 2 returns before call 5 starts. Call 1 returns last.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 11.</strong> Write True or False for each statement.</p>
+  <wb-table id="q11">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td><code>merge_sort([])</code> returns an empty copy without a recursive call.</td><td data-blank="t1"></td></tr>
+        <tr><td>For <code>[9, 5, 2]</code>, the first call returns before either recursive call.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s9">9. The cost of merge sort, comparisons and extra space</h2>
+<p>Each box shows the length of one merge result. Each merge writes every input element once to its result.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 500 150" width="500" height="150" role="img" aria-label="Three rows of boxes for merge sort on eight elements. Row 1 has four merges of length 2. Row 2 has two merges of length 4. Row 3 has one merge of length 8. Each row writes 8 elements." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <rect x="123" y="15" width="66" height="30" style="stroke-width: 2"/><rect x="195" y="15" width="66" height="30" style="stroke-width: 2"/><rect x="267" y="15" width="66" height="30" style="stroke-width: 2"/><rect x="339" y="15" width="66" height="30" style="stroke-width: 2"/><rect x="123" y="60" width="138" height="30" style="stroke-width: 2"/><rect x="267" y="60" width="138" height="30" style="stroke-width: 2"/><rect x="123" y="105" width="282" height="30" style="stroke-width: 2"/><g style="stroke: none; fill: currentColor; font-family: var(--font-mono, monospace); font-size: 15px" text-anchor="middle"><text x="156.0" y="35">2</text><text x="228.0" y="35">2</text><text x="300.0" y="35">2</text><text x="372.0" y="35">2</text><text x="105" y="35" text-anchor="end" style="font-family: var(--font-sans, sans-serif); font-size: 14px">4 merges</text><text x="420" y="35" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px">8 writes</text><text x="192.0" y="80">4</text><text x="336.0" y="80">4</text><text x="105" y="80" text-anchor="end" style="font-family: var(--font-sans, sans-serif); font-size: 14px">2 merges</text><text x="420" y="80" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px">8 writes</text><text x="264.0" y="125">8</text><text x="105" y="125" text-anchor="end" style="font-family: var(--font-sans, sans-serif); font-size: 14px">1 merge</text><text x="420" y="125" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px">8 writes</text></g>
+  </svg>
+</figure>
+<p>For eight elements, three merge levels give <code>24</code> writes. At each level, the parts do not overlap.</p>
+<p>For a power of two, there are log<sub>2</sub> <i>n</i> merge levels. The work grows in proportion to <i>n</i> log<sub>2</sub> <i>n</i>.</p>
+<p>The table gives the maximum number of value comparisons for each list length.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>List length</th><th>Selection sort</th><th>Merge sort</th></tr></thead>
+  <tbody>
+    <tr><td>8</td><td>28</td><td>17</td></tr>
+    <tr><td>16</td><td>120</td><td>49</td></tr>
+    <tr><td>1,024</td><td>523,776</td><td>9,217</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A merge of <i>m</i> elements needs at most <i>m</i> − 1 comparisons. Add the counts for all merges.</p>
+<p>Selection sort uses a few index variables and swaps within the input list. This merge sort uses extra lists.</p>
+<p>A stable sort keeps equal elements in their original order. This merge sort is stable. Selection sort can reverse equal elements when it swaps.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 12.</strong> How many merge levels does merge sort need for 16 elements?</p>
+  <ol type="A">
+    <li><code>2</code></li>
+    <li><code>3</code></li>
+    <li><code>8</code></li>
+    <li><code>4</code></li>
+  </ol>
+  <wb-table id="q12">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s10">10. Python sorting in practice</h2>
+<p>For routine Python programs, use one of the built-in sorting operations.</p>
+<p>The <code>sort</code> method changes the list and returns <code>None</code>.</p>
+<wb-example id="ex-sort-method"></wb-example>
+<p>The <code>sorted</code> function returns a new sorted list.</p>
+<wb-example id="ex-sorted"></wb-example>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 13.</strong> Predict the output. Write each printed line.</p>
+  <pre><code>values = [<span class="wb-num">6</span>, <span class="wb-num">1</span>, <span class="wb-num">4</span>]
+ordered = <span class="wb-fn">sorted</span>(values)
+ordered.<span class="wb-fn">append</span>(<span class="wb-num">0</span>)
+<span class="wb-fn">print</span>(values)
+<span class="wb-fn">print</span>(ordered)
+<span class="wb-fn">print</span>(values.<span class="wb-fn">sort</span>())</code></pre>
+  <wb-table id="q13">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Write <code>merge_sort(values)</code>.</p>
+  <ul>
+    <li>Use the earlier <code>merge</code> function. Return a new ascending list.</li>
+  </ul>
+  <p>Trace the input and return value of each call for <code>[7, 2, 7]</code>. Keep both copies of <code>7</code>.</p>
+  <p>Which Python operation gives the same sorted result and keeps the input list unchanged?</p>
+  <wb-table id="cp3-trace">
+    <table>
+      <thead><tr><th>Call number</th><th>Input</th><th>Return value</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="i1"></td><td data-blank="r1"></td></tr>
+        <tr><td>2</td><td data-blank="i2"></td><td data-blank="r2"></td></tr>
+        <tr><td>3</td><td data-blank="i3"></td><td data-blank="r3"></td></tr>
+        <tr><td>4</td><td data-blank="i4"></td><td data-blank="r4"></td></tr>
+        <tr><td>5</td><td data-blank="i5"></td><td data-blank="r5"></td></tr>
+        <tr><th colspan="2">Python operation</th><td data-blank="op"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>In the code box, print <code>merge_sort(values)</code> and then print <code>values</code>. <strong>Check</strong> also sorts other lists with your function, including an empty list and a list of one element.</p>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Define <code>merge_sort(values)</code> with one parameter.</li>
+      <li>Call <code>merge_sort</code> on each half and combine the results with <code>merge</code>.</li>
+      <li>Do not use <code>sort</code> or <code>sorted</code>.</li>
+      <li>Return a new list, also in the base case. Keep the input list unchanged.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Final review</h2>
+
+<h3>Selection sort</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Rule</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Sorting</td><td>Put the elements in order and keep duplicate values.</td></tr>
+    <tr><td>Outer loop</td><td>Fill position <code>i</code> on each pass.</td></tr>
+    <tr><td>Start of each pass</td><td>Set <code>smallest = i</code>.</td></tr>
+    <tr><td>Inner loop</td><td>Check <code>j</code> from <code>i + 1</code> to <code>n - 1</code>.</td></tr>
+    <tr><td>Selection</td><td>If <code>values[j] &lt; values[smallest]</code>, set <code>smallest = j</code>.</td></tr>
+    <tr><td>Swap</td><td>Exchange the values at <code>i</code> and <code>smallest</code>.</td></tr>
+    <tr><td>Last position</td><td>After <code>n - 1</code> passes, the last value is in place.</td></tr>
+    <tr><td>Comparison count</td><td><i>n</i>(<i>n</i> − 1) / 2. The input order does not change the count.</td></tr>
+    <tr><td>Effect</td><td>The function changes the input list in place.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For descending order, select the largest remaining value on each pass.</p>
+
+<h3>Merge sort and Python sorting</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Rule</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Base case</td><td>Return a copy for length <code>0</code> or <code>1</code>.</td></tr>
+    <tr><td>Split</td><td>Use <code>mid = len(values) // 2</code>. Sort both slices.</td></tr>
+    <tr><td>Merge</td><td>Compare the first unused values in the two sorted lists.</td></tr>
+    <tr><td>Advance</td><td>Append the smaller value. Advance only its index.</td></tr>
+    <tr><td>Equal values</td><td>Take the left value first to keep the original order.</td></tr>
+    <tr><td>End of the merge</td><td>Add both remaining slices with <code>extend</code>.</td></tr>
+    <tr><td>Cost</td><td>About <i>n</i> log<sub>2</sub> <i>n</i> work. This version uses extra lists.</td></tr>
+    <tr><td><code>values.sort()</code></td><td>Change the input list. The method returns <code>None</code>.</td></tr>
+    <tr><td><code>sorted(values)</code></td><td>Return a new sorted list. Keep the input list unchanged.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>For large lists, the comparison count grows more slowly for merge sort than for selection sort.</p>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>These items give more practice with selection sort and merge sort. Count comparisons between values. Do not count loop-bound tests or index calculations.</p>
+<p>Each practice starts with the first lines of its program in the code box. <strong>Check</strong> compares what your program prints with the expected output. It also calls your functions with other lists, including the edge cases named in the task.</p>
+
+<h3>1. Merge sort in descending order</h3>
+<p>Write <code>merge_desc(left, right)</code> and <code>merge_sort_desc(values)</code>. Return a new list in descending order. Keep every input list unchanged. Adapt the two functions from the teaching sections.</p>
+<ul>
+  <li>Identify the single value comparison that changes in <code>merge_desc</code>.</li>
+  <li>Explain why the remaining slices still go at the end.</li>
+  <li>Test an empty list.</li>
+  <li>Test <code>[5]</code>.</li>
+  <li>Test <code>[6, 2, 6, 9, 1]</code>.</li>
+  <li>Test <code>[9, 6, 4, 1]</code>.</li>
+  <li>Print each result and its input to check that the input stays unchanged.</li>
+</ul>
+<p>In the code box, print the result for each test list, then the list itself, in the order above.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>merge_desc(left, right)</code> and <code>merge_sort_desc(values)</code>.</li>
+    <li><code>merge_sort_desc</code> calls itself on each half and combines the results with <code>merge_desc</code>.</li>
+    <li>Do not use <code>sort</code>, <code>sorted</code> or <code>reverse</code>.</li>
+    <li>Keep every input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+<wb-table id="p1-cmp">
+  <table>
+    <tbody>
+      <tr><th>The comparison in <code>merge_desc</code></th><td data-blank="cmp"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Why do the remaining slices still go at the end of the result?</p>
+<wb-short id="p1-why"></wb-short>
+
+<h3>2. Remove duplicates by counting</h3>
+<p>Trace this function on <code>[4, 2, 4, 7, 2]</code>. It returns a new list and keeps the input list unchanged.</p>
+<wb-example id="ex-p2"></wb-example>
+<ul>
+  <li>Record the current element, its count, the action, and the list after each step. The <code>i</code> column is given.</li>
+  <li>State which copy of each repeated value survives.</li>
+  <li>For <code>n</code> different values, count how many elements all calls to <code>count</code> check in total.</li>
+  <li>Count one value comparison for each element that <code>count</code> checks.</li>
+  <li>Compare the total with selection sort's <i>n</i>(<i>n</i> − 1) / 2 comparisons.</li>
+</ul>
+<wb-table id="p2-trace">
+  <table>
+    <thead><tr><th><code>i</code></th><th>Element</th><th>Count</th><th>Action</th><th>List after the step</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td data-blank="e1"></td><td data-blank="c1"></td><td data-blank="a1"></td><td data-blank="r1"></td></tr>
+      <tr><td>0</td><td data-blank="e2"></td><td data-blank="c2"></td><td data-blank="a2"></td><td data-blank="r2"></td></tr>
+      <tr><td>0</td><td data-blank="e3"></td><td data-blank="c3"></td><td data-blank="a3"></td><td data-blank="r3"></td></tr>
+      <tr><td>1</td><td data-blank="e4"></td><td data-blank="c4"></td><td data-blank="a4"></td><td data-blank="r4"></td></tr>
+      <tr><td>2</td><td data-blank="e5"></td><td data-blank="c5"></td><td data-blank="a5"></td><td data-blank="r5"></td></tr>
+      <tr><th colspan="4">Which copy of each repeated value survives?</th><td data-blank="survive"></td></tr>
+      <tr><th colspan="4">Value comparisons for <code>n</code> different values</th><td data-blank="total"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Write Remove or Advance in the Action column. Selection sort uses <i>n</i>(<i>n</i> − 1) / 2 comparisons, which is about half of this total for a large list.</p>
+
+<h3>3. Sort, then compare neighbors</h3>
+<p>Write <code>unique_sorted(values)</code>. Call <code>sorted(values)</code>, then build a new list in ascending order. Keep the input list unchanged. Add an element only when the result is empty or the element differs from the last element added.</p>
+<ul>
+  <li>Trace the sorted pass for <code>[8, 3, 8, 1, 3]</code>.</li>
+  <li>Test an empty list.</li>
+  <li>Test <code>[5, 5, 5]</code>.</li>
+  <li>Count the value comparisons in the neighbor pass for a nonempty list of length <code>n</code>.</li>
+  <li>Explain why sorting uses the larger share of the work for large lists.</li>
+  <li>Use about <i>n</i> log<sub>2</sub> <i>n</i> sorting comparisons, as in merge sort.</li>
+  <li>For 1,000 elements, use about 10,000 sorting comparisons. Compare the full method with item 2.</li>
+</ul>
+<p>Write Add or Skip in the Action column.</p>
+<wb-table id="p3-trace">
+  <table>
+    <thead><tr><th>Element</th><th>Action</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="e1"></td><td data-blank="a1"></td><td data-blank="r1"></td></tr>
+      <tr><td data-blank="e2"></td><td data-blank="a2"></td><td data-blank="r2"></td></tr>
+      <tr><td data-blank="e3"></td><td data-blank="a3"></td><td data-blank="r3"></td></tr>
+      <tr><td data-blank="e4"></td><td data-blank="a4"></td><td data-blank="r4"></td></tr>
+      <tr><td data-blank="e5"></td><td data-blank="a5"></td><td data-blank="r5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>In the code box, print the result for <code>[8, 3, 8, 1, 3]</code>, then for <code>[]</code>, then for <code>[5, 5, 5]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>unique_sorted(values)</code> with one parameter.</li>
+    <li>Call <code>sorted(values)</code>. Then use one loop over the sorted list.</li>
+    <li>Do not use <code>in</code>, <code>count</code> or <code>set</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+<wb-table id="p3-cost">
+  <table>
+    <tbody>
+      <tr><th>Neighbor-pass comparisons for a nonempty list of length <code>n</code></th><td data-blank="pass"></td></tr>
+      <tr><th>Neighbor-pass comparisons for 1,000 elements</th><td data-blank="pass1000"></td></tr>
+      <tr><th>Sorting and the neighbor pass together, for 1,000 elements (about)</th><td data-blank="total"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Item 2 uses 1,000,000 comparisons when all 1,000 values differ. Sorting uses about 10,000 comparisons, so it is the larger part of this method.</p>
+
+<h3>4. Merge sort without recursion</h3>
+<p>Write <code>merge_sort_loop(values)</code> with the <code>merge</code> function from section 5. Return a new ascending list. Keep the input list unchanged. The precondition is that the length is a power of 2, starting with length 1. A run is a sorted part of the list.</p>
+<ul>
+  <li>Start with a copy of the input and <code>width = 1</code>.</li>
+  <li>While <code>width</code> is less than the length, merge each pair of neighboring runs.</li>
+  <li>The left run is <code>result[start:start + width]</code>.</li>
+  <li>The right run is <code>result[start + width:start + 2 * width]</code>.</li>
+  <li>Build the next list from the merged runs. Double <code>width</code> after each round.</li>
+  <li>For <code>[9, 4, 7, 2, 8, 3, 6, 1]</code>, record the width and the list after each round.</li>
+  <li>Compare the number of rounds with the number of merge levels for eight elements in section 9.</li>
+  <li>Test <code>[4]</code>.</li>
+  <li>Test <code>[7, 2]</code>.</li>
+  <li>Test the eight-element list above.</li>
+</ul>
+<wb-table id="p4-rounds">
+  <table>
+    <thead><tr><th>Width</th><th>List after the round</th></tr></thead>
+    <tbody>
+      <tr><td data-blank="w1"></td><td data-blank="l1"></td></tr>
+      <tr><td data-blank="w2"></td><td data-blank="l2"></td></tr>
+      <tr><td data-blank="w3"></td><td data-blank="l3"></td></tr>
+      <tr><th>Merge levels for eight elements</th><td data-blank="levels"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>In the code box, print the result for <code>[4]</code>, then for <code>[7, 2]</code>, then for <code>[9, 4, 7, 2, 8, 3, 6, 1]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>merge_sort_loop(values)</code> with one parameter.</li>
+    <li>Use a <code>while</code> loop and <code>merge</code>. Do not call <code>merge_sort_loop</code> inside itself.</li>
+    <li>Do not use <code>sort</code> or <code>sorted</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<h3>5. Keep the first occurrence in the original order</h3>
+<p>Write <code>unique_in_order(values)</code>. Return a new list that keeps only the first occurrence of each value, in the original order. Keep the input list unchanged.</p>
+<ul>
+  <li>Build <code>keys</code> with item 3's method. It is a sorted list with no duplicates.</li>
+  <li>Build <code>used = [False] * len(keys)</code>.</li>
+  <li>Walk the input list in order. Use Lecture 27's binary search to find each value's index in <code>keys</code>.</li>
+  <li>Add a value only when <code>used</code> at that index is <code>False</code>. Then set that entry to <code>True</code>.</li>
+  <li>Test <code>[4, 2, 4, 7, 2]</code>, the list from item 2.</li>
+  <li>Test an empty list.</li>
+  <li>Test <code>[9, 3, 6]</code>, which has no duplicates.</li>
+  <li>Compare the worst-case value comparisons with item 2. Include sorting, the neighbor pass, and the binary searches.</li>
+  <li>For 1,000 different values, use about 10,000 sorting comparisons.</li>
+  <li>Each binary search visits at most 10 middle elements. It can make two value comparisons at each one.</li>
+</ul>
+<p>The code box already holds <code>unique_sorted</code> and <code>binary_search</code>. Print the result for <code>[4, 2, 4, 7, 2]</code>, then for <code>[]</code>, then for <code>[9, 3, 6]</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>unique_in_order(values)</code> with one parameter.</li>
+    <li>Call <code>unique_sorted</code> and <code>binary_search</code>.</li>
+    <li>Do not use <code>in</code>, <code>index</code>, <code>count</code> or <code>set</code>.</li>
+    <li>Keep the input list unchanged.</li>
+  </ul>
+</div>
+<wb-exercise id="p5"></wb-exercise>
+<wb-table id="p5-cost">
+  <table>
+    <tbody>
+      <tr><th>Most value comparisons in the binary searches, for 1,000 different values</th><td data-blank="search"></td></tr>
+      <tr><th>Sorting, the neighbor pass and the searches together (at most, about)</th><td data-blank="total"></td></tr>
+      <tr><th>Item 2 for the same values</th><td data-blank="item2"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+
+<p>The Boss Problems are test-level practice. Boss Problem 4 uses the most ideas from this lecture.</p>
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 28 Workbook.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 28 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-28-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 28 Boss Problems</h1>
+    <div class="wb-subtitle">Selection sort and merge sort</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use selection sort and merge sort from Lecture 28:</p>
+  <ul>
+    <li>selection sort, which selects and swaps a value on each pass</li>
+    <li>the two-index merge of two sorted lists</li>
+    <li>recursive merge sort, and counting the value comparisons of each sort</li>
+  </ul>
+  <p>They use only what Lectures 4 to 28 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code>, <code>split()</code>, and blank input lines</li>
+    <li><code>random.seed</code> and <code>random.randint</code></li>
+    <li>f-strings with field widths such as <code>:4d</code> and <code>:&gt;10</code></li>
+    <li><code>while</code> and <code>for</code> loops, lists, slices, and functions that return a value, including recursive functions</li>
+  </ul>
+  <p>Each problem names the functions to write. Write the rest of the program at the top level, after the functions. Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the examples show. <strong>Check</strong> also calls your functions directly with other lists.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="ticket" data-toc-title="👹 Print a reproducible ticket">👹 Boss 1: Print a reproducible ticket</h2>
+<p>Write a program that reads an integer seed and makes a lottery ticket. A seed makes the random choices repeat when the program runs again. Print the six picks in their original order, then print the sorted ticket and a built-in sorting check.</p>
+<ul>
+  <li>Call <code>random.seed(seed)</code> before picking numbers.</li>
+  <li>Pick six different whole numbers from 1 to 49 with <code>random.randint</code>. Pick again when a number is already chosen.</li>
+  <li>Keep the picks in the order they were chosen.</li>
+  <li>Define <code>selection_sort(values)</code> with the selection sort algorithm from section 3 of the workbook. It changes its input list and returns nothing.</li>
+  <li>Sort a copy of the picks with that function. Do not use <code>sort</code> or <code>sorted</code> inside it.</li>
+  <li>Print the original picks, the sorted copy, and <code>sorted(picks)</code> on separate lines.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+11
+Output:
+[29, 36, 30, 33, 38, 13]
+[13, 29, 30, 33, 36, 38]
+[13, 29, 30, 33, 36, 38]
+Explanation:
+The last two lines show the same ascending ticket.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+[25, 49, 27, 3, 17, 33]
+[3, 17, 25, 27, 33, 49]
+[3, 17, 25, 27, 33, 49]
+Explanation:
+The seed can be zero. The picks still contain six different numbers.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The input is one integer seed of 0 or more.</li>
+    <li>Each picked number is from 1 to 49, including both ends.</li>
+    <li>Use a loop, a membership test, and your own selection sort.</li>
+    <li>Keep <code>picks</code> unchanged when sorting the ticket. Read input without a prompt.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these seeds. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>11</code></td><td><pre class="wb-output" style="margin:0">[29, 36, 30, 33, 38, 13]
+[13, 29, 30, 33, 36, 38]
+[13, 29, 30, 33, 36, 38]</pre></td></tr>
+    <tr><td><code>0</code></td><td><pre class="wb-output" style="margin:0">[25, 49, 27, 3, 17, 33]
+[3, 17, 25, 27, 33, 49]
+[3, 17, 25, 27, 33, 49]</pre></td></tr>
+    <tr><td><code>1</code></td><td><pre class="wb-output" style="margin:0">[9, 37, 49, 5, 17, 8]
+[5, 8, 9, 17, 37, 49]
+[5, 8, 9, 17, 37, 49]</pre></td></tr>
+    <tr><td><code>42</code></td><td><pre class="wb-output" style="margin:0">[41, 8, 2, 48, 18, 16]
+[2, 8, 16, 18, 41, 48]
+[2, 8, 16, 18, 41, 48]</pre></td></tr>
+    <tr><td><code>2026</code></td><td><pre class="wb-output" style="margin:0">[8, 21, 33, 42, 7, 15]
+[7, 8, 15, 21, 33, 42]
+[7, 8, 15, 21, 33, 42]</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>selection_sort(values)</code> with one parameter. It changes the list in place and returns nothing.</li>
+    <li>In <code>selection_sort</code>, use an outer loop and an inner loop. Do not use <code>sort</code>, <code>sorted</code> or <code>min</code> inside it.</li>
+    <li>Call <code>random.seed</code> and <code>random.randint</code> in the main program.</li>
+  </ul>
+</div>
+<wb-exercise id="ticket"></wb-exercise>
+
+<h2 id="merge-unique" data-toc-title="👾 Merge each value once">👾 Boss 2: Merge each value once</h2>
+<p>Write a program that reads two ascending lists and merges them without duplicates. Read each list from one line of whole numbers separated by spaces. A blank line represents an empty list. Print the merged list, then print its length on a separate line.</p>
+<ul>
+  <li>Define <code>merge_unique(left, right)</code>. Return a new ascending list that contains each value once.</li>
+  <li>Keep both input lists unchanged.</li>
+  <li>Use the two-index merge method. Both input lists can contain repeated values.</li>
+  <li>Check for a repeated value before adding it, including values in the remaining slices.</li>
+  <li>Replace each remaining-slice <code>extend</code> with a loop. Use <code>split()</code> to read each input line.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2 2 6
+2 5 5 8
+Output:
+[2, 5, 6, 8]
+4
+Explanation:
+The value 2 occurs in both lists. Repeated values enter the result once.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+4 4 9
+Output:
+[4, 9]
+2
+Explanation:
+The empty left list needs no front-value comparisons.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each input line is blank or contains integers separated by spaces.</li>
+    <li>Each input list is in ascending order.</li>
+    <li>Use loops, indices, slices, and <code>append</code>.</li>
+    <li>Do not use <code>sort</code> or <code>sorted</code> in this program.</li>
+  </ul>
+</div>
+<p>To enter a blank line, press Enter without typing anything. <strong>Check</strong> types each of these pairs of lines. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2 2 6</code>, <code>2 5 5 8</code></td><td><pre class="wb-output" style="margin:0">[2, 5, 6, 8]
+4</pre></td></tr>
+    <tr><td>blank, <code>4 4 9</code></td><td><pre class="wb-output" style="margin:0">[4, 9]
+2</pre></td></tr>
+    <tr><td><code>1 3 5</code>, <code>2 4 6</code></td><td><pre class="wb-output" style="margin:0">[1, 2, 3, 4, 5, 6]
+6</pre></td></tr>
+    <tr><td><code>7 7 7</code>, <code>7</code></td><td><pre class="wb-output" style="margin:0">[7]
+1</pre></td></tr>
+    <tr><td>blank, blank</td><td><pre class="wb-output" style="margin:0">[]
+0</pre></td></tr>
+    <tr><td><code>-3 0 0 4</code>, <code>-3 4 9 9</code></td><td><pre class="wb-output" style="margin:0">[-3, 0, 4, 9]
+4</pre></td></tr>
+    <tr><td><code>1 2 3</code>, blank</td><td><pre class="wb-output" style="margin:0">[1, 2, 3]
+3</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>merge_unique(left, right)</code> with two parameters. It returns a new list and keeps both inputs unchanged.</li>
+    <li>In <code>merge_unique</code>, use a <code>while</code> loop with two indices. Do not use <code>extend</code>, and do not use <code>in</code> to test membership.</li>
+    <li>Do not use <code>sort</code>, <code>sorted</code> or <code>set</code> in this program.</li>
+  </ul>
+</div>
+<wb-exercise id="merge-unique"></wb-exercise>
+
+<h2 id="count-selection" data-toc-title="🐉 Count every selection comparison">🐉 Boss 3: Count every selection comparison</h2>
+<p>Write a program that reads one integer per line until a blank line. Sort a copy in ascending order and a second copy in descending order. Print each list after every pass and report the value comparisons.</p>
+<ul>
+  <li>Define <code>selection_sort_count(values)</code> and <code>selection_sort_desc_count(values)</code>. Each changes the list it receives.</li>
+  <li>Each function prints the list after every pass and returns only its comparison count.</li>
+  <li>Count one comparison whenever the inner loop compares two values. Use strict comparisons to select a value.</li>
+  <li>After the ascending passes, print <code>Ascending comparisons:</code> and the count.</li>
+  <li>Print <code>Formula:</code> and the value of <code>n * (n - 1) // 2</code>.</li>
+  <li>After the descending passes, print <code>Descending comparisons:</code> and the count.</li>
+  <li>Think about whether changing the input order changes the count. The model answer explains it.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+1
+4
+6
+(blank line)
+Output:
+[1, 4, 6]
+[1, 4, 6]
+Ascending comparisons: 3
+Formula: 3
+[6, 4, 1]
+[6, 4, 1]
+Descending comparisons: 3
+Explanation:
+The ascending input still uses three comparisons. Each sort prints two passes.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+5
+(blank line)
+Output:
+Ascending comparisons: 0
+Formula: 0
+Descending comparisons: 0
+Explanation:
+One element needs no passes and no comparisons.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Ascending comparisons: 0
+Formula: 0
+Descending comparisons: 0
+Explanation:
+An empty list also needs no passes and no comparisons.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each nonblank input line contains an integer.</li>
+    <li>A blank line ends the input. It can be the first line.</li>
+    <li>Use selection sort in both functions. Do not use built-in sorting.</li>
+    <li>Return the count as one integer. Keep the original input list unchanged. Read input without prompts.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these sequences. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>1</code>, <code>4</code>, <code>6</code>, blank</td><td><pre class="wb-output" style="margin:0">[1, 4, 6]
+[1, 4, 6]
+Ascending comparisons: 3
+Formula: 3
+[6, 4, 1]
+[6, 4, 1]
+Descending comparisons: 3</pre></td></tr>
+    <tr><td><code>5</code>, blank</td><td><pre class="wb-output" style="margin:0">Ascending comparisons: 0
+Formula: 0
+Descending comparisons: 0</pre></td></tr>
+    <tr><td>blank</td><td><pre class="wb-output" style="margin:0">Ascending comparisons: 0
+Formula: 0
+Descending comparisons: 0</pre></td></tr>
+    <tr><td><code>3</code>, <code>1</code>, <code>2</code>, blank</td><td><pre class="wb-output" style="margin:0">[1, 3, 2]
+[1, 2, 3]
+Ascending comparisons: 3
+Formula: 3
+[3, 1, 2]
+[3, 2, 1]
+Descending comparisons: 3</pre></td></tr>
+    <tr><td><code>9</code>, <code>9</code>, <code>1</code>, <code>5</code>, blank</td><td><pre class="wb-output" style="margin:0">[1, 9, 9, 5]
+[1, 5, 9, 9]
+[1, 5, 9, 9]
+Ascending comparisons: 6
+Formula: 6
+[9, 9, 1, 5]
+[9, 9, 1, 5]
+[9, 9, 5, 1]
+Descending comparisons: 6</pre></td></tr>
+    <tr><td><code>-2</code>, <code>7</code>, <code>0</code>, <code>7</code>, <code>3</code>, blank</td><td><pre class="wb-output" style="margin:0">[-2, 7, 0, 7, 3]
+[-2, 0, 7, 7, 3]
+[-2, 0, 3, 7, 7]
+[-2, 0, 3, 7, 7]
+Ascending comparisons: 10
+Formula: 10
+[7, -2, 0, 7, 3]
+[7, 7, 0, -2, 3]
+[7, 7, 3, -2, 0]
+[7, 7, 3, 0, -2]
+Descending comparisons: 10</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>selection_sort_count(values)</code> and <code>selection_sort_desc_count(values)</code> with one parameter each. Each sorts its list in place and returns the number of value comparisons.</li>
+    <li>Use an outer loop and an inner loop in each function.</li>
+    <li>Do not use <code>sort</code>, <code>sorted</code>, <code>min</code> or <code>max</code>. <strong>Check</strong> also calls both functions with other lists, including an empty list.</li>
+  </ul>
+</div>
+<wb-exercise id="count-selection"></wb-exercise>
+
+<h2 id="compare-sorts" data-toc-title="💀 Compare the comparisons of two sorts">💀 Boss 4: Compare the comparisons of two sorts</h2>
+<p>Write a program that reads an integer seed and prints a comparison table for two sorts. Use list lengths 8, 16, and 32. For each length, build a new list of random whole numbers from 1 to 100. Print the length, selection sort count, and merge sort count in fixed-width columns.</p>
+<ul>
+  <li>Call <code>random.seed(seed)</code> once before building the three lists. Continue the same random sequence for all three.</li>
+  <li>Define <code>merge</code> and <code>merge_sort</code> as in sections 5 and 7 of the workbook. They keep their input lists unchanged.</li>
+  <li>Define <code>merge_count(left, right)</code> to run the same comparison loop as <code>merge</code>. Return only the number of value comparisons.</li>
+  <li>Define <code>merge_sort_count(values)</code>. Return 0 for a base case.</li>
+  <li>Otherwise, add the two recursive counts. Use <code>merge_count</code> on <code>merge_sort(left_part)</code> and <code>merge_sort(right_part)</code> for the current merge.</li>
+  <li>The count covers the comparisons of one merge sort. Do not add the work of helper calls used to obtain the sorted parts.</li>
+  <li>Define <code>selection_count(n)</code> to return <code>n * (n - 1) // 2</code>.</li>
+  <li>Keep every input list unchanged. Each counting function returns one integer.</li>
+  <li>Use column widths 4, 10, and 8, with one space between columns. Right-align headings and values.</li>
+  <li>After the table, print <code>sorted</code> of the eight-element list on its own line.</li>
+  <li>Think about how the counts compare with the maximum counts in section 9 of the workbook. The model answer explains it.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+7
+Output:
+   n  Selection    Merge
+   8         28       15
+  16        120       46
+  32        496      119
+[7, 10, 13, 20, 42, 51, 69, 84]
+Explanation:
+The merge counts stay below the maximum for each length.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+   n  Selection    Merge
+   8         28       17
+  16        120       45
+  32        496      121
+[6, 34, 50, 52, 54, 63, 66, 98]
+Explanation:
+A zero seed is valid. The merge count for eight elements reaches the maximum of 17.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>The input is one integer seed of 0 or more.</li>
+    <li>Random values include both 1 and 100. Repeated values are allowed.</li>
+    <li>Count only comparisons between input values.</li>
+    <li>Use the stated recursive functions and return counts as single integers.</li>
+    <li>For lengths 8, 16, and 32, merge sort must use at most 17, 49, and 129 comparisons. Read input without a prompt.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these seeds. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>7</code></td><td><pre class="wb-output" style="margin:0">   n  Selection    Merge
+   8         28       15
+  16        120       46
+  32        496      119
+[7, 10, 13, 20, 42, 51, 69, 84]</pre></td></tr>
+    <tr><td><code>0</code></td><td><pre class="wb-output" style="margin:0">   n  Selection    Merge
+   8         28       17
+  16        120       45
+  32        496      121
+[6, 34, 50, 52, 54, 63, 66, 98]</pre></td></tr>
+    <tr><td><code>1</code></td><td><pre class="wb-output" style="margin:0">   n  Selection    Merge
+   8         28       16
+  16        120       46
+  32        496      125
+[9, 16, 18, 33, 64, 73, 98, 98]</pre></td></tr>
+    <tr><td><code>13</code></td><td><pre class="wb-output" style="margin:0">   n  Selection    Merge
+   8         28       15
+  16        120       46
+  32        496      123
+[24, 30, 34, 38, 84, 86, 88, 88]</pre></td></tr>
+    <tr><td><code>100</code></td><td><pre class="wb-output" style="margin:0">   n  Selection    Merge
+   8         28       16
+  16        120       48
+  32        496      122
+[19, 23, 51, 59, 59, 91, 94, 99]</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>merge_count(left, right)</code>, <code>merge_sort_count(values)</code> and <code>selection_count(n)</code>. Each returns one integer and keeps its inputs unchanged.</li>
+    <li><code>merge_sort_count</code> calls itself on each half and uses <code>merge_count</code> for the current merge.</li>
+    <li>Do not use <code>sort</code> or <code>sorted</code> in <code>merge</code>, <code>merge_sort</code>, <code>merge_count</code> or <code>merge_sort_count</code>. <strong>Check</strong> also calls the counting functions with other lists.</li>
+  </ul>
+</div>
+<wb-exercise id="compare-sorts"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 28 Boss Problems.</p>
+</main>
+</body>
+</html>
