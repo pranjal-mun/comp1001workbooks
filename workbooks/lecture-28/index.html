@@ -410,7 +410,7 @@ mid = <span class="wb-fn">len</span>(values) // ____(a)____
   </wb-table>
 </div>
 
-<h2 id="s10">10. Big O: how the time and memory requirements grow</h2>
+<h2 id="s10">10. Big O: how the time requirements grow</h2>
 <p>Big O describes how the work of an algorithm grows when the input grows.</p>
 <p>The letter <i>n</i> is the size of the input. For a sort or a search, <i>n</i> is the length of the list.</p>
 <p>To find the Big O of an algorithm:</p>
@@ -458,6 +458,91 @@ mid = <span class="wb-fn">len</span>(values) // ____(a)____
   </svg>
 </figure>
 <p>A lower curve means less work. For large lists, merge sort is much faster than selection sort, because <i>n</i> log <i>n</i> grows much more slowly than <i>n</i><sup>2</sup>.</p>
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 13.</strong> What is the Big O of <code>count_pairs</code>?</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">count_pairs</span>(values):
+    count = <span class="wb-num">0</span>
+    <span class="wb-kw">for</span> i <span class="wb-kw">in</span> <span class="wb-fn">range</span>(<span class="wb-fn">len</span>(values)):
+        <span class="wb-kw">for</span> j <span class="wb-kw">in</span> <span class="wb-fn">range</span>(i + <span class="wb-num">1</span>, <span class="wb-fn">len</span>(values)):
+            <span class="wb-kw">if</span> values[i] == values[j]:
+                count = count + <span class="wb-num">1</span>
+    <span class="wb-kw">return</span> count</code></pre>
+  <ol type="A">
+    <li>O(log <i>n</i>)</li>
+    <li>O(<i>n</i>)</li>
+    <li>O(<i>n</i> log <i>n</i>)</li>
+    <li>O(<i>n</i><sup>2</sup>)</li>
+  </ol>
+  <wb-table id="q13">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 14.</strong> What is the Big O of <code>show_total_and_largest</code>?</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">show_total_and_largest</span>(values):
+    total = <span class="wb-num">0</span>
+    <span class="wb-kw">for</span> v <span class="wb-kw">in</span> values:
+        total = total + v
+    <span class="wb-fn">print</span>(total)
+    largest = values[<span class="wb-num">0</span>]
+    <span class="wb-kw">for</span> v <span class="wb-kw">in</span> values:
+        <span class="wb-kw">if</span> v &gt; largest:
+            largest = v
+    <span class="wb-fn">print</span>(largest)</code></pre>
+  <ol type="A">
+    <li>O(<i>n</i>)</li>
+    <li>O(<i>n</i><sup>2</sup>)</li>
+    <li>O(2<i>n</i>)</li>
+    <li>O(log <i>n</i>)</li>
+  </ol>
+  <wb-table id="q14">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 15.</strong> What is the Big O of <code>count_halvings</code>?</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">count_halvings</span>(values):
+    steps = <span class="wb-num">0</span>
+    <span class="wb-kw">for</span> v <span class="wb-kw">in</span> values:
+        k = <span class="wb-fn">len</span>(values)
+        <span class="wb-kw">while</span> k &gt; <span class="wb-num">1</span>:
+            k = k // <span class="wb-num">2</span>
+            steps = steps + <span class="wb-num">1</span>
+    <span class="wb-kw">return</span> steps</code></pre>
+  <ol type="A">
+    <li>O(log <i>n</i>)</li>
+    <li>O(<i>n</i>)</li>
+    <li>O(<i>n</i> log <i>n</i>)</li>
+    <li>O(<i>n</i><sup>2</sup>)</li>
+  </ol>
+  <wb-table id="q15">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p><strong>Question 16.</strong> A selection sort takes 2 seconds to sort 10,000 values. About how long does the same program take to sort 20,000 values on the same computer?</p>
+  <ol type="A">
+    <li>2 seconds</li>
+    <li>8 seconds</li>
+    <li>4 seconds</li>
+    <li>3 seconds</li>
+  </ol>
+  <wb-table id="q16">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
 
 <div class="wb-checkpoint">
   <div class="wb-block-title">Checkpoint 2</div>

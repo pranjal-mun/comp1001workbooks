@@ -232,6 +232,34 @@ while n > 1:
     n = n // 2
     steps = steps + 1
 print(steps)'''
+SRC['quick_13'] = '''def count_pairs(values):
+    count = 0
+    for i in range(len(values)):
+        for j in range(i + 1, len(values)):
+            if values[i] == values[j]:
+                count = count + 1
+    return count
+'''
+SRC['quick_14'] = '''def show_total_and_largest(values):
+    total = 0
+    for v in values:
+        total = total + v
+    print(total)
+    largest = values[0]
+    for v in values:
+        if v > largest:
+            largest = v
+    print(largest)
+'''
+SRC['quick_15'] = '''def count_halvings(values):
+    steps = 0
+    for v in values:
+        k = len(values)
+        while k > 1:
+            k = k // 2
+            steps = steps + 1
+    return steps
+'''
 SRC['checkpoint_2_starter'] = '''def merge(left, right):
     result = []
     i = 0
@@ -897,6 +925,14 @@ E["q10"] = gap("quick_10", ["2"], "[9, 4]\n[6, 2, 5]", "5rem")
 E["q11"] = true_false(True, False)
 assert levels(16) == 4
 E["q12"] = choice("D")
+# Quick check 10 (Big O): step counts grow as n^2, n, and n log2 n
+_q13, _q14, _q15 = namespace(SRC["quick_13"]), namespace(SRC["quick_14"]), namespace(SRC["quick_15"])
+assert _q13["count_pairs"](list(range(1024))) == 0 and _q15["count_halvings"](list(range(1024))) == 10240
+assert 2 * (20000 * 19999) / (10000 * 9999) > 7.99
+E["q13"] = choice("D")
+E["q14"] = choice("A")
+E["q15"] = choice("C")
+E["q16"] = choice("B")
 
 for spec in E.values():
     if "starter" in spec:

@@ -991,6 +991,70 @@
           "show": "D"
         }
       }
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "(D)",
+            "D)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "D"
+        }
+      }
+    },
+    "q14": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "A",
+            "(A)",
+            "A)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "A"
+        }
+      }
+    },
+    "q15": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "(C)",
+            "C)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "C"
+        }
+      }
+    },
+    "q16": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "(B)",
+            "B)"
+          ],
+          "placeholder": "letter",
+          "width": "4rem",
+          "show": "B"
+        }
+      }
     }
   }
 }
