@@ -1,0 +1,832 @@
+{
+  "id": "lecture-30",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 30 Workbook",
+  "subtitle": "raise, else, finally, and tracebacks",
+  "exercises": {
+    "ex-withdraw": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    \"\"\"Return balance minus amount.\n\n    amount must be a positive int\n    that is at most balance.\n    \"\"\"\n    return balance - amount\n\nprint(withdraw(500, 100))"
+    },
+    "s1-calls": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "400"
+          ],
+          "placeholder": "result",
+          "width": "8rem"
+        },
+        "r2": {
+          "accept": [
+            "-400"
+          ],
+          "placeholder": "result",
+          "width": "8rem"
+        },
+        "r3": {
+          "accept": [
+            "550"
+          ],
+          "placeholder": "result",
+          "width": "8rem"
+        },
+        "r4": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "TypeError"
+        }
+      }
+    },
+    "s1-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIGNhbGxzIHdpdGggOTAwLCAtNTAgYW5kICIxMDAiIGJyZWFrIHRoZSBydWxlLiBUaGUgY2FsbHMgd2l0aCA5MDAgYW5kIC01MCByZXR1cm4gYSB3cm9uZyBiYWxhbmNlLiBUaGUgZnVuY3Rpb24gc2hvdWxkIHJlZnVzZSB0aGVtIGJ5IHJhaXNpbmcgYW4gZXhjZXB0aW9uLg=="
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "raise"
+          ],
+          "placeholder": "keyword",
+          "width": "8rem",
+          "show": "raise"
+        },
+        "b": {
+          "accept": [
+            "err",
+            "e",
+            "error",
+            "exc",
+            "ex"
+          ],
+          "placeholder": "name",
+          "width": "8rem",
+          "show": "err"
+        },
+        "c": {
+          "accept": [
+            "err",
+            "e",
+            "error",
+            "exc",
+            "ex"
+          ],
+          "placeholder": "name",
+          "width": "8rem",
+          "show": "err"
+        }
+      }
+    },
+    "ex-raise": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    \"\"\"Return balance minus amount.\n\n    Raises TypeError if amount is not an int.\n    Raises ValueError if amount is not positive\n    or is more than balance.\n    \"\"\"\n    if type(amount) != int:\n        raise TypeError(\"amount must be an int\")\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")\n    if amount > balance:\n        raise ValueError(\"amount is too large\")\n    return balance - amount\n\nprint(withdraw(500, 100))\nprint(withdraw(500, 900))\nprint(\"Done\")"
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Halving 8"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l3": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "ex-print-error": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    if amount > balance:\n        print(\"Insufficient funds.\")\n        return balance\n    return balance - amount\n\nbalance = withdraw(500, 900)\nprint(\"Take your cash.\")",
+      "output": "Insufficient funds.\nTake your cash."
+    },
+    "ex-raise-error": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    if amount > balance:\n        raise ValueError(\"amount is too large\")\n    return balance - amount\n\nprint(withdraw(500, 100))\nprint(withdraw(500, 900))"
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "b"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "B"
+        }
+      }
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "TypeError"
+        },
+        "b": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        }
+      }
+    },
+    "ex-caller": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    \"\"\"Return balance minus amount.\n\n    Raises TypeError if amount is not an int.\n    Raises ValueError if amount is not positive\n    or is more than balance.\n    \"\"\"\n    if type(amount) != int:\n        raise TypeError(\"amount must be an int\")\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")\n    if amount > balance:\n        raise ValueError(\"amount is too large\")\n    return balance - amount\n\nbalance = 500\namount = int(input(\"Withdraw amount: \"))\ntry:\n    balance = withdraw(balance, amount)\nexcept ValueError as err:\n    print(\"Cannot withdraw:\", err)\nprint(\"Balance:\", balance)"
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "40"
+          ],
+          "placeholder": "output",
+          "width": "14rem"
+        },
+        "l2": {
+          "accept": [
+            "Error: n is negative"
+          ],
+          "placeholder": "output",
+          "width": "14rem"
+        }
+      }
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        },
+        "t2": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        }
+      }
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i1": {
+          "accept": [
+            "A",
+            "a"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "A"
+        },
+        "i2": {
+          "accept": [
+            "B",
+            "b"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "B"
+        },
+        "i3": {
+          "accept": [
+            "C",
+            "c"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "C"
+        },
+        "i4": {
+          "accept": [
+            "C",
+            "c"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "C"
+        }
+      }
+    },
+    "ex-else": {
+      "type": "example",
+      "code": "try:\n    number = int(input(\"Number: \"))\nexcept ValueError:\n    print(\"Enter a whole number.\")\nelse:\n    print(f\"Twice that is {number * 2}\")"
+    },
+    "q8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "Done"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l3": {
+          "accept": [
+            "Bad"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l4": {
+          "accept": [
+            "Done"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "ex-success-try": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    \"\"\"Return balance minus amount.\n\n    Raises TypeError if amount is not an int.\n    Raises ValueError if amount is not positive\n    or is more than balance.\n    \"\"\"\n    if type(amount) != int:\n        raise TypeError(\"amount must be an int\")\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")\n    if amount > balance:\n        raise ValueError(\"amount is too large\")\n    return balance - amount\n\ntry:\n    amount = int(input(\"Amount: \"))\n    print(withdraw(500, amount))\nexcept ValueError:\n    print(\"Enter a whole number.\")"
+    },
+    "ex-success-else": {
+      "type": "example",
+      "code": "def withdraw(balance, amount):\n    \"\"\"Return balance minus amount.\n\n    Raises TypeError if amount is not an int.\n    Raises ValueError if amount is not positive\n    or is more than balance.\n    \"\"\"\n    if type(amount) != int:\n        raise TypeError(\"amount must be an int\")\n    if amount <= 0:\n        raise ValueError(\"amount must be positive\")\n    if amount > balance:\n        raise ValueError(\"amount is too large\")\n    return balance - amount\n\ntry:\n    amount = int(input(\"Amount: \"))\nexcept ValueError:\n    print(\"Enter a whole number.\")\nelse:\n    print(withdraw(500, amount))"
+    },
+    "q9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "c"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "C"
+        }
+      }
+    },
+    "ex-finally": {
+      "type": "example",
+      "code": "text = input(\"People: \")\ntry:\n    share = 60 / int(text)\nexcept ValueError:\n    print(\"Enter a whole number.\")\nelse:\n    print(f\"Share: {share}\")\nfinally:\n    print(\"Finished.\")\nprint(\"After the try statement.\")"
+    },
+    "q10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Checked 3"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l3": {
+          "accept": [
+            "Checked a"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l4": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "q11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        },
+        "t2": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        }
+      }
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a1": {
+          "accept": [
+            "B 4.0"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "a2": {
+          "accept": [
+            "C"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "a3": {
+          "accept": [
+            "D"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b1": {
+          "accept": [
+            "A"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b2": {
+          "accept": [
+            "C"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b3": {
+          "accept": [
+            "D"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "c1": {
+          "accept": [
+            "C"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "c2": {
+          "accept": [
+            "ZeroDivisionError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ZeroDivisionError"
+        },
+        "c3": {
+          "accept": [
+            "none",
+            "None",
+            "no line"
+          ],
+          "placeholder": "output",
+          "width": "10rem",
+          "show": "none"
+        }
+      }
+    },
+    "ex-cp2": {
+      "type": "example",
+      "code": "def divide(a_text, b_text):\n    try:\n        result = int(a_text) / int(b_text)\n    except ValueError:\n        print(\"A\")\n    else:\n        print(\"B\", result)\n    finally:\n        print(\"C\")\n    print(\"D\")\n\ndivide(\"8\", \"2\")\ndivide(\"8\", \"x\")\ndivide(\"8\", \"0\")"
+    },
+    "ex-grades": {
+      "type": "example",
+      "code": "def average(values):\n    return sum(values) / len(values)\n\ndef report(marks):\n    avg = average(marks)\n    print(f\"Average: {avg:.1f}\")\n\nreport([70, 85, 90])\nreport([])"
+    },
+    "q12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "TypeError"
+        },
+        "b": {
+          "accept": [
+            "total",
+            "total()"
+          ],
+          "placeholder": "function",
+          "width": "8rem",
+          "show": "total"
+        },
+        "c": {
+          "accept": [
+            "8"
+          ],
+          "placeholder": "line",
+          "width": "5rem"
+        }
+      }
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "A"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "D"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l3": {
+          "accept": [
+            "E"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "ex-too-early": {
+      "type": "example",
+      "code": "def parse_mark(text):\n    try:\n        mark = int(text)\n    except ValueError:\n        mark = 0\n    return mark\n\nprint(parse_mark(\"80\") + parse_mark(\"9O\"))",
+      "output": "80"
+    },
+    "q14": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "d"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "D"
+        }
+      }
+    },
+    "cp3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ValueError"
+        },
+        "m": {
+          "accept": [
+            "mark must be 0 to 100"
+          ],
+          "placeholder": "message",
+          "width": "14rem",
+          "show": "mark must be 0 to 100"
+        },
+        "n": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "line",
+          "width": "5rem"
+        },
+        "f": {
+          "accept": [
+            "parse_mark",
+            "parse_mark()"
+          ],
+          "placeholder": "function",
+          "width": "10rem",
+          "show": "parse_mark"
+        },
+        "v": {
+          "accept": [
+            "\"150\"",
+            "150",
+            "'150'"
+          ],
+          "placeholder": "value",
+          "width": "8rem",
+          "show": "\"150\""
+        }
+      }
+    },
+    "cp3-frames": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "cGFyc2VfbWFyayAobGluZSA0KSBpcyB0aGUgYm90dG9tIGZyYW1lLiBBYm92ZSBpdCBpcyB0b3RhbF9tYXJrcyAobGluZSAxMCksIGFuZCB0aGUgdG9wIGxldmVsIChsaW5lIDEzKSBpcyBhdCB0aGUgdG9wLg=="
+    },
+    "ex-cp3": {
+      "type": "example",
+      "code": "def parse_mark(text):\n    mark = int(text)\n    if mark < 0 or mark > 100:\n        raise ValueError(\"mark must be 0 to 100\")\n    return mark\n\ndef total_marks(texts):\n    total = 0\n    for text in texts:\n        total = total + parse_mark(text)\n    return total\n\nprint(total_marks([\"70\", \"150\", \"60\"]))"
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 16,
+      "starter": "def percent(part, whole):\n    pass",
+      "cases": [
+        {
+          "name": "Inputs 3 and 4",
+          "inputs": [
+            "3",
+            "4"
+          ],
+          "expected": "Percent: 75.0"
+        },
+        {
+          "name": "Inputs 5 and 0",
+          "inputs": [
+            "5",
+            "0"
+          ],
+          "expected": "Error: whole must be positive"
+        },
+        {
+          "name": "Inputs 7 and 4",
+          "inputs": [
+            "7",
+            "4"
+          ],
+          "expected": "Error: part must be from 0 to whole"
+        },
+        {
+          "name": "Input abc",
+          "inputs": [
+            "abc",
+            "4"
+          ],
+          "expected": "Error: invalid literal for int() with base 10: 'abc'"
+        },
+        {
+          "name": "Inputs -1 and 4",
+          "inputs": [
+            "-1",
+            "4"
+          ],
+          "expected": "Error: part must be from 0 to whole"
+        },
+        {
+          "name": "Inputs 4 and 4",
+          "inputs": [
+            "4",
+            "4"
+          ],
+          "expected": "Percent: 100.0"
+        },
+        {
+          "name": "Inputs 1 and 3",
+          "inputs": [
+            "1",
+            "3"
+          ],
+          "expected": "Percent: 33.3"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_f = _fn(\"percent\", \"part\", \"whole\")\nassert len(_raises(_def(\"percent\"))) >= 2, \"Raise ValueError in percent for each rule. Use a raise statement for each one.\"\nassert not any(isinstance(n, ast.Call) and getattr(n.func, \"id\", \"\") == \"print\" for n in ast.walk(_def(\"percent\"))), \"percent must not print. The caller prints the error.\"\nassert any(t.orelse for t in _tries()), \"Print the percentage in an else block.\"\nfor _args, _want in [((1, 0), \"ValueError: whole must be positive\"), ((5, 4), \"ValueError: part must be from 0 to whole\"), ((-1, 4), \"ValueError: part must be from 0 to whole\")]:\n    assert _quiet(_f, *_args)[1] == _want, \"percent\" + str(_args) + \" should raise \" + _want\nassert _quiet(_f, 1, 4)[0] == 25.0, \"percent(1, 4) should return 25.0.\"\n",
+      "answer": "ZGVmIHBlcmNlbnQocGFydCwgd2hvbGUpOgogICAgIiIiUmV0dXJuIGEgcGVyY2VudGFnZS4KCiAgICBSYWlzZSBWYWx1ZUVycm9yKCJ3aG9sZSBtdXN0IGJlIHBvc2l0aXZlIikgaWYgd2hvbGUgPD0gMC4KICAgIFJhaXNlIFZhbHVlRXJyb3IoInBhcnQgbXVzdCBiZSBmcm9tIDAgdG8gd2hvbGUiKSBpZgogICAgcGFydCBpcyBvdXRzaWRlIDAgdG8gd2hvbGUuCiAgICAiIiIKICAgIGlmIHdob2xlIDw9IDA6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigid2hvbGUgbXVzdCBiZSBwb3NpdGl2ZSIpCiAgICBpZiBwYXJ0IDwgMCBvciBwYXJ0ID4gd2hvbGU6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigicGFydCBtdXN0IGJlIGZyb20gMCB0byB3aG9sZSIpCiAgICByZXR1cm4gcGFydCAvIHdob2xlICogMTAwCgp0cnk6CiAgICBwYXJ0ID0gaW50KGlucHV0KCkpCiAgICB3aG9sZSA9IGludChpbnB1dCgpKQpleGNlcHQgVmFsdWVFcnJvciBhcyBlcnI6CiAgICBwcmludCgiRXJyb3I6IiwgZXJyKQplbHNlOgogICAgdHJ5OgogICAgICAgIHJlc3VsdCA9IHBlcmNlbnQocGFydCwgd2hvbGUpCiAgICBleGNlcHQgVmFsdWVFcnJvciBhcyBlcnI6CiAgICAgICAgcHJpbnQoIkVycm9yOiIsIGVycikKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoZiJQZXJjZW50OiB7cmVzdWx0Oi4xZn0iKQ==",
+      "answerNote": "percent only raises. The caller converts the input, calls percent in a small try block, and prints the result in else."
+    },
+    "p1-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIHR3byByYWlzZSBzdGF0ZW1lbnRzIGluIHBlcmNlbnQgcmFpc2UgdGhlIGV4Y2VwdGlvbnMuIFRoZSBleGNlcHQgYmxvY2sgaW4gdGhlIGNhbGxlciBoYW5kbGVzIHRoZW0uIFRoZSBmdW5jdGlvbiBkb2VzIG5vdCBwcmludCBiZWNhdXNlIHRoZSBjYWxsZXIgZGVjaWRlcyB3aGF0IHRoZSB1c2VyIHNlZXMu"
+    },
+    "ex-p2": {
+      "type": "example",
+      "code": "def inspect(values):\n    for value in values:\n        if value < 0: raise ValueError(\"negative\")\n        print(value)\n\ntry:\n    inspect([2, -3])\nexcept ValueError: print(\"Bad\")\nelse: print(\"Good\")\nfinally: print(\"Checked\")\nprint(\"End\")"
+    },
+    "p2-out": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "a2": {
+          "accept": [
+            "Bad"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "a3": {
+          "accept": [
+            "Checked"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "a4": {
+          "accept": [
+            "End"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b1": {
+          "accept": [
+            "2"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b2": {
+          "accept": [
+            "3"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b3": {
+          "accept": [
+            "Good"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b4": {
+          "accept": [
+            "Checked"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "b5": {
+          "accept": [
+            "End"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "p2-next": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "QWZ0ZXIgcmFpc2UsIGNvbnRyb2wganVtcHMgdG8gdGhlIGZpcnN0IHN0YXRlbWVudCBvZiB0aGUgbWF0Y2hpbmcgZXhjZXB0IGJsb2NrLCBoZXJlIHByaW50KCJCYWQiKS4gVGhlIHJlc3Qgb2YgaW5zcGVjdCBpcyBza2lwcGVkLiBUaGUgZmluYWxseSBibG9jayBydW5zIGFmdGVyIHRoYXQu"
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "def show_ratio(a_text, b_text):\n    pass\n\n\nshow_ratio(\"3\", \"4\")\nshow_ratio(\"3\", \"x\")",
+      "cases": [
+        {
+          "name": "Calls with \"3\", \"4\" and \"3\", \"x\"",
+          "expected": "0.75\nRatio checked.\nEnter numbers.\nRatio checked."
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_f = _fn(\"show_ratio\", \"a_text\", \"b_text\")\n_d = _def(\"show_ratio\")\n_t = [n for n in ast.walk(_d) if isinstance(n, ast.Try)]\nassert any(t.finalbody for t in _t), \"Print Ratio checked. in a finally block inside show_ratio.\"\nassert all(_names(h) == [\"ValueError\"] for t in _t for h in t.handlers), \"Inside show_ratio, handle only ValueError.\"\n_r, _e, _o = _quiet(_f, \"3\", \"0\")\nassert _e is not None and _e.startswith(\"ZeroDivisionError\"), 'show_ratio(\"3\", \"0\") should let the ZeroDivisionError pass to the caller.'\nassert \"Ratio checked.\" in _o, 'The finally block should print Ratio checked. for \"3\" and \"0\" as well.'\n",
+      "answer": "ZGVmIHNob3dfcmF0aW8oYV90ZXh0LCBiX3RleHQpOgogICAgdHJ5OgogICAgICAgIGEgPSBmbG9hdChhX3RleHQpCiAgICAgICAgYiA9IGZsb2F0KGJfdGV4dCkKICAgICAgICBwcmludChmInthIC8gYjouMmZ9IikKICAgIGV4Y2VwdCBWYWx1ZUVycm9yOgogICAgICAgIHByaW50KCJFbnRlciBudW1iZXJzLiIpCiAgICBmaW5hbGx5OgogICAgICAgIHByaW50KCJSYXRpbyBjaGVja2VkLiIpCgpzaG93X3JhdGlvKCIzIiwgIjQiKQpzaG93X3JhdGlvKCIzIiwgIngiKQ==",
+      "answerNote": "The finally block prints on every path. For \"3\" and \"0\" it runs first, and then the ZeroDivisionError passes to the caller."
+    },
+    "p3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "Rm9yICIzIiBhbmQgIjAiLCB0aGUgZmluYWxseSBibG9jayBwcmludHMgUmF0aW8gY2hlY2tlZC4gYW5kIHRoZW4gdGhlIFplcm9EaXZpc2lvbkVycm9yIHBhc3NlcyB0byB0aGUgY2FsbGVyLiBSZWFsIHByb2dyYW1zIHVzZSBmaW5hbGx5IHRvIHJlbGVhc2Ugc29tZXRoaW5nLCBzdWNoIGFzIGNsb3NpbmcgYSBmaWxlLg=="
+    },
+    "ex-p4": {
+      "type": "example",
+      "code": "def check_value():\n    try:\n        raise ValueError(\"bad value\")\n    finally:\n        print(1 / 0)\n\ntry:\n    check_value()\nexcept ValueError:\n    print(\"Value error\")\nexcept ZeroDivisionError:\n    print(\"Division error\")",
+      "output": "Division error"
+    },
+    "p4-out": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "out": {
+          "accept": [
+            "Division error"
+          ],
+          "placeholder": "output",
+          "width": "12rem"
+        }
+      }
+    },
+    "p4-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIFplcm9EaXZpc2lvbkVycm9yIHJhaXNlZCBpbiB0aGUgZmluYWxseSBibG9jayByZXBsYWNlcyB0aGUgVmFsdWVFcnJvciwgc28gdGhlIFplcm9EaXZpc2lvbkVycm9yIGJsb2NrIHJ1bnMuIEEgZmluYWxseSBibG9jayBzaG91bGQgY29udGFpbiBvbmx5IGNvZGUgdGhhdCBjYW5ub3QgZmFpbC4="
+    }
+  }
+}

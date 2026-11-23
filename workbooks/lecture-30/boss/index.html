@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 30 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-30-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 30 Boss Problems</h1>
+    <div class="wb-subtitle"><code>raise</code>, <code>else</code>, <code>finally</code>, and tracebacks</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use functions that raise exceptions and callers that handle them:</p>
+  <ul>
+    <li><code>raise</code> with a built-in exception type and a message</li>
+    <li><code>try</code> statements with <code>except</code>, <code>else</code>, and <code>finally</code></li>
+    <li>an exception that passes from a function to its caller</li>
+  </ul>
+  <p>They use only what Lectures 4 to 30 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code>, and a blank line that ends the input</li>
+    <li>f-strings such as <code>:.2f</code>, and the string methods <code>split</code> and <code>strip</code></li>
+    <li><code>if</code> tests, <code>while</code> and <code>for</code> loops, lists, the list method <code>index</code>, and functions</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the table shows. The checker also calls your functions directly, so each function must raise the exceptions that the problem names.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="average-or-nothing" data-toc-title="👹 Average or nothing">👹 Boss 1: Average or nothing</h2>
+<p>Write a program that reads numbers until a blank line and prints their average. Rewrite the starter function so it raises an exception when there are no values.</p>
+<ul>
+    <li>The function never prints. Its docstring lists <code>ValueError("no values")</code> for an empty list.</li>
+    <li>The caller handles the exception and prints <code>No average:</code> and the message.</li>
+    <li>When the call succeeds, print <code>Average:</code> and the value with two decimal places in an <code>else</code> block.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+4
+8
+(blank line)
+Output:
+Average: 6.00
+Explanation:
+The average of 4 and 8 is 6.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+-1
+(blank line)
+Output:
+Average: -1.00
+Explanation:
+&lt;code&gt;-1&lt;/code&gt; is a valid average.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+No average: no values
+Explanation:
+The list is empty.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Every non-blank line is a valid number for <code>float</code>.</li>
+    <li>Read the lines with a plain <code>input()</code> that shows no prompt.</li>
+    <li>Raise and handle <code>ValueError</code>. Use <code>try</code>, <code>except</code>, and <code>else</code>. Use no bare <code>except</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>4</code><br><code>8</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Average: 6.00</pre></td></tr>
+    <tr><td><code>-1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Average: -1.00</pre></td></tr>
+    <tr><td><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">No average: no values</pre></td></tr>
+    <tr><td><code>2.5</code><br><code>3.5</code><br><code>10</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Average: 5.33</pre></td></tr>
+    <tr><td><code>0</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Average: 0.00</pre></td></tr>
+    <tr><td><code> 7 </code><br><code>9</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Average: 8.00</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>average(values)</code>. It raises <code>ValueError("no values")</code> for an empty list and does not print.</li>
+    <li>Print the average in an <code>else</code> block, and read the lines with a <code>while</code> loop.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="average-or-nothing"></wb-exercise>
+
+<h2 id="reduce-fraction" data-toc-title="👾 Reduce a fraction">👾 Boss 2: Reduce a fraction</h2>
+<p>Write a program that reads two whole numbers on separate lines and prints the reduced fraction.</p>
+<ul>
+    <li>Write <code>gcd(a, b)</code> using Euclid's algorithm for non-negative numbers.</li>
+    <li>Write <code>reduce_fraction(top, bottom)</code>. Return the reduced fraction as a string.</li>
+    <li>Raise <code>ValueError("denominator must not be zero")</code> when the denominator is zero.</li>
+    <li>Move a negative sign to the top. A top of zero gives <code>"0/1"</code>.</li>
+    <li>Print <code>Enter whole numbers.</code> if conversion fails. Print <code>Error:</code> and the message if the function raises.</li>
+    <li>Use separate <code>try</code> blocks. Both errors have type <code>ValueError</code>, but the caller gives them different messages.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+18
+-24
+Output:
+-3/4
+Explanation:
+The sign moves to the numerator.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+9
+Output:
+0/1
+Explanation:
+Zero has the required reduced form.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+4
+0
+Output:
+Error: denominator must not be zero
+Explanation:
+The function raises an exception.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read two lines with plain <code>input()</code> calls that show no prompt. Each line can contain text.</li>
+    <li>Raise <code>ValueError</code> for a zero denominator. Handle <code>ValueError</code> in both callers. Use no bare <code>except</code>.</li>
+    <li>Use a <code>while</code> loop in <code>gcd</code>. Return a string from <code>reduce_fraction</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>18</code><br><code>-24</code></td><td><pre class="wb-output" style="margin:0">-3/4</pre></td></tr>
+    <tr><td><code>0</code><br><code>9</code></td><td><pre class="wb-output" style="margin:0">0/1</pre></td></tr>
+    <tr><td><code>4</code><br><code>0</code></td><td><pre class="wb-output" style="margin:0">Error: denominator must not be zero</pre></td></tr>
+    <tr><td><code>12</code><br><code>18</code></td><td><pre class="wb-output" style="margin:0">2/3</pre></td></tr>
+    <tr><td><code>-6</code><br><code>-4</code></td><td><pre class="wb-output" style="margin:0">3/2</pre></td></tr>
+    <tr><td><code>-5</code><br><code>10</code></td><td><pre class="wb-output" style="margin:0">-1/2</pre></td></tr>
+    <tr><td><code>7</code><br><code>1</code></td><td><pre class="wb-output" style="margin:0">7/1</pre></td></tr>
+    <tr><td><code>abc</code><br><code>4</code></td><td><pre class="wb-output" style="margin:0">Enter whole numbers.</pre></td></tr>
+    <tr><td><code>7</code><br><code>2.5</code></td><td><pre class="wb-output" style="margin:0">Enter whole numbers.</pre></td></tr>
+    <tr><td><code>0</code><br><code>-3</code></td><td><pre class="wb-output" style="margin:0">0/1</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>gcd(a, b)</code> with a <code>while</code> loop, and <code>reduce_fraction(top, bottom)</code>.</li>
+    <li><code>reduce_fraction(4, 0)</code> raises <code>ValueError("denominator must not be zero")</code>, and <code>reduce_fraction(18, -24)</code> returns <code>"-3/4"</code>.</li>
+    <li>Use at least two <code>try</code> statements. Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="reduce-fraction"></wb-exercise>
+
+<h2 id="perfect-numbers" data-toc-title="🐉 Proper divisors and perfect numbers">🐉 Boss 3: Proper divisors and perfect numbers</h2>
+<p>Write a program that reads lines until a blank line. For each line, report whether its number is perfect.</p>
+<ul>
+    <li>A proper divisor is positive, divides the number evenly, and is smaller than the number.</li>
+    <li><code>proper_divisors(n)</code> returns the list of proper divisors. If <code>n &lt; 1</code>, it raises <code>ValueError("n must be at least 1")</code>.</li>
+    <li><code>is_perfect(n)</code> returns whether the sum of the proper divisors equals <code>n</code>. Let the exception pass to its caller.</li>
+    <li>Print the number followed by <code>is perfect</code> or <code>is not perfect</code>. Print the input and the error message for an invalid value.</li>
+    <li>Use separate small <code>try</code> blocks for conversion and for the call. Put the call in the conversion's <code>else</code> block.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+6
+8
+(blank line)
+Output:
+6 is perfect
+8 is not perfect
+Explanation:
+The proper divisors of 6 are 1, 2, and 3. Their sum is 6.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+abc
+(blank line)
+Output:
+0: n must be at least 1
+abc: not a whole number
+Explanation:
+Zero is outside the contract. The text cannot be converted.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each line can contain text. A blank line ends input. Use a plain <code>input()</code> that shows no prompt.</li>
+    <li>Raise and handle <code>ValueError</code>. Use no bare <code>except</code>.</li>
+    <li>Keep both functions and the program in one file. Use an <code>if __name__ == "__main__":</code> guard.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>6</code><br><code>8</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">6 is perfect
+8 is not perfect</pre></td></tr>
+    <tr><td><code>0</code><br><code>abc</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">0: n must be at least 1
+abc: not a whole number</pre></td></tr>
+    <tr><td><code>28</code><br><code>1</code><br><code>12</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">28 is perfect
+1 is not perfect
+12 is not perfect</pre></td></tr>
+    <tr><td><code>-4</code><br><code>496</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">-4: n must be at least 1
+496 is perfect</pre></td></tr>
+    <tr><td><code>2.5</code><br><code> 6 </code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">2.5: not a whole number
+6 is perfect</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>proper_divisors(n)</code> and <code>is_perfect(n)</code>. <code>proper_divisors(0)</code> raises <code>ValueError("n must be at least 1")</code>.</li>
+    <li><code>is_perfect</code> has no <code>try</code>, so the exception passes to its caller.</li>
+    <li>Put the main program under <code>if __name__ == "__main__":</code> and use at least two <code>try</code> statements.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="perfect-numbers"></wb-exercise>
+
+<h2 id="order-lines" data-toc-title="💀 Order lines">💀 Boss 4: Order lines</h2>
+<p>Write a program that reads order lines until a blank line. It prints the result of each line and a final total. Use the parallel lists in the starter code.</p>
+<ul>
+    <li>A line contains an item and a quantity separated by a comma. Strip spaces around each part.</li>
+    <li><code>parse_quantity(text)</code> converts the text with <code>int</code>. Raise <code>ValueError("quantity must be at least 1")</code> for a value below 1.</li>
+    <li><code>line_cost(line)</code> raises <code>ValueError("expected item,quantity")</code> unless there are exactly two parts.</li>
+    <li>If the item is absent, raise <code>ValueError("unknown item " + item)</code>. Otherwise return its price times the quantity.</li>
+    <li>The caller prints <code>Rejected:</code> and the exception message when a line fails.</li>
+    <li>On success, add the cost to the total and print <code>Added</code> and the cost with two decimal places.</li>
+    <li>After each line, print <code>Checked:</code> and the original line. At the end, print <code>Total:</code> and the total with two decimal places.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+pen,2
+cup, 1
+(blank line)
+Output:
+Added 3.00
+Checked: pen,2
+Added 4.25
+Checked: cup, 1
+Total: 7.25
+Explanation:
+Both costs are added to the total.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+pen,0
+(blank line)
+Output:
+Rejected: quantity must be at least 1
+Checked: pen,0
+Total: 0.00
+Explanation:
+Zero is outside the quantity contract.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Each input line can contain text. A blank line ends input. Use a plain <code>input()</code> that shows no prompt.</li>
+    <li>Raise and handle <code>ValueError</code>. Use <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code>. Use no bare <code>except</code>.</li>
+    <li>Let the <code>ValueError</code> from <code>int</code> pass to the caller when a quantity is text such as <code>two</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>pen,2</code><br><code>cup, 1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Added 3.00
+Checked: pen,2
+Added 4.25
+Checked: cup, 1
+Total: 7.25</pre></td></tr>
+    <tr><td><code>pen,0</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Rejected: quantity must be at least 1
+Checked: pen,0
+Total: 0.00</pre></td></tr>
+    <tr><td><code>book,3</code><br><code>pen,two</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Added 36.00
+Checked: book,3
+Rejected: invalid literal for int() with base 10: 'two'
+Checked: pen,two
+Total: 36.00</pre></td></tr>
+    <tr><td><code>hat,1</code><br><code>pen</code><br><code>pen,1,2</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Rejected: unknown item hat
+Checked: hat,1
+Rejected: expected item,quantity
+Checked: pen
+Rejected: expected item,quantity
+Checked: pen,1,2
+Total: 0.00</pre></td></tr>
+    <tr><td><code> cup , 2 </code><br><code>book,-1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Added 8.50
+Checked:  cup , 2 
+Rejected: quantity must be at least 1
+Checked: book,-1
+Total: 8.50</pre></td></tr>
+    <tr><td><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Total: 0.00</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>parse_quantity(text)</code> and <code>line_cost(line)</code>. Neither function uses <code>try</code>.</li>
+    <li>Each function raises <code>ValueError</code> with the messages above.</li>
+    <li>The main program uses <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code> in a <code>while</code> loop.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Part (a): read the traceback</div>
+  <p>After writing the functions, run <code>line_cost("pen,0")</code> without a handler. Read the traceback without the <code>^</code> and <code>~</code> lines. Label the function that raised the exception and each call that led there. Why does the handler belong in the main program?</p>
+  <wb-short id="orders-trace"></wb-short>
+</div>
+<p><strong>Part (b).</strong> Write the complete program.</p>
+<wb-exercise id="order-lines"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 30 Boss Problems.</p>
+</main>
+</body>
+</html>

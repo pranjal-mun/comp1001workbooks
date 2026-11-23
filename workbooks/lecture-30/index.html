@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 30 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-30", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 30 Workbook</h1>
+    <div class="wb-subtitle"><code>raise</code>, <code>else</code>, <code>finally</code>, and tracebacks</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>This lecture looks at both sides of a function call. The function writer raises an exception, and the caller handles it.</p>
+  <p>Reading: §7.5</p>
+  <ul>
+    <li>Raise an appropriate built-in exception when a function cannot continue.</li>
+    <li>Use <code>else</code> and <code>finally</code> in a <code>try</code> statement.</li>
+    <li>Read a traceback as a call stack, starting with the final error.</li>
+    <li>Explain how exceptions travel through calls and choose where to catch them.</li>
+    <li>Tell a bad value, which the caller handles, from a bug, which the programmer fixes.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. A program that calls <code>input()</code> asks you to type each answer. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-sides">Two sides of a call</p>
+
+<h2 id="s1">1. A withdraw function with no checks</h2>
+<p>An ATM program takes money out of an account. Put that step in a function that any program can call.</p>
+<wb-example id="ex-withdraw"></wb-example>
+<p>Run each call in the code box. Fill in the result. For a call that raises an exception, write its type.</p>
+<wb-table id="s1-calls">
+  <table>
+    <thead><tr><th>Call</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><code>withdraw(500, 100)</code></td><td data-blank="r1"></td></tr>
+      <tr><td><code>withdraw(500, 900)</code></td><td data-blank="r2"></td></tr>
+      <tr><td><code>withdraw(500, -50)</code></td><td data-blank="r3"></td></tr>
+      <tr><td><code>withdraw(500, "100")</code></td><td data-blank="r4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Which calls break the rule in the docstring? Two calls return a balance that is wrong. What should <code>withdraw</code> do instead?</p>
+<wb-short id="s1-why"></wb-short>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Mark each statement true or false.</p>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>A docstring states what a function accepts and returns.</td><td data-blank="t1"></td></tr>
+        <tr><td>When a call breaks a docstring rule, Python stops the program by itself.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s2">2. Two sides of a function call</h2>
+<p>The docstring is a contract between a function and the code that calls it. The writer checks the arguments and raises an exception when the function cannot do its job. The caller passes valid arguments and handles an exception where it knows how to respond.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 760 240" width="760" height="240" role="img" aria-label="The function writer, on the left, defines withdraw. The caller, on the right, calls withdraw(500, 900). Between them is the docstring: return balance minus amount; raises TypeError if amount is not an int; raises ValueError if amount is not positive or is more than balance. withdraw returns a balance to the caller, or raises an exception." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-sides" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="15.0" y="95.0" width="170" height="60" rx="6"/><rect x="230.0" y="70.0" width="300" height="110" rx="0"/><rect x="575.0" y="95.0" width="170" height="60" rx="6"/><path d="M660 95 C 620 20, 140 20, 100 93" marker-end="url(#a-sides)"/><path d="M100 155 C 140 230, 620 230, 660 157" marker-end="url(#a-sides)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="100" y="120.9">Function writer</text><text x="100" y="138.9">defines withdraw</text><text x="660" y="120.9">Caller</text><text x="660" y="138.9">calls withdraw</text><g text-anchor="start" style="font-family: var(--font-mono, monospace); font-size: 12px"><text x="240" y="90">Return balance minus amount.</text><text x="240" y="115">Raises TypeError if amount is</text><text x="240" y="131">not an int.</text><text x="240" y="152">Raises ValueError if amount is</text><text x="240" y="168">not positive or is more than balance.</text></g><text x="380" y="36" style="font-size: 13px">calls <tspan style="font-family: var(--font-mono, monospace)">withdraw(500, 900)</tspan></text><text x="380" y="226" style="font-size: 13px">returns a balance, or raises an exception</text></g>
+  </svg>
+</figure>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 2.</strong> Fill the gaps so the program prints <code>Too big: n must be at most 10</code>. Gap (a) is in the writer's code. Gaps (b) and (c) are in the caller's code.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">check</span>(n):
+    <span class="wb-kw">if</span> n &gt; <span class="wb-num">10</span>:
+        ____(a)____ <span class="wb-fn">ValueError</span>(<span class="wb-str">"n must be at most 10"</span>)
+    <span class="wb-kw">return</span> n
+
+<span class="wb-kw">try</span>:
+    <span class="wb-fn">check</span>(<span class="wb-num">12</span>)
+<span class="wb-kw">except</span> ValueError <span class="wb-kw">as</span> ____(b)____:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Too big:"</span>, ____(c)____)</code></pre>
+  <wb-table id="q2">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+        <tr><td>(c)</td><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p class="wb-meta">The names in (b) and (c) can be any name, as long as they are the same name.</p>
+</div>
+
+
+<p class="wb-part" id="part-writer">The writer's side</p>
+
+<h2 id="s3">3. The raise statement</h2>
+<p>The <code>raise</code> statement forces a specified exception to occur. Its form is <code>raise</code> <em>exceptionName</em><code>(</code><em>message</em><code>)</code>.</p>
+<wb-example id="ex-raise"></wb-example>
+<p>Output:</p>
+<pre>400
+Traceback (most recent call last):
+  ...
+ValueError: amount is too large</pre>
+<p>When <code>raise</code> is executed, the function stops at once. The <code>return</code> is skipped, and the exception passes to the caller. Here no code handles it, so <code>Done</code> is never printed.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 3.</strong> Predict the output. Write the exception type on the last line.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">half</span>(n):
+    <span class="wb-kw">if</span> n % <span class="wb-num">2</span> != <span class="wb-num">0</span>:
+        <span class="wb-kw">raise</span> <span class="wb-fn">ValueError</span>(<span class="wb-str">"n must be even"</span>)
+    <span class="wb-fn">print</span>(<span class="wb-str">"Halving"</span>, n)
+    <span class="wb-kw">return</span> n // <span class="wb-num">2</span>
+
+<span class="wb-fn">print</span>(<span class="wb-fn">half</span>(<span class="wb-num">8</span>))
+<span class="wb-fn">print</span>(<span class="wb-fn">half</span>(<span class="wb-num">5</span>))
+<span class="wb-fn">print</span>(<span class="wb-str">"End"</span>)</code></pre>
+  <wb-table id="q3">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s4">4. Raising an exception or printing an error</h2>
+<p>Consider two versions of <code>withdraw</code> for an amount that is more than the balance.</p>
+<p><strong>Print and return the old balance</strong></p>
+<wb-example id="ex-print-error"></wb-example>
+<p><strong>Raise an exception</strong></p>
+<wb-example id="ex-raise-error"></wb-example>
+<p>The caller cannot tell that the withdrawal failed in the first version. A caller cannot ignore an exception. If no code handles it, the program stops. The caller decides what the user sees. Raise an exception when a function cannot do what its docstring promises.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 4.</strong> Consider this function. Why is raising <code>ValueError</code> better when the name is missing?</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">find_price</span>(names, prices, name):
+    <span class="wb-kw">if</span> name <span class="wb-kw">not</span> <span class="wb-kw">in</span> names:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Not found."</span>)
+        <span class="wb-kw">return</span> <span class="wb-num">0</span>
+    <span class="wb-kw">return</span> prices[names.<span class="wb-fn">index</span>(name)]</code></pre>
+  <ol type="A">
+    <li>Raising an exception makes the function run faster.</li>
+    <li>A price of 0 is also a real price, so the caller cannot tell a failure from a result. With an exception the caller decides what the user sees.</li>
+    <li>Raising an exception prints a clearer message for the user.</li>
+    <li>A function that raises an exception never stops the program.</li>
+  </ol>
+  <wb-table id="q4">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s5">5. Choosing an exception type</h2>
+<p>Use the built-in exception type that matches the problem. The message should state the requirement that was not met.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Problem</th><th>Type</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>The argument has the wrong type</td><td><code>TypeError</code></td><td><code>withdraw(500, "100")</code></td></tr>
+    <tr><td>The value is not acceptable</td><td><code>ValueError</code></td><td><code>withdraw(500, -50)</code></td></tr>
+    <tr><td>A position is outside the sequence</td><td><code>IndexError</code></td><td><code>[1, 2][5]</code></td></tr>
+    <tr><td>No other built-in type fits</td><td><code>RuntimeError</code></td><td></td></tr>
+  </tbody>
+</table>
+</div>
+<p>A <code>TypeError</code> usually means that the calling code is wrong. A <code>ValueError</code> often comes from data, such as an amount that a user typed. A message such as <code>"bad input"</code> does not tell the caller what to change. <code>"amount must be positive"</code> does.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 5.</strong> Choose the exception type for each gap. The docstring states the contract, but it does not list the types.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">get_item</span>(items, position):
+    <span class="wb-str">""</span><span class="wb-str">"</span>Return the item at position, counting <span class="wb-kw">from</span> <span class="wb-num">1</span>.
+
+    position must be an int <span class="wb-kw">from</span> <span class="wb-num">1</span> to <span class="wb-fn">len</span>(items).
+    <span class="wb-str">""</span><span class="wb-str">"</span>
+    <span class="wb-kw">if</span> <span class="wb-fn">type</span>(position) != int:
+        <span class="wb-kw">raise</span> ____(a)____(<span class="wb-str">"position must be an int"</span>)
+    <span class="wb-kw">if</span> position &lt; <span class="wb-num">1</span> <span class="wb-kw">or</span> position &gt; <span class="wb-fn">len</span>(items):
+        <span class="wb-kw">raise</span> ____(b)____(<span class="wb-str">"position is out of range"</span>)
+    <span class="wb-kw">return</span> items[position - <span class="wb-num">1</span>]</code></pre>
+  <wb-table id="q5">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<p class="wb-part" id="part-caller">The caller's side</p>
+
+<h2 id="s6">6. Handling an exception that a function raises</h2>
+<p>The caller handles a raised exception with <code>try</code>-<code>except</code>, as for a built-in operation. The code box starts with the checked <code>withdraw</code> function from Section 3.</p>
+<wb-example id="ex-caller"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input <code>100</code></th><th>Input <code>900</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>Balance: 400</code></td><td><code>Cannot withdraw: amount is too large</code><br><code>Balance: 500</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The name <code>err</code> is bound to the exception object. Printing it shows the message from <code>withdraw</code>. The <code>try</code> block contains only the call, so the handler covers only the <code>ValueError</code> from <code>withdraw</code>.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 6.</strong> Predict the output.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">check</span>(n):
+    <span class="wb-kw">if</span> n &lt; <span class="wb-num">0</span>:
+        <span class="wb-kw">raise</span> <span class="wb-fn">ValueError</span>(<span class="wb-str">"n is negative"</span>)
+    <span class="wb-kw">return</span> n
+
+<span class="wb-kw">for</span> n <span class="wb-kw">in</span> [<span class="wb-num">4</span>, -<span class="wb-num">1</span>]:
+    <span class="wb-kw">try</span>:
+        <span class="wb-fn">print</span>(<span class="wb-fn">check</span>(n) * <span class="wb-num">10</span>)
+    <span class="wb-kw">except</span> ValueError <span class="wb-kw">as</span> err:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Error:"</span>, err)</code></pre>
+  <wb-table id="q6">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s7">7. A bad value or a bug</h2>
+<p>An exception does not always mean that someone made a mistake. A request for more than the balance is a normal event.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>What happened</th><th>Example</th><th>Response</th></tr></thead>
+  <tbody>
+    <tr><td>Valid arguments</td><td><code>withdraw(500, 100)</code> returns <code>400</code></td><td>None needed</td></tr>
+    <tr><td>A value the function cannot accept</td><td><code>withdraw(500, 900)</code> raises <code>ValueError</code></td><td>The caller handles it and tells the user</td></tr>
+    <tr><td>An argument of the wrong type</td><td><code>withdraw(500, "100")</code> raises <code>TypeError</code></td><td>Fix the calling code</td></tr>
+    <tr><td>A bug in the function</td><td>An exception that the docstring does not list, such as <code>NameError</code>, or a wrong result</td><td>Fix the function</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Handle an exception when the program can respond to it while it runs, such as a bad value from a user. Do not handle an exception that shows a bug. The traceback shows where to fix the code.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 7.</strong> Mark each statement true or false.</p>
+  <wb-table id="q7">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>An exception always means that someone made a mistake.</td><td data-blank="t1"></td></tr>
+        <tr><td>A <code>TypeError</code> from a call usually means that the calling code must change.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Each situation uses <code>withdraw</code> from Section 3. For each one, choose A, B, or C.</p>
+  <ul>
+    <li>A: Handle the exception in the caller.</li>
+    <li>B: Fix the calling code.</li>
+    <li>C: Fix <code>withdraw</code>.</li>
+  </ul>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Situation</th><th>A, B or C</th></tr></thead>
+      <tbody>
+        <tr><td>1. A user asks for <code>900</code>. <code>withdraw(500, 900)</code> raises <code>ValueError</code>.</td><td data-blank="i1"></td></tr>
+        <tr><td>2. <code>withdraw(500, input("Amount: "))</code> raises <code>TypeError</code>.</td><td data-blank="i2"></td></tr>
+        <tr><td>3. <code>withdraw(500, 100)</code> returns <code>600</code>.</td><td data-blank="i3"></td></tr>
+        <tr><td>4. <code>withdraw(500, 100)</code> raises <code>NameError: name 'balence' is not defined</code>.</td><td data-blank="i4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-else-finally">else and finally</p>
+
+<h2 id="s8">8. The else clause</h2>
+<p>A <code>try</code> statement can have an <code>else</code> clause after its <code>except</code> blocks. The <code>else</code> block is executed only if the <code>try</code> block raises no exception.</p>
+<wb-example id="ex-else"></wb-example>
+<p>For input <code>21</code>, the conversion works and the <code>else</code> block prints <code>Twice that is 42</code>. For input <code>abc</code>, the <code>except</code> block is executed and the <code>else</code> block is skipped. The <code>except</code> blocks do not handle exceptions raised in the <code>else</code> block.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 8.</strong> Predict the output for each input separately.</p>
+  <pre><code>text = <span class="wb-fn">input</span>()
+<span class="wb-kw">try</span>:
+    n = <span class="wb-fn">int</span>(text)
+<span class="wb-kw">except</span> ValueError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Bad"</span>)
+<span class="wb-kw">else</span>:
+    <span class="wb-fn">print</span>(n + <span class="wb-num">1</span>)
+<span class="wb-fn">print</span>(<span class="wb-str">"Done"</span>)</code></pre>
+  <wb-table id="q8">
+    <table>
+      <thead><tr><th>Input</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td><code>7</code>, line 1</td><td data-blank="l1"></td></tr>
+        <tr><td><code>7</code>, line 2</td><td data-blank="l2"></td></tr>
+        <tr><td><code>x</code>, line 1</td><td data-blank="l3"></td></tr>
+        <tr><td><code>x</code>, line 2</td><td data-blank="l4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s9">9. Why use else</h2>
+<p>Code in the <code>try</code> block is covered by the <code>except</code> blocks. Run both programs with the input <code>900</code>. Each code box starts with the checked <code>withdraw</code> function from Section 3.</p>
+<p><strong>Success code in the try block</strong></p>
+<wb-example id="ex-success-try"></wb-example>
+<p>Output:</p>
+<pre>Enter a whole number.</pre>
+<p>The user typed a whole number. The <code>ValueError</code> from <code>withdraw</code> is reported as a bad conversion.</p>
+<p><strong>Success code in the else block</strong></p>
+<wb-example id="ex-success-else"></wb-example>
+<p>Output:</p>
+<pre>Traceback (most recent call last):
+  ...
+ValueError: amount is too large</pre>
+<p>The traceback names the real problem.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 9.</strong> In the first program above, input <code>900</code> prints <code>Enter a whole number.</code> Which change stops the program from reporting a too-large amount as a bad conversion?</p>
+  <ol type="A">
+    <li>Add a bare <code>except:</code> block after it.</li>
+    <li>Change <code>ValueError</code> to <code>Exception</code>.</li>
+    <li>Move the <code>withdraw</code> call into an <code>else</code> block.</li>
+    <li>Delete the <code>except</code> block.</li>
+  </ol>
+  <wb-table id="q9">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s10">10. The finally clause</h2>
+<p>The <code>finally</code> block is executed last, whether or not an exception was raised.</p>
+<wb-example id="ex-finally"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input <code>4</code></th><th>Input <code>four</code></th><th>Input <code>0</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>Share: 15.0</code><br><code>Finished.</code><br><code>After the try statement.</code></td>
+        <td><code>Enter a whole number.</code><br><code>Finished.</code><br><code>After the try statement.</code></td>
+        <td><code>Finished.</code><br>Then a traceback that ends with <code>ZeroDivisionError: division by zero</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>With <code>0</code>, no <code>except</code> block matches. Python executes the <code>finally</code> block, and then the program stops. Lecture 32 uses <code>finally</code> to close files.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 10.</strong> Predict the output. Write the exception type on the last line.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">to_int</span>(text):
+    <span class="wb-kw">try</span>:
+        <span class="wb-kw">return</span> <span class="wb-fn">int</span>(text)
+    <span class="wb-kw">finally</span>:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Checked"</span>, text)
+
+<span class="wb-fn">print</span>(<span class="wb-fn">to_int</span>(<span class="wb-str">"3"</span>))
+<span class="wb-fn">print</span>(<span class="wb-fn">to_int</span>(<span class="wb-str">"a"</span>))</code></pre>
+  <wb-table id="q10">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+        <tr><td>4</td><td data-blank="l4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s11">11. Flow of control in a full try statement</h2>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 880 485" width="880" height="485" role="img" aria-label="A flow chart read from top to bottom. Start. Execute the try block. Exception raised? If no, execute the else block, then the finally block, then continue after the try statement. If yes, does an except block match? If yes, execute that except block, then the finally block, then continue after the try statement. If no, execute the finally block, and then the exception passes to the caller." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-full" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="95.0" y="12.0" width="150" height="36" rx="18"/><rect x="50.0" y="80.0" width="240" height="40" rx="0"/><path d="M170 149 L255 195 L170 241 L85 195 Z"/><rect x="50.0" y="285.0" width="240" height="40" rx="0"/><rect x="50.0" y="360.0" width="240" height="40" rx="0" style="stroke-width: 2.5"/><rect x="30.0" y="435.0" width="280" height="40" rx="20"/><path d="M470 145 L570 195 L470 245 L370 195 Z"/><rect x="350.0" y="285.0" width="240" height="40" rx="0"/><rect x="650.0" y="175.0" width="220" height="40" rx="0" style="stroke-width: 2.5"/><rect x="650.0" y="278.0" width="220" height="54" rx="0" style="stroke-dasharray: 6 4"/><path d="M170 48 V 78" marker-end="url(#a-full)"/><path d="M170 120 V 147" marker-end="url(#a-full)"/><path d="M170 241 V 283" marker-end="url(#a-full)"/><path d="M170 325 V 358" marker-end="url(#a-full)"/><path d="M170 400 V 433" marker-end="url(#a-full)"/><path d="M255 195 H 368" marker-end="url(#a-full)"/><path d="M470 245 V 283" marker-end="url(#a-full)"/><path d="M470 325 V 380 H 292" marker-end="url(#a-full)"/><path d="M570 195 H 648" marker-end="url(#a-full)"/><path d="M760 215 V 276" marker-end="url(#a-full)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="170" y="34.9">Start</text><text x="170" y="104.9">Execute the try block</text><text x="170" y="190.9">Exception</text><text x="170" y="208.9">raised?</text><text x="170" y="309.9">Execute the else block</text><text x="170" y="384.9">Execute the finally block</text><text x="170" y="459.9">Continue after the try statement</text><text x="470" y="190.9">An except block</text><text x="470" y="208.9">matches?</text><text x="470" y="309.9">Execute that except block</text><text x="760" y="199.9">Execute the finally block</text><text x="760" y="300.9">The exception passes</text><text x="760" y="318.9">to the caller</text><text x="160" y="268" text-anchor="end">No</text><text x="312" y="186">Yes</text><text x="480" y="268" text-anchor="start">Yes</text><text x="610" y="186">No</text></g>
+  </svg>
+</figure>
+<p>The <code>finally</code> block is on every path. The order is <code>try</code>, <code>except</code>, <code>else</code>, <code>finally</code>, and <code>else</code> needs an <code>except</code> block.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 11</div>
+  <p><strong>Question 11.</strong> Mark each statement true or false.</p>
+  <wb-table id="q11">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>The <code>else</code> block is executed after an <code>except</code> block has handled an exception.</td><td data-blank="t1"></td></tr>
+        <tr><td>If no <code>except</code> block matches, the <code>finally</code> block runs before the exception passes to the caller.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Give the output of each call separately. For an exception that no code handles, write its type. Write <code>none</code> if there is no line.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">divide</span>(a_text, b_text):
+    <span class="wb-kw">try</span>:
+        result = <span class="wb-fn">int</span>(a_text) / <span class="wb-fn">int</span>(b_text)
+    <span class="wb-kw">except</span> ValueError:
+        <span class="wb-fn">print</span>(<span class="wb-str">"A"</span>)
+    <span class="wb-kw">else</span>:
+        <span class="wb-fn">print</span>(<span class="wb-str">"B"</span>, result)
+    <span class="wb-kw">finally</span>:
+        <span class="wb-fn">print</span>(<span class="wb-str">"C"</span>)
+    <span class="wb-fn">print</span>(<span class="wb-str">"D"</span>)</code></pre>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Call</th><th>Line 1</th><th>Line 2</th><th>Line 3</th></tr></thead>
+      <tbody>
+        <tr><td>1. <code>divide("8", "2")</code></td><td data-blank="a1"></td><td data-blank="a2"></td><td data-blank="a3"></td></tr>
+        <tr><td>2. <code>divide("8", "x")</code></td><td data-blank="b1"></td><td data-blank="b2"></td><td data-blank="b3"></td></tr>
+        <tr><td>3. <code>divide("8", "0")</code></td><td data-blank="c1"></td><td data-blank="c2"></td><td data-blank="c3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>For call 3, does <code>D</code> print? Check your answers by running the three calls.</p>
+  <wb-example id="ex-cp2"></wb-example>
+</div>
+
+<p class="wb-part" id="part-tracebacks">Tracebacks and the call stack</p>
+
+<h2 id="s12">12. Reading a traceback</h2>
+<p>Each <code>File</code> entry is one frame on the call stack. The active frame is at the bottom. Read the last line for the exception type and message. The entry above it shows where it was raised. Read upward to find the calls that led there.</p>
+<p>The file is <code>grades.py</code>.</p>
+<wb-example id="ex-grades"></wb-example>
+<p>Output:</p>
+<pre>Average: 81.7
+Traceback (most recent call last):
+  File "grades.py", line 9, in &lt;module&gt;
+    report([])
+  File "grades.py", line 5, in report
+    avg = average(marks)
+  File "grades.py", line 2, in average
+    return sum(values) / len(values)
+ZeroDivisionError: division by zero</pre>
+<p>Python also prints <code>^</code> and <code>~</code> marks under the part of a line that failed. They are left out here. In the browser, the file is named <code>main.py</code>.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 12</div>
+  <p><strong>Question 12.</strong> Read the program and its traceback. Fill each gap.</p>
+  <pre><code><span class="wb-cmt"> 1</span>  <span class="wb-kw">def</span> <span class="wb-fn">total</span>(values):
+<span class="wb-cmt"> 2</span>      result = <span class="wb-num">0</span>
+<span class="wb-cmt"> 3</span>      <span class="wb-kw">for</span> n <span class="wb-kw">in</span> values:
+<span class="wb-cmt"> 4</span>          result = result + n
+<span class="wb-cmt"> 5</span>      <span class="wb-kw">return</span> result
+<span class="wb-cmt"> 6</span>  
+<span class="wb-cmt"> 7</span>  <span class="wb-fn">print</span>(<span class="wb-fn">total</span>([<span class="wb-num">1</span>, <span class="wb-num">2</span>]))
+<span class="wb-cmt"> 8</span>  <span class="wb-fn">print</span>(<span class="wb-fn">total</span>([<span class="wb-num">3</span>, <span class="wb-str">"4"</span>]))</code></pre>
+  <pre>3
+Traceback (most recent call last):
+  File "shop.py", line 8, in &lt;module&gt;
+    print(total([3, "4"]))
+  File "shop.py", line 4, in total
+    result = result + n
+TypeError: unsupported operand type(s) for +: 'int' and 'str'</pre>
+  <wb-table id="q12">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a) Exception type</td><td data-blank="a"></td></tr>
+        <tr><td>(b) Function where it was raised</td><td data-blank="b"></td></tr>
+        <tr><td>(c) Line of the top-level call</td><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s13">13. An unhandled exception passes to the caller</h2>
+<p>When a function raises an exception and does not handle it, Python ends that function and passes the exception to its caller. Each caller gets a chance to handle the exception. If no caller handles it, the program stops and Python prints the traceback.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 460 290" width="460" height="290" role="img" aria-label="Four boxes from top to bottom. average has no except block, so average ends and the exception passes to report. report has no except block, so report ends and the exception passes to the top level. Nothing handles it there, so Python prints the traceback and the program stops." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-chain" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="70.0" y="10.0" width="260" height="40" rx="6"/><path d="M200 50 V 88" marker-end="url(#a-chain)"/><rect x="70.0" y="90.0" width="260" height="40" rx="6"/><path d="M200 130 V 168" marker-end="url(#a-chain)"/><rect x="70.0" y="170.0" width="260" height="40" rx="6"/><path d="M200 210 V 248" marker-end="url(#a-chain)"/><rect x="70.0" y="250.0" width="260" height="40" rx="6"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="200" y="35" style="font-family: var(--font-mono, monospace)">average</text><text x="200" y="115" style="font-family: var(--font-mono, monospace)">report</text><text x="200" y="195">top level &lt;module&gt;</text><text x="200" y="275">Traceback; the program stops</text><text x="215" y="75" text-anchor="start" style="font-size: 13px">no except: average ends</text><text x="215" y="155" text-anchor="start" style="font-size: 13px">no except: report ends</text></g>
+  </svg>
+</figure>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 13</div>
+  <p><strong>Question 13.</strong> Predict the output.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">inner</span>():
+    <span class="wb-fn">print</span>(<span class="wb-str">"A"</span>)
+    <span class="wb-fn">int</span>(<span class="wb-str">"x"</span>)
+    <span class="wb-fn">print</span>(<span class="wb-str">"B"</span>)
+
+<span class="wb-kw">def</span> <span class="wb-fn">outer</span>():
+    <span class="wb-fn">inner</span>()
+    <span class="wb-fn">print</span>(<span class="wb-str">"C"</span>)
+
+<span class="wb-kw">try</span>:
+    <span class="wb-fn">outer</span>()
+<span class="wb-kw">except</span> ValueError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"D"</span>)
+<span class="wb-fn">print</span>(<span class="wb-str">"E"</span>)</code></pre>
+  <wb-table id="q13">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s14">14. Handling an exception too early</h2>
+<p>Consider a function that handles its own <code>ValueError</code> and returns a made-up value.</p>
+<wb-example id="ex-too-early"></wb-example>
+<p>The text <code>"9O"</code> contains the letter O. The function hides the error and returns <code>0</code>. The total is wrong, and no message is printed. Handle an exception only where the response is correct.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 14</div>
+  <p><strong>Question 14.</strong> This program prints <code>12</code>. What is wrong with it?</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">to_number</span>(text):
+    <span class="wb-kw">try</span>:
+        <span class="wb-kw">return</span> <span class="wb-fn">int</span>(text)
+    <span class="wb-kw">except</span> ValueError:
+        <span class="wb-kw">return</span> <span class="wb-num">0</span>
+
+<span class="wb-fn">print</span>(<span class="wb-fn">to_number</span>(<span class="wb-str">"5"</span>) + <span class="wb-fn">to_number</span>(<span class="wb-str">"x"</span>) + <span class="wb-fn">to_number</span>(<span class="wb-str">"7"</span>))</code></pre>
+  <ol type="A">
+    <li>The program stops at <code>"x"</code>.</li>
+    <li>Python prints a traceback for <code>"x"</code>.</li>
+    <li>The function raises a <code>TypeError</code>.</li>
+    <li>The total is wrong, and nothing tells the user.</li>
+  </ol>
+  <wb-table id="q14">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Read the program and its traceback.</p>
+  <wb-example id="ex-cp3"></wb-example>
+  <pre>Traceback (most recent call last):
+  File "marks.py", line 13, in &lt;module&gt;
+    print(total_marks(["70", "150", "60"]))
+  File "marks.py", line 10, in total_marks
+    total = total + parse_mark(text)
+  File "marks.py", line 4, in parse_mark
+    raise ValueError("mark must be 0 to 100")
+ValueError: mark must be 0 to 100</pre>
+  <wb-table id="cp3">
+    <table>
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>1. The exception type</td><td data-blank="t"></td></tr>
+        <tr><td>1. The message</td><td data-blank="m"></td></tr>
+        <tr><td>2. The line that raised it</td><td data-blank="n"></td></tr>
+        <tr><td>2. The function that line is in</td><td data-blank="f"></td></tr>
+        <tr><td>4. The value that caused the error</td><td data-blank="v"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>3. List the frames from bottom to top.</p>
+  <wb-short id="cp3-frames"></wb-short>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+<h3>The function writer</h3>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">withdraw</span>(balance, amount):
+    <span class="wb-kw">if</span> amount &gt; balance:
+        <span class="wb-kw">raise</span> <span class="wb-fn">ValueError</span>(<span class="wb-str">"amount is too large"</span>)
+    <span class="wb-kw">return</span> balance - amount</code></pre>
+<ul>
+  <li>List the raised exceptions in the docstring.</li>
+  <li>Check the arguments. Raise an exception when the function cannot do its job.</li>
+  <li><code>TypeError</code>: wrong type. <code>ValueError</code>: unacceptable value.</li>
+  <li>Do not print an error and return a special value.</li>
+</ul>
+<h3>The caller</h3>
+<pre><code><span class="wb-kw">try</span>:
+    balance = <span class="wb-fn">withdraw</span>(balance, amount)
+<span class="wb-kw">except</span> ValueError <span class="wb-kw">as</span> err:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Cannot withdraw:"</span>, err)</code></pre>
+<ul>
+  <li>Pass arguments that meet the docstring.</li>
+  <li>Handle a listed exception where you know how to respond.</li>
+  <li>Put only the call that can fail in the <code>try</code> block.</li>
+  <li>Do not handle an exception that shows a bug. Fix the code.</li>
+  <li>Do not continue with a made-up value.</li>
+</ul>
+<h3>The try statement</h3>
+<pre><code><span class="wb-kw">try</span>:
+    <span class="wb-cmt"># code that might fail</span>
+<span class="wb-kw">except</span> ValueError <span class="wb-kw">as</span> err:
+    <span class="wb-cmt"># a ValueError was raised</span>
+<span class="wb-kw">else</span>:
+    <span class="wb-cmt"># no exception was raised</span>
+<span class="wb-kw">finally</span>:
+    <span class="wb-cmt"># always executed, last</span>
+<span class="wb-cmt"># execution continues here</span></code></pre>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Block</th><th>When it is executed</th></tr></thead>
+  <tbody>
+    <tr><td><code>except</code></td><td>A matching exception</td></tr>
+    <tr><td><code>else</code></td><td>No exception</td></tr>
+    <tr><td><code>finally</code></td><td>Always, last</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>How it runs</strong></p>
+<ol>
+  <li>Python executes the <code>try</code> block.</li>
+  <li>No exception: the <code>else</code> block, then the <code>finally</code> block.</li>
+  <li>A matching exception: that <code>except</code> block, then the <code>finally</code> block.</li>
+  <li>No match: the <code>finally</code> block, then the exception passes to the caller.</li>
+</ol>
+<p><strong>Reading a traceback</strong></p>
+<ol>
+  <li>Last line: the type and the message.</li>
+  <li>Entry above it: where it was raised.</li>
+  <li>Entries above that: the calls that led there, one frame each.</li>
+</ol>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>These items give more practice with raising and handling exceptions.</p>
+
+<h3>1. A percentage</h3>
+<p>Write <code>percent(part, whole)</code>. It returns <code>part / whole * 100</code>. Its docstring lists these exceptions.</p>
+<ul>
+  <li>Raise <code>ValueError("whole must be positive")</code> when <code>whole &lt;= 0</code>.</li>
+  <li>Raise <code>ValueError("part must be from 0 to whole")</code> when <code>part</code> is negative or larger than <code>whole</code>.</li>
+</ul>
+<p>Write a caller that reads <code>part</code> and <code>whole</code> as whole numbers on two lines.</p>
+<p>Use a small <code>try</code> block to call <code>percent</code>. Handle <code>ValueError as err</code> and print <code>Error:</code> and the message. In an <code>else</code> block, print <code>Percent:</code> and the value with one decimal place.</p>
+<p>Test inputs <code>3</code> and <code>4</code>, <code>5</code> and <code>0</code>, <code>7</code> and <code>4</code>, and <code>abc</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>percent(part, whole)</code> with two parameters. It raises the two exceptions and does not print.</li>
+    <li>Handle <code>ValueError</code> and print the percentage in an <code>else</code> block.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+<p>Which line raises? Which line handles? Why does the function not print the error itself?</p>
+<wb-short id="p1-why"></wb-short>
+
+<h3>2. The statement after raise</h3>
+<p>Give the printed lines for each call separately.</p>
+<wb-example id="ex-p2"></wb-example>
+<p>Trace the program once as written. Then replace the call with <code>inspect([2, 3])</code> and trace it again.</p>
+<wb-table id="p2-out">
+  <table>
+    <thead><tr><th>Call</th><th>Line 1</th><th>Line 2</th><th>Line 3</th><th>Line 4</th><th>Line 5</th></tr></thead>
+    <tbody>
+      <tr><td><code>inspect([2, -3])</code></td><td data-blank="a1"></td><td data-blank="a2"></td><td data-blank="a3"></td><td data-blank="a4"></td><td></td></tr>
+      <tr><td><code>inspect([2, 3])</code></td><td data-blank="b1"></td><td data-blank="b2"></td><td data-blank="b3"></td><td data-blank="b4"></td><td data-blank="b5"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Which statement runs next after <code>raise</code>?</p>
+<wb-short id="p2-next"></wb-short>
+
+<h3>3. A ratio</h3>
+<p>Write <code>show_ratio(a_text, b_text)</code>. Convert both arguments to numbers and print their ratio with two decimal places.</p>
+<p>Handle only <code>ValueError</code> with <code>Enter numbers.</code> Print <code>Ratio checked.</code> in a <code>finally</code> block.</p>
+<p>Run it for <code>"3"</code> and <code>"4"</code>, and for <code>"3"</code> and <code>"x"</code>.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>show_ratio(a_text, b_text)</code> with two parameters.</li>
+    <li>Inside it, handle only <code>ValueError</code>, and use a <code>finally</code> block.</li>
+    <li>The checker also calls <code>show_ratio("3", "0")</code>. The <code>finally</code> block must print, and the <code>ZeroDivisionError</code> must pass to the caller.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+<p>Explain what happens for <code>"3"</code> and <code>"0"</code>. What is <code>finally</code> used for in real programs?</p>
+<wb-short id="p3-why"></wb-short>
+
+<h3>4. An exception inside finally</h3>
+<wb-example id="ex-p4"></wb-example>
+<p>Which <code>except</code> block runs? Write the line that the program prints.</p>
+<wb-table id="p4-out">
+  <table>
+    <tbody>
+      <tr><th>Printed line</th><td data-blank="out"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>What happened to the <code>ValueError</code>?</p>
+<wb-short id="p4-why"></wb-short>
+
+<p>The Boss Problems are test-level practice. Boss Problem 4 uses the most ideas from this lecture.</p>
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 30 Workbook.</p>
+</main>
+</body>
+</html>

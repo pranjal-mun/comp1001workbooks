@@ -1,0 +1,314 @@
+{
+  "id": "lecture-30-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 30 Boss Problems",
+  "short": "L30 bosses",
+  "subtitle": "raise, else, finally, and tracebacks",
+  "exercises": {
+    "average-or-nothing": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 14,
+      "starter": "def average(values):\n    if len(values) == 0:\n        print(\"No values.\")\n        return -1\n    return sum(values) / len(values)",
+      "cases": [
+        {
+          "name": "Example 1: 4, 8",
+          "inputs": [
+            "4",
+            "8",
+            ""
+          ],
+          "expected": "Average: 6.00"
+        },
+        {
+          "name": "Example 2: -1",
+          "inputs": [
+            "-1",
+            ""
+          ],
+          "expected": "Average: -1.00"
+        },
+        {
+          "name": "Example 3: blank line only",
+          "inputs": [
+            ""
+          ],
+          "expected": "No average: no values"
+        },
+        {
+          "name": "Three decimals",
+          "inputs": [
+            "2.5",
+            "3.5",
+            "10",
+            ""
+          ],
+          "expected": "Average: 5.33"
+        },
+        {
+          "name": "A single zero",
+          "inputs": [
+            "0",
+            ""
+          ],
+          "expected": "Average: 0.00"
+        },
+        {
+          "name": "Spaces around a number",
+          "inputs": [
+            " 7 ",
+            "9",
+            ""
+          ],
+          "expected": "Average: 8.00"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_f = _fn(\"average\", \"values\")\n_d = _def(\"average\")\nassert _raises(_d), \"average should raise ValueError for an empty list.\"\nassert not any(isinstance(n, ast.Call) and getattr(n.func, \"id\", \"\") == \"print\" for n in ast.walk(_d)), \"average must not print. The caller prints the message.\"\nassert _quiet(_f, [])[1] == \"ValueError: no values\", 'average([]) should raise ValueError(\"no values\").'\nassert _quiet(_f, [2.0, 4.0])[0] == 3.0, \"average([2.0, 4.0]) should return 3.0.\"\nassert any(t.orelse for t in _tries()), \"Print the average in an else block.\"\nassert _loops(), \"Read the lines with a while loop that stops at a blank line.\"\n",
+      "hints": [
+        "Replace the `print` and `return -1` in `average` with `raise ValueError(\"no values\")`. Add that to the docstring.",
+        "Read lines into a list until the line is `\"\"`. Convert each line with `float` and append it.",
+        "Call `average` alone in a `try` block. `except ValueError as err:` prints `No average:` and `err`. The `else` block prints `f\"Average: {result:.2f}\"`."
+      ],
+      "answer": "ZGVmIGF2ZXJhZ2UodmFsdWVzKToKICAgICIiIlJldHVybiB0aGUgYXZlcmFnZS4gUmFpc2UgVmFsdWVFcnJvciBmb3Igbm8gdmFsdWVzLiIiIgogICAgaWYgbGVuKHZhbHVlcykgPT0gMDoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJubyB2YWx1ZXMiKQogICAgcmV0dXJuIHN1bSh2YWx1ZXMpIC8gbGVuKHZhbHVlcykKCnZhbHVlcyA9IFtdCnRleHQgPSBpbnB1dCgpCndoaWxlIHRleHQgIT0gIiI6CiAgICB0cnk6CiAgICAgICAgdmFsdWVzLmFwcGVuZChmbG9hdCh0ZXh0KSkKICAgIGV4Y2VwdCBWYWx1ZUVycm9yOgogICAgICAgIHByaW50KCJFbnRlciBhIG51bWJlci4iKQogICAgdGV4dCA9IGlucHV0KCkKdHJ5OgogICAgcmVzdWx0ID0gYXZlcmFnZSh2YWx1ZXMpCmV4Y2VwdCBWYWx1ZUVycm9yIGFzIGVycjoKICAgIHByaW50KCJObyBhdmVyYWdlOiIsIGVycikKZWxzZToKICAgIHByaW50KGYiQXZlcmFnZToge3Jlc3VsdDouMmZ9Iik=",
+      "answerNote": "average only raises. The caller handles the ValueError and prints the result in else, so -1 is a real average and not a signal."
+    },
+    "reduce-fraction": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 22,
+      "starter": "def gcd(a, b):\n    \"\"\"Return the greatest common divisor of non-negative a and b.\"\"\"\n    pass",
+      "cases": [
+        {
+          "name": "Example 1: 18, -24",
+          "inputs": [
+            "18",
+            "-24"
+          ],
+          "expected": "-3/4"
+        },
+        {
+          "name": "Example 2: 0, 9",
+          "inputs": [
+            "0",
+            "9"
+          ],
+          "expected": "0/1"
+        },
+        {
+          "name": "Example 3: 4, 0",
+          "inputs": [
+            "4",
+            "0"
+          ],
+          "expected": "Error: denominator must not be zero"
+        },
+        {
+          "name": "12 and 18",
+          "inputs": [
+            "12",
+            "18"
+          ],
+          "expected": "2/3"
+        },
+        {
+          "name": "Both negative",
+          "inputs": [
+            "-6",
+            "-4"
+          ],
+          "expected": "3/2"
+        },
+        {
+          "name": "Negative top",
+          "inputs": [
+            "-5",
+            "10"
+          ],
+          "expected": "-1/2"
+        },
+        {
+          "name": "Already reduced",
+          "inputs": [
+            "7",
+            "1"
+          ],
+          "expected": "7/1"
+        },
+        {
+          "name": "Text on the first line",
+          "inputs": [
+            "abc",
+            "4"
+          ],
+          "expected": "Enter whole numbers."
+        },
+        {
+          "name": "Decimal on the second line",
+          "inputs": [
+            "7",
+            "2.5"
+          ],
+          "expected": "Enter whole numbers."
+        },
+        {
+          "name": "Zero over a negative",
+          "inputs": [
+            "0",
+            "-3"
+          ],
+          "expected": "0/1"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_g = _fn(\"gcd\", \"a\", \"b\")\n_r = _fn(\"reduce_fraction\", \"top\", \"bottom\")\nassert any(isinstance(n, ast.While) for n in ast.walk(_def(\"gcd\"))), \"Use a while loop in gcd (Euclid's algorithm).\"\nassert _quiet(_g, 12, 18)[0] == 6 and _quiet(_g, 5, 0)[0] == 5, \"gcd(12, 18) should return 6, and gcd(5, 0) should return 5.\"\nassert _quiet(_r, 4, 0)[1] == \"ValueError: denominator must not be zero\", 'reduce_fraction(4, 0) should raise ValueError(\"denominator must not be zero\").'\nassert _quiet(_r, 18, -24)[0] == \"-3/4\", 'reduce_fraction(18, -24) should return the string \"-3/4\".'\nassert len(_tries()) >= 2, \"Use separate try blocks for the conversion and for the call to reduce_fraction.\"\n",
+      "hints": [
+        "Euclid's algorithm: while `b` is not 0, replace `a, b` with `b` and `a % b`. Then `a` is the greatest common divisor.",
+        "In `reduce_fraction`, raise for a zero bottom first. If the bottom is negative, change the sign of both numbers. Divide both by `gcd(abs(top), bottom)`.",
+        "Convert both lines in one `try` block. In its `else` block, call `reduce_fraction` in a second `try` that prints `Error:` and `err`."
+      ],
+      "answer": "ZGVmIGdjZChhLCBiKToKICAgIHdoaWxlIGIgIT0gMDoKICAgICAgICByZW1haW5kZXIgPSBhICUgYgogICAgICAgIGEgPSBiCiAgICAgICAgYiA9IHJlbWFpbmRlcgogICAgcmV0dXJuIGEKCmRlZiByZWR1Y2VfZnJhY3Rpb24odG9wLCBib3R0b20pOgogICAgaWYgYm90dG9tID09IDA6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiZGVub21pbmF0b3IgbXVzdCBub3QgYmUgemVybyIpCiAgICBpZiBib3R0b20gPCAwOgogICAgICAgIHRvcCA9IC10b3AKICAgICAgICBib3R0b20gPSAtYm90dG9tCiAgICBkaXZpc29yID0gZ2NkKGFicyh0b3ApLCBib3R0b20pCiAgICByZXR1cm4gc3RyKHRvcCAvLyBkaXZpc29yKSArICIvIiArIHN0cihib3R0b20gLy8gZGl2aXNvcikKCnRyeToKICAgIHRvcCA9IGludChpbnB1dCgpKQogICAgYm90dG9tID0gaW50KGlucHV0KCkpCmV4Y2VwdCBWYWx1ZUVycm9yOgogICAgcHJpbnQoIkVudGVyIHdob2xlIG51bWJlcnMuIikKZWxzZToKICAgIHRyeToKICAgICAgICBwcmludChyZWR1Y2VfZnJhY3Rpb24odG9wLCBib3R0b20pKQogICAgZXhjZXB0IFZhbHVlRXJyb3IgYXMgZXJyOgogICAgICAgIHByaW50KCJFcnJvcjoiLCBlcnIp",
+      "answerNote": "Both errors are ValueError, but they come from different places. Separate try blocks give each one its own message."
+    },
+    "perfect-numbers": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 26,
+      "starter": "def proper_divisors(n):\n    \"\"\"Return the proper divisors of n.\"\"\"\n    pass",
+      "cases": [
+        {
+          "name": "Example 1: 6, 8",
+          "inputs": [
+            "6",
+            "8",
+            ""
+          ],
+          "expected": "6 is perfect\n8 is not perfect"
+        },
+        {
+          "name": "Example 2: 0, abc",
+          "inputs": [
+            "0",
+            "abc",
+            ""
+          ],
+          "expected": "0: n must be at least 1\nabc: not a whole number"
+        },
+        {
+          "name": "28, 1, 12",
+          "inputs": [
+            "28",
+            "1",
+            "12",
+            ""
+          ],
+          "expected": "28 is perfect\n1 is not perfect\n12 is not perfect"
+        },
+        {
+          "name": "A negative number and 496",
+          "inputs": [
+            "-4",
+            "496",
+            ""
+          ],
+          "expected": "-4: n must be at least 1\n496 is perfect"
+        },
+        {
+          "name": "A decimal and spaces",
+          "inputs": [
+            "2.5",
+            " 6 ",
+            ""
+          ],
+          "expected": "2.5: not a whole number\n6 is perfect"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_p = _fn(\"proper_divisors\", \"n\")\n_i = _fn(\"is_perfect\", \"n\")\nassert _quiet(_p, 12)[0] == [1, 2, 3, 4, 6], \"proper_divisors(12) should return [1, 2, 3, 4, 6].\"\nassert _quiet(_p, 1)[0] == [], \"proper_divisors(1) should return [].\"\nassert _quiet(_p, 0)[1] == \"ValueError: n must be at least 1\", 'proper_divisors(0) should raise ValueError(\"n must be at least 1\").'\nassert not any(isinstance(n, ast.Try) for n in ast.walk(_def(\"is_perfect\"))), \"is_perfect should let the exception pass to its caller. Do not use try in it.\"\nassert (_quiet(_i, 6)[0], _quiet(_i, 8)[0]) == (True, False), \"is_perfect(6) should return True, and is_perfect(8) should return False.\"\nassert any(isinstance(n, ast.If) and isinstance(n.test, ast.Compare) and getattr(n.test.left, \"id\", \"\") == \"__name__\" for n in _TREE.body), 'Put the main program under if __name__ == \"__main__\":'\nassert len(_tries()) >= 2, \"Use separate try blocks for the conversion and for the call.\"\n",
+      "hints": [
+        "In `proper_divisors`, raise first when `n < 1`. Then test each candidate from 1 to `n - 1` with `n % candidate == 0`.",
+        "`is_perfect` is one line: compare `sum(proper_divisors(n))` with `n`. It has no `try`, so a `ValueError` passes to its caller.",
+        "In the loop, convert the line in one `try`. In its `else` block, call `is_perfect` in a second `try` and print `f\"{text}: {err}\"` for a `ValueError`."
+      ],
+      "answer": "ZGVmIHByb3Blcl9kaXZpc29ycyhuKToKICAgIGlmIG4gPCAxOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIm4gbXVzdCBiZSBhdCBsZWFzdCAxIikKICAgIGRpdmlzb3JzID0gW10KICAgIGZvciBjYW5kaWRhdGUgaW4gcmFuZ2UoMSwgbik6CiAgICAgICAgaWYgbiAlIGNhbmRpZGF0ZSA9PSAwOgogICAgICAgICAgICBkaXZpc29ycy5hcHBlbmQoY2FuZGlkYXRlKQogICAgcmV0dXJuIGRpdmlzb3JzCgpkZWYgaXNfcGVyZmVjdChuKToKICAgIHJldHVybiBzdW0ocHJvcGVyX2Rpdmlzb3JzKG4pKSA9PSBuCgppZiBfX25hbWVfXyA9PSAiX19tYWluX18iOgogICAgdGV4dCA9IGlucHV0KCkKICAgIHdoaWxlIHRleHQgIT0gIiI6CiAgICAgICAgdHJ5OgogICAgICAgICAgICBuID0gaW50KHRleHQpCiAgICAgICAgZXhjZXB0IFZhbHVlRXJyb3I6CiAgICAgICAgICAgIHByaW50KGYie3RleHR9OiBub3QgYSB3aG9sZSBudW1iZXIiKQogICAgICAgIGVsc2U6CiAgICAgICAgICAgIHRyeToKICAgICAgICAgICAgICAgIHBlcmZlY3QgPSBpc19wZXJmZWN0KG4pCiAgICAgICAgICAgIGV4Y2VwdCBWYWx1ZUVycm9yIGFzIGVycjoKICAgICAgICAgICAgICAgIHByaW50KGYie3RleHR9OiB7ZXJyfSIpCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBpZiBwZXJmZWN0OgogICAgICAgICAgICAgICAgICAgIHByaW50KGYie259IGlzIHBlcmZlY3QiKQogICAgICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgICAgICBwcmludChmIntufSBpcyBub3QgcGVyZmVjdCIpCiAgICAgICAgdGV4dCA9IGlucHV0KCk=",
+      "answerNote": "proper_divisors raises, is_perfect lets the exception pass, and the main program handles it. Each function does one job."
+    },
+    "order-lines": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 26,
+      "starter": "ITEMS = [\"pen\", \"book\", \"cup\"]\nPRICES = [1.50, 12.00, 4.25]",
+      "cases": [
+        {
+          "name": "Example 1: pen,2 and cup, 1",
+          "inputs": [
+            "pen,2",
+            "cup, 1",
+            ""
+          ],
+          "expected": "Added 3.00\nChecked: pen,2\nAdded 4.25\nChecked: cup, 1\nTotal: 7.25"
+        },
+        {
+          "name": "Example 2: pen,0",
+          "inputs": [
+            "pen,0",
+            ""
+          ],
+          "expected": "Rejected: quantity must be at least 1\nChecked: pen,0\nTotal: 0.00"
+        },
+        {
+          "name": "A quantity in words",
+          "inputs": [
+            "book,3",
+            "pen,two",
+            ""
+          ],
+          "expected": "Added 36.00\nChecked: book,3\nRejected: invalid literal for int() with base 10: 'two'\nChecked: pen,two\nTotal: 36.00"
+        },
+        {
+          "name": "Unknown item and wrong parts",
+          "inputs": [
+            "hat,1",
+            "pen",
+            "pen,1,2",
+            ""
+          ],
+          "expected": "Rejected: unknown item hat\nChecked: hat,1\nRejected: expected item,quantity\nChecked: pen\nRejected: expected item,quantity\nChecked: pen,1,2\nTotal: 0.00"
+        },
+        {
+          "name": "Spaces and a negative quantity",
+          "inputs": [
+            " cup , 2 ",
+            "book,-1",
+            ""
+          ],
+          "expected": "Added 8.50\nChecked:  cup , 2 \nRejected: quantity must be at least 1\nChecked: book,-1\nTotal: 8.50"
+        },
+        {
+          "name": "Blank line only",
+          "inputs": [
+            ""
+          ],
+          "expected": "Total: 0.00"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_q = _fn(\"parse_quantity\", \"text\")\n_c = _fn(\"line_cost\", \"line\")\nassert _quiet(_q, \"0\")[1] == \"ValueError: quantity must be at least 1\", 'parse_quantity(\"0\") should raise ValueError(\"quantity must be at least 1\").'\nassert (_quiet(_q, \"two\")[1] or \"\").startswith(\"ValueError: invalid literal\"), 'parse_quantity(\"two\") should let the ValueError from int pass to the caller.'\nassert _quiet(_c, \"pen\")[1] == \"ValueError: expected item,quantity\", 'line_cost(\"pen\") should raise ValueError(\"expected item,quantity\").'\nassert _quiet(_c, \"hat,1\")[1] == \"ValueError: unknown item hat\", 'line_cost(\"hat,1\") should raise ValueError(\"unknown item hat\").'\nassert _quiet(_c, \" pen , 2 \")[0] == 3.0, 'line_cost(\" pen , 2 \") should return 3.0.'\nfor _name in (\"parse_quantity\", \"line_cost\"):\n    assert not any(isinstance(n, ast.Try) for n in ast.walk(_def(_name))), _name + \" should raise and let exceptions pass. Handle them in the main program.\"\nassert any(t.orelse and t.finalbody for t in _tries()), \"In the main program, use try, except, else, and finally.\"\nassert _loops(), \"Read the lines with a while loop that stops at a blank line.\"\n",
+      "hints": [
+        "`parse_quantity` converts with `int` and raises for a value below 1. `line_cost` splits on `\",\"`, checks for two parts, strips each part, and checks `item in ITEMS`.",
+        "The price is at the same position as the item: `PRICES[ITEMS.index(item)]`. Neither function uses `try`.",
+        "In the loop, call `line_cost` alone in `try`. `except` prints `Rejected:`, `else` adds and prints `Added`, and `finally` prints `Checked:` and the line."
+      ],
+      "answer": "SVRFTVMgPSBbInBlbiIsICJib29rIiwgImN1cCJdClBSSUNFUyA9IFsxLjUwLCAxMi4wMCwgNC4yNV0KCmRlZiBwYXJzZV9xdWFudGl0eSh0ZXh0KToKICAgIHF1YW50aXR5ID0gaW50KHRleHQpCiAgICBpZiBxdWFudGl0eSA8IDE6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigicXVhbnRpdHkgbXVzdCBiZSBhdCBsZWFzdCAxIikKICAgIHJldHVybiBxdWFudGl0eQoKZGVmIGxpbmVfY29zdChsaW5lKToKICAgIHBhcnRzID0gbGluZS5zcGxpdCgiLCIpCiAgICBpZiBsZW4ocGFydHMpICE9IDI6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiZXhwZWN0ZWQgaXRlbSxxdWFudGl0eSIpCiAgICBpdGVtID0gcGFydHNbMF0uc3RyaXAoKQogICAgcXVhbnRpdHlfdGV4dCA9IHBhcnRzWzFdLnN0cmlwKCkKICAgIGlmIGl0ZW0gbm90IGluIElURU1TOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoInVua25vd24gaXRlbSAiICsgaXRlbSkKICAgIHF1YW50aXR5ID0gcGFyc2VfcXVhbnRpdHkocXVhbnRpdHlfdGV4dCkKICAgIHJldHVybiBQUklDRVNbSVRFTVMuaW5kZXgoaXRlbSldICogcXVhbnRpdHkKCnRvdGFsID0gMApsaW5lID0gaW5wdXQoKQp3aGlsZSBsaW5lICE9ICIiOgogICAgdHJ5OgogICAgICAgIGNvc3QgPSBsaW5lX2Nvc3QobGluZSkKICAgIGV4Y2VwdCBWYWx1ZUVycm9yIGFzIGVycjoKICAgICAgICBwcmludCgiUmVqZWN0ZWQ6IiwgZXJyKQogICAgZWxzZToKICAgICAgICB0b3RhbCA9IHRvdGFsICsgY29zdAogICAgICAgIHByaW50KGYiQWRkZWQge2Nvc3Q6LjJmfSIpCiAgICBmaW5hbGx5OgogICAgICAgIHByaW50KCJDaGVja2VkOiIsIGxpbmUpCiAgICBsaW5lID0gaW5wdXQoKQpwcmludChmIlRvdGFsOiB7dG90YWw6LjJmfSIp",
+      "answerNote": "The functions only raise. The main program is the one place that knows how to report a rejected line and continue, so the handler is there."
+    },
+    "orders-trace": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 40,
+      "rows": 5,
+      "placeholder": "Label each frame, then explain where the handler belongs…",
+      "answer": "cGFyc2VfcXVhbnRpdHkgcmFpc2VkIHRoZSBWYWx1ZUVycm9yIGF0IHRoZSBib3R0b20gb2YgdGhlIHRyYWNlYmFjay4gbGluZV9jb3N0IGNhbGxlZCBwYXJzZV9xdWFudGl0eSwgYW5kIHRoZSB0b3AtbGV2ZWwgY2FsbCBsaW5lX2Nvc3QoInBlbiwwIikgc3RhcnRlZCB0aGUgY2hhaW4uIFRoZSBoYW5kbGVyIGJlbG9uZ3MgaW4gdGhlIG1haW4gcHJvZ3JhbSBiZWNhdXNlIG9ubHkgaXQga25vd3MgaG93IHRvIHJlcG9ydCBhIHJlamVjdGVkIGxpbmUgYW5kIGdvIG9uIHRvIHRoZSBuZXh0IG9uZS4="
+    }
+  }
+}
