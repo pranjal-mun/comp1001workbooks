@@ -1,0 +1,338 @@
+{
+  "id": "lecture-29-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 29 Boss Problems",
+  "short": "L29 bosses",
+  "subtitle": "Exceptions and try / except",
+  "exercises": {
+    "pick-item": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 11,
+      "starter": "items = [\"pen\", \"book\", \"cup\", \"bag\", \"ruler\"]",
+      "cases": [
+        {
+          "name": "Example 1: position 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "cup"
+        },
+        {
+          "name": "Example 2: position 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "Out of range."
+        },
+        {
+          "name": "Position 1",
+          "inputs": [
+            "1"
+          ],
+          "expected": "pen"
+        },
+        {
+          "name": "Position 5",
+          "inputs": [
+            "5"
+          ],
+          "expected": "ruler"
+        },
+        {
+          "name": "Position 6",
+          "inputs": [
+            "6"
+          ],
+          "expected": "Out of range."
+        },
+        {
+          "name": "Position -2",
+          "inputs": [
+            "-2"
+          ],
+          "expected": "Out of range."
+        },
+        {
+          "name": "Text two",
+          "inputs": [
+            "two"
+          ],
+          "expected": "Enter a whole number."
+        },
+        {
+          "name": "Decimal 2.5",
+          "inputs": [
+            "2.5"
+          ],
+          "expected": "Enter a whole number."
+        },
+        {
+          "name": "Blank line",
+          "inputs": [
+            ""
+          ],
+          "expected": "Enter a whole number."
+        },
+        {
+          "name": "Spaces around 4",
+          "inputs": [
+            " 4 "
+          ],
+          "expected": "bag"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert _handles('IndexError'), \"Add an except block that names IndexError.\"\n",
+      "hints": [
+        "Convert the input with `int` inside the `try` block. The user counts from 1, so the list index is `position - 1`.",
+        "Python accepts a negative index such as `items[-1]`, so it raises no exception for 0 or a negative position. Test `position < 1` with `if`.",
+        "Give `ValueError` and `IndexError` separate `except` blocks. Both out-of-range cases print `Out of range.`"
+      ],
+      "answer": "aXRlbXMgPSBbInBlbiIsICJib29rIiwgImN1cCIsICJiYWciLCAicnVsZXIiXQp0cnk6CiAgICBwb3NpdGlvbiA9IGludChpbnB1dCgpKQogICAgaWYgcG9zaXRpb24gPCAxOgogICAgICAgIHByaW50KCJPdXQgb2YgcmFuZ2UuIikKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoaXRlbXNbcG9zaXRpb24gLSAxXSkKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiRW50ZXIgYSB3aG9sZSBudW1iZXIuIikKZXhjZXB0IEluZGV4RXJyb3I6CiAgICBwcmludCgiT3V0IG9mIHJhbmdlLiIp",
+      "answerNote": "The if test catches 0 and negative positions, which Python would accept as indexes. An IndexError covers positions above 5."
+    },
+    "running-total": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 14,
+      "starter": "total = 0.0\nskipped = 0",
+      "cases": [
+        {
+          "name": "Example 1: 2, bad, 3.5",
+          "inputs": [
+            "2",
+            "bad",
+            "3.5",
+            ""
+          ],
+          "expected": "Total: 2.0\nInvalid: bad\nTotal: 5.5\nFinal: 5.5\nSkipped: 1"
+        },
+        {
+          "name": "Example 2: blank line only",
+          "inputs": [
+            ""
+          ],
+          "expected": "Final: 0.0\nSkipped: 0"
+        },
+        {
+          "name": "Whole numbers",
+          "inputs": [
+            "1",
+            "2",
+            "3",
+            ""
+          ],
+          "expected": "Total: 1.0\nTotal: 3.0\nTotal: 6.0\nFinal: 6.0\nSkipped: 0"
+        },
+        {
+          "name": "Only invalid lines",
+          "inputs": [
+            "x",
+            "y",
+            ""
+          ],
+          "expected": "Invalid: x\nInvalid: y\nFinal: 0.0\nSkipped: 2"
+        },
+        {
+          "name": "Negative and decimal values",
+          "inputs": [
+            "-4",
+            "0.5",
+            "ten",
+            ""
+          ],
+          "expected": "Total: -4.0\nTotal: -3.5\nInvalid: ten\nFinal: -3.5\nSkipped: 1"
+        },
+        {
+          "name": "Spaces around a number",
+          "inputs": [
+            " 7 ",
+            ""
+          ],
+          "expected": "Total: 7.0\nFinal: 7.0\nSkipped: 0"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert _loops(), \"Read the lines with a while loop that stops at a blank line.\"\n",
+      "hints": [
+        "Read the first line before the loop, and read the next line at the end of the loop body. Stop when the line is `\"\"`.",
+        "Put only the conversion and the lines that use its value in the `try` block. A `ValueError` prints `Invalid:` and adds 1 to `skipped`.",
+        "Print the totals with f-strings such as `f\"Total: {total}\"`. Start `total` at `0.0` so it always prints as a float."
+      ],
+      "answer": "dG90YWwgPSAwLjAKc2tpcHBlZCA9IDAKdGV4dCA9IGlucHV0KCkKd2hpbGUgdGV4dCAhPSAiIjoKICAgIHRyeToKICAgICAgICB2YWx1ZSA9IGZsb2F0KHRleHQpCiAgICAgICAgdG90YWwgPSB0b3RhbCArIHZhbHVlCiAgICAgICAgcHJpbnQoZiJUb3RhbDoge3RvdGFsfSIpCiAgICBleGNlcHQgVmFsdWVFcnJvcjoKICAgICAgICBwcmludChmIkludmFsaWQ6IHt0ZXh0fSIpCiAgICAgICAgc2tpcHBlZCA9IHNraXBwZWQgKyAxCiAgICB0ZXh0ID0gaW5wdXQoKQpwcmludChmIkZpbmFsOiB7dG90YWx9IikKcHJpbnQoZiJTa2lwcGVkOiB7c2tpcHBlZH0iKQ==",
+      "answerNote": "An invalid line raises ValueError before the total changes, so the handler only reports it and counts it."
+    },
+    "trip-speeds": {
+      "type": "code",
+      "xp": 20,
+      "boss": "🐉",
+      "minLines": 26,
+      "starter": "def trip_speed(distance_text, time_text):\n    pass",
+      "cases": [
+        {
+          "name": "Example 1: 12, 3, 10, 2",
+          "inputs": [
+            "12",
+            "3",
+            "10",
+            "2"
+          ],
+          "expected": "Speed: 4.0\nSpeed: 5.0"
+        },
+        {
+          "name": "Example 2: 4, 0, 8, 2",
+          "inputs": [
+            "4",
+            "0",
+            "8",
+            "2"
+          ],
+          "expected": "Zero time.\nSpeed: 4.0"
+        },
+        {
+          "name": "Example 3: 12, 3, 8, fast",
+          "inputs": [
+            "12",
+            "3",
+            "8",
+            "fast"
+          ],
+          "expected": "Speed: 4.0\nBad trip.\ncould not convert string to float: 'fast'"
+        },
+        {
+          "name": "Bad first distance",
+          "inputs": [
+            "far",
+            "3",
+            "9",
+            "4"
+          ],
+          "expected": "Bad number.\nSpeed: 2.2"
+        },
+        {
+          "name": "Bad second distance",
+          "inputs": [
+            "10",
+            "4",
+            "x",
+            "2"
+          ],
+          "expected": "Speed: 2.5\nBad trip.\ncould not convert string to float: 'x'"
+        },
+        {
+          "name": "Decimals",
+          "inputs": [
+            "7.5",
+            "2.5",
+            "100",
+            "8"
+          ],
+          "expected": "Speed: 3.0\nSpeed: 12.5"
+        },
+        {
+          "name": "Both trips bad",
+          "inputs": [
+            "5",
+            "",
+            "",
+            "3"
+          ],
+          "expected": "Bad number.\nBad trip.\ncould not convert string to float: ''"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert _handles('ZeroDivisionError'), \"Add an except block that names ZeroDivisionError.\"\n_fn(\"trip_speed\", \"distance_text\", \"time_text\")\n_grouped = [h for h in _H if set(_names(h)) == {\"ValueError\", \"ZeroDivisionError\"} and h.name == \"err\"]\nassert _grouped, \"In trip_speed, use one block: except (ValueError, ZeroDivisionError) as err:\"\n_f = [n for n in _TREE.body if isinstance(n, ast.FunctionDef) and n.name == \"trip_speed\"][0]\nassert any(h in list(ast.walk(_f)) for h in _grouped), \"Put the grouped except block inside trip_speed.\"\nassert any(len(_names(h)) == 1 for h in _H if h not in list(ast.walk(_f))), \"Handle ValueError and ZeroDivisionError in separate blocks for the first trip.\"\nfor _t in _tries():\n    assert len(_t.body) <= 4, \"Keep each try block small. Put only the lines that can fail inside it.\"\n",
+      "hints": [
+        "For the first trip, convert both values and divide inside one small `try`. Give `ValueError` and `ZeroDivisionError` their own `except` blocks.",
+        "A flag such as `valid = True` records whether the calculation worked. Print the speed after the `try` statement only when the flag is still `True`.",
+        "In `trip_speed`, one `except (ValueError, ZeroDivisionError) as err:` prints `Bad trip.` and then `err`. Print speeds with `f\"Speed: {speed:.1f}\"`."
+      ],
+      "answer": "ZGVmIHRyaXBfc3BlZWQoZGlzdGFuY2VfdGV4dCwgdGltZV90ZXh0KToKICAgIHZhbGlkID0gVHJ1ZQogICAgdHJ5OgogICAgICAgIGRpc3RhbmNlID0gZmxvYXQoZGlzdGFuY2VfdGV4dCkKICAgICAgICB0aW1lID0gZmxvYXQodGltZV90ZXh0KQogICAgICAgIHNwZWVkID0gZGlzdGFuY2UgLyB0aW1lCiAgICBleGNlcHQgKFZhbHVlRXJyb3IsIFplcm9EaXZpc2lvbkVycm9yKSBhcyBlcnI6CiAgICAgICAgcHJpbnQoIkJhZCB0cmlwLiIpCiAgICAgICAgcHJpbnQoZXJyKQogICAgICAgIHZhbGlkID0gRmFsc2UKICAgIGlmIHZhbGlkOgogICAgICAgIHByaW50KGYiU3BlZWQ6IHtzcGVlZDouMWZ9IikKCmZpcnN0X2Rpc3RhbmNlID0gaW5wdXQoKQpmaXJzdF90aW1lID0gaW5wdXQoKQp2YWxpZCA9IFRydWUKdHJ5OgogICAgZGlzdGFuY2UgPSBmbG9hdChmaXJzdF9kaXN0YW5jZSkKICAgIHRpbWUgPSBmbG9hdChmaXJzdF90aW1lKQogICAgc3BlZWQgPSBkaXN0YW5jZSAvIHRpbWUKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiQmFkIG51bWJlci4iKQogICAgdmFsaWQgPSBGYWxzZQpleGNlcHQgWmVyb0RpdmlzaW9uRXJyb3I6CiAgICBwcmludCgiWmVybyB0aW1lLiIpCiAgICB2YWxpZCA9IEZhbHNlCmlmIHZhbGlkOgogICAgcHJpbnQoZiJTcGVlZDoge3NwZWVkOi4xZn0iKQpzZWNvbmRfZGlzdGFuY2UgPSBpbnB1dCgpCnNlY29uZF90aW1lID0gaW5wdXQoKQp0cmlwX3NwZWVkKHNlY29uZF9kaXN0YW5jZSwgc2Vjb25kX3RpbWUp",
+      "answerNote": "The first trip needs different messages, so it has two except blocks. The second trip gives the same response to both errors, so one grouped block prints the message from err."
+    },
+    "grade-convert": {
+      "type": "code",
+      "xp": 25,
+      "boss": "💀",
+      "minLines": 22,
+      "starter": "letters = [\"A+\", \"A\", \"A-\", \"B+\", \"B\", \"B-\", \"C+\", \"C\", \"C-\", \"D+\", \"D\", \"F\"]\npoints = [4.0, 4.0, 3.7, 3.3, 3.0, 2.7, 2.3, 2.0, 1.7, 1.3, 1.0, 0.0]",
+      "cases": [
+        {
+          "name": "Example 1: 3.0, C+",
+          "inputs": [
+            "3.0",
+            "C+",
+            ""
+          ],
+          "expected": "B\n2.3"
+        },
+        {
+          "name": "Example 2: 0, 4.1",
+          "inputs": [
+            "0",
+            "4.1",
+            ""
+          ],
+          "expected": "F\nInvalid grade."
+        },
+        {
+          "name": "Exact 4.0 and letter A",
+          "inputs": [
+            "4.0",
+            "A",
+            ""
+          ],
+          "expected": "A+\n4.0"
+        },
+        {
+          "name": "Between two grades",
+          "inputs": [
+            "3.5",
+            "2.8",
+            "1.1",
+            ""
+          ],
+          "expected": "A-\nB-\nD"
+        },
+        {
+          "name": "Halfway values",
+          "inputs": [
+            "3.15",
+            "0.5",
+            ""
+          ],
+          "expected": "B+\nD"
+        },
+        {
+          "name": "Invalid values",
+          "inputs": [
+            "E",
+            "-1",
+            "b",
+            ""
+          ],
+          "expected": "Invalid grade.\nInvalid grade.\nInvalid grade."
+        },
+        {
+          "name": "Letters with signs",
+          "inputs": [
+            "B-",
+            "D+",
+            "F",
+            "A-",
+            ""
+          ],
+          "expected": "2.7\n1.3\n0.0\n3.7"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert len(_tries()) >= 2, \"Inside the ValueError handler, use a second try for the letter lookup.\"\nassert _loops(), \"Read values with a while loop that stops at a blank line.\"\nassert not any(isinstance(n, ast.Dict) for n in ast.walk(_TREE)), \"Use the two parallel lists. Do not use a dictionary.\"\n",
+      "hints": [
+        "Try `float(text)` first. In range, find the closest value in `points`. A value exactly halfway between two grades takes the higher one.",
+        "In the `except ValueError` block, use `letters.index(text)` in a second `try`. A missing letter raises another `ValueError`.",
+        "The same position gives the matching grade points: `points[letters.index(text)]`. A value outside 0.0 to 4.0 is an `if` test, not an exception."
+      ],
+      "answer": "bGV0dGVycyA9IFsiQSsiLCAiQSIsICJBLSIsICJCKyIsICJCIiwgIkItIiwgIkMrIiwgIkMiLCAiQy0iLCAiRCsiLCAiRCIsICJGIl0KcG9pbnRzID0gWzQuMCwgNC4wLCAzLjcsIDMuMywgMy4wLCAyLjcsIDIuMywgMi4wLCAxLjcsIDEuMywgMS4wLCAwLjBdCnRleHQgPSBpbnB1dCgpCndoaWxlIHRleHQgIT0gIiI6CiAgICB0cnk6CiAgICAgICAgdmFsdWUgPSBmbG9hdCh0ZXh0KQogICAgICAgIGlmIDAuMCA8PSB2YWx1ZSA8PSA0LjA6CiAgICAgICAgICAgIGJlc3QgPSAwCiAgICAgICAgICAgIGZvciBpIGluIHJhbmdlKDEsIGxlbihwb2ludHMpKToKICAgICAgICAgICAgICAgIGlmIHBvaW50c1tpXSAhPSBwb2ludHNbYmVzdF0gYW5kIHZhbHVlIDwgKHBvaW50c1tiZXN0XSArIHBvaW50c1tpXSkgLyAyOgogICAgICAgICAgICAgICAgICAgIGJlc3QgPSBpCiAgICAgICAgICAgIHByaW50KGxldHRlcnNbYmVzdF0pCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcHJpbnQoIkludmFsaWQgZ3JhZGUuIikKICAgIGV4Y2VwdCBWYWx1ZUVycm9yOgogICAgICAgIHRyeToKICAgICAgICAgICAgcG9zaXRpb24gPSBsZXR0ZXJzLmluZGV4KHRleHQpCiAgICAgICAgICAgIHByaW50KHBvaW50c1twb3NpdGlvbl0pCiAgICAgICAgZXhjZXB0IFZhbHVlRXJyb3I6CiAgICAgICAgICAgIHByaW50KCJJbnZhbGlkIGdyYWRlLiIpCiAgICB0ZXh0ID0gaW5wdXQoKQ==",
+      "answerNote": "The first try reads grade points. When float fails, the handler tries the letter list, and a second ValueError means the value is neither."
+    }
+  }
+}

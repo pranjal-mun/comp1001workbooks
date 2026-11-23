@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 29 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-29", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 29 Workbook</h1>
+    <div class="wb-subtitle">Exceptions and <code>try</code> / <code>except</code></div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>Exceptions report errors that occur while a program runs. A program can handle an exception and continue.</p>
+  <p>Reading: §7.5</p>
+  <ul>
+    <li>Identify common built-in exception types and the operations that raise them.</li>
+    <li>Trace control flow through <code>try</code> and matching <code>except</code> blocks.</li>
+    <li>Catch specific exceptions individually or as a tuple and inspect an exception object.</li>
+    <li>Explain why bare handlers and unnecessarily large <code>try</code> blocks hide bugs.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. A program that calls <code>input()</code> asks you to type each answer. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-exceptions">Exceptions</p>
+
+<h2 id="s1">1. Runtime errors</h2>
+<p>Consider a program that reads two whole numbers and prints their average.</p>
+<wb-example id="ex-average"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input</th><th>What happens</th><th>Exception</th></tr></thead>
+  <tbody>
+    <tr><td><code>250</code> and <code>5</code></td><td>Prints <code>Average: 50.0</code></td><td>None</td></tr>
+    <tr><td><code>two</code> and <code>5</code></td><td><code>int</code> cannot convert <code>"two"</code></td><td><code>ValueError</code></td></tr>
+    <tr><td><code>250</code> and <code>0</code></td><td>Python cannot divide by zero</td><td><code>ZeroDivisionError</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The program is valid Python, and it works for the first input. For the other two inputs, an operation cannot be carried out, and Python raises an exception.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Predict the output. Write the exception type on the last line.</p>
+  <pre><code><span class="wb-fn">print</span>(<span class="wb-str">"Start"</span>)
+number = <span class="wb-fn">int</span>(<span class="wb-str">"3"</span>)
+<span class="wb-fn">print</span>(number + <span class="wb-num">1</span>)
+<span class="wb-fn">print</span>([<span class="wb-num">1</span>, <span class="wb-num">2</span>][<span class="wb-num">2</span>])
+<span class="wb-fn">print</span>(<span class="wb-str">"End"</span>)</code></pre>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s2">2. Syntax, runtime, and logic errors</h2>
+<p>Errors are found at different times.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 750 205" width="750" height="205" role="img" aria-label="Three stages from left to right: Python reads the code, the program runs, and you check the output. Under each stage is the kind of error found there. Syntax error: a colon is missing after if, so the program does not start. Runtime error: int of two cannot be evaluated, so the program stops at that line. Logic error: the formula is wrong, so the program prints a wrong answer and no message." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-kinds" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="25.0" y="12.0" width="200" height="36" rx="6"/><rect x="5.0" y="102.0" width="240" height="96" rx="0" style="stroke-width: 2.5"/><path d="M125 48 V 100" marker-end="url(#a-kinds)"/><rect x="275.0" y="12.0" width="200" height="36" rx="6"/><rect x="255.0" y="102.0" width="240" height="96" rx="0" style="stroke-width: 2.5"/><path d="M375 48 V 100" marker-end="url(#a-kinds)"/><rect x="525.0" y="12.0" width="200" height="36" rx="6"/><rect x="505.0" y="102.0" width="240" height="96" rx="0" style="stroke-width: 2.5"/><path d="M625 48 V 100" marker-end="url(#a-kinds)"/><path d="M225 30 H 273" marker-end="url(#a-kinds)"/><path d="M475 30 H 523" marker-end="url(#a-kinds)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="125" y="34.9">Python reads the code</text><text x="125" y="125" style="font-weight: 700">Syntax error</text><text x="125" y="160.1">A colon is missing after if.</text><text x="125" y="179.1">The program does not start.</text><text x="375" y="34.9">The program runs</text><text x="375" y="125" style="font-weight: 700">Runtime error</text><text x="375" y="160.1">int("two") cannot be evaluated.</text><text x="375" y="179.1">The program stops at that line.</text><text x="625" y="34.9">You check the output</text><text x="625" y="125" style="font-weight: 700">Logic error</text><text x="625" y="150.6">The formula is wrong.</text><text x="625" y="169.6">It prints a wrong answer.</text><text x="625" y="188.6">There is no message.</text></g>
+  </svg>
+</figure>
+<p>An <strong>exception</strong> is Python's way of reporting a runtime error. This lecture is about runtime errors.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 2.</strong> This program is intended to calculate the average of two numbers. What kind of error does it have?</p>
+  <pre><code>total = <span class="wb-num">10</span>
+count = <span class="wb-num">6</span>
+average = total + count / <span class="wb-num">2</span></code></pre>
+  <ol type="A">
+    <li>A syntax error.</li>
+    <li>A runtime error.</li>
+    <li>No error.</li>
+    <li>A logic error.</li>
+  </ol>
+  <wb-table id="q2">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s3">3. Exception type and message</h2>
+<p>If the user types <code>two</code> for the first input, the program stops and Python prints a traceback.</p>
+<pre>Traceback (most recent call last):
+  File "average.py", line 1, in &lt;module&gt;
+    total = int(input("Total points: "))
+ValueError: invalid literal for int() with base 10: 'two'</pre>
+<p>The last line gives the <strong>type</strong> of the exception, <code>ValueError</code>, and a <strong>message</strong>, <code>invalid literal for int() with base 10: 'two'</code>. The line above it shows the statement that raised the exception. Lecture 30 explains the rest of the traceback.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 3.</strong> Write True or False for each statement.</p>
+  <wb-table id="q3">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>The last line of a traceback gives the exception type.</td><td data-blank="t1"></td></tr>
+        <tr><td>The line above the last line gives the final output of the program.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s4">4. Common built-in exceptions</h2>
+<p>Each built-in exception type describes a different kind of problem.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Code</th><th>Exception</th><th>Problem</th></tr></thead>
+  <tbody>
+    <tr><td><code>int("hello")</code></td><td><code>ValueError</code></td><td>The type is correct. The value is not.</td></tr>
+    <tr><td><code>10 / 0</code></td><td><code>ZeroDivisionError</code></td><td>The divisor is zero.</td></tr>
+    <tr><td><code>[1, 2][5]</code></td><td><code>IndexError</code></td><td>The index is not in the list.</td></tr>
+    <tr><td><code>"a" + 1</code></td><td><code>TypeError</code></td><td>The operation cannot use these types.</td></tr>
+    <tr><td><code>open("nope.txt")</code></td><td><code>FileNotFoundError</code></td><td>The file does not exist.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>If the program does not handle an exception, the program terminates. We say that an <strong>unhandled exception</strong> has been raised. Lecture 32 uses <code>open</code> to read files.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 4.</strong> Evaluate each expression separately. Give its exception type, or write <code>none</code> if no exception occurs.</p>
+  <wb-table id="q4">
+    <table>
+      <thead><tr><th>Expression</th><th>Exception</th></tr></thead>
+      <tbody>
+        <tr><td><code>float("3,5")</code></td><td data-blank="e1"></td></tr>
+        <tr><td><code>"abc"[3]</code></td><td data-blank="e2"></td></tr>
+        <tr><td><code>[1, 2] + 3</code></td><td data-blank="e3"></td></tr>
+        <tr><td><code>int(" 42 ")</code></td><td data-blank="e4"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 1</div>
+  <p>Evaluate each expression separately. Give the exception that it raises, or write <code>none</code> if it raises no exception.</p>
+  <wb-table id="cp1">
+    <table>
+      <thead><tr><th>Expression</th><th>Exception</th></tr></thead>
+      <tbody>
+        <tr><td>1. <code>int("12.5")</code></td><td data-blank="e1"></td></tr>
+        <tr><td>2. <code>[3, 6, 9][3]</code></td><td data-blank="e2"></td></tr>
+        <tr><td>3. <code>len(42)</code></td><td data-blank="e3"></td></tr>
+        <tr><td>4. <code>7 % 0</code></td><td data-blank="e4"></td></tr>
+        <tr><td>5. <code>"7" * 2</code></td><td data-blank="e5"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Test each expression in this code box. Put one expression in the <code>print</code> call at a time.</p>
+  <wb-example id="ex-cp1"></wb-example>
+</div>
+
+<p class="wb-part" id="part-try">The try statement</p>
+
+<h2 id="s5">5. The try-except statement</h2>
+<p>The <code>try</code>-<code>except</code> statement lets a program handle an exception instead of terminating. Consider a program that reads an age.</p>
+<wb-example id="ex-age"></wb-example>
+<ul>
+  <li>The <code>try</code> block contains the code that might raise an exception.</li>
+  <li>If a <code>ValueError</code> is raised in the <code>try</code> block, control jumps to the <code>except</code> block.</li>
+  <li>After the <code>except</code> block, execution continues with the statement that follows the <code>try</code>-<code>except</code>. The failed statement is not executed again.</li>
+</ul>
+<p>Python executes the <code>try</code> block in order. An exception skips the rest of the block.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 830 435" width="830" height="435" role="img" aria-label="A flow chart read from top to bottom. Start. Execute the try block. Exception occurs? If no, continue after try-except. If yes, does the type match the except? If yes, execute the except block, then continue after try-except. If no, it is an unhandled exception and the program stops." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="70.0" y="12.0" width="200" height="36" rx="18"/><rect x="50.0" y="80.0" width="240" height="40" rx="0"/><path d="M170 149 L252 195 L170 241 L88 195 Z"/><path d="M450 147 L542 195 L450 243 L358 195 Z"/><rect x="610.0" y="168.0" width="200" height="54" rx="0" style="stroke-width: 2.5; stroke-dasharray: 6 4"/><rect x="330.0" y="295.0" width="240" height="40" rx="0" style="stroke-width: 2.5"/><rect x="30.0" y="385.0" width="280" height="40" rx="20"/><path d="M170 48 V 78" marker-end="url(#a-flow)"/><path d="M170 120 V 147" marker-end="url(#a-flow)"/><path d="M170 241 V 383" marker-end="url(#a-flow)"/><path d="M252 195 H 356" marker-end="url(#a-flow)"/><path d="M450 243 V 293" marker-end="url(#a-flow)"/><path d="M542 195 H 608" marker-end="url(#a-flow)"/><path d="M450 335 V 405 H 312" marker-end="url(#a-flow)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="170" y="34.9">Start</text><text x="170" y="104.9">Execute the try block</text><text x="170" y="190.9">Exception</text><text x="170" y="208.9">occurs?</text><text x="450" y="190.9">Type matches</text><text x="450" y="208.9">the except?</text><text x="710" y="190.9">Unhandled exception:</text><text x="710" y="208.9">the program stops</text><text x="450" y="319.9">Execute the except block</text><text x="170" y="409.9">Continue after try-except</text><text x="300" y="186">Yes</text><text x="152" y="312" text-anchor="end">No</text><text x="466" y="272" text-anchor="start">Yes</text><text x="575" y="186">No</text></g>
+  </svg>
+</figure>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 5.</strong> Predict the output. The input is <code>word</code>.</p>
+  <pre><code><span class="wb-kw">try</span>:
+    <span class="wb-fn">print</span>(<span class="wb-str">"First"</span>)
+    number = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>())
+    <span class="wb-fn">print</span>(number)
+<span class="wb-kw">except</span> ValueError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Bad"</span>)
+<span class="wb-fn">print</span>(<span class="wb-str">"Last"</span>)</code></pre>
+  <wb-table id="q5">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s6">6. Tracing a try-except statement</h2>
+<p>Consider the following code, run once with the input <code>250</code> and once with <code>two</code>.</p>
+<wb-example id="ex-trace"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input <code>250</code></th><th>Input <code>two</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>Conversion worked.</code><br><code>Program continues.</code></td><td><code>Conversion failed.</code><br><code>Program continues.</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>With <code>two</code>, <code>int(text)</code> raises a <code>ValueError</code>. Control jumps to the <code>except</code> block, so <code>print("Conversion worked.")</code> is skipped.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 6.</strong> Fill in the gap. The input is <code>7</code>. The program must print <code>No such position.</code></p>
+  <pre><code>values = [<span class="wb-num">5</span>, <span class="wb-num">10</span>]
+<span class="wb-kw">try</span>:
+    i = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>())
+    <span class="wb-fn">print</span>(values[i])
+<span class="wb-kw">except</span> ____(a)____:
+    <span class="wb-fn">print</span>(<span class="wb-str">"No such position."</span>)</code></pre>
+  <wb-table id="q6">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s7">7. Unhandled exceptions</h2>
+<p>An <code>except</code> block handles only the type that it names. Consider:</p>
+<wb-example id="ex-unhandled"></wb-example>
+<p>Input <code>0</code>:</p>
+<pre>Traceback (most recent call last):
+  ...
+ZeroDivisionError: division by zero</pre>
+<p>The input <code>0</code> raises a <code>ZeroDivisionError</code>. The <code>except</code> block names only <code>ValueError</code>, so the exception is unhandled and the program terminates.</p>
+<p>To handle both errors, the program needs a second <code>except</code> block.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 7.</strong> Predict the output. Write the exception type on the last line.</p>
+  <pre><code><span class="wb-kw">try</span>:
+    <span class="wb-fn">print</span>(<span class="wb-str">"abc"</span>[<span class="wb-num">3</span>])
+<span class="wb-kw">except</span> ValueError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Wrong value"</span>)
+<span class="wb-fn">print</span>(<span class="wb-str">"Done"</span>)</code></pre>
+  <wb-table id="q7">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<p class="wb-part" id="part-multiple">Multiple except blocks</p>
+
+<h2 id="s8">8. Multiple except blocks and their order</h2>
+<p>A <code>try</code> block can have one <code>except</code> block for each kind of exception. This program divides <code>100</code> by the value at a position.</p>
+<wb-example id="ex-multi"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>0</code></td><td><code>25.0</code></td></tr>
+    <tr><td><code>one</code></td><td><code>Not a whole number.</code></td></tr>
+    <tr><td><code>5</code></td><td><code>No such position.</code></td></tr>
+    <tr><td><code>1</code></td><td><code>The value is 0.</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Each kind of failure produces its own message. At most one <code>except</code> block is executed.</p>
+<p>Python checks the <code>except</code> blocks from top to bottom and executes the first one that matches. This works like an <code>if</code>-<code>elif</code> chain.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 830 255" width="830" height="255" role="img" aria-label="An exception in the try block is checked against the except blocks from left to right. ValueError? If yes, the first except block runs. If no, IndexError? If yes, the second except block runs. If no, ZeroDivisionError? If yes, the third except block runs. If no, Python prints a traceback and stops. After any except block runs, the program continues after the try statement." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-order" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="10.0" y="16.0" width="110" height="48" rx="8"/><rect x="720.0" y="16.0" width="100" height="48" rx="8"/><rect x="152.0" y="205.0" width="520" height="40" rx="0"/><rect x="155.0" y="22.0" width="140" height="36" rx="0"/><rect x="155.0" y="112.0" width="140" height="36" rx="0" style="stroke-width: 2.5"/><path d="M120 40 H 153.0" marker-end="url(#a-order)"/><path d="M225 58 V 110" marker-end="url(#a-order)"/><path d="M225 148 V 203" marker-end="url(#a-order)"/><rect x="330.0" y="22.0" width="140" height="36" rx="0"/><rect x="330.0" y="112.0" width="140" height="36" rx="0" style="stroke-width: 2.5"/><path d="M295.0 40 H 328.0" marker-end="url(#a-order)"/><path d="M400 58 V 110" marker-end="url(#a-order)"/><path d="M400 148 V 203" marker-end="url(#a-order)"/><rect x="505.0" y="22.0" width="190" height="36" rx="0"/><rect x="530.0" y="112.0" width="140" height="36" rx="0" style="stroke-width: 2.5"/><path d="M470.0 40 H 503.0" marker-end="url(#a-order)"/><path d="M600 58 V 110" marker-end="url(#a-order)"/><path d="M600 148 V 203" marker-end="url(#a-order)"/><path d="M695.0 40 H 718" marker-end="url(#a-order)"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><text x="65" y="35.9">Exception</text><text x="65" y="53.9">in try</text><text x="770" y="35.9">Traceback.</text><text x="770" y="53.9">Stop.</text><text x="412" y="229.9">Continue after the try statement</text><text x="225" y="45" style="font-family: var(--font-mono, monospace)">ValueError?</text><text x="225" y="134.9">First except</text><text x="233" y="90" text-anchor="start">yes</text><text x="400" y="45" style="font-family: var(--font-mono, monospace)">IndexError?</text><text x="400" y="134.9">Second except</text><text x="408" y="90" text-anchor="start">yes</text><text x="312" y="32">no</text><text x="600" y="45" style="font-family: var(--font-mono, monospace)">ZeroDivisionError?</text><text x="600" y="134.9">Third except</text><text x="608" y="90" text-anchor="start">yes</text><text x="488" y="32">no</text><text x="708" y="32">no</text></g>
+  </svg>
+</figure>
+<p>The remaining <code>except</code> blocks are skipped.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 8</div>
+  <p><strong>Question 8.</strong> Which message prints?</p>
+  <pre><code><span class="wb-kw">try</span>:
+    [<span class="wb-num">1</span>, <span class="wb-num">2</span>][<span class="wb-num">5</span>]
+<span class="wb-kw">except</span> (ValueError, IndexError):
+    <span class="wb-fn">print</span>(<span class="wb-str">"First"</span>)
+<span class="wb-kw">except</span> IndexError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Second"</span>)</code></pre>
+  <ol type="A">
+    <li>Second</li>
+    <li>First</li>
+    <li>Both messages</li>
+    <li>Neither message</li>
+  </ol>
+  <wb-table id="q8">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s9">9. A tuple of exception types</h2>
+<p>If two kinds of exception need the same response, <code>except</code> can be followed by a tuple of exception types.</p>
+<wb-example id="ex-tuple"></wb-example>
+<p>The first <code>except</code> block is entered if either a <code>ValueError</code> or an <code>IndexError</code> is raised. Write the exception types in parentheses.</p>
+<p>Use separate <code>except</code> blocks when each problem needs a different message.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 9</div>
+  <p><strong>Question 9.</strong> Write True or False for each statement.</p>
+  <wb-table id="q9">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td><code>except (ValueError, IndexError):</code> runs its block for an <code>IndexError</code>.</td><td data-blank="t1"></td></tr>
+        <tr><td>An <code>except</code> block that names a tuple runs once for each type in the tuple.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s10">10. The exception object</h2>
+<p>In <code>except ValueError as err</code>, the name <code>err</code> is bound to the exception object.</p>
+<wb-example id="ex-err"></wb-example>
+<p><code>print(err)</code> prints the message stored in the exception.</p>
+<p>The message is useful to a programmer. A user is better served by a plain instruction, such as “Enter a whole number.”</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 10</div>
+  <p><strong>Question 10.</strong> Predict the output.</p>
+  <pre><code><span class="wb-kw">try</span>:
+    <span class="wb-fn">int</span>(<span class="wb-str">""</span>)
+<span class="wb-kw">except</span> ValueError <span class="wb-kw">as</span> err:
+    <span class="wb-fn">print</span>(err)</code></pre>
+  <wb-table id="q10">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 2</div>
+  <p>Give the output of this program for each input.</p>
+  <pre><code>values = [<span class="wb-num">8</span>, <span class="wb-num">0</span>, <span class="wb-num">2</span>]
+<span class="wb-kw">try</span>:
+    i = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>(<span class="wb-str">"Position: "</span>))
+    <span class="wb-fn">print</span>(<span class="wb-num">10</span> // values[i])
+<span class="wb-kw">except</span> (ValueError, IndexError):
+    <span class="wb-fn">print</span>(<span class="wb-str">"Bad position"</span>)
+<span class="wb-kw">except</span> ZeroDivisionError:
+    <span class="wb-fn">print</span>(<span class="wb-str">"Zero value"</span>)</code></pre>
+  <wb-table id="cp2">
+    <table>
+      <thead><tr><th>Input</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1. <code>2</code></td><td data-blank="o1"></td></tr>
+        <tr><td>2. <code>1</code></td><td data-blank="o2"></td></tr>
+        <tr><td>3. <code>3</code></td><td data-blank="o3"></td></tr>
+        <tr><td>4. <code>1.5</code></td><td data-blank="o4"></td></tr>
+        <tr><td>5. <code>-1</code></td><td data-blank="o5"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+  <p>Check your answers by running the program with each input.</p>
+  <wb-example id="ex-cp2"></wb-example>
+</div>
+
+<p class="wb-part" id="part-choosing">Choosing what to catch</p>
+
+<h2 id="s11">11. Size of the try block</h2>
+<p>In both programs, a bug earlier in the program has left the list <code>scores</code> empty.</p>
+<p>Too much in the <code>try</code> block:</p>
+<wb-example id="ex-big-try"></wb-example>
+<p>Only the risky lines:</p>
+<wb-example id="ex-small-try"></wb-example>
+<p>With the input <code>4</code>, the first program prints <code>Count must not be zero.</code> even though the count is correct. The second program prints a traceback that points to the real bug.</p>
+<p>The <code>try</code> block should contain only the statements that are expected to fail.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 11</div>
+  <p><strong>Question 11.</strong> Which line numbers belong in a small <code>try</code> block that handles a <code>ValueError</code>?</p>
+  <pre><code>text = <span class="wb-fn">input</span>()             <span class="wb-cmt"># 1</span>
+<span class="wb-fn">print</span>(<span class="wb-str">"Price"</span>)             <span class="wb-cmt"># 2</span>
+quantity = <span class="wb-fn">int</span>(text)       <span class="wb-cmt"># 3</span>
+price = quantity * <span class="wb-num">5</span>       <span class="wb-cmt"># 4</span>
+<span class="wb-fn">print</span>(price)               <span class="wb-cmt"># 5</span>
+<span class="wb-fn">print</span>(<span class="wb-str">"Done"</span>)              <span class="wb-cmt"># 6</span></code></pre>
+  <ol type="A">
+    <li>Line 3.</li>
+    <li>Lines 1 and 2.</li>
+    <li>Lines 3 and 4.</li>
+    <li>Lines 3, 4 and 5.</li>
+  </ol>
+  <wb-table id="q11">
+    <table>
+      <tbody>
+        <tr><th>Your answer (A, B, C or D)</th><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s12">12. Bare except and broad handlers</h2>
+<p>An <code>except</code> with no exception type is called a <strong>bare</strong> <code>except</code>. It handles every kind of exception.</p>
+<wb-example id="ex-bare"></wb-example>
+<p>Input <code>3</code>:</p>
+<pre>Enter a whole number.</pre>
+<p>The user typed a whole number, yet the program asks for one. The real problem is a <code>NameError</code>, because the name <code>prise</code> is not defined.</p>
+<p>A bare <code>except</code> also handles the exception that is raised when the user presses Ctrl+C. The user then cannot easily stop the program.</p>
+<p>Without the <code>except</code> block, the traceback would name the error and the line that caused it.</p>
+<p>An <code>except</code> block that names a broad type also handles errors that come from bugs in the program.</p>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 780 228" width="780" height="228" role="img" aria-label="Nested boxes. The outer box is a bare except, which handles every exception. Inside it, a box for except Exception holds ValueError, ZeroDivisionError, IndexError, TypeError, NameError and FileNotFoundError. KeyboardInterrupt, raised when the user presses Ctrl+C, is inside the outer box only. except ValueError handles only the ValueError box, which has a thick border. NameError has a dashed border because it comes from a bug." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-nest" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="10" y="8" width="760" height="182" rx="8" style="stroke-width: 2.5"/><rect x="25" y="40" width="560" height="135" rx="6"/><rect x="40.0" y="75.0" width="170" height="34" rx="4" style="stroke-width: 3.5"/><rect x="225.0" y="75.0" width="170" height="34" rx="4"/><rect x="410.0" y="75.0" width="170" height="34" rx="4"/><rect x="40.0" y="123.0" width="170" height="34" rx="4"/><rect x="225.0" y="123.0" width="170" height="34" rx="4" style="stroke-dasharray: 5 4"/><rect x="410.0" y="123.0" width="170" height="34" rx="4"/><rect x="595.5" y="91.0" width="165" height="34" rx="4"/><g style="stroke: none; fill: currentColor; font-family: var(--font-sans, sans-serif); font-size: 14px" text-anchor="middle"><g text-anchor="start" style="font-weight: 700"><text x="22" y="28">Bare except: handles every exception</text><text x="37" y="60">except Exception: handles all of these</text></g><text x="125" y="97" style="font-family: var(--font-mono, monospace)">ValueError</text><text x="310" y="97" style="font-family: var(--font-mono, monospace)">ZeroDivisionError</text><text x="495" y="97" style="font-family: var(--font-mono, monospace)">IndexError</text><text x="125" y="145" style="font-family: var(--font-mono, monospace)">TypeError</text><text x="310" y="145" style="font-family: var(--font-mono, monospace)">NameError</text><text x="495" y="145" style="font-family: var(--font-mono, monospace)">FileNotFoundError</text><text x="678" y="113" style="font-family: var(--font-mono, monospace)">KeyboardInterrupt</text><text x="678" y="146" style="font-size: 12px">The user presses Ctrl+C.</text><text x="12" y="216" text-anchor="start">except ValueError: handles only the thick box. The dashed NameError box comes from a bug.</text></g>
+  </svg>
+</figure>
+<p>A <code>NameError</code> usually means a misspelled name. It should be fixed, not handled.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 12</div>
+  <p><strong>Question 12.</strong> Write True or False for each statement.</p>
+  <wb-table id="q12">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>A bare handler can hide a misspelled name.</td><td data-blank="t1"></td></tr>
+        <tr><td>A bare handler handles only <code>ValueError</code>.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<h2 id="s13">13. An if test or try-except</h2>
+<p>The first program tests the text first. The second program attempts the conversion.</p>
+<wb-example id="ex-isdigit"></wb-example>
+<wb-example id="ex-tryint"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Input</th><th><code>text.isdigit()</code></th><th><code>int(text)</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>"12"</code></td><td><code>True</code></td><td><code>12</code></td></tr>
+    <tr><td><code>"-5"</code></td><td><code>False</code></td><td><code>-5</code></td></tr>
+    <tr><td><code>" 7 "</code></td><td><code>False</code></td><td><code>7</code></td></tr>
+    <tr><td><code>"3.5"</code></td><td><code>False</code></td><td><code>ValueError</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><code>isdigit()</code> rejects <code>-5</code>, but <code>int</code> accepts it. When the operation itself is the best test, use <code>try</code>-<code>except</code>.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 13</div>
+  <p><strong>Question 13.</strong> Predict the output.</p>
+  <pre><code>text = <span class="wb-str">"-3"</span>
+<span class="wb-fn">print</span>(text.<span class="wb-fn">isdigit</span>())
+<span class="wb-fn">print</span>(<span class="wb-fn">int</span>(text))</code></pre>
+  <wb-table id="q13">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Checkpoint 3</div>
+  <p>Rewrite this program.</p>
+  <ol>
+    <li>Catch only the types that the inputs can cause.</li>
+    <li>Print <code>Enter numbers only.</code> or <code>Items must not be zero.</code></li>
+    <li>Give the output for the inputs <code>10</code> and <code>2.5</code>.</li>
+  </ol>
+  <div class="wb-block">
+    <div class="wb-block-title">Rules the checker enforces</div>
+    <ul>
+      <li>Use one <code>except ValueError</code> block and one <code>except ZeroDivisionError</code> block.</li>
+      <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+      <li>Print exactly the two messages above.</li>
+    </ul>
+  </div>
+  <wb-exercise id="cp3"></wb-exercise>
+  <wb-table id="cp3-out">
+    <table>
+      <tbody>
+        <tr><th>Output for the inputs <code>10</code> and <code>2.5</code></th><td data-blank="out"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+<h3>The try-except statement</h3>
+<pre><code><span class="wb-kw">try</span>:
+    <span class="wb-cmt"># statements that might fail</span>
+<span class="wb-kw">except</span> ValueError:
+    <span class="wb-cmt"># runs for a ValueError</span>
+<span class="wb-kw">except</span> (IndexError, TypeError) <span class="wb-kw">as</span> err:
+    <span class="wb-cmt"># runs for either type</span>
+    <span class="wb-cmt"># print(err) shows the message</span>
+<span class="wb-cmt"># execution continues here</span></code></pre>
+<p><strong>How it runs</strong></p>
+<ol>
+  <li>Python executes the <code>try</code> block in order.</li>
+  <li>No exception: Python skips every <code>except</code> block.</li>
+  <li>Exception: Python skips the rest of the <code>try</code> block. It executes the first <code>except</code> block that matches.</li>
+  <li>No match: the program stops with a traceback.</li>
+  <li>Execution then continues after the <code>try</code>-<code>except</code>.</li>
+</ol>
+<p><strong>Traceback:</strong> the last line gives the type of the exception and its message.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Error</th><th>What you see</th></tr></thead>
+  <tbody>
+    <tr><td>Syntax error</td><td>The program does not start.</td></tr>
+    <tr><td>Runtime error</td><td>An exception and a traceback.</td></tr>
+    <tr><td>Logic error</td><td>A wrong result and no message.</td></tr>
+  </tbody>
+</table>
+</div>
+<h3>Common exceptions and good practice</h3>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Code</th><th>Exception</th></tr></thead>
+  <tbody>
+    <tr><td><code>int("hello")</code></td><td><code>ValueError</code></td></tr>
+    <tr><td><code>int("12.5")</code></td><td><code>ValueError</code></td></tr>
+    <tr><td><code>10 / 0</code>, <code>7 % 0</code></td><td><code>ZeroDivisionError</code></td></tr>
+    <tr><td><code>[1, 2][5]</code></td><td><code>IndexError</code></td></tr>
+    <tr><td><code>"a" + 1</code>, <code>len(42)</code></td><td><code>TypeError</code></td></tr>
+    <tr><td><code>open("nope.txt")</code></td><td><code>FileNotFoundError</code></td></tr>
+    <tr><td>misspelled name</td><td><code>NameError</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Do</strong></p>
+<ul>
+  <li>Keep the <code>try</code> block small.</li>
+  <li>Name the specific types that you expect.</li>
+  <li>Tell the user what to do. <code>print(err)</code> is for programmers.</li>
+  <li>Use <code>try</code>-<code>except</code> when the operation is the best test, as for <code>int(text)</code>.</li>
+</ul>
+<p><strong>Do not</strong></p>
+<ul>
+  <li>Use a bare <code>except</code>. It handles every exception, including Ctrl+C.</li>
+  <li>Handle a <code>NameError</code> or a <code>TypeError</code> from your own code. Fix it.</li>
+</ul>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>These items give more practice with exceptions.</p>
+
+<h3>1. An unmatched exception</h3>
+<p>Consider this program. Give its output for each input: <code>4</code>, <code>word</code>, and <code>0</code>. State which input ends with an unhandled exception and why.</p>
+<wb-example id="ex-p1"></wb-example>
+<wb-table id="p1-out">
+  <table>
+    <thead><tr><th>Input</th><th>Output (for an unhandled exception, write its type)</th></tr></thead>
+    <tbody>
+      <tr><td><code>4</code></td><td data-blank="i4"></td></tr>
+      <tr><td><code>word</code></td><td data-blank="iword"></td></tr>
+      <tr><td><code>0</code></td><td data-blank="i0"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<wb-short id="p1-why"></wb-short>
+<p>Now add one <code>except</code> block so that every input prints a message. For <code>0</code>, print <code>The number must not be zero.</code></p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Keep the <code>except ValueError</code> block.</li>
+    <li>Add one <code>except ZeroDivisionError</code> block. Do not use a bare <code>except</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+
+<h3>2. An exception object</h3>
+<p>Write <code>describe(text)</code>. Convert <code>text</code> with <code>int</code> and print the number. Handle <code>ValueError as err</code>: print <code>Enter a whole number.</code> and then print <code>err</code> on its own line.</p>
+<p>Call the function with <code>"12"</code>, <code>"twelve"</code>, <code>""</code>, and <code>"4.0"</code>, in that order.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>describe(text)</code> with one parameter.</li>
+    <li>Use <code>except ValueError as err</code> and print <code>err</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p2"></wb-exercise>
+<p>Which printed line is for the user? Which is for the programmer?</p>
+<wb-short id="p2-who"></wb-short>
+
+<h3>3. Altitude and boiling point</h3>
+<p>Write a program that reads an altitude and a unit on separate lines. The unit is <code>m</code> or <code>ft</code>.</p>
+<ul>
+  <li>Convert the altitude with <code>float</code> in a small <code>try</code> block. For a <code>ValueError</code>, print <code>Enter a number.</code></li>
+  <li>Use an <code>if</code> test for an unknown unit and print <code>Unknown unit.</code></li>
+  <li>Otherwise print the boiling point of water in Celsius to one decimal place. Start with 100 degrees. Subtract one degree for each 300 meters, or for each 1000 feet.</li>
+</ul>
+<p>Test both units, a bad number, and a bad unit.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Read the altitude and the unit with two plain <code>input()</code> calls.</li>
+    <li>Handle <code>ValueError</code>. Do not use a bare <code>except</code>.</li>
+    <li>Do not use <code>else</code> or <code>finally</code> on the <code>try</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p3"></wb-exercise>
+<p>Why does the unit test use <code>if</code> while the number uses <code>try</code>-<code>except</code>?</p>
+<wb-short id="p3-why"></wb-short>
+
+<h3>4. A second price</h3>
+<p>Write a program that reads one price.</p>
+<ul>
+  <li>If the input is not a number, print <code>Enter a number.</code> and read one more price inside the <code>except</code> block. Use a second <code>try</code>-<code>except</code> for that input.</li>
+  <li>If the second input is also invalid, print <code>No valid price.</code></li>
+  <li>Otherwise print the price with 13% tax, to two decimal places.</li>
+</ul>
+<p>Test a valid first input, an invalid input followed by a valid input, and two invalid inputs.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use two <code>try</code> statements and no loop.</li>
+    <li>Handle <code>ValueError</code>. Do not use a bare <code>except</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="p4"></wb-exercise>
+
+<p>The Boss Problems are test-level practice. Boss Problem 4 uses the most ideas from this lecture.</p>
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 29 Workbook.</p>
+</main>
+</body>
+</html>

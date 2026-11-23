@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 29 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-29-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 29 Boss Problems</h1>
+    <div class="wb-subtitle">Exceptions and <code>try</code> / <code>except</code></div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use exceptions from Lecture 29:</p>
+  <ul>
+    <li><code>try</code> and <code>except</code> blocks that name the exception types</li>
+    <li>several <code>except</code> blocks, and a tuple of exception types in one block</li>
+    <li>the exception object from <code>except ... as err</code></li>
+  </ul>
+  <p>They use only what Lectures 4 to 29 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code> and <code>float()</code>, and a blank line that ends the input</li>
+    <li>f-strings such as <code>:.1f</code></li>
+    <li><code>if</code> tests, <code>while</code> loops, lists, the list method <code>index</code>, and functions</li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. Term tests and the final exam have questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the table shows.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 💀 and are worth 10, 15, 20, and 25 XP.</p>
+</section>
+<hr>
+
+<h2 id="pick-item" data-toc-title="👹 Pick an item">👹 Boss 1: Pick an item</h2>
+<p>Write a program that reads a position and prints an item from this list: <code>["pen", "book", "cup", "bag", "ruler"]</code>.</p>
+<ul>
+    <li>Positions start at 1.</li>
+    <li>A position of 0 or a negative position is out of range.</li>
+    <li>Print <code>Out of range.</code> for any position outside the list.</li>
+    <li>Print <code>Enter a whole number.</code> for text that is not a whole number.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3
+Output:
+cup
+Explanation:
+Position 3 contains cup.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+Output:
+Out of range.
+Explanation:
+Position 0 is outside the allowed positions.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read one line of text with a plain <code>input()</code> that shows no prompt.</li>
+    <li>Handle <code>ValueError</code> and <code>IndexError</code> separately.</li>
+    <li>Use an <code>if</code> test for positions below 1. Use no bare <code>except</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code></td><td><pre class="wb-output" style="margin:0">cup</pre></td></tr>
+    <tr><td><code>0</code></td><td><pre class="wb-output" style="margin:0">Out of range.</pre></td></tr>
+    <tr><td><code>1</code></td><td><pre class="wb-output" style="margin:0">pen</pre></td></tr>
+    <tr><td><code>5</code></td><td><pre class="wb-output" style="margin:0">ruler</pre></td></tr>
+    <tr><td><code>6</code></td><td><pre class="wb-output" style="margin:0">Out of range.</pre></td></tr>
+    <tr><td><code>-2</code></td><td><pre class="wb-output" style="margin:0">Out of range.</pre></td></tr>
+    <tr><td><code>two</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number.</pre></td></tr>
+    <tr><td><code>2.5</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number.</pre></td></tr>
+    <tr><td><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number.</pre></td></tr>
+    <tr><td><code> 4 </code></td><td><pre class="wb-output" style="margin:0">bag</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use an <code>except ValueError</code> block and an <code>except IndexError</code> block.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="pick-item"></wb-exercise>
+
+<h2 id="running-total" data-toc-title="👾 Running total">👾 Boss 2: Running total</h2>
+<p>Write a program that reads numbers one line at a time. A blank line ends the input.</p>
+<ul>
+    <li>Add each valid number to a running total and print the total.</li>
+    <li>Print <code>Invalid:</code> followed by the invalid line when conversion fails.</li>
+    <li>Skip invalid lines and count them.</li>
+    <li>Print the final total and the number of skipped lines.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+2
+bad
+3.5
+(blank line)
+Output:
+Total: 2.0
+Invalid: bad
+Total: 5.5
+Final: 5.5
+Skipped: 1
+Explanation:
+The invalid line does not change the total.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+Final: 0.0
+Skipped: 0
+Explanation:
+No numbers were entered.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read lines until an empty line, with a plain <code>input()</code> that shows no prompt.</li>
+    <li>Use <code>float</code> and handle <code>ValueError</code>. Use no bare <code>except</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>2</code><br><code>bad</code><br><code>3.5</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Total: 2.0
+Invalid: bad
+Total: 5.5
+Final: 5.5
+Skipped: 1</pre></td></tr>
+    <tr><td><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Final: 0.0
+Skipped: 0</pre></td></tr>
+    <tr><td><code>1</code><br><code>2</code><br><code>3</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Total: 1.0
+Total: 3.0
+Total: 6.0
+Final: 6.0
+Skipped: 0</pre></td></tr>
+    <tr><td><code>x</code><br><code>y</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Invalid: x
+Invalid: y
+Final: 0.0
+Skipped: 2</pre></td></tr>
+    <tr><td><code>-4</code><br><code>0.5</code><br><code>ten</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Total: -4.0
+Total: -3.5
+Invalid: ten
+Final: -3.5
+Skipped: 1</pre></td></tr>
+    <tr><td><code> 7 </code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Total: 7.0
+Final: 7.0
+Skipped: 0</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use a <code>while</code> loop and an <code>except ValueError</code> block.</li>
+    <li>Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="running-total"></wb-exercise>
+
+<h2 id="trip-speeds" data-toc-title="🐉 Two trip speeds">🐉 Boss 3: Two trip speeds</h2>
+<p>Write a program that reads a distance and a time for each of two trips. Each value is on a separate line. Print the speed for each trip.</p>
+<ul>
+    <li>For the first trip, print <code>Bad number.</code> for invalid number text.</li>
+    <li>For the first trip, print <code>Zero time.</code> when the time is zero.</li>
+    <li>For the second trip, use <code>trip_speed(distance_text, time_text)</code>.</li>
+    <li>For either error in the second trip, print <code>Bad trip.</code> and the exception message on the next line.</li>
+    <li>Print a successful speed as <code>Speed:</code> followed by the number to one decimal place.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+12
+3
+10
+2
+Output:
+Speed: 4.0
+Speed: 5.0
+Explanation:
+Both distances are divided by their times.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+4
+0
+8
+2
+Output:
+Zero time.
+Speed: 4.0
+Explanation:
+The first time is zero. The second calculation succeeds.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 3</div>
+  <pre class="wb-output">Input:
+12
+3
+8
+fast
+Output:
+Speed: 4.0
+Bad trip.
+could not convert string to float: 'fast'
+Explanation:
+The second time is not a number.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read four lines with plain <code>input()</code> calls that show no prompt, including lines with invalid text.</li>
+    <li>Handle <code>ValueError</code> and <code>ZeroDivisionError</code> separately for the first trip.</li>
+    <li>Use one grouped <code>except (ValueError, ZeroDivisionError) as err:</code> for the second trip.</li>
+    <li>Keep each <code>try</code> block small. Use no bare <code>except</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first three rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>12</code><br><code>3</code><br><code>10</code><br><code>2</code></td><td><pre class="wb-output" style="margin:0">Speed: 4.0
+Speed: 5.0</pre></td></tr>
+    <tr><td><code>4</code><br><code>0</code><br><code>8</code><br><code>2</code></td><td><pre class="wb-output" style="margin:0">Zero time.
+Speed: 4.0</pre></td></tr>
+    <tr><td><code>12</code><br><code>3</code><br><code>8</code><br><code>fast</code></td><td><pre class="wb-output" style="margin:0">Speed: 4.0
+Bad trip.
+could not convert string to float: 'fast'</pre></td></tr>
+    <tr><td><code>far</code><br><code>3</code><br><code>9</code><br><code>4</code></td><td><pre class="wb-output" style="margin:0">Bad number.
+Speed: 2.2</pre></td></tr>
+    <tr><td><code>10</code><br><code>4</code><br><code>x</code><br><code>2</code></td><td><pre class="wb-output" style="margin:0">Speed: 2.5
+Bad trip.
+could not convert string to float: 'x'</pre></td></tr>
+    <tr><td><code>7.5</code><br><code>2.5</code><br><code>100</code><br><code>8</code></td><td><pre class="wb-output" style="margin:0">Speed: 3.0
+Speed: 12.5</pre></td></tr>
+    <tr><td><code>5</code><br><code>(blank line)</code><br><code>(blank line)</code><br><code>3</code></td><td><pre class="wb-output" style="margin:0">Bad number.
+Bad trip.
+could not convert string to float: ''</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>trip_speed(distance_text, time_text)</code> with two parameters.</li>
+    <li>Inside <code>trip_speed</code>, use one <code>except (ValueError, ZeroDivisionError) as err:</code> block.</li>
+    <li>For the first trip, use separate <code>except ValueError</code> and <code>except ZeroDivisionError</code> blocks.</li>
+    <li>Each <code>try</code> block has at most four statements. Do not use a bare <code>except</code>, <code>except Exception</code>, <code>else</code> or <code>finally</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="trip-speeds"></wb-exercise>
+
+<h2 id="grade-convert" data-toc-title="💀 Grade conversion">💀 Boss 4: Grade conversion</h2>
+<p>Write a program that reads grade values until a blank line. Convert each value between grade points and letter grades.</p>
+<ul>
+    <li>First attempt to convert each value to grade points with <code>float</code>.</li>
+    <li>For points from 0.0 to 4.0, print the nearest letter grade in the table.</li>
+    <li>For a tie between two point values, use the higher point value.</li>
+    <li>For 4.0, print <code>A+</code>.</li>
+    <li>Points outside 0.0 to 4.0 are invalid.</li>
+    <li>If number conversion fails, use the value as a letter grade.</li>
+    <li>Print the corresponding grade points for a valid letter grade.</li>
+    <li>Print <code>Invalid grade.</code> if neither conversion succeeds.</li>
+</ul>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Letter</th><th>A+</th><th>A</th><th>A-</th><th>B+</th><th>B</th><th>B-</th><th>C+</th><th>C</th><th>C-</th><th>D+</th><th>D</th><th>F</th></tr></thead>
+  <tbody><tr><th>Points</th><td>4.0</td><td>4.0</td><td>3.7</td><td>3.3</td><td>3.0</td><td>2.7</td><td>2.3</td><td>2.0</td><td>1.7</td><td>1.3</td><td>1.0</td><td>0.0</td></tr></tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3.0
+C+
+(blank line)
+Output:
+B
+2.3
+Explanation:
+The first line gives points. The second gives a letter.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+4.1
+(blank line)
+Output:
+F
+Invalid grade.
+Explanation:
+Zero is valid. The second number is above 4.0.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Read one value per line until an empty line, with a plain <code>input()</code> that shows no prompt.</li>
+    <li>Use parallel lists of letters and grade points. Use no dictionaries.</li>
+    <li>Handle <code>ValueError</code> from <code>float</code>. Inside that handler, use <code>index</code> in a second <code>try</code> and handle its <code>ValueError</code>.</li>
+    <li>Test the numeric range with <code>if</code>. Use no bare <code>except</code>.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3.0</code><br><code>C+</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">B
+2.3</pre></td></tr>
+    <tr><td><code>0</code><br><code>4.1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">F
+Invalid grade.</pre></td></tr>
+    <tr><td><code>4.0</code><br><code>A</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">A+
+4.0</pre></td></tr>
+    <tr><td><code>3.5</code><br><code>2.8</code><br><code>1.1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">A-
+B-
+D</pre></td></tr>
+    <tr><td><code>3.15</code><br><code>0.5</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">B+
+D</pre></td></tr>
+    <tr><td><code>E</code><br><code>-1</code><br><code>b</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Invalid grade.
+Invalid grade.
+Invalid grade.</pre></td></tr>
+    <tr><td><code>B-</code><br><code>D+</code><br><code>F</code><br><code>A-</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">2.7
+1.3
+0.0
+3.7</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Use at least two <code>try</code> statements and a <code>while</code> loop.</li>
+    <li>Do not use a dictionary, a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="grade-convert"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 29 Boss Problems.</p>
+</main>
+</body>
+</html>

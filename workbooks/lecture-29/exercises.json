@@ -1,0 +1,733 @@
+{
+  "id": "lecture-29",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 29 Workbook",
+  "subtitle": "Exceptions and try / except",
+  "exercises": {
+    "ex-average": {
+      "type": "example",
+      "code": "total = int(input(\"Total points: \"))\ncount = int(input(\"Number of scores: \"))\nprint(f\"Average: {total / count:.1f}\")"
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Start"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l3": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        }
+      }
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "D",
+            "d"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "D"
+        }
+      }
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ValueError"
+        },
+        "e2": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        },
+        "e3": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "TypeError"
+        },
+        "e4": {
+          "accept": [
+            "none",
+            "None",
+            "no exception",
+            "No exception",
+            "no"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "none"
+        }
+      }
+    },
+    "cp1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "e1": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ValueError"
+        },
+        "e2": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        },
+        "e3": {
+          "accept": [
+            "TypeError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "TypeError"
+        },
+        "e4": {
+          "accept": [
+            "ZeroDivisionError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "ZeroDivisionError"
+        },
+        "e5": {
+          "accept": [
+            "none",
+            "None",
+            "no exception",
+            "No exception",
+            "no"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "none"
+        }
+      }
+    },
+    "ex-cp1": {
+      "type": "example",
+      "code": "print(int(\"12.5\"))"
+    },
+    "ex-age": {
+      "type": "example",
+      "code": "try:\n    age = int(input(\"Age: \"))\n    print(f\"Next year you will be {age + 1}\")\nexcept ValueError:\n    print(\"Enter the age as a whole number.\")\nprint(\"Done\")"
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "First"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "Bad"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l3": {
+          "accept": [
+            "Last"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "ex-trace": {
+      "type": "example",
+      "code": "text = input(\"Points: \")\ntry:\n    points = int(text)\n    print(\"Conversion worked.\")\nexcept ValueError:\n    print(\"Conversion failed.\")\nprint(\"Program continues.\")"
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        }
+      }
+    },
+    "ex-unhandled": {
+      "type": "example",
+      "code": "try:\n    number = int(input(\"Number: \"))\n    print(100 / number)\nexcept ValueError:\n    print(\"Enter a whole number.\")"
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "IndexError"
+          ],
+          "placeholder": "exception",
+          "width": "12rem",
+          "show": "IndexError"
+        }
+      }
+    },
+    "ex-multi": {
+      "type": "example",
+      "code": "values = [4, 0, 5]\ntry:\n    i = int(input(\"Position: \"))\n    print(100 / values[i])\nexcept ValueError:\n    print(\"Not a whole number.\")\nexcept IndexError:\n    print(\"No such position.\")\nexcept ZeroDivisionError:\n    print(\"The value is 0.\")"
+    },
+    "q8": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "b"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "B"
+        }
+      }
+    },
+    "ex-tuple": {
+      "type": "example",
+      "code": "values = [4, 0, 5]\ntry:\n    i = int(input(\"Position: \"))\n    print(100 / values[i])\nexcept (ValueError, IndexError):\n    print(\"Enter a position from 0 to 2.\")\nexcept ZeroDivisionError:\n    print(\"The value at that position is 0.\")"
+    },
+    "q9": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "ex-err": {
+      "type": "example",
+      "code": "text = \"twelve\"\ntry:\n    number = int(text)\nexcept ValueError as err:\n    print(\"Conversion failed.\")\n    print(err)",
+      "output": "Conversion failed.\ninvalid literal for int() with base 10: 'twelve'"
+    },
+    "q10": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "invalid literal for int() with base 10: ''"
+          ],
+          "placeholder": "output",
+          "width": "24rem",
+          "show": "invalid literal for int() with base 10: ''"
+        }
+      }
+    },
+    "cp2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "o1": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "o2": {
+          "accept": [
+            "Zero value"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "o3": {
+          "accept": [
+            "Bad position"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "o4": {
+          "accept": [
+            "Bad position"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "o5": {
+          "accept": [
+            "5"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "ex-cp2": {
+      "type": "example",
+      "code": "values = [8, 0, 2]\ntry:\n    i = int(input(\"Position: \"))\n    print(10 // values[i])\nexcept (ValueError, IndexError):\n    print(\"Bad position\")\nexcept ZeroDivisionError:\n    print(\"Zero value\")"
+    },
+    "ex-big-try": {
+      "type": "example",
+      "code": "scores = []\ntry:\n    count = int(input(\"Count: \"))\n    per_count = 100 / count\n    per_score = 100 / len(scores)\nexcept ZeroDivisionError:\n    print(\"Count must not be zero.\")"
+    },
+    "ex-small-try": {
+      "type": "example",
+      "code": "scores = []\ntry:\n    count = int(input(\"Count: \"))\n    per_count = 100 / count\nexcept ZeroDivisionError:\n    print(\"Count must not be zero.\")\nper_score = 100 / len(scores)"
+    },
+    "q11": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "A",
+            "a"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "A"
+        }
+      }
+    },
+    "ex-bare": {
+      "type": "example",
+      "code": "try:\n    quantity = int(input(\"Quantity: \"))\n    print(quantity * prise)\nexcept:\n    print(\"Enter a whole number.\")"
+    },
+    "q12": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        },
+        "t2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        }
+      }
+    },
+    "ex-isdigit": {
+      "type": "example",
+      "code": "text = input(\"Quantity: \")\nif text.isdigit():\n    quantity = int(text)\nelse:\n    print(\"Enter a whole number.\")"
+    },
+    "ex-tryint": {
+      "type": "example",
+      "code": "text = input(\"Quantity: \")\ntry:\n    quantity = int(text)\nexcept ValueError:\n    print(\"Enter a whole number.\")"
+    },
+    "q13": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "False"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        },
+        "l2": {
+          "accept": [
+            "-3"
+          ],
+          "placeholder": "output",
+          "width": "8rem"
+        }
+      }
+    },
+    "cp3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 8,
+      "starter": "try:\n    total = float(input(\"Total cost: \"))\n    items = int(input(\"Items: \"))\n    print(f\"Cost per item: {total / items:.2f}\")\nexcept:\n    print(\"Error\")",
+      "cases": [
+        {
+          "name": "Inputs 10 and 2.5",
+          "inputs": [
+            "10",
+            "2.5"
+          ],
+          "expected": "Total cost: Items: Enter numbers only."
+        },
+        {
+          "name": "Inputs 10 and 4",
+          "inputs": [
+            "10",
+            "4"
+          ],
+          "expected": "Total cost: Items: Cost per item: 2.50"
+        },
+        {
+          "name": "Inputs 12.5 and 0",
+          "inputs": [
+            "12.5",
+            "0"
+          ],
+          "expected": "Total cost: Items: Items must not be zero."
+        },
+        {
+          "name": "Inputs abc and 2",
+          "inputs": [
+            "abc",
+            "2"
+          ],
+          "expected": "Total cost: Enter numbers only."
+        },
+        {
+          "name": "Inputs 9 and two",
+          "inputs": [
+            "9",
+            "two"
+          ],
+          "expected": "Total cost: Items: Enter numbers only."
+        },
+        {
+          "name": "Inputs 7 and -2",
+          "inputs": [
+            "7",
+            "-2"
+          ],
+          "expected": "Total cost: Items: Cost per item: -3.50"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert _handles('ZeroDivisionError'), \"Add an except block that names ZeroDivisionError.\"\n",
+      "answer": "dHJ5OgogICAgdG90YWwgPSBmbG9hdChpbnB1dCgiVG90YWwgY29zdDogIikpCiAgICBpdGVtcyA9IGludChpbnB1dCgiSXRlbXM6ICIpKQogICAgcHJpbnQoZiJDb3N0IHBlciBpdGVtOiB7dG90YWwgLyBpdGVtczouMmZ9IikKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiRW50ZXIgbnVtYmVycyBvbmx5LiIpCmV4Y2VwdCBaZXJvRGl2aXNpb25FcnJvcjoKICAgIHByaW50KCJJdGVtcyBtdXN0IG5vdCBiZSB6ZXJvLiIp",
+      "answerNote": "float and int can raise ValueError, and the division can raise ZeroDivisionError. Each gets its own message."
+    },
+    "cp3-out": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "out": {
+          "accept": [
+            "Enter numbers only.",
+            "Enter numbers only"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "Enter numbers only."
+        }
+      }
+    },
+    "ex-p1": {
+      "type": "example",
+      "code": "try:\n    number = int(input())\n    print(60 / number)\nexcept ValueError:\n    print(\"Enter a whole number.\")"
+    },
+    "p1-out": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "i4": {
+          "accept": [
+            "15.0"
+          ],
+          "placeholder": "output",
+          "width": "12rem"
+        },
+        "iword": {
+          "accept": [
+            "Enter a whole number.",
+            "Enter a whole number"
+          ],
+          "placeholder": "output",
+          "width": "14rem",
+          "show": "Enter a whole number."
+        },
+        "i0": {
+          "accept": [
+            "ZeroDivisionError"
+          ],
+          "placeholder": "exception",
+          "width": "14rem",
+          "show": "ZeroDivisionError"
+        }
+      }
+    },
+    "p1-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIGlucHV0IDAgZW5kcyB3aXRoIGFuIHVuaGFuZGxlZCBaZXJvRGl2aXNpb25FcnJvci4gVGhlIGRpdmlzaW9uIDYwIC8gMCByYWlzZXMgaXQsIGFuZCB0aGUgb25seSBleGNlcHQgYmxvY2sgbmFtZXMgVmFsdWVFcnJvci4="
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 7,
+      "starter": "try:\n    number = int(input())\n    print(60 / number)\nexcept ValueError:\n    print(\"Enter a whole number.\")",
+      "cases": [
+        {
+          "name": "Input 4",
+          "inputs": [
+            "4"
+          ],
+          "expected": "15.0"
+        },
+        {
+          "name": "Input word",
+          "inputs": [
+            "word"
+          ],
+          "expected": "Enter a whole number."
+        },
+        {
+          "name": "Input 0",
+          "inputs": [
+            "0"
+          ],
+          "expected": "The number must not be zero."
+        },
+        {
+          "name": "Input -5",
+          "inputs": [
+            "-5"
+          ],
+          "expected": "-12.0"
+        },
+        {
+          "name": "Input 2.5",
+          "inputs": [
+            "2.5"
+          ],
+          "expected": "Enter a whole number."
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert _handles('ZeroDivisionError'), \"Add an except block that names ZeroDivisionError.\"\n",
+      "answer": "dHJ5OgogICAgbnVtYmVyID0gaW50KGlucHV0KCkpCiAgICBwcmludCg2MCAvIG51bWJlcikKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiRW50ZXIgYSB3aG9sZSBudW1iZXIuIikKZXhjZXB0IFplcm9EaXZpc2lvbkVycm9yOgogICAgcHJpbnQoIlRoZSBudW1iZXIgbXVzdCBub3QgYmUgemVyby4iKQ==",
+      "answerNote": "The new block names ZeroDivisionError, the type that 60 / 0 raises."
+    },
+    "p2": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 11,
+      "starter": "def describe(text):\n    pass\n\n\n# Call describe with \"12\", \"twelve\", \"\" and \"4.0\".",
+      "cases": [
+        {
+          "name": "Calls with \"12\", \"twelve\", \"\" and \"4.0\"",
+          "expected": "12\nEnter a whole number.\ninvalid literal for int() with base 10: 'twelve'\nEnter a whole number.\ninvalid literal for int() with base 10: ''\nEnter a whole number.\ninvalid literal for int() with base 10: '4.0'"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_fn(\"describe\", \"text\")\nassert any(h.name == \"err\" for h in _H), \"Name the exception object err: except ValueError as err.\"\n",
+      "answer": "ZGVmIGRlc2NyaWJlKHRleHQpOgogICAgdHJ5OgogICAgICAgIG51bWJlciA9IGludCh0ZXh0KQogICAgICAgIHByaW50KG51bWJlcikKICAgIGV4Y2VwdCBWYWx1ZUVycm9yIGFzIGVycjoKICAgICAgICBwcmludCgiRW50ZXIgYSB3aG9sZSBudW1iZXIuIikKICAgICAgICBwcmludChlcnIpCgpkZXNjcmliZSgiMTIiKQpkZXNjcmliZSgidHdlbHZlIikKZGVzY3JpYmUoIiIpCmRlc2NyaWJlKCI0LjAiKQ==",
+      "answerNote": "Each failing call prints the plain instruction, then the message stored in err."
+    },
+    "p2-who": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIGxpbmUgRW50ZXIgYSB3aG9sZSBudW1iZXIuIGlzIGZvciB0aGUgdXNlci4gSXQgc2F5cyB3aGF0IHRvIGRvLiBUaGUgZXhjZXB0aW9uIG1lc3NhZ2UgaXMgZm9yIHRoZSBwcm9ncmFtbWVyLiBJdCBzaG93cyB0aGUgdGV4dCB0aGF0IGludCBjb3VsZCBub3QgY29udmVydC4="
+    },
+    "p3": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "altitude_text = input()\nunit = input()",
+      "cases": [
+        {
+          "name": "1500 meters",
+          "inputs": [
+            "1500",
+            "m"
+          ],
+          "expected": "95.0"
+        },
+        {
+          "name": "2000 feet",
+          "inputs": [
+            "2000",
+            "ft"
+          ],
+          "expected": "98.0"
+        },
+        {
+          "name": "Bad number",
+          "inputs": [
+            "high",
+            "m"
+          ],
+          "expected": "Enter a number."
+        },
+        {
+          "name": "Bad unit",
+          "inputs": [
+            "600",
+            "km"
+          ],
+          "expected": "Unknown unit."
+        },
+        {
+          "name": "Sea level",
+          "inputs": [
+            "0",
+            "m"
+          ],
+          "expected": "100.0"
+        },
+        {
+          "name": "Spaces around a number",
+          "inputs": [
+            " 900 ",
+            "ft"
+          ],
+          "expected": "99.1"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n",
+      "answer": "YWx0aXR1ZGVfdGV4dCA9IGlucHV0KCkKdW5pdCA9IGlucHV0KCkKdmFsaWQgPSBUcnVlCnRyeToKICAgIGFsdGl0dWRlID0gZmxvYXQoYWx0aXR1ZGVfdGV4dCkKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiRW50ZXIgYSBudW1iZXIuIikKICAgIHZhbGlkID0gRmFsc2UKaWYgdmFsaWQ6CiAgICBpZiB1bml0ID09ICJtIjoKICAgICAgICBwcmludChmInsxMDAgLSBhbHRpdHVkZSAvIDMwMDouMWZ9IikKICAgIGVsaWYgdW5pdCA9PSAiZnQiOgogICAgICAgIHByaW50KGYiezEwMCAtIGFsdGl0dWRlIC8gMTAwMDouMWZ9IikKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoIlVua25vd24gdW5pdC4iKQ==",
+      "answerNote": "A flag records whether the conversion worked. The unit is one of a few known words, so an if test checks it."
+    },
+    "p3-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIHVuaXQgaGFzIGEgc2hvcnQgbGlzdCBvZiB2YWxpZCB2YWx1ZXMsIHNvIGFuIGlmIHRlc3QgY2FuIGNoZWNrIGl0LiBGb3IgdGhlIG51bWJlciwgdGhlIGNvbnZlcnNpb24gaXRzZWxmIGlzIHRoZSBiZXN0IHRlc3QsIHNvIGZsb2F0IHJ1bnMgaW5zaWRlIHRyeSBhbmQgYSBWYWx1ZUVycm9yIGlzIGhhbmRsZWQu"
+    },
+    "p4": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 12,
+      "starter": "",
+      "cases": [
+        {
+          "name": "Valid first price",
+          "inputs": [
+            "20"
+          ],
+          "expected": "22.60"
+        },
+        {
+          "name": "Invalid, then valid",
+          "inputs": [
+            "abc",
+            "20"
+          ],
+          "expected": "Enter a number.\n22.60"
+        },
+        {
+          "name": "Two invalid prices",
+          "inputs": [
+            "abc",
+            "x"
+          ],
+          "expected": "Enter a number.\nNo valid price."
+        },
+        {
+          "name": "Blank, then valid",
+          "inputs": [
+            "",
+            "5"
+          ],
+          "expected": "Enter a number.\n5.65"
+        },
+        {
+          "name": "Decimal price",
+          "inputs": [
+            "9.99"
+          ],
+          "expected": "11.29"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\nassert not any(t.orelse or t.finalbody for t in _tries()), \"Use only try and except here. Lecture 30 covers else and finally.\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\nassert len(_tries()) >= 2, \"Use a second try statement inside the except block for the second price.\"\nassert not _loops(), \"Do not use a loop. Read the price at most twice.\"\n",
+      "answer": "dGV4dCA9IGlucHV0KCkKdmFsaWQgPSBUcnVlCnRyeToKICAgIHByaWNlID0gZmxvYXQodGV4dCkKZXhjZXB0IFZhbHVlRXJyb3I6CiAgICBwcmludCgiRW50ZXIgYSBudW1iZXIuIikKICAgIHRleHQgPSBpbnB1dCgpCiAgICB0cnk6CiAgICAgICAgcHJpY2UgPSBmbG9hdCh0ZXh0KQogICAgZXhjZXB0IFZhbHVlRXJyb3I6CiAgICAgICAgcHJpbnQoIk5vIHZhbGlkIHByaWNlLiIpCiAgICAgICAgdmFsaWQgPSBGYWxzZQppZiB2YWxpZDoKICAgIHByaW50KGYie3ByaWNlICogMS4xMzouMmZ9Iik=",
+      "answerNote": "The second try sits inside the first except block, so the program reads a second price only after a bad first one."
+    }
+  }
+}
