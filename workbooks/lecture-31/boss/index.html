@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 31 Boss Problems</title>
+  <link rel="icon" href="../../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-31-boss", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 31 Boss Problems</h1>
+    <div class="wb-subtitle">Input validation and robust programs</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="How bosses work">How bosses work</h2>
+  <p>These problems use validation functions and loops that handle bad input:</p>
+  <ul>
+    <li>a function that converts and checks a value, and raises <code>ValueError</code></li>
+    <li>a validation loop that asks again until the input is valid</li>
+    <li>a loop that reads until a blank line, skips bad entries, and handles the case with no valid values</li>
+  </ul>
+  <p>They use only what Lectures 4 to 31 covered:</p>
+  <ul>
+    <li><code>input()</code> with <code>int()</code>, and a blank line that ends the input</li>
+    <li>f-strings such as <code>:.2f</code>, and the string methods <code>split</code>, <code>strip</code> and <code>lower</code></li>
+    <li><code>if</code> tests, <code>while</code> loops, lists, the list method <code>index</code>, functions with docstrings, and <code>try</code>/<code>except</code></li>
+  </ul>
+  <p>Each problem lists the rules its checker enforces. A program that prints the right answer but breaks a rule does not pass. The final exam has questions of this kind, and you write the code in PyLab there as well.</p>
+  <p>Every problem reads its values with a plain <code>input()</code> that shows no prompt, so the output is only what your program prints. <strong>Check</strong> runs your program several times and types a different sequence of answers each time. Every run must print exactly what the table shows. The checker also calls your functions directly, so each function must return the values and raise the exceptions that the problem names.</p>
+  <p>Defeat a boss and its marker on the <a href="../../../index.html">workbooks page</a> is crossed off.</p>
+  <p class="wb-meta">Press <strong>▶ Run</strong> to try your program and <strong>Check</strong> to fight the boss. The bosses get harder from 👹 to 👾 and are worth 10 and 15 XP.</p>
+</section>
+<hr>
+
+<h2 id="shipping-cost" data-toc-title="👹 Shipping cost">👹 Boss 1: Shipping cost</h2>
+<p>Write a program that reads the number of items in an order and prints the shipping cost.</p>
+<ul>
+  <li><code>to_items(text)</code> takes a string and returns the number of items as a whole number. It raises <code>ValueError</code> if the conversion fails.</li>
+  <li>For an item count below 1, <code>to_items</code> raises <code>ValueError("items must be at least 1")</code>.</li>
+  <li><code>shipping_cost(items)</code> takes a valid item count and returns the cost in dollars. It raises no exception for a valid count.</li>
+  <li>Shipping costs $10.95 for the first item and $2.95 for each item after it.</li>
+  <li><code>main()</code> reads item counts until one is valid. For each bad input, it prints <code>Enter a whole number of at least 1.</code></li>
+  <li>For a valid count, print <code>Shipping: $</code> followed by the cost with two decimal places.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+3
+Output:
+Shipping: $16.85
+Explanation:
+The order has one item at $10.95 and two at $2.95 each.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+0
+two
+1
+Output:
+Enter a whole number of at least 1.
+Enter a whole number of at least 1.
+Shipping: $10.95
+Explanation:
+The first valid input is 1, the smallest allowed count.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>A valid count is a whole number of at least 1. The input ends with a valid count.</li>
+    <li>Use <code>input()</code> with no prompt. Convert the text with <code>int</code>.</li>
+    <li>Raise and handle <code>ValueError</code>. Use no bare <code>except</code>.</li>
+    <li>Use no <code>input</code> or <code>print</code> in the helper functions.</li>
+    <li>Write a docstring for each function. Call <code>main()</code> on the last line.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>3</code></td><td><pre class="wb-output" style="margin:0">Shipping: $16.85</pre></td></tr>
+    <tr><td><code>0</code><br><code>two</code><br><code>1</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number of at least 1.
+Enter a whole number of at least 1.
+Shipping: $10.95</pre></td></tr>
+    <tr><td><code>10</code></td><td><pre class="wb-output" style="margin:0">Shipping: $37.50</pre></td></tr>
+    <tr><td><code>-4</code><br><code>2</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number of at least 1.
+Shipping: $13.90</pre></td></tr>
+    <tr><td><code>2.5</code><br><code>(blank line)</code><br><code>5</code></td><td><pre class="wb-output" style="margin:0">Enter a whole number of at least 1.
+Enter a whole number of at least 1.
+Shipping: $22.75</pre></td></tr>
+    <tr><td><code> 4 </code></td><td><pre class="wb-output" style="margin:0">Shipping: $19.80</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>to_items(text)</code>, <code>shipping_cost(items)</code> and <code>main()</code>, each with a docstring.</li>
+    <li><code>to_items</code> and <code>shipping_cost</code> use no <code>input</code> or <code>print</code>. <code>to_items("0")</code> raises <code>ValueError("items must be at least 1")</code>.</li>
+    <li>Ask again in a <code>while</code> loop. Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="shipping-cost"></wb-exercise>
+
+<h2 id="checking-dates" data-toc-title="👾 Checking dates">👾 Boss 2: Checking dates</h2>
+<p>Write a program that checks dates. Each input line contains one entry. A blank line ends the input.</p>
+<ul>
+  <li><code>days_in_month(name)</code> takes a month name in any case and returns the number of days. Raise <code>ValueError("unknown month")</code> for an unknown name.</li>
+  <li><code>check_date(line)</code> takes a line of text and returns the day as a whole number.</li>
+  <li>Raise <code>ValueError("expected month and day")</code> unless the line has exactly two parts.</li>
+  <li>The first part is the month. The second part is the day. Let <code>int</code> raise <code>ValueError</code> if the day cannot be converted.</li>
+  <li>Raise <code>ValueError("day out of range")</code> if the day is outside the range for that month.</li>
+  <li><code>main()</code> reads each line and removes spaces from its ends before checking it.</li>
+  <li>For a valid entry, print <code>Valid: </code> followed by the stripped line.</li>
+  <li>For a bad entry, print <code>Rejected: </code> followed by the stripped line, a space and the exception message in parentheses. Then read the next line.</li>
+  <li>At the end, print <code>Valid dates: </code> followed by the count. If the count is zero, print <code>No valid dates.</code> instead.</li>
+</ul>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+March 14
+february 29
+February 30
+Smarch 3
+March 14.5
+(blank line)
+Output:
+Valid: March 14
+Valid: february 29
+Rejected: February 30 (day out of range)
+Rejected: Smarch 3 (unknown month)
+Rejected: March 14.5 (invalid literal for int() with base 10: &#x27;14.5&#x27;)
+Valid dates: 2
+Explanation:
+February allows day 29. A day with a decimal point fails the conversion.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+(blank line)
+Output:
+No valid dates.
+Explanation:
+The first line ends the input before the program counts any dates.</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>A valid entry has a full month name and a day separated by spaces.</li>
+    <li>The day must be a whole number from 1 to the number of days in the month.</li>
+    <li>February has 29 days.</li>
+    <li>Use <code>input()</code> with no prompt. Use the two lists in the starter code.</li>
+    <li>Use <code>split</code> to get the parts and <code>int</code> to convert the day.</li>
+    <li>Raise <code>ValueError</code> and handle it with <code>except ValueError as err</code>. Use no bare <code>except</code>.</li>
+    <li>Use no <code>input</code> or <code>print</code> in the helper functions.</li>
+    <li>Write a docstring for each function. Call <code>main()</code> on the last line.</li>
+  </ul>
+</div>
+<p><strong>Check</strong> types each of these inputs, one line at a time. The examples are the first two rows.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Typed</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>March 14</code><br><code>february 29</code><br><code>February 30</code><br><code>Smarch 3</code><br><code>March 14.5</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Valid: March 14
+Valid: february 29
+Rejected: February 30 (day out of range)
+Rejected: Smarch 3 (unknown month)
+Rejected: March 14.5 (invalid literal for int() with base 10: &#x27;14.5&#x27;)
+Valid dates: 2</pre></td></tr>
+    <tr><td><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">No valid dates.</pre></td></tr>
+    <tr><td><code>April 31</code><br><code>march</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Rejected: April 31 (day out of range)
+Rejected: march (expected month and day)
+No valid dates.</pre></td></tr>
+    <tr><td><code>June 0</code><br><code>June 1 2026</code><br><code>DECEMBER 31</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Rejected: June 0 (day out of range)
+Rejected: June 1 2026 (expected month and day)
+Valid: DECEMBER 31
+Valid dates: 1</pre></td></tr>
+    <tr><td><code>  july 4  </code><br><code>January   1</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Valid: july 4
+Valid: January   1
+Valid dates: 2</pre></td></tr>
+    <tr><td><code>x 1</code><br><code>May five</code><br><code>(blank line)</code></td><td><pre class="wb-output" style="margin:0">Rejected: x 1 (unknown month)
+Rejected: May five (invalid literal for int() with base 10: &#x27;five&#x27;)
+No valid dates.</pre></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>days_in_month(name)</code>, <code>check_date(line)</code> and <code>main()</code>, each with a docstring.</li>
+    <li>The two helpers use no <code>input</code> or <code>print</code>, and raise the exceptions named above. The checker calls them directly.</li>
+    <li>Handle the exception with <code>except ValueError as err</code>, and read the lines with a <code>while</code> loop. Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+  </ul>
+</div>
+<wb-exercise id="checking-dates"></wb-exercise>
+
+<hr>
+<p class="wb-meta">End of Lecture 31 Boss Problems.</p>
+</main>
+</body>
+</html>

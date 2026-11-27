@@ -1,0 +1,460 @@
+{
+  "id": "lecture-31",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 31 Workbook",
+  "subtitle": "Input validation and robust programs",
+  "exercises": {
+    "ex-bad": {
+      "type": "example",
+      "code": "mark = int(input(\"Mark: \"))\nprint(f\"You entered {mark}\")"
+    },
+    "s1-runs": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "r1": {
+          "accept": [
+            "ValueError",
+            "ValueError traceback",
+            "a ValueError traceback",
+            "traceback",
+            "a traceback",
+            "error",
+            "ValueError error"
+          ],
+          "placeholder": "what happens",
+          "width": "14rem",
+          "show": "ValueError traceback"
+        },
+        "r2": {
+          "accept": [
+            "You entered 150"
+          ],
+          "placeholder": "what happens",
+          "width": "14rem"
+        },
+        "r3": {
+          "accept": [
+            "You entered 72"
+          ],
+          "placeholder": "what happens",
+          "width": "14rem"
+        },
+        "r4": {
+          "accept": [
+            "ValueError",
+            "ValueError traceback",
+            "a ValueError traceback",
+            "traceback",
+            "a traceback",
+            "error",
+            "ValueError error"
+          ],
+          "placeholder": "what happens",
+          "width": "14rem",
+          "show": "ValueError traceback"
+        }
+      }
+    },
+    "s1-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "VGhlIGlucHV0cyBhYmMgYW5kIDcuNSBhcmUgbm90IHdob2xlIG51bWJlcnMuIFRoZSBpbnB1dCAxNTAgaXMgYSB3aG9sZSBudW1iZXIgb3V0c2lkZSAwIHRvIDEwMC4gVGhlIHByb2dyYW0gYWNjZXB0ZWQgdGhhdCBiYWQgdmFsdWUgd2l0aG91dCBhbiBlcnJvciBtZXNzYWdlLg=="
+    },
+    "ex-loop": {
+      "type": "example",
+      "code": "while True:\n    try:\n        mark = int(input(\"Mark: \"))\n        break\n    except ValueError:\n        print(\"Please type a whole number.\")\nprint(f\"You entered {mark}\")"
+    },
+    "q1": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Try again."
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "Try again."
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l3": {
+          "accept": [
+            "12"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "ex-range": {
+      "type": "example",
+      "code": "while True:\n    try:\n        mark = int(input(\"Mark: \"))\n        if mark < 0 or mark > 100:\n            raise ValueError(\"mark out of range\")\n        break\n    except ValueError:\n        print(\"Enter a mark from 0 to 100.\")\nprint(f\"You entered {mark}\")"
+    },
+    "q2": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t1": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        },
+        "t2": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        }
+      }
+    },
+    "ex-to-mark": {
+      "type": "example",
+      "code": "def to_mark(text):\n    \"\"\"Return text as a mark from 0 to 100.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    mark = int(text)\n    if mark < 0 or mark > 100:\n        raise ValueError(\"mark out of range\")\n    return mark\n\nprint(to_mark(\"72\"))\nprint(to_mark(\" 72 \"))\nprint(to_mark(\"150\"))"
+    },
+    "ex-main": {
+      "type": "example",
+      "code": "def to_mark(text):\n    \"\"\"Return text as a mark from 0 to 100.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    mark = int(text)\n    if mark < 0 or mark > 100:\n        raise ValueError(\"mark out of range\")\n    return mark\n\ndef main():\n    while True:\n        try:\n            mark = to_mark(input(\"Mark: \"))\n            break\n        except ValueError:\n            print(\"Enter a mark from 0 to 100.\")\n    print(f\"You entered {mark}\")\n\n\nmain()"
+    },
+    "q3": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "a": {
+          "accept": [
+            "int"
+          ],
+          "placeholder": "name",
+          "width": "8rem",
+          "show": "int"
+        },
+        "b": {
+          "accept": [
+            "raise"
+          ],
+          "placeholder": "keyword",
+          "width": "8rem",
+          "show": "raise"
+        },
+        "c": {
+          "accept": [
+            "break"
+          ],
+          "placeholder": "keyword",
+          "width": "8rem",
+          "show": "break"
+        }
+      }
+    },
+    "ex-blank": {
+      "type": "example",
+      "code": "def to_mark(text):\n    \"\"\"Return text as a mark from 0 to 100.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    mark = int(text)\n    if mark < 0 or mark > 100:\n        raise ValueError(\"mark out of range\")\n    return mark\n\ndef main():\n    marks = []\n    while True:\n        text = input(\"Mark: \").strip()\n        if text == \"\":\n            break\n        try:\n            marks.append(to_mark(text))\n        except ValueError:\n            print(f\"Not saved: {text}\")\n    print(f\"Saved: {marks}\")\n\n\nmain()"
+    },
+    "q4": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "l1": {
+          "accept": [
+            "Skipped two"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        },
+        "l2": {
+          "accept": [
+            "[3, 5]"
+          ],
+          "placeholder": "output",
+          "width": "10rem"
+        }
+      }
+    },
+    "ex-empty": {
+      "type": "example",
+      "code": "def to_mark(text):\n    \"\"\"Return text as a mark from 0 to 100.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    mark = int(text)\n    if mark < 0 or mark > 100:\n        raise ValueError(\"mark out of range\")\n    return mark\n\n\ndef main():\n    marks = []\n    while True:\n        text = input(\"Mark: \").strip()\n        if text == \"\":\n            break\n        try:\n            marks.append(to_mark(text))\n        except ValueError:\n            print(f\"Not saved: {text}\")\n    if len(marks) == 0:\n        print(\"No marks.\")\n        return\n    average = sum(marks) / len(marks)\n    print(f\"Average: {average:.1f}\")\n\n\nmain()"
+    },
+    "q5": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "C",
+            "c"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "C"
+        }
+      }
+    },
+    "ex-isdigit": {
+      "type": "example",
+      "code": "text = \"12\"\nif text.isdigit():\n    mark = int(text)\nprint(mark)",
+      "output": "12"
+    },
+    "q6": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "d1": {
+          "accept": [
+            "True",
+            "true"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "True"
+        },
+        "i1": {
+          "accept": [
+            "7"
+          ],
+          "placeholder": "result",
+          "width": "8rem"
+        },
+        "d2": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        },
+        "i2": {
+          "accept": [
+            "4"
+          ],
+          "placeholder": "result",
+          "width": "8rem"
+        },
+        "d3": {
+          "accept": [
+            "False",
+            "false"
+          ],
+          "placeholder": "",
+          "width": "6rem",
+          "show": "False"
+        },
+        "i3": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "q7": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "c": {
+          "accept": [
+            "B",
+            "b"
+          ],
+          "placeholder": "",
+          "width": "3.5rem",
+          "show": "B"
+        }
+      }
+    },
+    "p1": {
+      "type": "code",
+      "xp": 5,
+      "minLines": 20,
+      "starter": "def to_letter(text):\n    pass\n\n\ndef main():\n    pass\n\n\nmain()",
+      "cases": [
+        {
+          "name": "Example 1: E",
+          "inputs": [
+            "E"
+          ],
+          "expected": "Letter: Vowel"
+        },
+        {
+          "name": "Example 2: ab, 7, t",
+          "inputs": [
+            "ab",
+            "7",
+            "t"
+          ],
+          "expected": "Letter: Enter one letter.\nLetter: Enter one letter.\nLetter: Consonant"
+        },
+        {
+          "name": "A blank line, then u",
+          "inputs": [
+            "",
+            "u"
+          ],
+          "expected": "Letter: Enter one letter.\nLetter: Vowel"
+        },
+        {
+          "name": "A space, then Z",
+          "inputs": [
+            " ",
+            "Z"
+          ],
+          "expected": "Letter: Enter one letter.\nLetter: Consonant"
+        },
+        {
+          "name": "A word, then o",
+          "inputs": [
+            "hello",
+            "o"
+          ],
+          "expected": "Letter: Enter one letter.\nLetter: Vowel"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\ndef _calls(name, fn):\n    return any(isinstance(n, ast.Call) and getattr(n.func, \"id\", \"\") == fn for n in ast.walk(_def(name)))\ndef _pure(*names):\n    for _n in names:\n        assert not _calls(_n, \"input\") and not _calls(_n, \"print\"), _n + \" must not use input or print. main reads the input and prints.\"\ndef _docs(*names):\n    for _n in names:\n        assert any(isinstance(n, ast.FunctionDef) and n.name == _n for n in ast.walk(_TREE)), \"Define a function named \" + _n + \".\"\n        assert ast.get_docstring(_def(_n)), \"Write a docstring for \" + _n + \".\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_f = _fn(\"to_letter\", \"text\")\n_fn(\"main\")\n_pure(\"to_letter\")\n_docs(\"to_letter\", \"main\")\nassert _raises(_def(\"to_letter\")), \"to_letter should raise ValueError for a bad input.\"\nassert _quiet(_f, \"E\")[0] == \"e\", 'to_letter(\"E\") should return \"e\".'\nfor _t in [\"ab\", \"\", \"7\", \" \"]:\n    assert _quiet(_f, _t)[1] == \"ValueError: enter one letter\", \"to_letter(\" + repr(_t) + ') should raise ValueError(\"enter one letter\").'\n",
+      "answer": "ZGVmIHRvX2xldHRlcih0ZXh0KToKICAgICIiIlJldHVybiBvbmUgbG93ZXJjYXNlIGxldHRlciBmcm9tIGEgdG8gei4KCiAgICBSYWlzZSBWYWx1ZUVycm9yIGlmIHRoZSBsb3dlcmNhc2UgdGV4dCBpcyBub3Qgb25lIHN1Y2ggbGV0dGVyLgogICAgIiIiCiAgICBsZXR0ZXIgPSB0ZXh0Lmxvd2VyKCkKICAgIGlmIGxlbihsZXR0ZXIpICE9IDEgb3IgbGV0dGVyIDwgImEiIG9yIGxldHRlciA+ICJ6IjoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJlbnRlciBvbmUgbGV0dGVyIikKICAgIHJldHVybiBsZXR0ZXIKCgpkZWYgbWFpbigpOgogICAgIiIiUHJpbnQgVm93ZWwgb3IgQ29uc29uYW50LiBSZXR1cm4gTm9uZS4gSGFuZGxlIFZhbHVlRXJyb3IuIiIiCiAgICB3aGlsZSBUcnVlOgogICAgICAgIHRyeToKICAgICAgICAgICAgbGV0dGVyID0gdG9fbGV0dGVyKGlucHV0KCJMZXR0ZXI6ICIpKQogICAgICAgICAgICBicmVhawogICAgICAgIGV4Y2VwdCBWYWx1ZUVycm9yOgogICAgICAgICAgICBwcmludCgiRW50ZXIgb25lIGxldHRlci4iKQogICAgaWYgbGV0dGVyIGluIFsiYSIsICJlIiwgImkiLCAibyIsICJ1Il06CiAgICAgICAgcHJpbnQoIlZvd2VsIikKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoIkNvbnNvbmFudCIpCgoKbWFpbigp",
+      "answerNote": "to_letter only converts, checks and raises. main asks again in a validation loop and prints the result."
+    },
+    "ex-quantity": {
+      "type": "example",
+      "code": "def to_quantity(text):\n    \"\"\"Return text as a quantity from 1 to 50.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    quantity = int(text)\n    if quantity < 1 or quantity > 50:\n        raise ValueError(\"quantity out of range\")\n    return quantity\n\nprint(to_quantity(\" 24 \"))",
+      "output": "24"
+    },
+    "ex-quantity-bug": {
+      "type": "example",
+      "code": "def to_quantity(text):\n    \"\"\"Return text as a quantity from 1 to 50.\n\n    Raise ValueError if it is not one.\n    \"\"\"\n    quantity = int(text)\n    if quantity < 1 or quantity >= 50:\n        raise ValueError(\"quantity out of range\")\n    return quantity\n\nprint(to_quantity(\"20\"))",
+      "output": "20"
+    },
+    "p2-table": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "lo": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "input",
+          "width": "6rem"
+        },
+        "lo_r": {
+          "accept": [
+            "1"
+          ],
+          "placeholder": "result",
+          "width": "9rem"
+        },
+        "hi": {
+          "accept": [
+            "50"
+          ],
+          "placeholder": "input",
+          "width": "6rem"
+        },
+        "hi_r": {
+          "accept": [
+            "50"
+          ],
+          "placeholder": "result",
+          "width": "9rem"
+        },
+        "below": {
+          "accept": [
+            "0"
+          ],
+          "placeholder": "input",
+          "width": "6rem"
+        },
+        "below_r": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        },
+        "above": {
+          "accept": [
+            "51"
+          ],
+          "placeholder": "input",
+          "width": "6rem"
+        },
+        "above_r": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        },
+        "normal_r": {
+          "accept": [
+            "20"
+          ],
+          "placeholder": "result",
+          "width": "9rem"
+        },
+        "text_r": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        },
+        "blank_r": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "p2-bug": {
+      "type": "table",
+      "xp": 1,
+      "blanks": {
+        "t": {
+          "accept": [
+            "50"
+          ],
+          "placeholder": "input",
+          "width": "6rem"
+        },
+        "r": {
+          "accept": [
+            "ValueError"
+          ],
+          "placeholder": "exception",
+          "width": "9rem",
+          "show": "ValueError"
+        }
+      }
+    },
+    "p2-why": {
+      "type": "short",
+      "xp": 2,
+      "minChars": 15,
+      "rows": 3,
+      "placeholder": "Write your answer in your own words…",
+      "answer": "Qm90aCB2ZXJzaW9ucyByZXR1cm4gMjAgZm9yIDIwIGFuZCByYWlzZSBWYWx1ZUVycm9yIGZvciBhYmMu"
+    }
+  }
+}

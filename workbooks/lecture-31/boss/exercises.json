@@ -1,0 +1,146 @@
+{
+  "id": "lecture-31-boss",
+  "course": "COMP 1001: Introduction to Programming",
+  "title": "Lecture 31 Boss Problems",
+  "short": "L31 bosses",
+  "subtitle": "Input validation and robust programs",
+  "exercises": {
+    "shipping-cost": {
+      "type": "code",
+      "xp": 10,
+      "boss": "👹",
+      "minLines": 22,
+      "starter": "FIRST_ITEM_COST = 10.95\nNEXT_ITEM_COST = 2.95",
+      "cases": [
+        {
+          "name": "Example 1: 3",
+          "inputs": [
+            "3"
+          ],
+          "expected": "Shipping: $16.85"
+        },
+        {
+          "name": "Example 2: 0, two, 1",
+          "inputs": [
+            "0",
+            "two",
+            "1"
+          ],
+          "expected": "Enter a whole number of at least 1.\nEnter a whole number of at least 1.\nShipping: $10.95"
+        },
+        {
+          "name": "Ten items",
+          "inputs": [
+            "10"
+          ],
+          "expected": "Shipping: $37.50"
+        },
+        {
+          "name": "A negative count, then 2",
+          "inputs": [
+            "-4",
+            "2"
+          ],
+          "expected": "Enter a whole number of at least 1.\nShipping: $13.90"
+        },
+        {
+          "name": "A decimal, a blank line, then 5",
+          "inputs": [
+            "2.5",
+            "",
+            "5"
+          ],
+          "expected": "Enter a whole number of at least 1.\nEnter a whole number of at least 1.\nShipping: $22.75"
+        },
+        {
+          "name": "Spaces around a number",
+          "inputs": [
+            " 4 "
+          ],
+          "expected": "Shipping: $19.80"
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\ndef _calls(name, fn):\n    return any(isinstance(n, ast.Call) and getattr(n.func, \"id\", \"\") == fn for n in ast.walk(_def(name)))\ndef _pure(*names):\n    for _n in names:\n        assert not _calls(_n, \"input\") and not _calls(_n, \"print\"), _n + \" must not use input or print. main reads the input and prints.\"\ndef _docs(*names):\n    for _n in names:\n        assert any(isinstance(n, ast.FunctionDef) and n.name == _n for n in ast.walk(_TREE)), \"Define a function named \" + _n + \".\"\n        assert ast.get_docstring(_def(_n)), \"Write a docstring for \" + _n + \".\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_t = _fn(\"to_items\", \"text\")\n_s = _fn(\"shipping_cost\", \"items\")\n_fn(\"main\")\n_pure(\"to_items\", \"shipping_cost\")\n_docs(\"to_items\", \"shipping_cost\", \"main\")\nassert _quiet(_t, \"0\")[1] == \"ValueError: items must be at least 1\", 'to_items(\"0\") should raise ValueError(\"items must be at least 1\").'\nassert (_quiet(_t, \"two\")[1] or \"\").startswith(\"ValueError\"), 'to_items(\"two\") should let the ValueError from int pass to the caller.'\nassert _quiet(_t, \"3\")[0] == 3, 'to_items(\"3\") should return 3.'\nassert round(_quiet(_s, 1)[0], 2) == 10.95 and round(_quiet(_s, 3)[0], 2) == 16.85, \"shipping_cost(1) should return 10.95, and shipping_cost(3) should return 16.85.\"\nassert _loops(), \"Ask again in a while loop until the count is valid.\"\n",
+      "hints": [
+        "`to_items` converts with `int` and raises `ValueError(\"items must be at least 1\")` when the count is below 1. It does not catch anything.",
+        "`shipping_cost` returns `FIRST_ITEM_COST` plus `(items - 1)` times `NEXT_ITEM_COST`.",
+        "In `main`, use `while True:` with `try:`, `items = to_items(input())` and `break`. The `except ValueError:` block prints the message. After the loop, print `f\"Shipping: ${...:.2f}\"`."
+      ],
+      "answer": "RklSU1RfSVRFTV9DT1NUID0gMTAuOTUKTkVYVF9JVEVNX0NPU1QgPSAyLjk1CgoKZGVmIHRvX2l0ZW1zKHRleHQpOgogICAgIiIiUmV0dXJuIGFuIGl0ZW0gY291bnQgb2YgYXQgbGVhc3QgMS4KCiAgICBSYWlzZSBWYWx1ZUVycm9yIGlmIHRoZSB0ZXh0IGlzIG5vdCBzdWNoIGEgY291bnQuCiAgICAiIiIKICAgIGl0ZW1zID0gaW50KHRleHQpCiAgICBpZiBpdGVtcyA8IDE6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiaXRlbXMgbXVzdCBiZSBhdCBsZWFzdCAxIikKICAgIHJldHVybiBpdGVtcwoKCmRlZiBzaGlwcGluZ19jb3N0KGl0ZW1zKToKICAgICIiIlJldHVybiB0aGUgY29zdCBmb3IgYSB2YWxpZCBpdGVtIGNvdW50LiBSYWlzZSBubyBleGNlcHRpb24uIiIiCiAgICByZXR1cm4gRklSU1RfSVRFTV9DT1NUICsgKGl0ZW1zIC0gMSkgKiBORVhUX0lURU1fQ09TVAoKCmRlZiBtYWluKCk6CiAgICAiIiJQcmludCB0aGUgc2hpcHBpbmcgY29zdCBhbmQgcmV0dXJuIE5vbmUuIEhhbmRsZSBWYWx1ZUVycm9yLiIiIgogICAgd2hpbGUgVHJ1ZToKICAgICAgICB0cnk6CiAgICAgICAgICAgIGl0ZW1zID0gdG9faXRlbXMoaW5wdXQoKSkKICAgICAgICAgICAgYnJlYWsKICAgICAgICBleGNlcHQgVmFsdWVFcnJvcjoKICAgICAgICAgICAgcHJpbnQoIkVudGVyIGEgd2hvbGUgbnVtYmVyIG9mIGF0IGxlYXN0IDEuIikKICAgIHByaW50KGYiU2hpcHBpbmc6ICR7c2hpcHBpbmdfY29zdChpdGVtcyk6LjJmfSIpCgoKbWFpbigp",
+      "answerNote": "to_items converts and checks, shipping_cost computes, and main is the only function that reads input, prints and handles the exception."
+    },
+    "checking-dates": {
+      "type": "code",
+      "xp": 15,
+      "boss": "👾",
+      "minLines": 34,
+      "starter": "MONTHS = [\"january\", \"february\", \"march\", \"april\", \"may\", \"june\",\n          \"july\", \"august\", \"september\", \"october\", \"november\", \"december\"]\nDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]",
+      "cases": [
+        {
+          "name": "Example 1: five entries",
+          "inputs": [
+            "March 14",
+            "february 29",
+            "February 30",
+            "Smarch 3",
+            "March 14.5",
+            ""
+          ],
+          "expected": "Valid: March 14\nValid: february 29\nRejected: February 30 (day out of range)\nRejected: Smarch 3 (unknown month)\nRejected: March 14.5 (invalid literal for int() with base 10: '14.5')\nValid dates: 2"
+        },
+        {
+          "name": "Example 2: blank line only",
+          "inputs": [
+            ""
+          ],
+          "expected": "No valid dates."
+        },
+        {
+          "name": "April 31 and a missing day",
+          "inputs": [
+            "April 31",
+            "march",
+            ""
+          ],
+          "expected": "Rejected: April 31 (day out of range)\nRejected: march (expected month and day)\nNo valid dates."
+        },
+        {
+          "name": "Day 0 and three parts",
+          "inputs": [
+            "June 0",
+            "June 1 2026",
+            "DECEMBER 31",
+            ""
+          ],
+          "expected": "Rejected: June 0 (day out of range)\nRejected: June 1 2026 (expected month and day)\nValid: DECEMBER 31\nValid dates: 1"
+        },
+        {
+          "name": "Spaces around the line",
+          "inputs": [
+            "  july 4  ",
+            "January   1",
+            ""
+          ],
+          "expected": "Valid: july 4\nValid: January   1\nValid dates: 2"
+        },
+        {
+          "name": "Only bad entries",
+          "inputs": [
+            "x 1",
+            "May five",
+            ""
+          ],
+          "expected": "Rejected: x 1 (unknown month)\nRejected: May five (invalid literal for int() with base 10: 'five')\nNo valid dates."
+        }
+      ],
+      "check": "import ast, types, io, contextlib\n_TREE = ast.parse(__source__)\n_H = [n for n in ast.walk(_TREE) if isinstance(n, ast.ExceptHandler)]\ndef _names(h):\n    t = h.type\n    if isinstance(t, ast.Tuple):\n        return [e.id for e in t.elts if isinstance(e, ast.Name)]\n    return [t.id] if isinstance(t, ast.Name) else []\ndef _handles(name):\n    return any(name in _names(h) for h in _H)\ndef _tries():\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.Try)]\ndef _loops():\n    return [n for n in ast.walk(_TREE) if isinstance(n, (ast.For, ast.While))]\ndef _fn(name, *params):\n    f = globals().get(name)\n    assert isinstance(f, types.FunctionType), \"Define a function named \" + name + \" with def.\"\n    assert f.__code__.co_argcount == len(params), \"Define \" + name + \"(\" + \", \".join(params) + \").\"\n    return f\ndef _def(name):\n    return [n for n in ast.walk(_TREE) if isinstance(n, ast.FunctionDef) and n.name == name][0]\ndef _raises(node):\n    return [n for n in ast.walk(node) if isinstance(n, ast.Raise)]\ndef _quiet(f, *args):\n    \"\"\"Call f with its output hidden. Return (result, exception type name or None, output).\"\"\"\n    buf = io.StringIO()\n    try:\n        with contextlib.redirect_stdout(buf):\n            return f(*args), None, buf.getvalue()\n    except Exception as e:\n        return None, type(e).__name__ + \": \" + str(e), buf.getvalue()\nassert all(h.type is not None for h in _H), \"Do not use a bare except. Name the exception types that you expect.\"\nassert not any(n in (\"Exception\", \"BaseException\") for h in _H for n in _names(h)), \"Name the specific exception types. Do not use except Exception.\"\ndef _calls(name, fn):\n    return any(isinstance(n, ast.Call) and getattr(n.func, \"id\", \"\") == fn for n in ast.walk(_def(name)))\ndef _pure(*names):\n    for _n in names:\n        assert not _calls(_n, \"input\") and not _calls(_n, \"print\"), _n + \" must not use input or print. main reads the input and prints.\"\ndef _docs(*names):\n    for _n in names:\n        assert any(isinstance(n, ast.FunctionDef) and n.name == _n for n in ast.walk(_TREE)), \"Define a function named \" + _n + \".\"\n        assert ast.get_docstring(_def(_n)), \"Write a docstring for \" + _n + \".\"\nassert _handles('ValueError'), \"Add an except block that names ValueError.\"\n_d = _fn(\"days_in_month\", \"name\")\n_c = _fn(\"check_date\", \"line\")\n_fn(\"main\")\n_pure(\"days_in_month\", \"check_date\")\n_docs(\"days_in_month\", \"check_date\", \"main\")\nassert _quiet(_d, \"FEBRUARY\")[0] == 29 and _quiet(_d, \"april\")[0] == 30, 'days_in_month(\"FEBRUARY\") should return 29, and days_in_month(\"april\") should return 30.'\nassert _quiet(_d, \"Smarch\")[1] == \"ValueError: unknown month\", 'days_in_month(\"Smarch\") should raise ValueError(\"unknown month\").'\nassert _quiet(_c, \"March 14\")[0] == 14, 'check_date(\"March 14\") should return 14.'\nassert _quiet(_c, \"march\")[1] == \"ValueError: expected month and day\", 'check_date(\"march\") should raise ValueError(\"expected month and day\").'\nassert _quiet(_c, \"June 0\")[1] == \"ValueError: day out of range\", 'check_date(\"June 0\") should raise ValueError(\"day out of range\").'\nassert (_quiet(_c, \"May five\")[1] or \"\").startswith(\"ValueError: invalid literal\"), 'check_date(\"May five\") should let the ValueError from int pass to the caller.'\nassert any(h.name for h in _H), \"Handle the exception with except ValueError as err, and print the message.\"\nassert _loops(), \"Read the lines with a while loop that stops at a blank line.\"\n",
+      "hints": [
+        "`days_in_month` lowers the name, raises `ValueError(\"unknown month\")` if it is not in `MONTHS`, and returns `DAYS[MONTHS.index(name)]`.",
+        "`check_date` splits the line. It raises for a wrong number of parts, calls `days_in_month`, converts the day with `int`, and raises when the day is below 1 or above the month's days.",
+        "In `main`, strip each line and `break` on `\"\"`. Call `check_date` in `try`. `except ValueError as err:` prints `f\"Rejected: {line} ({err})\"`. Otherwise print `Valid:` and add 1 to a count. Check the count after the loop."
+      ],
+      "answer": "TU9OVEhTID0gWyJqYW51YXJ5IiwgImZlYnJ1YXJ5IiwgIm1hcmNoIiwgImFwcmlsIiwgIm1heSIsICJqdW5lIiwKICAgICAgICAgICJqdWx5IiwgImF1Z3VzdCIsICJzZXB0ZW1iZXIiLCAib2N0b2JlciIsICJub3ZlbWJlciIsICJkZWNlbWJlciJdCkRBWVMgPSBbMzEsIDI5LCAzMSwgMzAsIDMxLCAzMCwgMzEsIDMxLCAzMCwgMzEsIDMwLCAzMV0KCgpkZWYgZGF5c19pbl9tb250aChuYW1lKToKICAgICIiIlJldHVybiB0aGUgbnVtYmVyIG9mIGRheXMuIFJhaXNlIFZhbHVlRXJyb3IgZm9yIGFuIHVua25vd24gbW9udGguIiIiCiAgICBuYW1lID0gbmFtZS5sb3dlcigpCiAgICBpZiBuYW1lIG5vdCBpbiBNT05USFM6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigidW5rbm93biBtb250aCIpCiAgICByZXR1cm4gREFZU1tNT05USFMuaW5kZXgobmFtZSldCgoKZGVmIGNoZWNrX2RhdGUobGluZSk6CiAgICAiIiJSZXR1cm4gdGhlIGRheS4gUmFpc2UgVmFsdWVFcnJvciBpZiB0aGUgbGluZSBpcyBub3QgYSB2YWxpZCBkYXRlLiIiIgogICAgcGFydHMgPSBsaW5lLnNwbGl0KCkKICAgIGlmIGxlbihwYXJ0cykgIT0gMjoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJleHBlY3RlZCBtb250aCBhbmQgZGF5IikKICAgIGRheXMgPSBkYXlzX2luX21vbnRoKHBhcnRzWzBdKQogICAgZGF5ID0gaW50KHBhcnRzWzFdKQogICAgaWYgZGF5IDwgMSBvciBkYXkgPiBkYXlzOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoImRheSBvdXQgb2YgcmFuZ2UiKQogICAgcmV0dXJuIGRheQoKCmRlZiBtYWluKCk6CiAgICAiIiJQcmludCB0aGUgZGF0ZSByZXN1bHRzIGFuZCByZXR1cm4gTm9uZS4gSGFuZGxlIFZhbHVlRXJyb3IuIiIiCiAgICBjb3VudCA9IDAKICAgIHdoaWxlIFRydWU6CiAgICAgICAgbGluZSA9IGlucHV0KCkuc3RyaXAoKQogICAgICAgIGlmIGxpbmUgPT0gIiI6CiAgICAgICAgICAgIGJyZWFrCiAgICAgICAgdHJ5OgogICAgICAgICAgICBjaGVja19kYXRlKGxpbmUpCiAgICAgICAgZXhjZXB0IFZhbHVlRXJyb3IgYXMgZXJyOgogICAgICAgICAgICBwcmludChmIlJlamVjdGVkOiB7bGluZX0gKHtlcnJ9KSIpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcHJpbnQoZiJWYWxpZDoge2xpbmV9IikKICAgICAgICAgICAgY291bnQgPSBjb3VudCArIDEKICAgIGlmIGNvdW50ID09IDA6CiAgICAgICAgcHJpbnQoIk5vIHZhbGlkIGRhdGVzLiIpCiAgICBlbHNlOgogICAgICAgIHByaW50KGYiVmFsaWQgZGF0ZXM6IHtjb3VudH0iKQoKCm1haW4oKQ==",
+      "answerNote": "The two helpers only raise. main skips a bad line with a message, counts the valid ones and checks for the empty case at the end."
+    }
+  }
+}

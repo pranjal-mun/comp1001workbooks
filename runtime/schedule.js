@@ -60,7 +60,7 @@ export const LECTURES = [
   { n: 28, unit: 7, date: "2026-11-20", title: "Selection sort and merge sort", built: true, bosses: true },
   { n: 29, unit: 8, date: "2026-11-23", title: "Exceptions: what they are; <code>try</code> / <code>except</code>", built: true, bosses: true },
   { n: 30, unit: 8, date: "2026-11-25", title: "<code>raise</code>, <code>else</code>, <code>finally</code>; reading tracebacks", built: true, bosses: true },
-  { n: 31, unit: 8, date: "2026-11-27", title: "Input validation and robust programs", built: false },
+  { n: 31, unit: 8, date: "2026-11-27", title: "Input validation and robust programs", built: true, bosses: true },
   { n: 32, unit: 8, date: "2026-11-30", title: "Reading and writing text files", built: false },
   { n: 33, unit: 8, date: "2026-12-02", title: "Processing text; files that fail safely", built: false },
   { n: 34, unit: 9, date: "2026-12-04", title: "Sets and dictionaries", built: false },

@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMP 1001 – Lecture 31 Workbook</title>
+  <link rel="icon" href="../../runtime/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../runtime/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="stylesheet" href="../../runtime/workbook.css">
+  <script type="module">
+    import { initWorkbook } from "../../runtime/workbook.js";
+    initWorkbook({ id: "lecture-31", specs: "./exercises.json" });
+  </script>
+</head>
+<body>
+<main>
+
+<div class="wb-title-block">
+  <div>
+    <div class="wb-course">COMP 1001: Introduction to Programming</div>
+    <h1>Lecture 31 Workbook</h1>
+    <div class="wb-subtitle">Input validation and robust programs</div>
+    <p class="wb-meta">Pranjal Patra<br>Department of Computer Science, Memorial University of Newfoundland</p>
+  </div>
+  <img src="../../runtime/img/mun-logo.svg" alt="Memorial University of Newfoundland">
+</div>
+
+
+<section class="wb-outcomes">
+  <h2 id="outcomes" data-toc-title="Learning outcomes">Learning outcomes</h2>
+  <p>This lecture uses exceptions to make programs that keep working when the input is bad.</p>
+  <p>Reading: §7.6</p>
+  <ul>
+    <li>Write a validation loop that asks again until the input is valid.</li>
+    <li>Write a function that converts and checks a value, and raises <code>ValueError</code> when the value is bad.</li>
+    <li>Read values until a blank line, skip bad entries, and handle the case with no valid values.</li>
+    <li>Compare checking before an operation with trying the operation and handling the exception.</li>
+    <li>Test a program with normal, boundary and bad input.</li>
+  </ul>
+  <p class="wb-meta">Every code box on this page is live: press <strong>▶ Run</strong> to execute it in your browser. A program that calls <code>input()</code> asks you to type each answer. Exercises award XP when you get them right; XP can be spent to reveal a model answer.</p>
+</section>
+<hr>
+
+<p class="wb-part" id="part-bad-input">Bad input</p>
+
+<h2 id="s1">1. Bad input</h2>
+<p>Consider a program that reads a mark from 0 to 100.</p>
+<wb-example id="ex-bad"></wb-example>
+<p><strong>Sample run 1</strong></p>
+<pre class="wb-output">Mark: abc
+Traceback (most recent call last):
+  ...
+ValueError: invalid literal for int() with base 10: &#x27;abc&#x27;</pre>
+<p><strong>Sample run 2</strong></p>
+<pre class="wb-output">Mark: 150
+You entered 150</pre>
+<p>Run 1 stops with a traceback. Run 2 accepts a mark outside the range.</p>
+<p>A program is <strong>robust</strong> if it behaves sensibly when its input is bad.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>The user types</th><th>Problem</th><th>Who finds it</th></tr></thead>
+  <tbody>
+    <tr><td><code>abc</code>, <code>7.5</code>, an empty line</td><td>not a whole number</td><td><code>int</code> raises <code>ValueError</code></td></tr>
+    <tr><td><code>150</code>, <code>-3</code></td><td>not from 0 to 100</td><td>your code, with an <code>if</code> statement</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A robust program refuses bad input and keeps working. It tells the user what is wrong and asks again. A user can enter a bad value even when the program has no bug.</p>
+<p>Run the two-line program once for each input. Fill in the table.</p>
+<wb-table id="s1-runs">
+  <table>
+    <thead><tr><th>Input</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td><code>abc</code></td><td data-blank="r1"></td></tr>
+      <tr><td><code>150</code></td><td data-blank="r2"></td></tr>
+      <tr><td><code>72</code></td><td data-blank="r3"></td></tr>
+      <tr><td><code>7.5</code></td><td data-blank="r4"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<p>Which inputs should the program refuse? Explain why.</p>
+<wb-short id="s1-why"></wb-short>
+
+<p class="wb-part" id="part-loop">The validation loop</p>
+
+<h2 id="s2">2. The validation loop</h2>
+<p>This program asks for a whole number until the user types one.</p>
+<wb-example id="ex-loop"></wb-example>
+<p><strong>Sample run</strong></p>
+<pre class="wb-output">Mark: abc
+Please type a whole number.
+Mark: 7.5
+Please type a whole number.
+Mark: 72
+You entered 72</pre>
+<p>This is a <code>while True</code> loop with a <code>try</code> statement inside.</p>
+<h3>How the validation loop runs</h3>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 480 395" width="480" height="395" role="img" aria-label="A flow chart read from top to bottom. Start. mark = int(input(...)). ValueError? If yes, print the message and go back to the input line. If no, break, and continue after the loop." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><ellipse cx="170" cy="30" rx="55.0" ry="20.0"/><rect x="45.0" y="85.0" width="250" height="40" rx="5"/><path d="M170 157.0 L255.0 195 L170 233.0 L85.0 195 Z"/><rect x="335.0" y="170.0" width="130" height="50" rx="5"/><rect x="120.0" y="265.0" width="100" height="40" rx="5"/><ellipse cx="170" cy="365" rx="75.0" ry="20.0"/><path d="M170 50 L170 83" marker-end="url(#a-loop)"/><path d="M170 125 L170 155" marker-end="url(#a-loop)"/><path d="M255 195 L333 195" marker-end="url(#a-loop)"/><path d="M400 170 L400 105 L297 105" marker-end="url(#a-loop)"/><path d="M170 233 L170 263" marker-end="url(#a-loop)"/><path d="M170 305 L170 343" marker-end="url(#a-loop)"/><g style="stroke: none; fill: currentColor"><text x="170" y="35.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">Start</text><text x="170" y="110.0" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">mark = int(input(...))</text><text x="170" y="200.0" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">ValueError?</text><text x="400" y="191.5" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">print the</text><text x="400" y="208.5" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">message</text><text x="170" y="290.0" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">break</text><text x="170" y="370.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">after the loop</text><text x="294" y="187" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">yes</text><text x="184" y="252" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">no</text></g>
+  </svg>
+</figure>
+<ol>
+  <li><code>while True</code> repeats the loop body until <code>break</code> runs.</li>
+  <li>If <code>int</code> raises <code>ValueError</code>, control jumps to the <code>except</code> block. The loop asks again.</li>
+  <li>If <code>int</code> succeeds, <code>break</code> ends the loop.</li>
+  <li>After the loop, <code>mark</code> is always a whole number.</li>
+</ol>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 1</div>
+  <p><strong>Question 1.</strong> Predict the output. The input lines are <code>ten</code>, <code>4.5</code> and <code>6</code>.</p>
+  <pre><code><span class="wb-kw">while</span> <span class="wb-kw">True</span>:
+    <span class="wb-kw">try</span>:
+        n = <span class="wb-fn">int</span>(<span class="wb-fn">input</span>())
+        <span class="wb-kw">break</span>
+    <span class="wb-kw">except</span> ValueError:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Try again."</span>)
+<span class="wb-fn">print</span>(n * 2)</code></pre>
+  <wb-table id="q1">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+        <tr><td>3</td><td data-blank="l3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s3">3. Checking the range</h2>
+<p>This program also rejects a whole number outside 0 to 100.</p>
+<wb-example id="ex-range"></wb-example>
+<p><strong>Sample run</strong></p>
+<pre class="wb-output">Mark: abc
+Enter a mark from 0 to 100.
+Mark: 150
+Enter a mark from 0 to 100.
+Mark: 72
+You entered 72</pre>
+<p>The <code>raise</code> statement raises <code>ValueError</code> when the mark is outside the range. The same <code>except</code> block handles an exception from <code>int</code> or from <code>raise</code>.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 2</div>
+  <p><strong>Question 2.</strong> Mark each statement about the range-checking loop true or false.</p>
+  <wb-table id="q2">
+    <table>
+      <thead><tr><th>Statement</th><th>True or False</th></tr></thead>
+      <tbody>
+        <tr><td>The input <code>150</code> makes <code>int</code> raise <code>ValueError</code>.</td><td data-blank="t1"></td></tr>
+        <tr><td>The loop's <code>except ValueError</code> block handles the exception from <code>raise</code>, so the loop asks again.</td><td data-blank="t2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-function">A validation function</p>
+
+<h2 id="s4">4. A function that converts and checks</h2>
+<p>Put the conversion and the range check in a function. Its docstring states what it returns and when it raises <code>ValueError</code>. The function uses neither <code>input</code> nor <code>print</code>.</p>
+<wb-example id="ex-to-mark"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Call</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>to_mark("72")</code></td><td><code>72</code></td></tr>
+    <tr><td><code>to_mark(" 72 ")</code></td><td><code>72</code></td></tr>
+    <tr><td><code>to_mark("abc")</code></td><td><code>ValueError</code></td></tr>
+    <tr><td><code>to_mark("150")</code></td><td><code>ValueError</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>For <code>"abc"</code>, <code>int</code> raises the exception. For <code>"150"</code>, the <code>raise</code> statement does. Both exceptions pass to the caller.</p>
+<h3>Asking until the input is valid</h3>
+<p><code>main</code> calls <code>to_mark</code> in a validation loop. Put this version of <code>main</code> after <code>to_mark</code>.</p>
+<wb-example id="ex-main"></wb-example>
+<p><strong>Sample run</strong></p>
+<pre class="wb-output">Mark: abc
+Enter a mark from 0 to 100.
+Mark: 150
+Enter a mark from 0 to 100.
+Mark: 72
+You entered 72</pre>
+<p><code>to_mark</code> checks the value and raises <code>ValueError</code> for bad input. The caller, <code>main</code>, handles the exception by printing a message and asking again.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 3</div>
+  <p><strong>Question 3.</strong> Fill the gaps so the loop asks again until the user enters an age from 0 to 120.</p>
+  <pre><code><span class="wb-kw">def</span> <span class="wb-fn">to_age</span>(text):
+    <span class="wb-str">"""Return text as an age from 0 to 120.</span>
+<span class="wb-str"></span>
+<span class="wb-str">    Raise ValueError if it is not one.</span>
+<span class="wb-str">    """</span>
+    age = ____(a)____(text)
+    <span class="wb-kw">if</span> age &lt; 0 <span class="wb-kw">or</span> age &gt; 120:
+        ____(b)____ ValueError(<span class="wb-str">"age out of range"</span>)
+    <span class="wb-kw">return</span> age
+
+<span class="wb-kw">while</span> <span class="wb-kw">True</span>:
+    <span class="wb-kw">try</span>:
+        age = to_age(<span class="wb-fn">input</span>())
+        ____(c)____
+    <span class="wb-kw">except</span> ValueError:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Enter an age from 0 to 120."</span>)</code></pre>
+  <wb-table id="q3">
+    <table>
+      <thead><tr><th>Gap</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>(a)</td><td data-blank="a"></td></tr>
+        <tr><td>(b)</td><td data-blank="b"></td></tr>
+        <tr><td>(c)</td><td data-blank="c"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-many">Reading many values</p>
+
+<h2 id="s5">5. Reading values until a blank line</h2>
+<p>This program saves valid marks and skips bad entries. A blank line ends the input. Use <code>to_mark</code> from Section 4 and call this version of <code>main</code>.</p>
+<wb-example id="ex-blank"></wb-example>
+<p><strong>Sample run</strong></p>
+<pre class="wb-output">Mark: 72
+Mark: abc
+Not saved: abc
+Mark: 150
+Not saved: 150
+Mark: 95
+Mark:
+Saved: [72, 95]</pre>
+<h3>How the loop handles each entry</h3>
+<figure style="margin: 1rem auto; text-align: center">
+  <svg viewBox="0 0 600 425" width="600" height="425" role="img" aria-label="A flow chart read from top to bottom. Read text, then strip. Blank? If yes, leave the loop. If no, call to_mark(text). ValueError? If yes, print Not saved and read the next line. If no, append to marks and read the next line." style="max-width: 100%; height: auto; stroke: currentColor; fill: none; stroke-width: 1.5">
+    <defs><marker id="a-entries" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: currentColor; stroke: none"/></marker></defs><rect x="75.0" y="15.0" width="230" height="40" rx="5"/><path d="M190 90.0 L260.0 125 L190 160.0 L120.0 125 Z"/><ellipse cx="450" cy="125" rx="75.0" ry="20.0"/><rect x="105.0" y="195.0" width="170" height="40" rx="5"/><path d="M190 267.0 L275.0 305 L190 343.0 L105.0 305 Z"/><rect x="385.0" y="280.0" width="130" height="50" rx="5"/><rect x="90.0" y="375.0" width="200" height="40" rx="5"/><path d="M190 55 L190 88" marker-end="url(#a-entries)"/><path d="M260 125 L373 125" marker-end="url(#a-entries)"/><path d="M190 160 L190 193" marker-end="url(#a-entries)"/><path d="M190 235 L190 265" marker-end="url(#a-entries)"/><path d="M275 305 L383 305" marker-end="url(#a-entries)"/><path d="M190 343 L190 373" marker-end="url(#a-entries)"/><path d="M90 395 L40 395 L40 35 L73 35" marker-end="url(#a-entries)"/><path d="M515 305 L565 305 L565 25 L307 25" marker-end="url(#a-entries)"/><g style="stroke: none; fill: currentColor"><text x="190" y="40.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">read text, then strip</text><text x="190" y="130.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">blank?</text><text x="450" y="130.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">leave the loop</text><text x="190" y="220.0" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">to_mark(text)</text><text x="190" y="310.0" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">ValueError?</text><text x="450" y="301.5" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">print</text><text x="450" y="318.5" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px">Not saved</text><text x="190" y="400.0" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px">append to marks</text><text x="316" y="117" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">yes</text><text x="204" y="180" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">no</text><text x="329" y="297" text-anchor="middle" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">yes</text><text x="204" y="362" text-anchor="start" style="font-family: var(--font-sans, sans-serif); font-size: 14px; font-size: 12px">no</text></g>
+  </svg>
+</figure>
+<ul>
+  <li><code>strip</code> removes spaces at the start and the end. A line of spaces also ends the loop.</li>
+  <li>The <code>if</code> statement checks for a blank line before calling <code>to_mark</code>.</li>
+  <li>The program appends a value only when <code>to_mark</code> returns a mark. After a bad entry, the loop prints a message and reads the next line.</li>
+</ul>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 4</div>
+  <p><strong>Question 4.</strong> Predict the output. The input lines are <code>3</code>, <code>two</code>, <code>&nbsp;5&nbsp;</code> (with spaces), a blank line and <code>7</code>.</p>
+  <pre><code>counts = []
+<span class="wb-kw">while</span> <span class="wb-kw">True</span>:
+    text = <span class="wb-fn">input</span>().strip()
+    <span class="wb-kw">if</span> text == <span class="wb-str">""</span>:
+        <span class="wb-kw">break</span>
+    <span class="wb-kw">try</span>:
+        counts.append(<span class="wb-fn">int</span>(text))
+    <span class="wb-kw">except</span> ValueError:
+        <span class="wb-fn">print</span>(<span class="wb-str">"Skipped"</span>, text)
+<span class="wb-fn">print</span>(counts)</code></pre>
+  <wb-table id="q4">
+    <table>
+      <thead><tr><th>Line</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td data-blank="l1"></td></tr>
+        <tr><td>2</td><td data-blank="l2"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<h2 id="s6">6. The empty case</h2>
+<p>If the user types only bad entries, or a blank line first, <code>marks</code> is empty. Keep the loop from Section 5. Replace its final <code>print</code> with the check and the average below.</p>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    marks = []
+    <span class="wb-cmt"># the loop that reads the marks</span>
+    <span class="wb-kw">if</span> <span class="wb-fn">len</span>(marks) == 0:
+        <span class="wb-fn">print</span>(<span class="wb-str">"No marks."</span>)
+        <span class="wb-kw">return</span>
+    average = <span class="wb-fn">sum</span>(marks) / <span class="wb-fn">len</span>(marks)
+    <span class="wb-fn">print</span>(f<span class="wb-str">"Average: {average:.1f}"</span>)</code></pre>
+<p><strong>Sample run</strong></p>
+<pre class="wb-output">Mark: abc
+Not saved: abc
+Mark:
+No marks.</pre>
+<p>If <code>marks</code> is empty, <code>sum(marks) / len(marks)</code> raises <code>ZeroDivisionError</code>. An <code>if</code> statement checks for the empty list before the division. The <code>return</code> ends <code>main</code>.</p>
+<p>The whole program, with <code>to_mark</code>, the loop and the check:</p>
+<wb-example id="ex-empty"></wb-example>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 5</div>
+  <p><strong>Question 5.</strong> A program reads marks into <code>marks</code> until a blank line. It then prints <code>sum(marks) / len(marks)</code>. The user presses Enter at the first prompt. What happens?</p>
+  <ol type="A">
+    <li>It prints <code>0</code>.</li>
+    <li>It prints <code>No marks.</code></li>
+    <li>The program stops with a <code>ZeroDivisionError</code>.</li>
+    <li>The loop asks for a mark again.</li>
+  </ol>
+  <wb-table id="q5">
+    <table><tbody><tr><th>Answer</th><td data-blank="c"></td></tr></tbody></table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-check">Check first or try first</p>
+
+<h2 id="s7">7. Check first or try first</h2>
+<p>Some programs check the text with <code>isdigit</code> before they call <code>int</code>.</p>
+<wb-example id="ex-isdigit"></wb-example>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th><code>text</code></th><th><code>text.isdigit()</code></th><th><code>int(text)</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>"12"</code></td><td><code>True</code></td><td><code>12</code></td></tr>
+    <tr><td><code>"-5"</code></td><td><code>False</code></td><td><code>-5</code></td></tr>
+    <tr><td><code>" 7 "</code></td><td><code>False</code></td><td><code>7</code></td></tr>
+    <tr><td><code>"3.5"</code></td><td><code>False</code></td><td><code>ValueError</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>The two operations accept different inputs. Notice that <code>int</code> accepts <code>"-5"</code> and <code>" 7 "</code> even though <code>isdigit</code> returns <code>False</code>.</p>
+<ul>
+  <li>Use <code>try</code> when other code, such as <code>int</code> or <code>float</code>, decides what fails.</li>
+  <li>Use <code>if</code> for a rule that you write yourself, such as a range.</li>
+</ul>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 6</div>
+  <p><strong>Question 6.</strong> For each text, give <code>text.isdigit()</code> and the result of <code>int(text)</code>. Write a number or <code>ValueError</code> in the last column.</p>
+  <wb-table id="q6">
+    <table>
+      <thead><tr><th><code>text</code></th><th><code>text.isdigit()</code></th><th><code>int(text)</code></th></tr></thead>
+      <tbody>
+        <tr><td><code>"007"</code></td><td data-blank="d1"></td><td data-blank="i1"></td></tr>
+        <tr><td><code>"+4"</code></td><td data-blank="d2"></td><td data-blank="i2"></td></tr>
+        <tr><td><code>"1,000"</code></td><td data-blank="d3"></td><td data-blank="i3"></td></tr>
+      </tbody>
+    </table>
+  </wb-table>
+</div>
+
+<p class="wb-part" id="part-testing">Testing</p>
+
+<h2 id="s8">8. Testing with bad input</h2>
+<p>Test a program with valid input, boundary values and bad input.</p>
+<div class="wb-table-wrap">
+<table>
+  <thead><tr><th>Kind of input</th><th>The user types</th><th>Expected result</th></tr></thead>
+  <tbody>
+    <tr><td>Normal</td><td><code>72</code></td><td>saved</td></tr>
+    <tr><td>Boundary</td><td><code>0</code>, <code>100</code></td><td>saved</td></tr>
+    <tr><td>Just outside the range</td><td><code>-1</code>, <code>101</code></td><td><code>Not saved</code></td></tr>
+    <tr><td>Not a whole number</td><td><code>abc</code>, <code>7.5</code></td><td><code>Not saved</code></td></tr>
+    <tr><td>Only bad entries</td><td><code>abc</code>, then a blank line</td><td><code>No marks.</code></td></tr>
+  </tbody>
+</table>
+</div>
+<p>A boundary test finds a wrong comparison, such as <code>&lt;=</code> where <code>&lt;</code> is needed.</p>
+<div class="wb-checkpoint">
+  <div class="wb-block-title">Quick check 7</div>
+  <p><strong>Question 7.</strong> Which set of inputs tests <code>to_age</code> from Question 3 best?</p>
+  <ol type="A">
+    <li><code>20</code>, <code>30</code>, <code>40</code>.</li>
+    <li><code>0</code>, <code>120</code>, <code>-1</code>, <code>121</code>, <code>abc</code>.</li>
+    <li><code>abc</code>, <code>xyz</code>, <code>hello</code>.</li>
+    <li><code>1000</code>, <code>2000</code>, <code>3000</code>.</li>
+  </ol>
+  <wb-table id="q7">
+    <table><tbody><tr><th>Answer</th><td data-blank="c"></td></tr></tbody></table>
+  </wb-table>
+</div>
+
+<h2 id="review" data-toc-title="Review" data-toc-group>Review</h2>
+<h3>A validation function and loop</h3>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">to_mark</span>(text):
+    <span class="wb-str">"""Return text as a mark from 0 to 100.</span>
+<span class="wb-str"></span>
+<span class="wb-str">    Raise ValueError if it is not one.</span>
+<span class="wb-str">    """</span>
+    mark = <span class="wb-fn">int</span>(text)
+    <span class="wb-kw">if</span> mark &lt; 0 <span class="wb-kw">or</span> mark &gt; 100:
+        <span class="wb-kw">raise</span> ValueError(<span class="wb-str">"mark out of range"</span>)
+    <span class="wb-kw">return</span> mark
+
+<span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    <span class="wb-kw">while</span> <span class="wb-kw">True</span>:
+        <span class="wb-kw">try</span>:
+            mark = to_mark(<span class="wb-fn">input</span>(<span class="wb-str">"Mark: "</span>))
+            <span class="wb-kw">break</span>
+        <span class="wb-kw">except</span> ValueError:
+            <span class="wb-fn">print</span>(<span class="wb-str">"Enter a mark from 0 to 100."</span>)</code></pre>
+<p><strong>The function</strong></p>
+<ul>
+  <li>Converts the text and checks the rule.</li>
+  <li>Raises <code>ValueError</code> for a bad value.</li>
+  <li>Does not use <code>input</code> or <code>print</code>.</li>
+</ul>
+<p><strong>The loop</strong></p>
+<ul>
+  <li>Calls the function inside <code>try</code>.</li>
+  <li>Uses <code>break</code> when the value is valid.</li>
+  <li>Prints a message in the <code>except ValueError</code> block, then asks again.</li>
+</ul>
+<h3>Reading many values</h3>
+<pre><code><span class="wb-kw">def</span> <span class="wb-fn">main</span>():
+    marks = []
+    <span class="wb-kw">while</span> <span class="wb-kw">True</span>:
+        text = <span class="wb-fn">input</span>(<span class="wb-str">"Mark: "</span>).strip()
+        <span class="wb-kw">if</span> text == <span class="wb-str">""</span>:
+            <span class="wb-kw">break</span>
+        <span class="wb-kw">try</span>:
+            marks.append(to_mark(text))
+        <span class="wb-kw">except</span> ValueError:
+            <span class="wb-fn">print</span>(f<span class="wb-str">"Not saved: {text}"</span>)
+    <span class="wb-kw">if</span> <span class="wb-fn">len</span>(marks) == 0:
+        <span class="wb-fn">print</span>(<span class="wb-str">"No marks."</span>)
+        <span class="wb-kw">return</span>
+    average = <span class="wb-fn">sum</span>(marks) / <span class="wb-fn">len</span>(marks)
+    <span class="wb-fn">print</span>(f<span class="wb-str">"Average: {average:.1f}"</span>)</code></pre>
+<p><strong>Rules</strong></p>
+<ul>
+  <li>Check for the blank line before you convert.</li>
+  <li>Save a value only when the function returns it.</li>
+  <li>A bad entry gets a message. The loop goes on.</li>
+  <li>Check for the empty list before you divide.</li>
+  <li>Use <code>try</code> for <code>int</code> and <code>float</code>. Use <code>if</code> for a range.</li>
+  <li>Test boundary values and bad input.</li>
+</ul>
+
+<h2 id="coding-practice" data-toc-group>Coding Practice</h2>
+<p>These items give more practice with validating input.</p>
+
+<h3>1. Vowel or consonant</h3>
+<p>Write <code>to_letter(text)</code>. It takes a string and returns its lowercase form if that is one letter from <code>a</code> to <code>z</code>. Otherwise it raises <code>ValueError("enter one letter")</code>.</p>
+<p>Write <code>main()</code>. It asks with <code>input("Letter: ")</code> until <code>to_letter</code> returns a letter. It prints <code>Enter one letter.</code> for each bad input. Then it prints <code>Vowel</code> or <code>Consonant</code>. Only <code>a</code>, <code>e</code>, <code>i</code>, <code>o</code> and <code>u</code> are vowels.</p>
+<p>The examples show the output after each prompt.</p>
+<div class="wb-block">
+  <div class="wb-block-title">Example 1</div>
+  <pre class="wb-output">Input:
+E
+Output:
+Vowel</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Example 2</div>
+  <pre class="wb-output">Input:
+ab
+7
+t
+Output:
+Enter one letter.
+Enter one letter.
+Consonant</pre>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Use <code>lower</code>, <code>len</code> and string comparisons to check the letter.</li>
+    <li>Raise and handle <code>ValueError</code>. Use no bare <code>except</code>.</li>
+    <li>Use no <code>input</code> or <code>print</code> in <code>to_letter</code>.</li>
+    <li>Write a docstring for each function. Call <code>main()</code> on the last line.</li>
+  </ul>
+</div>
+<div class="wb-block">
+  <div class="wb-block-title">Rules the checker enforces</div>
+  <ul>
+    <li>Define <code>to_letter(text)</code> and <code>main()</code>, each with a docstring.</li>
+    <li><code>to_letter</code> raises <code>ValueError("enter one letter")</code> for a bad input and uses no <code>input</code> or <code>print</code>. The checker also calls it directly.</li>
+    <li>Handle <code>ValueError</code>. Do not use a bare <code>except</code> or <code>except Exception</code>.</li>
+    <li>On this page, <strong>Check</strong> shows each <code>Letter: </code> prompt in the output.</li>
+  </ul>
+</div>
+<wb-exercise id="p1"></wb-exercise>
+
+<h3>2. Testing a validation function</h3>
+<p>Consider <code>to_quantity(text)</code>. It takes a string and returns a whole number from 1 to 50. It raises <code>ValueError</code> if the text cannot be converted or the value is outside the range.</p>
+<wb-example id="ex-quantity"></wb-example>
+<p>Input: <code>" 24 "</code><br>Output: The function returns <code>24</code>.</p>
+<p><strong>(a)</strong> Fill in the table. Give one input for each row and the expected result. The normal, text and blank-line inputs are filled in for you.</p>
+<wb-table id="p2-table">
+  <table>
+    <thead><tr><th>Kind of input</th><th>Input</th><th>Expected result</th></tr></thead>
+    <tbody>
+      <tr><td>Normal</td><td><code>20</code></td><td data-blank="normal_r"></td></tr>
+      <tr><td>Lower boundary</td><td data-blank="lo"></td><td data-blank="lo_r"></td></tr>
+      <tr><td>Upper boundary</td><td data-blank="hi"></td><td data-blank="hi_r"></td></tr>
+      <tr><td>Just below the range</td><td data-blank="below"></td><td data-blank="below_r"></td></tr>
+      <tr><td>Just above the range</td><td data-blank="above"></td><td data-blank="above_r"></td></tr>
+      <tr><td>Text that is not a whole number</td><td><code>abc</code></td><td data-blank="text_r"></td></tr>
+      <tr><td>Blank line</td><td>(blank line)</td><td data-blank="blank_r"></td></tr>
+    </tbody>
+  </table>
+</wb-table>
+<div class="wb-block">
+  <div class="wb-block-title">Constraints</div>
+  <ul>
+    <li>Use one input per test.</li>
+    <li>Give the returned value or write <code>ValueError</code>.</li>
+  </ul>
+</div>
+<p><strong>(b)</strong> Consider this version of <code>to_quantity</code>.</p>
+<wb-example id="ex-quantity-bug"></wb-example>
+<p>Which test from your table finds the bug? What result does the function give for that input?</p>
+<wb-table id="p2-bug">
+  <table>
+    <thead><tr><th>Input that finds the bug</th><th>Result of the buggy version</th></tr></thead>
+    <tbody><tr><td data-blank="t"></td><td data-blank="r"></td></tr></tbody>
+  </table>
+</wb-table>
+<p><strong>(c)</strong> Explain in one sentence why tests with <code>20</code> and <code>abc</code> alone would miss the bug.</p>
+<wb-short id="p2-why"></wb-short>
+
+<p>The Boss Problems are test-level practice. Boss Problem 2 uses the most ideas from this lecture.</p>
+<wb-bosses></wb-bosses>
+
+<hr>
+<p class="wb-meta">End of Lecture 31 Workbook.</p>
+</main>
+</body>
+</html>
